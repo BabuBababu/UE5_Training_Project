@@ -7,7 +7,12 @@
 		{
 			"Name": "UE5_Training_Project",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"AIModule",
+				"CoreUObject"
+			]
 		}
 	],
 	"Plugins": [
