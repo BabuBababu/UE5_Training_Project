@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -12,7 +12,7 @@
 #include "DNUnEnemyCharacter.generated.h"
 
 /**
- *	 ÇÃ·¹ÀÌ¾î ¹× ±×¸®Æù ÀÎÇüÀÇ Ä³¸¯ÅÍ Å¬·¡½ºÀÔ´Ï´Ù.
+ *	 í”Œë ˆì´ì–´ ë° ê·¸ë¦¬í° ì¸í˜•ì˜ ìºë¦­í„° í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
  */
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNUnEnemyCharacter : public ADNCommonCharacter

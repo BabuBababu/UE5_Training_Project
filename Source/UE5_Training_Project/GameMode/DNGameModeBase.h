@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -11,7 +11,7 @@
 #include "DNGameModeBase.generated.h"
 
 /**
- *  ¾ÕÀ¸·Î »ç¿ëÇÏ°Ô µÉ °ÔÀÓ¸ğµåÀÇ ±âº» º£ÀÌ½º Å¬·¡½ºÀÔ´Ï´Ù.
+ *  ì•ìœ¼ë¡œ ì‚¬ìš©í•˜ê²Œ ë  ê²Œì„ëª¨ë“œì˜ ê¸°ë³¸ ë² ì´ìŠ¤ í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
  */
 
 
@@ -20,4 +20,11 @@ class UE5_TRAINING_PROJECT_API ADNGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+
+public:
+	ADNGameModeBase();
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 };
