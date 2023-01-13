@@ -1,7 +1,8 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
 using System.Collections.Generic;
+using System;
 
 public class UE5_Training_ProjectTarget : TargetRules
 {
@@ -12,4 +13,5 @@ public class UE5_Training_ProjectTarget : TargetRules
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_1;
 		ExtraModuleNames.Add("UE5_Training_Project");
 	}
+
 }
