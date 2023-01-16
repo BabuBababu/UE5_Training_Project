@@ -4,9 +4,13 @@
 
 // Engine
 #include "Kismet/GameplayStatics.h"
+#include <GameFramework/CharacterMovementComponent.h>
 
 // GameMode
 #include "UE5_Training_Project/GameMode/DNGameModeBase.h"
+
+// Character
+#include "UE5_Training_Project/Character/DNCommonCharacter.h"
 
 
 // EnhancedInput
@@ -58,12 +62,22 @@ void ADNPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(InputComponent);
 
 	// Bind the actions
+
+	// Completed : 눌렀다 뗐을 때, Triggered : 누르고 있을 때 
 	PEI->BindAction(InputActions->InputMove, ETriggerEvent::Triggered, this, &ADNPlayerController::Move);
 	PEI->BindAction(InputActions->InputLook, ETriggerEvent::Triggered, this, &ADNPlayerController::Look);
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Triggered, this, &ADNPlayerController::Jump);
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Completed, this, &ADNPlayerController::StopJumping);
 	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Triggered, this, &ADNPlayerController::Fire);
-	PEI->BindAction(InputActions->InputReload, ETriggerEvent::Triggered, this, &ADNPlayerController::Reload);
+	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Completed, this, &ADNPlayerController::StopFire);
+	PEI->BindAction(InputActions->InputReload, ETriggerEvent::Completed, this, &ADNPlayerController::Reload);
+	PEI->BindAction(InputActions->InputAiming, ETriggerEvent::Triggered, this, &ADNPlayerController::Aiming);
+	PEI->BindAction(InputActions->InputAiming, ETriggerEvent::Completed, this, &ADNPlayerController::StopAiming);
+	PEI->BindAction(InputActions->InputArmed, ETriggerEvent::Completed, this, &ADNPlayerController::Armed);
+	PEI->BindAction(InputActions->InputCrouch, ETriggerEvent::Completed, this, &ADNPlayerController::Crouch);
+	PEI->BindAction(InputActions->InputSprint, ETriggerEvent::Triggered, this, &ADNPlayerController::Sprint);
+	PEI->BindAction(InputActions->InputSprint, ETriggerEvent::Completed, this, &ADNPlayerController::StopSprint);
+	PEI->BindAction(InputActions->InputInterRaction, ETriggerEvent::Completed, this, &ADNPlayerController::Interaction);
 	
 }
 
@@ -89,6 +103,20 @@ void ADNPlayerController::Move(const FInputActionValue& Value)
 	GetCharacter()->AddMovementInput(RightDirection, MovementVector.X);
 }
 
+
+void ADNPlayerController::Sprint(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->sprint();
+	UE_LOG(LogTemp, Warning, TEXT("Sprint"));
+}
+
+void ADNPlayerController::StopSprint(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->stop_sprint();
+	UE_LOG(LogTemp, Warning, TEXT("StopSprint"));
+}
 
 void ADNPlayerController::Look(const FInputActionValue& Value)
 {
@@ -116,10 +144,60 @@ void ADNPlayerController::StopJumping(const FInputActionValue& Value)
 
 void ADNPlayerController::Fire(const FInputActionValue& Value)
 {
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->fire();
 	UE_LOG(LogTemp, Warning, TEXT("Fire"));
 }
 
+
+void ADNPlayerController::StopFire(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->stop_fire();
+	UE_LOG(LogTemp, Warning, TEXT("StopFire"));
+}
+
+
 void ADNPlayerController::Reload(const FInputActionValue& Value)
 {
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->reload();
 	UE_LOG(LogTemp, Warning, TEXT("Reload"));
+}
+
+void ADNPlayerController::Armed(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->armed();
+	UE_LOG(LogTemp, Warning, TEXT("Armed"));
+}
+
+void ADNPlayerController::Crouch(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->crouch();
+	UE_LOG(LogTemp, Warning, TEXT("Crouch"));
+}
+
+void ADNPlayerController::Aiming(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->aiming();
+	UE_LOG(LogTemp, Warning, TEXT("Aiming"));
+}
+
+
+void ADNPlayerController::StopAiming(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->stop_aiming();
+	UE_LOG(LogTemp, Warning, TEXT("StopAiming"));
+}
+
+
+void ADNPlayerController::Interaction(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	character->interaction();
+	UE_LOG(LogTemp, Warning, TEXT("Interaction"));
 }

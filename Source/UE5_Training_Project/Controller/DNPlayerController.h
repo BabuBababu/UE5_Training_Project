@@ -33,11 +33,19 @@ public:
 
 public:
 	void Move(const FInputActionValue& Value);
+	void Sprint(const FInputActionValue& Value);
+	void StopSprint(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Fire(const FInputActionValue& Value);
+	void StopFire(const FInputActionValue& Value);
 	void Reload(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& Value);
 	void StopJumping(const FInputActionValue& Value);
+	void Armed(const FInputActionValue& Value);
+	void Crouch(const FInputActionValue& Value);
+	void Aiming(const FInputActionValue& Value);
+	void StopAiming(const FInputActionValue& Value);
+	void Interaction(const FInputActionValue& Value);
 
 protected:
 	virtual void BeginPlay() override;

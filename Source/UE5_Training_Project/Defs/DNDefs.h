@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -12,7 +12,7 @@
 
 
 /**
- *  ÇöÀç ÇÁ·ÎÁ§Æ®¿¡ ÇÊ¿äÇÑ ´ëºÎºĞÀÇ Á¤ÀÇ¸¦ ´ãÀº Çì´õÆÄÀÏÀÌ¿¡¿ä!
+ *  í˜„ì¬ í”„ë¡œì íŠ¸ì— í•„ìš”í•œ ëŒ€ë¶€ë¶„ì˜ ì •ì˜ë¥¼ ë‹´ì€ í—¤ë”íŒŒì¼ì´ì—ìš”!
  */
 
 
@@ -34,15 +34,33 @@ enum class E_CHARACTER_TYPE : uint8
 UENUM(BlueprintType)
 enum class E_CHARACTER_STATE : uint8
 {
-	CS_NONE = 0		UMETA(DisplayName = "None"),
-	CS_IDLE			UMETA(DisplayName = "Idle"),
-	CS_ATTACK		UMETA(DisplayName = "Attack"),
-	CS_WALK			UMETA(DisplayName = "Walk"),
-	CS_Sprint		UMETA(DisplayName = "Sprint"),
-	CS_RELOAD		UMETA(DisplayName = "Reload"),
+	CS_NONE = 0		UMETA(DisplayName = "None"),	//ë¹„ì–´ìˆìŒ
+	CS_IDLE			UMETA(DisplayName = "Idle"),	//ê¸°ë³¸, ì´ì„ ë“¤ì§€ ì•ŠìŒ
+	CS_ATTACK		UMETA(DisplayName = "Attack"),	//ì‚¬ê²©
+	CS_RELOAD		UMETA(DisplayName = "Reload"),	//ì¥ì „
+	CS_INTERACTION	UMETA(DisplayName = "Interaction"),	//ìƒí˜¸ì‘ìš©
+	CS_AIM			UMETA(DisplayName = "Aimming"),	//ì¡°ì¤€
+	CS_ARM			UMETA(DisplayName = "Armed"),	//ì´ì„ ë“¤ê³  ìˆìŒ
+	CS_DEAD			UMETA(DisplayName = "Dead"),	//ì‚¬ë§
 
 	CS_COUNT
 };
+
+
+
+
+UENUM(BlueprintType)
+enum class E_CHARACTER_INTERACTION : uint8
+{
+	CI_NONE = 0		UMETA(DisplayName = "None"),	//ë¹„ì–´ìˆìŒ
+	CI_PICKUP		UMETA(DisplayName = "PickUp"),	//ì¤ê¸°
+	CI_CLIMB		UMETA(DisplayName = "Climb"),	//ë²½ì˜¤ë¥´ê¸°
+	CI_TALK			UMETA(DisplayName = "Talk"),	//ëŒ€í™”í•˜ê¸°
+
+
+	CI_COUNT
+};
+
 
 
 

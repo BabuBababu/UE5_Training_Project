@@ -20,18 +20,33 @@ class UE5_TRAINING_PROJECT_API UDNInputConfigData : public UDataAsset
 
 public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-       UInputAction* InputMove;
+    UInputAction* InputMove;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-       UInputAction* InputLook;
+    UInputAction* InputLook;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-       UInputAction* InputFire;
+    UInputAction* InputFire;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-       UInputAction* InputReload;
+    UInputAction* InputReload;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-       UInputAction* InputJump;
+    UInputAction* InputJump;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* InputCrouch;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* InputSprint;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* InputAiming;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* InputArmed;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* InputInterRaction;
 
 };

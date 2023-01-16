@@ -35,6 +35,7 @@ ADNCommonCharacter::ADNCommonCharacter()
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	_default_max_speed = GetCharacterMovement()->MaxWalkSpeed;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
@@ -77,3 +78,94 @@ void ADNCommonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 }
 
+
+void ADNCommonCharacter::idle()
+{
+	_character_state = E_CHARACTER_STATE::CS_IDLE;
+
+}
+
+void ADNCommonCharacter::walk()
+{
+
+}
+
+void ADNCommonCharacter::sprint()
+{
+	_is_sprint = true;
+	GetCharacterMovement()->MaxWalkSpeed = _default_max_speed + 300.f;
+}
+
+void ADNCommonCharacter::stop_sprint()
+{
+	_is_sprint = false;
+	GetCharacterMovement()->MaxWalkSpeed = _default_max_speed;
+}
+
+
+void ADNCommonCharacter::reload()
+{
+	if (_is_reloading == false)
+	{
+		_is_reloading = true;
+		_character_state = E_CHARACTER_STATE::CS_RELOAD;
+	}
+
+	// 장전이 끝나면 armed상태로 가야함
+}
+
+void ADNCommonCharacter::fire()
+{
+	_is_fire = true;
+}
+
+void ADNCommonCharacter::stop_fire()
+{
+	_is_fire = false;
+}
+
+
+void ADNCommonCharacter::armed()
+{
+	if (_is_armed_weapon == false)
+	{
+		_is_armed_weapon = true;
+		_pre_upper_character_state = _character_state;
+		_character_state = E_CHARACTER_STATE::CS_ARM;
+	}
+	else
+	{
+		_is_armed_weapon = false;
+		_character_state = _pre_upper_character_state;
+	}
+
+}
+
+void ADNCommonCharacter::crouch()
+{
+	if (_is_crouch == false)
+	{
+		_is_crouch = true;
+	}
+	else
+	{
+		_is_crouch = false;
+	}
+
+
+}
+
+void ADNCommonCharacter::aiming()
+{
+	_is_aiming = true;
+}
+
+void ADNCommonCharacter::stop_aiming()
+{
+	_is_aiming = false;
+}
+
+void ADNCommonCharacter::interaction()
+{
+	_character_state = E_CHARACTER_STATE::CS_INTERACTION;
+}
