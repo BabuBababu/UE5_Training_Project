@@ -15,14 +15,14 @@
 ADNGameModeBase::ADNGameModeBase()
 {
 	//플레이어 캐릭터
-	static ConstructorHelpers::FClassFinder<ADNUnEnemyCharacter> PlayerCharacterBPClass(TEXT("/Game/Blueprint/Character/TEST.TEST_C"));
+	static ConstructorHelpers::FClassFinder<ADNUnEnemyCharacter> PlayerCharacterBPClass(TEXT("/Game/Blueprint/Character/BP_DNPlayerCharacter.BP_DNPlayerCharacter_C"));
 	if (PlayerCharacterBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerCharacterBPClass.Class;
 	}
 
 	//플레이어 컨트롤러
-	static ConstructorHelpers::FClassFinder<ADNPlayerController> PlayerControllerBPClass(TEXT("/Game/Blueprint/Controller/MyDNPlayerController.MyDNPlayerController_C"));
+	static ConstructorHelpers::FClassFinder<ADNPlayerController> PlayerControllerBPClass(TEXT("/Game/Blueprint/Controller/BP_DNPlayerController.BP_DNPlayerController_C"));
 	if (PlayerControllerBPClass.Class != NULL)
 	{
 		PlayerControllerClass = PlayerControllerBPClass.Class;

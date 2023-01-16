@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -13,7 +13,7 @@
 
 
 /**
- *	ÇÃ·¹ÀÌ¾î, ±×¸®Æù ÀÎÇü, Àû±ºÀÇ Ä³¸¯ÅÍ°¡ µÇ´Â °øÅë Å¬·¡½ºÀÔ´Ï´Ù.
+ *	í”Œë ˆì´ì–´, ê·¸ë¦¬í° ì¸í˜•, ì êµ°ì˜ ìºë¦­í„°ê°€ ë˜ëŠ” ê³µí†µ í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
  */
 
 
@@ -28,6 +28,7 @@ public:
 	// Sets default values for this character's properties
 	ADNCommonCharacter();
 
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,5 +39,15 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
+public:
+	/** Camera boom positioning the camera behind the character */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class USpringArmComponent* CameraBoom;
+
+	/** Follow camera */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UCameraComponent* FollowCamera;
 
 };
