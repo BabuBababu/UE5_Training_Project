@@ -63,13 +63,30 @@ public:
 
 
 public:
-	/** Camera boom positioning the camera behind the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USpringArmComponent> CameraBoom;
+	// 메쉬
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	TObjectPtr<USkeletalMeshComponent> _character_skeletal_mesh;
 
-	/** Follow camera */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	TObjectPtr<UStaticMeshComponent> _back_pack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	TObjectPtr<UStaticMeshComponent> _weapon_armed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	TObjectPtr<UStaticMeshComponent> _weapon_un_armed;
+
+
+	// 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UCameraComponent> FollowCamera;
+		TObjectPtr<USpringArmComponent> _camera_boom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<UCameraComponent> _follow_camera;
+
+
+
+	//
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool _is_sprint;

@@ -29,9 +29,6 @@ ADNCommonCharacter::ADNCommonCharacter()
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
-
-	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
-	// instead of recompiling to adjust them
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
@@ -39,20 +36,32 @@ ADNCommonCharacter::ADNCommonCharacter()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
+	// Mesh
+	_back_pack = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BackPack"));
+	_weapon_armed = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponArmed"));
+	_weapon_un_armed = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponUnArmed"));
+	_character_skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BodySkeletalMesh"));
+
+
+	_character_skeletal_mesh->SetupAttachment(RootComponent);
+
+	_back_pack->SetupAttachment(_character_skeletal_mesh, TEXT("back_pack"));
+	_weapon_armed->SetupAttachment(_character_skeletal_mesh, TEXT("weapon_r"));
+	_weapon_un_armed->SetupAttachment(_character_skeletal_mesh, TEXT("weapon_unarmed"));
+
+
+
+
 	// Create a camera boom (pulls in towards the player if there is a collision)
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	_camera_boom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	_camera_boom->SetupAttachment(RootComponent);
+	_camera_boom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
+	_camera_boom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
 	// Create a follow camera
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
-
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
-
+	_follow_camera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	_follow_camera->SetupAttachment(_camera_boom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	_follow_camera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 
 }
