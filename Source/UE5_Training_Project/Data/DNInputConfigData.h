@@ -49,4 +49,7 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UInputAction* InputInterRaction;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* InputCameraRotate;
+
 };

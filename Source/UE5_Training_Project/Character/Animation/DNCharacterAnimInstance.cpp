@@ -54,7 +54,6 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		FRotator rotator = UKismetMathLibrary::MakeRotator(angle, 0.f, 0.f);
 
 		_aiming_for_spine = rotator.GetInverse();
-
 	}
 	else
 		_aiming_for_spine = FRotator(0.f, 0.f, 0.f);

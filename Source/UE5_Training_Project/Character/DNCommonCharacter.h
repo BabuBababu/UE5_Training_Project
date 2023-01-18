@@ -22,6 +22,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UDNPlayerLineTrace;
 
 
 UCLASS()
@@ -84,6 +85,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UCameraComponent> _follow_camera;
 
+	// 라인트레이스
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UDNPlayerLineTrace* _line_trace;
 
 
 	//
@@ -118,6 +122,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	E_CHARACTER_STATE _character_state = E_CHARACTER_STATE::CS_IDLE;
 
+
+public:
+	FRotator _aiming_rotation = FRotator(0.f, 0.f, 0.f);
 
 public:
 	E_CHARACTER_STATE _pre_upper_character_state = E_CHARACTER_STATE::CS_NONE;

@@ -66,6 +66,7 @@ void ADNPlayerController::SetupInputComponent()
 	// Completed : 눌렀다 뗐을 때, Triggered : 누르고 있을 때 
 	PEI->BindAction(InputActions->InputMove, ETriggerEvent::Triggered, this, &ADNPlayerController::Move);
 	PEI->BindAction(InputActions->InputLook, ETriggerEvent::Triggered, this, &ADNPlayerController::Look);
+	
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Triggered, this, &ADNPlayerController::Jump);
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Completed, this, &ADNPlayerController::StopJumping);
 	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Triggered, this, &ADNPlayerController::Fire);
@@ -77,7 +78,11 @@ void ADNPlayerController::SetupInputComponent()
 	PEI->BindAction(InputActions->InputCrouch, ETriggerEvent::Completed, this, &ADNPlayerController::Crouch);
 	PEI->BindAction(InputActions->InputSprint, ETriggerEvent::Triggered, this, &ADNPlayerController::Sprint);
 	PEI->BindAction(InputActions->InputSprint, ETriggerEvent::Completed, this, &ADNPlayerController::StopSprint);
+	
 	PEI->BindAction(InputActions->InputInterRaction, ETriggerEvent::Completed, this, &ADNPlayerController::Interaction);
+
+	PEI->BindAction(InputActions->InputCameraRotate, ETriggerEvent::Triggered, this, &ADNPlayerController::CameraRotate);
+	PEI->BindAction(InputActions->InputCameraRotate, ETriggerEvent::Completed, this, &ADNPlayerController::StopCameraRotate);
 	
 }
 
@@ -145,7 +150,15 @@ void ADNPlayerController::StopJumping(const FInputActionValue& Value)
 void ADNPlayerController::Fire(const FInputActionValue& Value)
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
 	character->fire();
+
+	if(CameraShake != nullptr)
+		ClientStartCameraShake(CameraShake);
+
 	UE_LOG(LogTemp, Warning, TEXT("Fire"));
 }
 
@@ -153,6 +166,10 @@ void ADNPlayerController::Fire(const FInputActionValue& Value)
 void ADNPlayerController::StopFire(const FInputActionValue& Value)
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
 	character->stop_fire();
 	UE_LOG(LogTemp, Warning, TEXT("StopFire"));
 }
@@ -161,6 +178,10 @@ void ADNPlayerController::StopFire(const FInputActionValue& Value)
 void ADNPlayerController::Reload(const FInputActionValue& Value)
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
 	character->reload();
 	UE_LOG(LogTemp, Warning, TEXT("Reload"));
 }
@@ -168,6 +189,10 @@ void ADNPlayerController::Reload(const FInputActionValue& Value)
 void ADNPlayerController::Armed(const FInputActionValue& Value)
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
 	character->armed();
 	UE_LOG(LogTemp, Warning, TEXT("Armed"));
 }
@@ -175,6 +200,10 @@ void ADNPlayerController::Armed(const FInputActionValue& Value)
 void ADNPlayerController::Crouch(const FInputActionValue& Value)
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
 	character->crouch();
 	UE_LOG(LogTemp, Warning, TEXT("Crouch"));
 }
@@ -182,6 +211,10 @@ void ADNPlayerController::Crouch(const FInputActionValue& Value)
 void ADNPlayerController::Aiming(const FInputActionValue& Value)
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
 	character->aiming();
 	UE_LOG(LogTemp, Warning, TEXT("Aiming"));
 }
@@ -190,6 +223,10 @@ void ADNPlayerController::Aiming(const FInputActionValue& Value)
 void ADNPlayerController::StopAiming(const FInputActionValue& Value)
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
 	character->stop_aiming();
 	UE_LOG(LogTemp, Warning, TEXT("StopAiming"));
 }
@@ -198,6 +235,39 @@ void ADNPlayerController::StopAiming(const FInputActionValue& Value)
 void ADNPlayerController::Interaction(const FInputActionValue& Value)
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
 	character->interaction();
 	UE_LOG(LogTemp, Warning, TEXT("Interaction"));
 }
+
+
+
+
+void ADNPlayerController::CameraRotate(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
+	character->bUseControllerRotationYaw = false;
+
+	UE_LOG(LogTemp, Warning, TEXT("CameraRotate"));
+}
+
+
+void ADNPlayerController::StopCameraRotate(const FInputActionValue& Value)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
+	character->bUseControllerRotationYaw = true;
+
+	UE_LOG(LogTemp, Warning, TEXT("StopCameraRotate"));
+}
+

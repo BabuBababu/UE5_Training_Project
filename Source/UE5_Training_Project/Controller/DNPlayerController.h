@@ -46,6 +46,8 @@ public:
 	void Aiming(const FInputActionValue& Value);
 	void StopAiming(const FInputActionValue& Value);
 	void Interaction(const FInputActionValue& Value);
+	void CameraRotate(const FInputActionValue& Value);
+	void StopCameraRotate(const FInputActionValue& Value);
 
 protected:
 	virtual void BeginPlay() override;
@@ -61,7 +63,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
 	UDNInputConfigData* InputActions;
 
-
+	// 카메라 셰이크
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Shake")
+	TSubclassOf<UCameraShakeBase> CameraShake;
 //////////////////////////////////////////////////////////////////////////
 // delegate
 //////////////////////////////////////////////////////////////////////////

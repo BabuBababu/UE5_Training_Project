@@ -11,6 +11,10 @@
 #include <GameFramework/Controller.h>
 #include <GameFramework/SpringArmComponent.h>
 
+// Component
+#include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
+
+
 
 // Sets default values
 ADNCommonCharacter::ADNCommonCharacter()
@@ -23,7 +27,7 @@ ADNCommonCharacter::ADNCommonCharacter()
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
+	bUseControllerRotationYaw = true;		// 이걸로 플레이어랑 컨트롤러랑 회전을 함께할지 결정 true면 컨트롤러의 회전과 함께 캐릭터도 회전합니다.
 	bUseControllerRotationRoll = false;
 
 	// Configure character movement
@@ -71,6 +75,12 @@ void ADNCommonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+
+	// 라인 트레이스 생성
+	if (_line_trace == nullptr)
+	{
+		_line_trace = NewObject<UDNPlayerLineTrace>();
+	}
 }
 
 // Called every frame
@@ -126,6 +136,7 @@ void ADNCommonCharacter::reload()
 void ADNCommonCharacter::fire()
 {
 	_is_fire = true;
+	_line_trace->OnFire(this);
 }
 
 void ADNCommonCharacter::stop_fire()
@@ -138,12 +149,16 @@ void ADNCommonCharacter::armed()
 {
 	if (_is_armed_weapon == false)
 	{
+		_weapon_armed->SetVisibility(true);
+		_weapon_un_armed->SetVisibility(false);
 		_is_armed_weapon = true;
 		_pre_upper_character_state = _character_state;
 		_character_state = E_CHARACTER_STATE::CS_ARM;
 	}
 	else
 	{
+		_weapon_armed->SetVisibility(false);
+		_weapon_un_armed->SetVisibility(true);
 		_is_armed_weapon = false;
 		_character_state = _pre_upper_character_state;
 	}
