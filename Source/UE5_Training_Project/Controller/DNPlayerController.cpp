@@ -156,9 +156,6 @@ void ADNPlayerController::Fire(const FInputActionValue& Value)
 
 	character->fire();
 
-	if(CameraShake != nullptr)
-		ClientStartCameraShake(CameraShake);
-
 	UE_LOG(LogTemp, Warning, TEXT("Fire"));
 }
 

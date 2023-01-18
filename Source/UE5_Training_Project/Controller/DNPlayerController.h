@@ -56,6 +56,10 @@ protected:
 
 	virtual void SetupInputComponent() override;
 
+
+public:
+	TSubclassOf<UCameraShakeBase> get_camera_shake() const { return CameraShake; };
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
 	UInputMappingContext* InputMapping;
@@ -69,6 +73,7 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 // delegate
 //////////////////////////////////////////////////////////////////////////
+
 
 
 

@@ -11,6 +11,9 @@
 #include <GameFramework/Controller.h>
 #include <GameFramework/SpringArmComponent.h>
 
+// Controller
+#include "UE5_Training_Project/Controller/DNPlayerController.h"
+
 // Component
 #include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
 
@@ -135,8 +138,16 @@ void ADNCommonCharacter::reload()
 
 void ADNCommonCharacter::fire()
 {
+	if (_is_armed_weapon == false)
+		return;
+
+	ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
+
 	_is_fire = true;
 	_line_trace->OnFire(this);
+
+	if (controller->get_camera_shake() != nullptr)
+		controller->ClientStartCameraShake(controller->get_camera_shake());
 }
 
 void ADNCommonCharacter::stop_fire()
@@ -181,6 +192,9 @@ void ADNCommonCharacter::crouch()
 
 void ADNCommonCharacter::aiming()
 {
+	if (_is_armed_weapon == false)
+		return;
+
 	_is_aiming = true;
 }
 
