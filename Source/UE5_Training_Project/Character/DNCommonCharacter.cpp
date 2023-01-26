@@ -11,6 +11,9 @@
 #include <GameFramework/Controller.h>
 #include <GameFramework/SpringArmComponent.h>
 
+// UE5_Training_Project_Setting
+#include "UE5_Training_Project_Setting/Core/DNCharacterAssetSetting.h"
+
 // Controller
 #include "UE5_Training_Project/Controller/DNPlayerController.h"
 
@@ -70,6 +73,16 @@ ADNCommonCharacter::ADNCommonCharacter()
 	_follow_camera->SetupAttachment(_camera_boom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	_follow_camera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+
+	// 에셋 불러오기 테스트
+	auto DefaultSetting = GetDefault<UDNCharacterAssetSetting>();
+	if (DefaultSetting->_character_assets.Num() > 0)
+	{
+		for (auto character_asset : DefaultSetting->_character_assets)
+		{
+			UE_LOG(LogTemp,Warning, TEXT("Character Asset : %s"), *character_asset.ToString());
+		}
+	}
 
 }
 
