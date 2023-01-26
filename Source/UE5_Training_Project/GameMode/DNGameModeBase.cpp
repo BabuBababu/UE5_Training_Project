@@ -15,7 +15,7 @@
 ADNGameModeBase::ADNGameModeBase()
 {
 	//플레이어 캐릭터
-	static ConstructorHelpers::FClassFinder<ADNUnEnemyCharacter> PlayerCharacterBPClass(TEXT("/Game/Blueprint/Character/BP_DNPlayerCharacter.BP_DNPlayerCharacter_C"));
+	static ConstructorHelpers::FClassFinder<ADNUnEnemyCharacter> PlayerCharacterBPClass(TEXT("/Game/Blueprint/Character/UnEnemy/BP_DNPlayerCharacter.BP_DNPlayerCharacter_C"));
 	if (PlayerCharacterBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerCharacterBPClass.Class;
