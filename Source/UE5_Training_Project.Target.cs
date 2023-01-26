@@ -11,7 +11,7 @@ public class UE5_Training_ProjectTarget : TargetRules
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_1;
-		ExtraModuleNames.Add("UE5_Training_Project");
+		ExtraModuleNames.AddRange( new string[] { "UE5_Training_Project", "UE5_Training_Project_Setting" });
 	}
 
 }

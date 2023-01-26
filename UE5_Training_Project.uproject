@@ -5,6 +5,14 @@
 	"Description": "",
 	"Modules": [
 		{
+			"Name": "UE5_Training_Project_Setting",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"AdditionalDependencies": [
+				"CoreUObject"
+			]
+		},
+		{
 			"Name": "UE5_Training_Project",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
@@ -13,7 +21,8 @@
 				"AIModule",
 				"CoreUObject",
 				"EnhancedInput",
-				"GameplayCameras"
+				"GameplayCameras",
+				"UE5_Training_Project_Setting"
 			]
 		}
 	],

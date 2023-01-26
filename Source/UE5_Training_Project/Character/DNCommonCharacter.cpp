@@ -160,6 +160,7 @@ void ADNCommonCharacter::armed()
 {
 	if (_is_armed_weapon == false)
 	{
+		bUseControllerRotationYaw = true;
 		_weapon_armed->SetVisibility(true);
 		_weapon_un_armed->SetVisibility(false);
 		_is_armed_weapon = true;
@@ -168,6 +169,7 @@ void ADNCommonCharacter::armed()
 	}
 	else
 	{
+		bUseControllerRotationYaw = false;
 		_weapon_armed->SetVisibility(false);
 		_weapon_un_armed->SetVisibility(true);
 		_is_armed_weapon = false;
