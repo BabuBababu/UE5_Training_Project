@@ -1,22 +1,73 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 // Engine
 #include <CoreMinimal.h>
 #include <AIController.h>
+#include <Perception/AIPerceptionTypes.h>
 
 // generated
 #include "DNAIController.generated.h"
 
 /**
- *		±×¸®Æù ÀÎÇü ¶Ç´Â Àû±ºÀÌ »ç¿ëÇÒ AI ÄÁÆ®·Ñ·¯ÀÔ´Ï´Ù.
+ *		ê·¸ë¦¬í° ì¸í˜• ë˜ëŠ” ì êµ°ì´ ì‚¬ìš©í•  AI ì»¨íŠ¸ë¡¤ëŸ¬ì…ë‹ˆë‹¤.
  */
 
+class UBehaviorTreeComponent;
+class UBehaviorTree;
+class UBlackboardComponent;
+class UAISenseConfig_Sight;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNAIController : public AAIController
 {
 	GENERATED_BODY()
 	
+public:
+	ADNAIController(FObjectInitializer const& object_initializer);
+	virtual void OnPossess(APawn* pawn_in) override;
+	virtual void OnUnPossess() override;
+
+	TObjectPtr<UBlackboardComponent> get_blackboard() const;
+public:
+	UFUNCTION()
+	void OnUpdated(TArray<AActor*> const& updated_actors);
+
+	UFUNCTION()
+	void OnTargetDetected(AActor* actor, FAIStimulus const Stimulus);
+
+	UFUNCTION()
+	void SetPerceptionSystem();
+
+public:
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UBehaviorTreeComponent> behavior_tree_component;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UBehaviorTree> btree;
+
+public:
+	static const FName HomePosKey;
+	static const FName TargetLocation;
+
+	//AI Perception ë³€ìˆ˜
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float AISightRadius = 500.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float AILoseSightRadius = 50.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float AIFieldOfView = 90.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float AISightAge = 5.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float AILastSeenLocation = 900.f;
+
+
+
+
+private:
+	TObjectPtr<UBlackboardComponent> _blackboard;
+	TObjectPtr<UAISenseConfig_Sight> _sight_config;
+
 };

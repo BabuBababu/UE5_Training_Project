@@ -62,7 +62,7 @@ public:
 	virtual void interaction();		//여기에 상호작용 전부 포함됨 해당 관련 컴포넌트 만들어서 알맞게 체크
 
 
-
+	E_CHARACTER_TYPE get_character_type() const { return _character_type; };
 public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
@@ -80,10 +80,10 @@ public:
 
 	// 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<USpringArmComponent> _camera_boom;
+	TObjectPtr<USpringArmComponent> _camera_boom;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UCameraComponent> _follow_camera;
+	TObjectPtr<UCameraComponent> _follow_camera;
 
 	// 라인트레이스
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -123,11 +123,13 @@ public:
 	E_CHARACTER_STATE _character_state = E_CHARACTER_STATE::CS_IDLE;
 
 
-public:
-	FRotator _aiming_rotation = FRotator(0.f, 0.f, 0.f);
+protected:
+	float _default_max_speed = 0.0f;
+	E_CHARACTER_TYPE _character_type = E_CHARACTER_TYPE::CT_NONE;
+
 
 public:
+	FRotator _aiming_rotation = FRotator(0.f, 0.f, 0.f);
 	E_CHARACTER_STATE _pre_upper_character_state = E_CHARACTER_STATE::CS_NONE;
-private:
-	float _default_max_speed = 0.0f;
+
 };

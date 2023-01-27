@@ -18,5 +18,12 @@ UCLASS()
 class UE5_TRAINING_PROJECT_API ADNUnEnemyCharacter : public ADNCommonCharacter
 {
 	GENERATED_BODY()
-	
+
+public:
+	ADNUnEnemyCharacter();
+
+
+private:
+	void init_ai();
+	void init_base();
 };

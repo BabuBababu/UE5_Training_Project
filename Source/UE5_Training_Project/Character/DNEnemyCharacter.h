@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -13,7 +13,7 @@
 #include "DNEnemyCharacter.generated.h"
 
 /**
- *		Àû±º Ä³¸¯ÅÍ Å¬·¡½ºÀÔ´Ï´Ù.
+ *		ì êµ° ìºë¦­í„° í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
  */
 
 
@@ -22,4 +22,13 @@ class UE5_TRAINING_PROJECT_API ADNEnemyCharacter : public ADNCommonCharacter
 {
 	GENERATED_BODY()
 	
+public:
+	ADNEnemyCharacter();
+
+
+private:
+	void init_ai();
+	void init_base();
+
+
 };

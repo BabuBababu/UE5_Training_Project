@@ -4,7 +4,7 @@
 #include "UE5_Training_Project/GameMode/DNGameModeBase.h"
 
 // Character
-#include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
+#include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 
 // Controller
 #include "UE5_Training_Project/Controller/DNPlayerController.h"
@@ -15,7 +15,7 @@
 ADNGameModeBase::ADNGameModeBase()
 {
 	//플레이어 캐릭터
-	static ConstructorHelpers::FClassFinder<ADNUnEnemyCharacter> PlayerCharacterBPClass(TEXT("/Game/Blueprint/Character/UnEnemy/BP_DNPlayerCharacter.BP_DNPlayerCharacter_C"));
+	static ConstructorHelpers::FClassFinder<ADNPlayerCharacter> PlayerCharacterBPClass(TEXT("/Game/Blueprint/Character/UnEnemy/BP_DNPlayerCharacter.BP_DNPlayerCharacter_C"));
 	if (PlayerCharacterBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerCharacterBPClass.Class;

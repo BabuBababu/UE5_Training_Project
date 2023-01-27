@@ -10,7 +10,7 @@
 #include "UE5_Training_Project/GameMode/DNGameModeBase.h"
 
 // Character
-#include "UE5_Training_Project/Character/DNCommonCharacter.h"
+#include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 
 
 // EnhancedInput
@@ -111,14 +111,14 @@ void ADNPlayerController::Move(const FInputActionValue& Value)
 
 void ADNPlayerController::Sprint(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 	character->sprint();
 	UE_LOG(LogTemp, Warning, TEXT("Sprint"));
 }
 
 void ADNPlayerController::StopSprint(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 	character->stop_sprint();
 	UE_LOG(LogTemp, Warning, TEXT("StopSprint"));
 }
@@ -149,7 +149,7 @@ void ADNPlayerController::StopJumping(const FInputActionValue& Value)
 
 void ADNPlayerController::Fire(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
@@ -162,7 +162,7 @@ void ADNPlayerController::Fire(const FInputActionValue& Value)
 
 void ADNPlayerController::StopFire(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
@@ -174,7 +174,7 @@ void ADNPlayerController::StopFire(const FInputActionValue& Value)
 
 void ADNPlayerController::Reload(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
@@ -185,7 +185,7 @@ void ADNPlayerController::Reload(const FInputActionValue& Value)
 
 void ADNPlayerController::Armed(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
@@ -196,7 +196,7 @@ void ADNPlayerController::Armed(const FInputActionValue& Value)
 
 void ADNPlayerController::Crouch(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
@@ -207,7 +207,7 @@ void ADNPlayerController::Crouch(const FInputActionValue& Value)
 
 void ADNPlayerController::Aiming(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
@@ -219,7 +219,7 @@ void ADNPlayerController::Aiming(const FInputActionValue& Value)
 
 void ADNPlayerController::StopAiming(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
@@ -231,7 +231,7 @@ void ADNPlayerController::StopAiming(const FInputActionValue& Value)
 
 void ADNPlayerController::Interaction(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
@@ -245,7 +245,7 @@ void ADNPlayerController::Interaction(const FInputActionValue& Value)
 
 void ADNPlayerController::CameraRotate(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
@@ -258,7 +258,7 @@ void ADNPlayerController::CameraRotate(const FInputActionValue& Value)
 
 void ADNPlayerController::StopCameraRotate(const FInputActionValue& Value)
 {
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetCharacter());
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
 
 	if (character == nullptr)
 		return;
