@@ -67,6 +67,10 @@ void UDNCharacterAnimInstance::calculate_speed_direction(APawn* pawn_in)
 
 	_direction = CalculateDirection(pawn_in->GetVelocity(), pawn_in->GetActorRotation());
 	
+}
 
-
+// 일정 시간 정해두고 호출하면 되지 않을까!
+void UDNCharacterAnimInstance::on_attack_montage_ended(UAnimMontage* montage_in, bool bInterrupted)
+{
+	OnAttackEnd.Broadcast();
 }

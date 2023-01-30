@@ -13,6 +13,11 @@
 // generated
 #include "DNCharacterAnimInstance.generated.h"
 
+
+
+DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
+
+
 /**
  * 
  */
@@ -29,8 +34,17 @@ public:
 
 
 public:
+	FOnAttackEndDelegate OnAttackEnd;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void on_attack_montage_ended(UAnimMontage* montage_in, bool bInterrupted);
+
+public:
 	UFUNCTION(BlueprintCallable)
 	void calculate_speed_direction(APawn* pawn_in);
+
+
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))

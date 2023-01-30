@@ -48,20 +48,18 @@ public:
 	TObjectPtr<UBehaviorTree> btree;
 
 public:
-	static const FName HomePosKey;
-	static const FName TargetLocation;
 
 	//AI Perception 변수
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float AISightRadius = 500.f;
+	float AISightRadius = 5000.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float AILoseSightRadius = 50.f;
+	float AILoseSightRadius = 50.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float AIFieldOfView = 90.f;
+	float AIFieldOfView = 90.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float AISightAge = 5.f;
+	float AISightAge = 5.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float AILastSeenLocation = 900.f;
+	float AILastSeenLocation = 900.f;
 
 
 

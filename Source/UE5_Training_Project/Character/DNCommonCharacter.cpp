@@ -151,16 +151,8 @@ void ADNCommonCharacter::reload()
 
 void ADNCommonCharacter::fire()
 {
-	if (_is_armed_weapon == false)
-		return;
-
-	ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
-
-	_is_fire = true;
 	_line_trace->OnFire(this);
-
-	if (controller->get_camera_shake() != nullptr)
-		controller->ClientStartCameraShake(controller->get_camera_shake());
+	
 }
 
 void ADNCommonCharacter::stop_fire()

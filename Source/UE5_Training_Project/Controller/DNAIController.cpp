@@ -24,20 +24,9 @@
 
 
 
-const FName ADNAIController::HomePosKey(TEXT("HomePos"));
-const FName ADNAIController::TargetLocation(TEXT("TargetLocation"));
-
 ADNAIController::ADNAIController(FObjectInitializer const& object_initializer)
 {
-	//ConstructorHelpers로 에디터에 미리 만들어둔 비헤이비어트리를 지정
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT("/Game/Blueprint/AI/BT_Combat.BT_Combat"));
 
-	//static ConstructorHelpers::FClassFinder<UBehaviorTree> BTObject(TEXT("/Game/Blueprint/AI/BT_Combat.BT_Combat_C"));
-	if (BTObject.Succeeded())
-	{
-		btree = BTObject.Object;
-		UE_LOG(LogTemp, Warning, TEXT("bt succeeded!"));
-	}
 	behavior_tree_component = object_initializer.CreateDefaultSubobject<UBehaviorTreeComponent>(this, TEXT("BehaviorComp"));
 	_blackboard = object_initializer.CreateDefaultSubobject<UBlackboardComponent>(this, TEXT("BlackboardComp"));
 
@@ -50,10 +39,33 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 {
 	Super::OnPossess(pawn_in);
 
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(pawn_in);
+
+	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)
+	{
+		UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_UnEnemy.BT_Combat_UnEnemy"), NULL, LOAD_None, NULL);
+		if (nullptr != BTObject)
+		{
+			btree = BTObject;
+			UE_LOG(LogTemp, Warning, TEXT("bt Griffin succeeded!"));
+		}
+	}
+	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+	{
+		UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Enemy.BT_Combat_Enemy"), NULL, LOAD_None, NULL);
+		if (nullptr != BTObject)
+		{
+			btree = BTObject;
+			UE_LOG(LogTemp, Warning, TEXT("bt Enemy succeeded!"));
+		}
+	}
+
+
 	if (_blackboard)
 	{
 		//비헤이비어트리에 있는 블랙보드로 초기화
-		_blackboard->InitializeBlackboard(*btree->BlackboardAsset);
+		if(nullptr != btree)
+			_blackboard->InitializeBlackboard(*btree->BlackboardAsset);
 	}
 
 
@@ -81,8 +93,10 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 
 		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 		{
-			//성공적으로 감지하면 블랙보드에 true값을 넣어준다.
+			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
 			get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, Stimulus.WasSuccessfullySensed());
+			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I See %s"), insight_me_character));
 		}
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
@@ -91,8 +105,10 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN ||
 			insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
 		{
-			//성공적으로 감지하면 블랙보드에 true값을 넣어준다.
+			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
 			get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, Stimulus.WasSuccessfullySensed());
+			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("I See %s"), insight_me_character));
 		}
 	}
 
