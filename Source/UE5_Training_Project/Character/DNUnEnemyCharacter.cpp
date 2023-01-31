@@ -12,6 +12,9 @@
 // Controller
 #include "UE5_Training_Project/Controller/DNAIController.h"
 
+// Component
+#include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
+
 
 ADNUnEnemyCharacter::ADNUnEnemyCharacter()
 {
@@ -25,6 +28,7 @@ void ADNUnEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 	add_event();
 
+	_is_attacking = false;
 }
 
 void ADNUnEnemyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -36,20 +40,6 @@ void ADNUnEnemyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// 이건 원래 여기서 하면 안되는딩
-	if (_is_fire)
-	{
-		_fire_current_time += DeltaTime;
-	}
-	
-	if (_fire_max_time <= _fire_current_time)
-	{
-		_is_fire = false;
-		_is_aiming = false;
-		_fire_current_time = 0.f;
-		UDNCharacterAnimInstance* anim = dynamic_cast<UDNCharacterAnimInstance*>(this->_character_skeletal_mesh->GetAnimInstance());
-		anim->OnAttackEnd.Broadcast();		//원래는 몽타주 기준이지만 여긴 지속 사격 애니메이션이므로 이렇게 했음
-	}
 }
 
 void ADNUnEnemyCharacter::add_event()
@@ -79,20 +69,19 @@ void ADNUnEnemyCharacter::init_ai()
 void ADNUnEnemyCharacter::init_base()
 {
 	_character_type = E_CHARACTER_TYPE::CT_GRIFFIN;
-
-	_fire_max_time = 0.2f; //일단은 임의로 0.2초
 }
 
 
 void ADNUnEnemyCharacter::fire()
 {
-	if (_is_armed_weapon == false)
-		return;
+	// 여기엔 다른 효과나 기능들을 넣으면 될듯
+	Super::fire();
+}
 
-	_is_fire = true;
-	_is_aiming = true;
-
-	Super::fire();		//여기서는 얘를 나중에 호출
+void ADNUnEnemyCharacter::set_attack_finish()
+{
+	UDNCharacterAnimInstance* anim = dynamic_cast<UDNCharacterAnimInstance*>(this->_character_skeletal_mesh->GetAnimInstance());
+	anim->OnAttackEnd.Broadcast();		//원래는 몽타주 기준이지만 여긴 지속 사격 애니메이션이므로 이렇게 했음
 
 }
 
@@ -123,3 +112,4 @@ void ADNUnEnemyCharacter::change_crouch_state_handler(bool crouch_in)
 {
 	_is_crouch = crouch_in;
 }
+

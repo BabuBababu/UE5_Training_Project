@@ -69,7 +69,7 @@ void ADNPlayerController::SetupInputComponent()
 	
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Triggered, this, &ADNPlayerController::Jump);
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Completed, this, &ADNPlayerController::StopJumping);
-	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Triggered, this, &ADNPlayerController::Fire);
+	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Started, this, &ADNPlayerController::Fire);
 	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Completed, this, &ADNPlayerController::StopFire);
 	PEI->BindAction(InputActions->InputReload, ETriggerEvent::Completed, this, &ADNPlayerController::Reload);
 	PEI->BindAction(InputActions->InputAiming, ETriggerEvent::Triggered, this, &ADNPlayerController::Aiming);
@@ -154,7 +154,7 @@ void ADNPlayerController::Fire(const FInputActionValue& Value)
 	if (character == nullptr)
 		return;
 
-	character->fire();
+	character->start_fire();
 
 	UE_LOG(LogTemp, Warning, TEXT("Fire"));
 }

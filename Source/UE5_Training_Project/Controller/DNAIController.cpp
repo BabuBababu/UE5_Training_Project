@@ -87,31 +87,48 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetPawn());
 
-	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)
+	if (nullptr == actor)
 	{
-		ADNCommonCharacter* insight_me_character = dynamic_cast<ADNCommonCharacter*>(actor);
+		get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr); 
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I lost sight")));
 
-		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
-		{
-			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
-			get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, Stimulus.WasSuccessfullySensed());
-			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I See %s"), insight_me_character));
-		}
-	}
-	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
-	{
-		ADNCommonCharacter* insight_me_character = dynamic_cast<ADNCommonCharacter*>(actor);
-		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN ||
-			insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
-		{
-			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
-			get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, Stimulus.WasSuccessfullySensed());
-			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("I See %s"), insight_me_character));
-		}
 	}
 
+		if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)
+		{
+			ADNCommonCharacter* insight_me_character = dynamic_cast<ADNCommonCharacter*>(actor);
+
+			if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+			{
+				//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
+				if (Stimulus.WasSuccessfullySensed())
+				{
+					get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
+					get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I See %s"), insight_me_character));
+				}
+
+			}
+		}
+		else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+		{
+			ADNCommonCharacter* insight_me_character = dynamic_cast<ADNCommonCharacter*>(actor);
+			if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN ||
+				insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+			{
+				//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
+				if (Stimulus.WasSuccessfullySensed())
+				{
+					get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
+					get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("I See %s"), insight_me_character));
+				}
+			
+			}
+		}
+
+	
 }
 
 void ADNAIController::SetPerceptionSystem()

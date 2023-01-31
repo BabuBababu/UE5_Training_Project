@@ -55,7 +55,7 @@ EBTNodeResult::Type UDNFindEnemyPosTask::ExecuteTask(UBehaviorTreeComponent& own
 	}
 
 	//그 다음 이동할 곳을 확인하기 위한 디버그메시지
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%s"), *NextPatrol.Location.ToString()));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%s"), *NextPatrol.Location.ToString()));
 
 	FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);
 	return EBTNodeResult::Succeeded;

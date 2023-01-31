@@ -64,6 +64,20 @@ enum class E_CHARACTER_INTERACTION : uint8
 
 
 
+UENUM(BlueprintType)
+enum class E_CHARACTER_POSITION : uint8
+{
+	CP_NONE = 0		UMETA(DisplayName = "None"),	//비어있음
+	CP_RUSH			UMETA(DisplayName = "Rush"),	//전위
+	CP_GUARD		UMETA(DisplayName = "Guard"),	//간위
+	CP_SUPPORT		UMETA(DisplayName = "Support"),	//후위
+
+
+	CP_COUNT
+};
+
+
+
 
 
 

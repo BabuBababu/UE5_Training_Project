@@ -28,7 +28,6 @@ UDNAttackEnemyTask::UDNAttackEnemyTask(FObjectInitializer const& object_initiali
 {
 	NodeName = TEXT("AttackEnemyPosTask");
 	bNotifyTick = true;			// 틱 활성화
-	_is_attacking = false;
 }
 
 EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in)
@@ -49,28 +48,48 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 
 	
 	if (nullptr == target)					//타겟 없으면 실패
+	{
+		self_actor->set_idle_animation();
+		
+
 		return EBTNodeResult::Failed;
+	}
+
+	if (false == self_actor->_is_armed_weapon) // 무기를 들고 있지않으면 실패
+	{
+		self_actor->set_idle_animation();
+
+		return EBTNodeResult::Failed;
+	}
+
+	//장전해야하면 실패
 
 	AActor* target_actor = dynamic_cast<AActor*>(target);
-	controller->SetFocus(target_actor);		// 조준! 지금은 발견한 처음만 조준할듯
-	self_actor->fire();						// 사격!
-	_is_attacking = true;
+	controller->SetFocus(target_actor);		// 타겟 바라보기
+	if (false == self_actor->_is_attacking)
+	{
+		self_actor->_is_fire = true;			// 사격 조건 On
+		self_actor->fire();						// 사격
+		self_actor->_is_attacking = true;
+	}
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attack Now"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attack Now"));
 
 
 	if (nullptr != anim)
-		anim->OnAttackEnd.AddLambda([this]()->void {_is_attacking = false; });		//람다로 델리게이트 추가
+		anim->OnAttackEnd.AddLambda([self_actor]()->void {self_actor->_is_attacking = false; });		//람다로 델리게이트 추가
 
-	return EBTNodeResult::InProgress;
+
+
+	return EBTNodeResult::Succeeded;		//프로그레스로해야하는데 일단 성공으로 놓고 테스트
 }
 
 void UDNAttackEnemyTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in, float DeltaSeconds)
 {
 	Super::TickTask(owner_comp_in, NodeMemory_in, DeltaSeconds);
 
-	if (!_is_attacking)
-	{
-		FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);
-	}
+	//if (!_is_attacking)			//몬스터가 죽거나 뭐 어떤경우에 성공해야할지 고민해봐야함
+	//{
+	//	FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);
+	//}
 }

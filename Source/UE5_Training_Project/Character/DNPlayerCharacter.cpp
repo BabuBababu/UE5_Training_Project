@@ -6,22 +6,46 @@
 // Controller
 #include "UE5_Training_Project/Controller/DNPlayerController.h"
 
+// Component
+#include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
 
+void ADNPlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
+
+
+void ADNPlayerCharacter::start_fire()
+{
+	_is_fire = true;
+	fire();
+
+	
+}
 
 
 void ADNPlayerCharacter::fire()
 {
 	if (_is_armed_weapon == false)
 		return;
+		
+	if (_is_fire)
+	{
+		
+		_line_trace->OnFire(this);
 
-	Super::fire();
+		ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
 
-	ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
+		if (controller->get_camera_shake() != nullptr)
+			controller->ClientStartCameraShake(controller->get_camera_shake());
 
-	_is_fire = true;
 
-	if (controller->get_camera_shake() != nullptr)
-		controller->ClientStartCameraShake(controller->get_camera_shake());
+		UE_LOG(LogTemp, Warning, TEXT("Player Timer : %s"), *_fire_timer.ToString());
+		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNPlayerCharacter::fire, 0.075f, true);
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Attack Now"));
+
+	}
 
 }
 

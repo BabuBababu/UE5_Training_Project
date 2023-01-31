@@ -24,11 +24,16 @@ class UE5_TRAINING_PROJECT_API ADNPlayerCharacter : public ADNCommonCharacter
 {
 	GENERATED_BODY()
 	
+protected:
+	void BeginPlay() override;
 
 public:
 	void fire() override;
 	void armed() override;
 	void crouch() override;
+
+public:
+	void start_fire();
 
 public:
 	FOnArmDelegate on_armed;

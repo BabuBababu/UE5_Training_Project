@@ -3,7 +3,7 @@
 #pragma once
 
 // Engine
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
@@ -35,6 +35,8 @@ private:
 	void init_ai();
 	void init_base();
 
+public:
+	void set_attack_finish();
 
 public:
 	UFUNCTION()
@@ -42,10 +44,4 @@ public:
 	UFUNCTION()
 	void change_crouch_state_handler(bool crouch_in);
 
-private:
-	float _fire_current_time;
-	
-	
-	// 캐릭터 별로 따로 지정해줄 변수들
-	float _fire_max_time;
 };

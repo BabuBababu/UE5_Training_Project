@@ -60,8 +60,14 @@ public:
 	virtual void stop_sprint();
 	virtual void interaction();		//여기에 상호작용 전부 포함됨 해당 관련 컴포넌트 만들어서 알맞게 체크
 
-
+public:
 	E_CHARACTER_TYPE get_character_type() const { return _character_type; };
+	E_CHARACTER_POSITION get_character_position() const { return _character_position; };
+	uint8 get_position_index() const { return _position_index; };
+
+	void set_position_index(const uint8 num_in) { _position_index = num_in; };
+	void set_idle_animation();
+
 public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
@@ -124,11 +130,18 @@ public:
 
 protected:
 	float _default_max_speed = 0.0f;
+	uint8 _position_index;
 	E_CHARACTER_TYPE _character_type = E_CHARACTER_TYPE::CT_NONE;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	E_CHARACTER_POSITION _character_position = E_CHARACTER_POSITION::CP_NONE;
+	
+	FTimerHandle _fire_timer;
 
 
 public:
 	FRotator _aiming_rotation = FRotator(0.f, 0.f, 0.f);
 	E_CHARACTER_STATE _pre_upper_character_state = E_CHARACTER_STATE::CS_NONE;
+	bool _is_attacking;
 
 };

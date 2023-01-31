@@ -60,8 +60,6 @@ ADNCommonCharacter::ADNCommonCharacter()
 	_weapon_un_armed->SetupAttachment(_character_skeletal_mesh, TEXT("weapon_unarmed"));
 
 
-
-
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	_camera_boom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	_camera_boom->SetupAttachment(RootComponent);
@@ -70,7 +68,7 @@ ADNCommonCharacter::ADNCommonCharacter()
 
 	// Create a follow camera
 	_follow_camera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	_follow_camera->SetupAttachment(_camera_boom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	_follow_camera->SetupAttachment(_camera_boom); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	_follow_camera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 
@@ -83,7 +81,8 @@ ADNCommonCharacter::ADNCommonCharacter()
 			UE_LOG(LogTemp,Warning, TEXT("Character Asset : %s"), *character_asset.ToString());
 		}
 	}
-
+	_character_position = E_CHARACTER_POSITION::CP_RUSH; // 우선은 테스트를 위해 전위로 둡니다.
+	_position_index = 0;								 // 이것도 임의로 0으로 둠
 }
 
 // Called when the game starts or when spawned
@@ -151,8 +150,23 @@ void ADNCommonCharacter::reload()
 
 void ADNCommonCharacter::fire()
 {
-	_line_trace->OnFire(this);
-	
+	// 플레이어는 해당 함수를 사용하지 않음
+	// .075f는 데이터 테이블을 이용하여 캐릭터별로 다르게 설정할 예정
+	//UE_LOG(LogTemp, Warning, TEXT("Doll Name : %s"), *this->GetClass()->GetDefaultObjectName().ToString());
+
+	if (_is_armed_weapon == false)
+		return;
+
+	if (_is_fire)
+	{
+		_is_aiming = true;
+		_line_trace->OnFire(this);
+
+		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, 0.1f, true);
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Doll Attack Now"));
+	}
+
+
 }
 
 void ADNCommonCharacter::stop_fire()
@@ -213,4 +227,12 @@ void ADNCommonCharacter::stop_aiming()
 void ADNCommonCharacter::interaction()
 {
 	_character_state = E_CHARACTER_STATE::CS_INTERACTION;
+}
+
+
+void ADNCommonCharacter::set_idle_animation()
+{
+	_is_aiming = false;
+	_is_fire = false;
+	_is_attacking = false;
 }
