@@ -54,9 +54,9 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 
 	FVector player_location = player->GetActorLocation();
 	FNavLocation NextPatrol;
-	FVector target_location_rush = FVector(0.f,-500.f,0.f);
-	FVector target_location_guard = FVector(200.f, 0.f,0.f);
-	FVector target_location_support = FVector(0.f,1000.f, 0.f);
+	FVector target_location_rush = FVector(500.f, 0.f,0.f);
+	FVector target_location_guard = FVector(0.f, 200.f,0.f);
+	FVector target_location_support = FVector(-1000.f,0.f, 0.f);
 
 	
 
@@ -69,7 +69,7 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 
 
 			FVector new_vector = (NextPatrol.Location - player_location);
-			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw + 90.f, FVector::UpVector);
+			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
 			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location+ player_location);
 
 			//그 다음 이동할 곳을 확인하기 위한 디버그메시지
@@ -90,7 +90,7 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 
 
 			FVector new_vector = (NextPatrol.Location - player_location);
-			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw + 90.f, FVector::UpVector);
+			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
 			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
 
 
@@ -113,7 +113,7 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 
 
 			FVector new_vector = (NextPatrol.Location - player_location);
-			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw + 90.f, FVector::UpVector);
+			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
 			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
 
 
