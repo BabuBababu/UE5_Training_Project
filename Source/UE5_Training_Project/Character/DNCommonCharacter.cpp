@@ -69,7 +69,7 @@ ADNCommonCharacter::ADNCommonCharacter()
 	// Create a follow camera
 	_follow_camera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	_follow_camera->SetupAttachment(_camera_boom); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	_follow_camera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	_follow_camera->bUsePawnControlRotation = true; // Camera does not rotate relative to arm
 
 
 	// 에셋 불러오기 테스트
@@ -81,7 +81,7 @@ ADNCommonCharacter::ADNCommonCharacter()
 			UE_LOG(LogTemp,Warning, TEXT("Character Asset : %s"), *character_asset.ToString());
 		}
 	}
-	_character_position = E_CHARACTER_POSITION::CP_RUSH; // 우선은 테스트를 위해 전위로 둡니다.
+	//_character_position = E_CHARACTER_POSITION::CP_RUSH; // 우선은 테스트를 위해 전위로 둡니다.
 	_position_index = 0;								 // 이것도 임의로 0으로 둠
 }
 

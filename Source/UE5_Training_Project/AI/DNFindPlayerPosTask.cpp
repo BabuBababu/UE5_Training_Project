@@ -71,8 +71,7 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 			FVector new_vector = (NextPatrol.Location - player_location);
 			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw + 90.f, FVector::UpVector);
 			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location+ player_location);
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("NextPosSuccess!"));
-			// 
+
 			//그 다음 이동할 곳을 확인하기 위한 디버그메시지
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetControlRotation().Yaw));
 
@@ -87,11 +86,22 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 		//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
 		if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_guard, _search_radius, NextPatrol, nullptr))
 		{
-			FVector new_vector = (NextPatrol.Location - player_location);
-			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector(0.f, 0.f, 1.f));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
 
-			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location);
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("NextPosSuccess!"));
+
+			FVector new_vector = (NextPatrol.Location - player_location);
+			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw + 90.f, FVector::UpVector);
+			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
+
+
+
+			//그 다음 이동할 곳을 확인하기 위한 디버그메시지
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("controller rotation : %f"), player->GetControlRotation().Yaw));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetActorRotation().Yaw));
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
+
 		}
 	}
 	else if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_SUPPORT)
@@ -99,11 +109,21 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 		//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
 		if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_support, _search_radius, NextPatrol, nullptr))
 		{
-			FVector new_vector = (NextPatrol.Location - player_location);
-			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector(0.f, 0.f, 1.f));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
 
-			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location);
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("NextPosSuccess!"));
+
+			FVector new_vector = (NextPatrol.Location - player_location);
+			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw + 90.f, FVector::UpVector);
+			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
+
+
+
+			//그 다음 이동할 곳을 확인하기 위한 디버그메시지
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetControlRotation().Yaw));
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
+
 		}
 	}
 
