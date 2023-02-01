@@ -76,8 +76,8 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attack Now"));
 
 
-	if (nullptr != anim)
-		anim->OnAttackEnd.AddLambda([self_actor]()->void {self_actor->_is_attacking = false; });		//람다로 델리게이트 추가
+	//if (nullptr != anim)
+	//	anim->OnAttackEnd.AddLambda([self_actor]()->void {self_actor->_is_attacking = false; });		//람다로 델리게이트 추가하는 방법
 
 
 

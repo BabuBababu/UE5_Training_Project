@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -75,6 +75,39 @@ enum class E_CHARACTER_POSITION : uint8
 
 	CP_COUNT
 };
+
+
+UENUM(BlueprintType)
+enum class E_CHARACTER_MOS : uint8
+{
+	CM_NONE = 0		UMETA(DisplayName = "None"),	//비어있음
+	CM_HG			UMETA(DisplayName = "HG"),		//권총
+	CM_SMG			UMETA(DisplayName = "SMG"),		//기관단총
+	CM_AR			UMETA(DisplayName = "AR"),		//돌격소총
+	CM_SR			UMETA(DisplayName = "SR"),		//저격소총
+	CM_SG			UMETA(DisplayName = "SG"),		//샷건
+
+
+	CM_COUNT
+};
+
+
+
+UENUM(BlueprintType)
+enum class E_CHARACTER_GRADE : uint8
+{
+	CG_NONE = 0			UMETA(DisplayName = "None"),			//비어있음
+	CG_COMMON			UMETA(DisplayName = "Common"),			//1성
+	CG_UNCOMMON			UMETA(DisplayName = "UnCommon"),		//2성
+	CG_RARE				UMETA(DisplayName = "Rare"),			//3성
+	CG_SUPERRARE		UMETA(DisplayName = "SuperRare"),		//4성
+	CG_ULTRARARE		UMETA(DisplayName = "UltraRare"),		//5성
+
+
+
+	CG_COUNT
+};
+
 
 
 

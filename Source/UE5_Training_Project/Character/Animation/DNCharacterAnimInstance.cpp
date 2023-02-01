@@ -8,11 +8,15 @@
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 
+// Component
+#include "UE5_Training_Project/Component/DNStatusComponent.h"
+
 
 
 
 UDNCharacterAnimInstance::UDNCharacterAnimInstance()
 {
+
 }
 
 void UDNCharacterAnimInstance::NativeBeginPlay()
@@ -57,6 +61,23 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 	else
 		_aiming_for_spine = FRotator(0.f, 0.f, 0.f);
+
+
+	// 사망 몽타쥬 재생 체크
+	if (nullptr != character->get_status_component())
+	{
+		if (character->get_status_component()->_dead)
+		{
+			on_die_montage_ended();
+
+			if (false == _playing_die_montage)
+			{
+				Montage_Play(die_montage);
+				_playing_die_montage = true;
+			}
+		}
+	}
+
 }
 
 
@@ -69,8 +90,11 @@ void UDNCharacterAnimInstance::calculate_speed_direction(APawn* pawn_in)
 	
 }
 
-// 일정 시간 정해두고 호출하면 되지 않을까!
-void UDNCharacterAnimInstance::on_attack_montage_ended(UAnimMontage* montage_in, bool bInterrupted)
+void UDNCharacterAnimInstance::on_die_montage_ended()
 {
-	OnAttackEnd.Broadcast();
+	if (false == Montage_IsPlaying(die_montage))
+		return;
+
+	_playing_die_montage = false;
+	OnDieEnd.Broadcast();
 }

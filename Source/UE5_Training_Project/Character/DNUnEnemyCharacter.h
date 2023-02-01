@@ -28,8 +28,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Tick(float DeltaTime) override;
-	virtual void add_event();
-	virtual void remove_event();
+	void add_event() override;
+	void remove_event() override;
 
 private:
 	void init_ai();

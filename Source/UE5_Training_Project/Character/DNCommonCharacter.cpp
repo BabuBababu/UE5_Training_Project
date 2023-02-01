@@ -19,10 +19,14 @@
 
 // Component
 #include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
+#include "UE5_Training_Project/Character/Component/DNEnemyLineTrace.h"
+#include <UE5_Training_Project/Component/DNStatusComponent.h>
+
+// AnimInstance
+#include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
 
 
 
-// Sets default values
 ADNCommonCharacter::ADNCommonCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -72,6 +76,7 @@ ADNCommonCharacter::ADNCommonCharacter()
 	_follow_camera->bUsePawnControlRotation = true; // Camera does not rotate relative to arm
 
 
+
 	// 에셋 불러오기 테스트
 	auto DefaultSetting = GetDefault<UDNCharacterAssetSetting>();
 	if (DefaultSetting->_character_assets.Num() > 0)
@@ -85,30 +90,56 @@ ADNCommonCharacter::ADNCommonCharacter()
 	_position_index = 0;								 // 이것도 임의로 0으로 둠
 }
 
-// Called when the game starts or when spawned
 void ADNCommonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	add_event();
 
 	// 라인 트레이스 생성
 	if (_line_trace == nullptr)
 	{
-		_line_trace = NewObject<UDNPlayerLineTrace>();
+		if(_character_type != E_CHARACTER_TYPE::CT_ENEMY)
+			_line_trace = NewObject<UDNPlayerLineTrace>();
+
+		else if(_character_type == E_CHARACTER_TYPE::CT_ENEMY)
+			_enemy_line_trace = NewObject<UDNEnemyLineTrace>();
+	}
+
+	// 스테이터스 컴포넌트 생성
+	if (_status == nullptr)
+	{
+		_status = NewObject<UDNStatusComponent>();
+		_status->_character_id = _character_id;
+		_status->init();
 	}
 }
 
-// Called every frame
 void ADNCommonCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-// Called to bind functionality to input
 void ADNCommonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
+
+void ADNCommonCharacter::add_event()
+{
+	UDNCharacterAnimInstance* anim_instance = dynamic_cast<UDNCharacterAnimInstance*>(_character_skeletal_mesh->GetAnimInstance());
+	if (nullptr == anim_instance)
+		return;
+
+	anim_instance->OnDieEnd.AddDynamic(this, &ADNCommonCharacter::destroy_object_handler);
+}
+
+
+
+void ADNCommonCharacter::remove_event()
+{
 
 }
 
@@ -235,4 +266,10 @@ void ADNCommonCharacter::set_idle_animation()
 	_is_aiming = false;
 	_is_fire = false;
 	_is_attacking = false;
+}
+
+
+void ADNCommonCharacter::destroy_object_handler()
+{
+	Destroy();
 }

@@ -15,12 +15,15 @@
 
 
 
-DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDIEEndDelegate);
 
 
 /**
  * 
  */
+
+class UAnimMontage;
+
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNCharacterAnimInstance : public UAnimInstance
 {
@@ -34,11 +37,11 @@ public:
 
 
 public:
-	FOnAttackEndDelegate OnAttackEnd;
+	FOnDIEEndDelegate OnDieEnd;
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void on_attack_montage_ended(UAnimMontage* montage_in, bool bInterrupted);
+	void on_die_montage_ended();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -97,5 +100,14 @@ private:
 	bool _firing;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
-		FVector _actor_location;
+	FVector _actor_location;
+
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> die_montage;
+
+private:
+	bool	_playing_die_montage;
+
 };

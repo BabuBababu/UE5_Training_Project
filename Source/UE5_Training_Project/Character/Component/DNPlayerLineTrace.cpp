@@ -13,9 +13,15 @@
 #include "Engine/Classes/Kismet/GameplayStatics.h"
 #include "Engine/Classes/Kismet/KismetMathLibrary.h"
 
+// Component
+#include <UE5_Training_Project/Component/DNStatusComponent.h>
+
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
+
+// Util
+#include "UE5_Training_Project/Util/DNDamageOperation.h"
 
 
 UDNPlayerLineTrace::UDNPlayerLineTrace()
@@ -30,6 +36,12 @@ UDNPlayerLineTrace::UDNPlayerLineTrace()
 void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 {
 	FQuat rotate = FQuat(player_in->GetControlRotation());		// 임시로 -15.f 로 카메라 각도만큼 해놧는데 확인예정
+
+	auto status = player_in->get_status_component().Get();
+
+	// 대미지량
+	float damage = status->_chartacter_data->character_status_data.damage;
+
 
 	//사격 시작 지점
 	//FVector muzzle_location = player_in->weapon_hands->GetSocketLocation("Muzzle");
@@ -62,7 +74,8 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 			//UE_LOG(LogTemp, Warning, TEXT("SucceedCastDouble"));
 			DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);
-
+			
+			DNDamageOperation::DNReceiveDamage(damage, hit_result.BoneName, _enemy);
 		}
 		else
 		{
@@ -70,6 +83,8 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 			//GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("LOCATION: %s"),*HitLoc.ToString()));
 			DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Purple, false, 2.f);
 			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);
+
+		
 		}
 	}
 

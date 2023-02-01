@@ -26,7 +26,6 @@ ADNUnEnemyCharacter::ADNUnEnemyCharacter()
 void ADNUnEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	add_event();
 
 	_is_attacking = false;
 }
@@ -44,13 +43,20 @@ void ADNUnEnemyCharacter::Tick(float DeltaTime)
 
 void ADNUnEnemyCharacter::add_event()
 {
+	Super::add_event();
+
 	ADNPlayerCharacter* player = dynamic_cast<ADNPlayerCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
+
+	if (nullptr == player)
+		return;
+
 	player->on_armed.AddDynamic(this, &ADNUnEnemyCharacter::change_armed_state_handler);
 	player->on_crouch.AddDynamic(this, &ADNUnEnemyCharacter::change_crouch_state_handler);
 }
 
 void ADNUnEnemyCharacter::remove_event()
 {
+	Super::remove_event();
 	//ADNPlayerCharacter* player = dynamic_cast<ADNPlayerCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	//player->on_armed.RemoveDynamic(this, &ADNUnEnemyCharacter::change_armed_state_handler);
 	//player->on_crouch.RemoveDynamic(this, &ADNUnEnemyCharacter::change_crouch_state_handler);
@@ -80,8 +86,6 @@ void ADNUnEnemyCharacter::fire()
 
 void ADNUnEnemyCharacter::set_attack_finish()
 {
-	UDNCharacterAnimInstance* anim = dynamic_cast<UDNCharacterAnimInstance*>(this->_character_skeletal_mesh->GetAnimInstance());
-	anim->OnAttackEnd.Broadcast();		//원래는 몽타주 기준이지만 여긴 지속 사격 애니메이션이므로 이렇게 했음
 
 }
 

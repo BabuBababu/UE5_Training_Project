@@ -22,7 +22,8 @@
 class USpringArmComponent;
 class UCameraComponent;
 class UDNPlayerLineTrace;
-
+class UDNEnemyLineTrace;
+class UDNStatusComponent;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNCommonCharacter : public ACharacter
@@ -30,19 +31,15 @@ class UE5_TRAINING_PROJECT_API ADNCommonCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ADNCommonCharacter();
 
+	virtual void add_event();
+	virtual void remove_event();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
@@ -64,6 +61,7 @@ public:
 	E_CHARACTER_TYPE get_character_type() const { return _character_type; };
 	E_CHARACTER_POSITION get_character_position() const { return _character_position; };
 	uint8 get_position_index() const { return _position_index; };
+	TObjectPtr<UDNStatusComponent> get_status_component() const { return _status; };
 
 	void set_position_index(const uint8 num_in) { _position_index = num_in; };
 	void set_idle_animation();
@@ -90,12 +88,26 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> _follow_camera;
 
+	// 스테이터스 컴포넌트
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UDNStatusComponent> _status;
+
 	// 라인트레이스
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//에휴 잘못만들었다 부모 클래스 하나 만들걸
+	TObjectPtr<UDNPlayerLineTrace> _line_trace;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//에휴 잘못만들었다 부모 클래스 하나 만들걸
+	TObjectPtr<UDNEnemyLineTrace> _enemy_line_trace;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UDNPlayerLineTrace* _line_trace;
+	E_CHARACTER_TYPE _character_type = E_CHARACTER_TYPE::CT_NONE;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	E_CHARACTER_POSITION _character_position = E_CHARACTER_POSITION::CP_NONE;
 
-	//
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int64 _character_id;
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool _is_sprint;
@@ -131,11 +143,8 @@ public:
 protected:
 	float _default_max_speed = 0.0f;
 	uint8 _position_index;
-	E_CHARACTER_TYPE _character_type = E_CHARACTER_TYPE::CT_NONE;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	E_CHARACTER_POSITION _character_position = E_CHARACTER_POSITION::CP_NONE;
-	
+
 	FTimerHandle _fire_timer;
 
 
@@ -144,4 +153,11 @@ public:
 	E_CHARACTER_STATE _pre_upper_character_state = E_CHARACTER_STATE::CS_NONE;
 	bool _is_attacking;
 
+
+
+
+	// 델리게이트
+public:
+	UFUNCTION()
+	void destroy_object_handler();
 };
