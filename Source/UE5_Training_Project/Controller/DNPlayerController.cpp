@@ -89,6 +89,9 @@ void ADNPlayerController::SetupInputComponent()
 
 void ADNPlayerController::Move(const FInputActionValue& Value)
 {
+	if (nullptr == GetCharacter())
+		return;
+
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -112,6 +115,10 @@ void ADNPlayerController::Move(const FInputActionValue& Value)
 void ADNPlayerController::Sprint(const FInputActionValue& Value)
 {
 	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
+
+	if (nullptr == character)
+		return;
+
 	character->sprint();
 	UE_LOG(LogTemp, Warning, TEXT("Sprint"));
 }
@@ -119,12 +126,20 @@ void ADNPlayerController::Sprint(const FInputActionValue& Value)
 void ADNPlayerController::StopSprint(const FInputActionValue& Value)
 {
 	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
+
+	if (nullptr == character)
+		return;
+
 	character->stop_sprint();
 	UE_LOG(LogTemp, Warning, TEXT("StopSprint"));
 }
 
 void ADNPlayerController::Look(const FInputActionValue& Value)
 {
+
+	if (nullptr == GetCharacter())
+		return;
+
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -137,12 +152,18 @@ void ADNPlayerController::Look(const FInputActionValue& Value)
 
 void ADNPlayerController::Jump(const FInputActionValue& Value)
 {
+	if (nullptr == GetCharacter())
+		return;
+
 	GetCharacter()->Jump();
 	UE_LOG(LogTemp, Warning, TEXT("Jump"));
 }
 
 void ADNPlayerController::StopJumping(const FInputActionValue& Value)
 {
+	if (nullptr == GetCharacter())
+		return;
+
 	GetCharacter()->StopJumping();
 	UE_LOG(LogTemp, Warning, TEXT("StopJumping"));
 }

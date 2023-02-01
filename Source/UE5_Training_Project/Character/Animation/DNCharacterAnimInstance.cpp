@@ -68,14 +68,17 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		if (character->get_status_component()->_dead)
 		{
-			on_die_montage_ended();
-
 			if (false == _playing_die_montage)
 			{
 				Montage_Play(die_montage);
 				_playing_die_montage = true;
 			}
+
+			if (false == Montage_IsPlaying(die_montage))
+				on_die_montage_ended();
 		}
+
+
 	}
 
 }
@@ -92,9 +95,6 @@ void UDNCharacterAnimInstance::calculate_speed_direction(APawn* pawn_in)
 
 void UDNCharacterAnimInstance::on_die_montage_ended()
 {
-	if (false == Montage_IsPlaying(die_montage))
-		return;
-
 	_playing_die_montage = false;
 	OnDieEnd.Broadcast();
 }

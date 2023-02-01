@@ -191,9 +191,12 @@ void ADNCommonCharacter::fire()
 	if (_is_fire)
 	{
 		_is_aiming = true;
-		_line_trace->OnFire(this);
+		if (_character_type != E_CHARACTER_TYPE::CT_ENEMY)
+			_line_trace->OnFire(this);
+		else if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)
+			_enemy_line_trace->OnFire(this);
 
-		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, 0.1f, true);
+		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Doll Attack Now"));
 	}
 

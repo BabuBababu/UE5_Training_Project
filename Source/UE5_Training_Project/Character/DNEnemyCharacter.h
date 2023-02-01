@@ -25,6 +25,8 @@ class UE5_TRAINING_PROJECT_API ADNEnemyCharacter : public ADNCommonCharacter
 public:
 	ADNEnemyCharacter();
 
+	void BeginPlay() override;
+
 
 private:
 	void init_ai();
