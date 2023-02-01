@@ -60,7 +60,7 @@ void UDNEnemyLineTrace::OnFire(ADNCommonCharacter* player_in)
 
 	//라인 트레이스 시작
 	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_PhysicsBody, params);
-	DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
+	//DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
 
 	if (hit_result.GetActor() != nullptr)
 	{
@@ -75,7 +75,7 @@ void UDNEnemyLineTrace::OnFire(ADNCommonCharacter* player_in)
 			{
 				// 무기 데이터 테이블을 이용해서 대미지 적용하는 방식을 쓸 예정이므로 아래 코드는 결국 수정할 것.
 			//UE_LOG(LogTemp, Warning, TEXT("SucceedCastDouble"));
-				//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
+				DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);
 
 				DNDamageOperation::DNReceiveDamage(damage, hit_result.BoneName, _enemy);
@@ -86,7 +86,7 @@ void UDNEnemyLineTrace::OnFire(ADNCommonCharacter* player_in)
 		{
 			//UE_LOG(LogTemp, Warning, TEXT("FailedCast"));
 			//GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("LOCATION: %s"),*HitLoc.ToString()));
-			//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Purple, false, 2.f);
+			DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Purple, false, 2.f);
 			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);
 
 
