@@ -3,6 +3,9 @@
 
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 
+// Engine
+#include <Engine/Classes/Kismet/GameplayStatics.h>
+
 // Controller
 #include "UE5_Training_Project/Controller/DNPlayerController.h"
 
@@ -46,13 +49,13 @@ void ADNPlayerCharacter::fire()
 		_line_trace->OnFire(this);
 		OnFire.Broadcast();
 		ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
-
+		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, AActor::GetActorLocation());
 		if (controller->get_camera_shake() != nullptr)
 			controller->ClientStartCameraShake(controller->get_camera_shake());
 
 
 		UE_LOG(LogTemp, Warning, TEXT("Player Timer : %s"), *_fire_timer.ToString());
-		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNPlayerCharacter::fire, 0.075f, true);
+		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNPlayerCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Attack Now"));
 
 	}

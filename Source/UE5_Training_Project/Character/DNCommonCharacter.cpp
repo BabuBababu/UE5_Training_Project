@@ -10,6 +10,8 @@
 #include <GameFramework/CharacterMovementComponent.h>
 #include <GameFramework/Controller.h>
 #include <GameFramework/SpringArmComponent.h>
+#include <Engine/Classes/Kismet/GameplayStatics.h>
+
 
 // UE5_Training_Project_Setting
 #include "UE5_Training_Project_Setting/Core/DNCharacterAssetSetting.h"
@@ -183,6 +185,7 @@ void ADNCommonCharacter::reload()
 	{
 		_is_reloading = true;
 		_character_state = E_CHARACTER_STATE::CS_RELOAD;
+		UGameplayStatics::PlaySoundAtLocation(this, _reload_soundcue, AActor::GetActorLocation());
 		OnReload.Broadcast();
 	}
 
@@ -213,6 +216,8 @@ void ADNCommonCharacter::fire()
 	{
 		_is_aiming = true;
 		OnFire.Broadcast();
+		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, AActor::GetActorLocation());
+
 		if (_character_type != E_CHARACTER_TYPE::CT_ENEMY)
 			_line_trace->OnFire(this);
 		else if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)

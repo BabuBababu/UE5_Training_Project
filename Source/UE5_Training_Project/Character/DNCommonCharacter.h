@@ -112,6 +112,27 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int64 _character_id;
 
+	// 리소스매니저같은거 만들어서 거기서 호출하는 방식으로 가자...
+	// 일단은 이렇게 만들어두고
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//사격 소리
+	TObjectPtr<USoundBase> _fire_soundcue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//장전 소리
+	TObjectPtr<USoundBase> _reload_soundcue;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//화났을 때
+	TObjectPtr<USoundBase> _upset_soundcue;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//지휘관 걱정할 때
+	TObjectPtr<USoundBase> _worry_soundcue;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//스킬쓸 때
+	TObjectPtr<USoundBase> _skill_dialog_soundcue;
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool _is_sprint;
