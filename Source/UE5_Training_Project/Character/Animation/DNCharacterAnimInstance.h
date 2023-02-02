@@ -15,7 +15,7 @@
 
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDIEEndDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMontageEndDelegate);
 
 
 /**
@@ -23,6 +23,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDIEEndDelegate);
  */
 
 class UAnimMontage;
+class ADNCommonCharacter;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNCharacterAnimInstance : public UAnimInstance
@@ -35,19 +36,29 @@ public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
+	void add_event();
+	void remove_event();
 
 public:
-	FOnDIEEndDelegate OnDieEnd;
+	FOnMontageEndDelegate OnDieEnd;
+	FOnMontageEndDelegate OnReloadEnd;
 
 public:
 	UFUNCTION(BlueprintCallable)
 	void on_die_montage_ended();
 
+	UFUNCTION(BlueprintCallable)
+	void on_reload_montage_ended();
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void calculate_speed_direction(APawn* pawn_in);
 
+	UFUNCTION(BlueprintCallable)
+	void play_reload_montage();
 
+	UFUNCTION(BlueprintCallable)
+	void play_fire_montage();
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
@@ -107,7 +118,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAnimMontage> die_montage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> fire_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> reload_montage;
 private:
 	bool	_playing_die_montage;
+	bool	_playing_reload_montage;
+
+	ADNCommonCharacter* _owner = nullptr;
 
 };

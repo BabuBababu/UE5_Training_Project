@@ -14,6 +14,7 @@
 
 
 class UDataTable;
+class ADNCommonCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UE5_TRAINING_PROJECT_API UDNStatusComponent : public UActorComponent
@@ -22,10 +23,14 @@ class UE5_TRAINING_PROJECT_API UDNStatusComponent : public UActorComponent
 
 public:	
 	UDNStatusComponent();
+	void add_event(ADNCommonCharacter* character_in);
+	void remove_event(ADNCommonCharacter* character_in);
+
 
 	void init();				//레벨 적용전 한번 초기화
 	void apply_level();			//레벨 적용
 	void set_begin_status();	//초기 hp, 장탄수 current 적용
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -64,4 +69,12 @@ public:
 	FDNCharacterData*	_chartacter_data;
 
 		
+
+public:
+	UFUNCTION()
+	void remove_ammo_handler();
+
+
+	UFUNCTION()
+	void reload_ammo_handler();
 };

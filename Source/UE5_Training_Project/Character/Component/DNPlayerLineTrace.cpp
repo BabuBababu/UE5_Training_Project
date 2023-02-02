@@ -32,8 +32,10 @@ UDNPlayerLineTrace::UDNPlayerLineTrace()
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> Block_ParticleAdd(TEXT("/Game/Assets/Weapon/Griffin/WeaponEffects/P_AssaultRifle_IH"));
 	block_particle = Block_ParticleAdd.Object;
 
-	
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> Fire_ParticleAdd(TEXT("/Game/Assets/Weapon/Griffin/WeaponEffects/P_AssaultRifle_MF"));
+	fire_particle = Fire_ParticleAdd.Object;
 }
+
 
 void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 {
@@ -60,6 +62,11 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 	// 무시할 오브젝트
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(player_in);
+
+
+	//총구 화염 연출
+	UGameplayStatics::SpawnEmitterAttached(fire_particle, player_in->_weapon_armed, FName("Muzzle"), FVector(0.f, 0.f, 0.f), FRotator(0.f, 0.f, 0.f), FVector(1), EAttachLocation::SnapToTarget, true, EPSCPoolMethod::None, true);
+
 
 	//라인 트레이스 시작
 	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_PhysicsBody, params);

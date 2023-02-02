@@ -56,9 +56,9 @@ void ADNBaseHUD::add_layer()
 
 void ADNBaseHUD::remove_layer()
 {
-	if (_intro_layer != nullptr) _intro_layer->RemoveFromViewport();
+	if (_intro_layer != nullptr) _intro_layer->RemoveFromParent();
 	//if (UNUIUtil::IsValid(_content_layer)) _content_layer->RemoveFromViewport();
-	if (_panel_layer != nullptr) _panel_layer->RemoveFromViewport();
+	if (_panel_layer != nullptr) _panel_layer->RemoveFromParent();
 
 	_intro_layer = nullptr;
 	_panel_layer = nullptr;

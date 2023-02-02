@@ -19,6 +19,10 @@
  */
 
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputStartDelegate);
+
+
 class USpringArmComponent;
 class UCameraComponent;
 class UDNPlayerLineTrace;
@@ -158,6 +162,12 @@ public:
 
 	// 델리게이트
 public:
+	FOnInputStartDelegate OnFire;
+	FOnInputStartDelegate OnReload;
+public:
 	UFUNCTION()
 	void destroy_object_handler();
+
+	UFUNCTION()
+	void return_to_armed_handler();
 };

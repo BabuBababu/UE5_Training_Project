@@ -21,12 +21,14 @@ public:
 	UDNEnemyLineTrace();
 
 public:
-	UPROPERTY(EditAnywhere, Category = "Blood Particle Effects")
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")
 		UParticleSystem* blood_particle;
 
-	UPROPERTY(EditAnywhere, Category = "Block Particle Effects")
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")
 		UParticleSystem* block_particle;
 
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")
+		UParticleSystem* fire_particle;
 public:
 	UFUNCTION(BlueprintCallable)
 		void OnFire(ADNCommonCharacter* player_in);

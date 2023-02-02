@@ -111,6 +111,7 @@ void ADNCommonCharacter::BeginPlay()
 		_status = NewObject<UDNStatusComponent>();
 		_status->_character_id = _character_id;
 		_status->init();
+		_status->add_event(this);
 	}
 }
 
@@ -134,6 +135,7 @@ void ADNCommonCharacter::add_event()
 		return;
 
 	anim_instance->OnDieEnd.AddDynamic(this, &ADNCommonCharacter::destroy_object_handler);
+	anim_instance->OnReloadEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
 }
 
 
@@ -170,13 +172,20 @@ void ADNCommonCharacter::stop_sprint()
 
 void ADNCommonCharacter::reload()
 {
+
+	if (_status->_current_ammo == _status->_chartacter_data->character_status_data.max_ammo)	//총알이 꽉찼다면 장전 불가능
+		return;
+
+	if (false == _is_armed_weapon)	//총을 들고 있지 않다면 장전 불가능
+		return;
+
 	if (_is_reloading == false)
 	{
 		_is_reloading = true;
 		_character_state = E_CHARACTER_STATE::CS_RELOAD;
+		OnReload.Broadcast();
 	}
 
-	// 장전이 끝나면 armed상태로 가야함
 }
 
 void ADNCommonCharacter::fire()
@@ -185,12 +194,25 @@ void ADNCommonCharacter::fire()
 	// .075f는 데이터 테이블을 이용하여 캐릭터별로 다르게 설정할 예정
 	//UE_LOG(LogTemp, Warning, TEXT("Doll Name : %s"), *this->GetClass()->GetDefaultObjectName().ToString());
 
-	if (_is_armed_weapon == false)
+	if (_is_reloading)			//장전중이면 사격 안됨
 		return;
+
+	if (_is_sprint)				//전력질주할때 사격 안됨
+		return;
+
+	if (false == _is_armed_weapon)	//총을 들고 있지 않으면 사격 안됨
+		return;
+
+	if (_status->get_current_ammo() == 0) //총알이 0발이면 사격 안됨
+	{
+		reload();
+		return;
+	}
 
 	if (_is_fire)
 	{
 		_is_aiming = true;
+		OnFire.Broadcast();
 		if (_character_type != E_CHARACTER_TYPE::CT_ENEMY)
 			_line_trace->OnFire(this);
 		else if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)
@@ -247,6 +269,9 @@ void ADNCommonCharacter::crouch()
 
 void ADNCommonCharacter::aiming()
 {
+	if (_is_reloading)			//장전중이면 안됨
+		return;
+
 	if (_is_armed_weapon == false)
 		return;
 
@@ -275,4 +300,30 @@ void ADNCommonCharacter::set_idle_animation()
 void ADNCommonCharacter::destroy_object_handler()
 {
 	Destroy();
+}
+
+void ADNCommonCharacter::return_to_armed_handler()
+{
+	_is_reloading = false;
+	// 장전이 끝났을때 기준 총을 들고있다면 그거에 맞춰서 들고 있어야하므로 armed함수와는 반대로 돌아감
+	if (_is_armed_weapon == false)
+	{
+
+		bUseControllerRotationYaw = false;
+		_weapon_armed->SetVisibility(false);
+		_weapon_un_armed->SetVisibility(true);
+		_is_armed_weapon = false;
+		_character_state = _pre_upper_character_state;
+
+	}
+	else
+	{
+
+		bUseControllerRotationYaw = true;
+		_weapon_armed->SetVisibility(true);
+		_weapon_un_armed->SetVisibility(false);
+		_is_armed_weapon = true;
+		_pre_upper_character_state = _character_state;
+		_character_state = E_CHARACTER_STATE::CS_ARM;
+	}
 }

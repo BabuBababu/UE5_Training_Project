@@ -3,6 +3,15 @@
 
 #include <UE5_Training_Project/Component/DNStatusComponent.h>
 
+// Character
+#include "UE5_Training_Project/Character/DNCommonCharacter.h"
+
+
+// Animation
+#include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
+
+
+
 
 // Sets default values for this component's properties
 UDNStatusComponent::UDNStatusComponent()
@@ -34,7 +43,7 @@ void UDNStatusComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	init();
+	
 	
 }
 
@@ -47,6 +56,23 @@ void UDNStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	// ...
 }
 
+
+void UDNStatusComponent::add_event(ADNCommonCharacter* character_in)
+{
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(character_in);
+	if (nullptr != character)
+		character->OnFire.AddDynamic(this, &UDNStatusComponent::remove_ammo_handler);
+
+	UDNCharacterAnimInstance* anim_instance = dynamic_cast<UDNCharacterAnimInstance*>(character->_character_skeletal_mesh->GetAnimInstance());
+	if (nullptr != anim_instance)
+		anim_instance->OnReloadEnd.AddDynamic(this, &UDNStatusComponent::reload_ammo_handler);
+		
+}
+
+void UDNStatusComponent::remove_event(ADNCommonCharacter* character_in)
+{
+
+}
 
 
 void UDNStatusComponent::init()
@@ -135,4 +161,16 @@ void UDNStatusComponent::add_exp(int64 exp_in)
 		}
 	}
 
+}
+
+void UDNStatusComponent::remove_ammo_handler()
+{
+	_current_ammo -= 1;
+	UE_LOG(LogTemp, Warning, TEXT("My current ammo is %d"), _current_ammo);
+}
+
+void UDNStatusComponent::reload_ammo_handler()
+{
+	_current_ammo = _chartacter_data->character_status_data.max_ammo;
+	UE_LOG(LogTemp, Warning, TEXT("After Reload My current ammo is %d"), _current_ammo);
 }

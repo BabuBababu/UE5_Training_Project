@@ -8,6 +8,7 @@
 
 // Component
 #include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
+#include <UE5_Training_Project/Component/DNStatusComponent.h>
 
 void ADNPlayerCharacter::BeginPlay()
 {
@@ -27,14 +28,23 @@ void ADNPlayerCharacter::start_fire()
 
 void ADNPlayerCharacter::fire()
 {
-	if (_is_armed_weapon == false)
+	if (_is_reloading)			//장전중이면 사격 안됨
 		return;
-		
+
+	if (_is_sprint)				//전력질주할때 사격 안됨
+		return;
+
+	if (false == _is_armed_weapon)	//총을 들고 있지 않으면 사격 안됨
+		return;
+
+	if (_status->get_current_ammo() == 0) //총알이 0발이면 사격 안됨
+		return;
+
 	if (_is_fire)
 	{
 		
 		_line_trace->OnFire(this);
-
+		OnFire.Broadcast();
 		ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
 
 		if (controller->get_camera_shake() != nullptr)

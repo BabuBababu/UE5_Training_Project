@@ -14,6 +14,9 @@
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
 
+// Component
+#include <UE5_Training_Project/Component/DNStatusComponent.h>
+
 // BlackBaord
 #include "UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h"
 
@@ -58,78 +61,78 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 	FVector target_location_guard = FVector(0.f, 200.f,0.f);
 	FVector target_location_support = FVector(-1000.f,0.f, 0.f);
 
-	
+	if(self_actor->get_status_component().Get()->_dead)
+		return EBTNodeResult::Failed;
 
-	if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_RUSH)
-	{
-		//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
-		if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_rush , _search_radius, NextPatrol, nullptr))
+
+
+		if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_RUSH)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
+			//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
+			if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_rush, _search_radius, NextPatrol, nullptr))
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
 
 
-			FVector new_vector = (NextPatrol.Location - player_location);
-			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
-			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location+ player_location);
+				FVector new_vector = (NextPatrol.Location - player_location);
+				FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
+				Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
 
-			//그 다음 이동할 곳을 확인하기 위한 디버그메시지
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetControlRotation().Yaw));
+				//그 다음 이동할 곳을 확인하기 위한 디버그메시지
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetControlRotation().Yaw));
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
 
 
+			}
 		}
-	}
-	else if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_GUARD)
-	{
-		//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
-		if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_guard, _search_radius, NextPatrol, nullptr))
+		else if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_GUARD)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
+			//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
+			if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_guard, _search_radius, NextPatrol, nullptr))
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
 
 
-			FVector new_vector = (NextPatrol.Location - player_location);
-			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
-			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
+				FVector new_vector = (NextPatrol.Location - player_location);
+				FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
+				Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
 
 
 
-			//그 다음 이동할 곳을 확인하기 위한 디버그메시지
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("controller rotation : %f"), player->GetControlRotation().Yaw));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetActorRotation().Yaw));
+				//그 다음 이동할 곳을 확인하기 위한 디버그메시지
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("controller rotation : %f"), player->GetControlRotation().Yaw));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetActorRotation().Yaw));
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
 
+			}
 		}
-	}
-	else if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_SUPPORT)
-	{
-		//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
-		if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_support, _search_radius, NextPatrol, nullptr))
+		else if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_SUPPORT)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
+			//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
+			if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_support, _search_radius, NextPatrol, nullptr))
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
 
 
-			FVector new_vector = (NextPatrol.Location - player_location);
-			FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
-			Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
+				FVector new_vector = (NextPatrol.Location - player_location);
+				FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
+				Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
 
 
 
-			//그 다음 이동할 곳을 확인하기 위한 디버그메시지
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetControlRotation().Yaw));
+				//그 다음 이동할 곳을 확인하기 위한 디버그메시지
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetControlRotation().Yaw));
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
 
+			}
 		}
-	}
-
-	
-	
-
 
 	return EBTNodeResult::Succeeded;
+	
 }
