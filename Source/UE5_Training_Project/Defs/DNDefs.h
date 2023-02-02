@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -16,6 +16,15 @@
  */
 
 
+
+
+
+
+ //////////////////////////////////////////////////////////
+ //
+ //  Character
+ //
+ //////////////////////////////////////////////////////////
 
 UENUM(BlueprintType)
 enum class E_CHARACTER_TYPE : uint8
@@ -114,37 +123,14 @@ enum class E_CHARACTER_GRADE : uint8
 
 
 
-UENUM(BlueprintType)
-enum class E_UI_HUD_TYPE : uint8
-{
-	UHT_NONE = 0		UMETA(DisplayName = "None"),
-	UHT_LOBBY_HUD		UMETA(DisplayName = "LobbyHUD"),
-	UHT_COMBAT_HUD		UMETA(DisplayName = "CombatHUD"),
-
-	UHT_COUNT
-};
 
 
 
-
-
-
-UENUM(BlueprintType)
-enum class E_UI_LAYER_TYPE : uint8
-{
-	ULT_NONE = 0			UMETA(DisplayName = "None"),
-
-	ULT_PANEL_LAYER			UMETA(DisplayName = "PanelLayer"),
-
-
-	ULT_COUNT
-};
-
-
-
-
-
-
+//////////////////////////////////////////////////////////
+//
+//  System
+//
+//////////////////////////////////////////////////////////
 UENUM(BlueprintType)
 enum class E_GAME_MODE_TYPE : uint8
 {
@@ -154,5 +140,102 @@ enum class E_GAME_MODE_TYPE : uint8
 
 
 	GMT_COUNT
+};
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////
+//
+//  UI
+//
+//////////////////////////////////////////////////////////
+UENUM()
+enum class E_UI_HUD_TYPE : uint8
+{
+	UHT_NONE = 0,
+	UHT_INTRO,
+	UHT_LOBBY_HUD,
+	UHT_COMBAT_HUD,
+
+	UHT_COUNT
+};
+
+
+
+
+
+
+UENUM()
+enum class E_UI_LAYER_TYPE : uint8
+{
+
+	ULT_NONE,
+
+	// HUD 패널(체력바, 스킬슬롯 ...)
+	ULT_HUD,
+	// 알림 패널(지역 입장 정보 ...)
+	ULT_NOTICE,
+	// 각종 팝업(인벤토리, 장비창 ...)
+	ULT_CONTENT,
+	// 시스템 팝업(인게임 경고창 ...)
+	ULT_SYSTEM,
+	// 로그인 페이지
+	ULT_INTRO,
+	// 캐릭터 선택 페이지
+	ULT_SELECT_CHARACTER,
+	// 메뉴 페이지
+	ULT_MENU,
+
+	// 테스트 
+	ULT_COUNT
+};
+
+
+
+UENUM()
+enum class E_UI_GAUGE_TYPE
+{
+	UGT_NONE,
+
+	UGT_HP,
+	UGT_MP,
+	UGT_SP,
+	UGT_CAST
+};
+
+
+
+// 사용할지는 미지수
+UENUM()
+enum class E_UI_GAUGE_STATE
+{
+	UGS_NONE,
+
+	UGS_HIDE,
+	UGS_CLOSE_SHOW,
+	UGS_OPEN_SHOW,
+
+	UGT_TEST
+};
+
+
+UENUM()
+enum class E_UI_PANEL_TYPE
+{
+	UPT_NONE,
+
+	UPT_MINIMAP,
+	UPT_SKILL,
+	UPT_ITEM,
+	UPT_MENU,
+	UPT_QUEST,
+	UPT_GAUGE, //플레이어 패널
+	UPT_TARGET_INFORMATION,
+	UPT_QUICK_SLOT
 };
 

@@ -22,7 +22,8 @@
 				"CoreUObject",
 				"EnhancedInput",
 				"GameplayCameras",
-				"UE5_Training_Project_Setting"
+				"UE5_Training_Project_Setting",
+				"UMG"
 			]
 		}
 	],

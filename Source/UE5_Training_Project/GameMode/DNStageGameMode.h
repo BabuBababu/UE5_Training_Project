@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -19,5 +19,11 @@ UCLASS()
 class UE5_TRAINING_PROJECT_API ADNStageGameMode : public ADNGameModeBase
 {
 	GENERATED_BODY()
-	
+public:
+	ADNStageGameMode();
+
+
+protected:
+	void BeginPlay() override;
+	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 };
