@@ -118,6 +118,9 @@ private:
 	float _current_hp = 0.0f;
 	float _max_hp = 0.0f;
 
+	int64 _current_ammo = 0;
+	int64 _has_ammo = 0;
+
 	float _current_sp = 0.0f;
 	float _max_sp = 0.0f;
 

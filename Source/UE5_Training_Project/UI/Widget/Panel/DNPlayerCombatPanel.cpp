@@ -6,6 +6,12 @@
 // Panel
 #include "UE5_Training_Project/UI/Widget/Panel/DNPlayerGaugeBar.h"
 
+// Character
+#include "UE5_Training_Project/Character/DNCommonCharacter.h"
+
+// Component
+#include <UE5_Training_Project/Component/DNStatusComponent.h>
+
 
 void UDNPlayerCombatPanel::NativeConstruct()
 {
@@ -56,15 +62,21 @@ void UDNPlayerCombatPanel::init_gauge()
 // 플레이어 캐릭터 및 인형들 게이지 싱크맞추기
 void UDNPlayerCombatPanel::sync_gauge()
 {
-	//_current_hp = NUI_MANAGER->player_current_life;
-	//_max_hp = NUI_MANAGER->player_max_life;
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	_current_ammo = character->_status->_current_ammo;
+	_has_ammo = character->_status->_has_ammo;
+	_current_hp = character->_status->_current_hp;
+	_max_hp = character->_status->get_max_hp();
 
 
-	//_current_sp = NUI_MANAGER->player_current_stamina;
-	//_max_sp = NUI_MANAGER->player_max_stamina;
+	FString has_ammo = FString::FromInt(_has_ammo);
+	FString current_ammo = FString::FromInt(_current_ammo);
+	
+	set_hp(_current_hp, _max_hp);
+	umg_current_ammo_text.Get()->SetText(FText::FromString(current_ammo));
+	umg_save_ammo_text.Get()->SetText(FText::FromString(has_ammo));
 
-	//set_hp(_current_hp, _max_hp);
-	//set_sp(_current_sp, _max_sp);
+	//set_sp(_current_sp, _max_sp);	//이건 보류
 }
 
 void UDNPlayerCombatPanel::set_hp(float current_hp_in, float max_hp_in)

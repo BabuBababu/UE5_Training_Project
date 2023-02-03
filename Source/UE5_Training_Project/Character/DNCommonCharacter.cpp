@@ -174,11 +174,13 @@ void ADNCommonCharacter::stop_sprint()
 
 void ADNCommonCharacter::reload()
 {
+	if (_status->_has_ammo == 0)																//총알이 없다면 장전 불가능
+		return;
 
 	if (_status->_current_ammo == _status->_chartacter_data->character_status_data.max_ammo)	//총알이 꽉찼다면 장전 불가능
 		return;
 
-	if (false == _is_armed_weapon)	//총을 들고 있지 않다면 장전 불가능
+	if (false == _is_armed_weapon)																//총을 들고 있지 않다면 장전 불가능
 		return;
 
 	if (_is_reloading == false)

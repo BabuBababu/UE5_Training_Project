@@ -87,7 +87,7 @@ void UDNPlayerGaugeBar::set_gauge(float current_value_in, float max_value_in)
 		umg_main_progress->SetPercent(_percent_value);
 	}
 
-	check_gauge();
+	//check_gauge();
 }
 
 void UDNPlayerGaugeBar::set_gauge_enable(bool is_enable_in)

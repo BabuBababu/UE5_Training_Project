@@ -63,6 +63,7 @@ public:
 
 	float				_current_hp;
 	int64				_current_ammo;
+	int64				_has_ammo;
 	
 	UDataTable*			_character_datatable;
 	UDataTable*			_exp_datatable;

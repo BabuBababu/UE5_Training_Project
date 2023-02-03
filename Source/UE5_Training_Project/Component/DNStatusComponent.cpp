@@ -35,6 +35,8 @@ UDNStatusComponent::UDNStatusComponent()
 		UE_LOG(LogTemp, Warning, TEXT("DataTable Succeed!"));
 		_exp_datatable = EXPDataObject.Object;
 	}
+
+	_has_ammo = 5000;		// 테스트용 일단 여기에 초기화해둠
 }
 
 
@@ -171,6 +173,12 @@ void UDNStatusComponent::remove_ammo_handler()
 
 void UDNStatusComponent::reload_ammo_handler()
 {
-	_current_ammo = _chartacter_data->character_status_data.max_ammo;
-	UE_LOG(LogTemp, Warning, TEXT("After Reload My current ammo is %d"), _current_ammo);
+	
+	_has_ammo -= _chartacter_data->character_status_data.max_ammo - _current_ammo;
+
+	if (_has_ammo < 0)			//남은총알이 40발 미만일 때
+		_current_ammo = _chartacter_data->character_status_data.max_ammo -_has_ammo;
+	else                        //남은총알이 40발 이상일 때
+		_current_ammo = _chartacter_data->character_status_data.max_ammo;
+
 }
