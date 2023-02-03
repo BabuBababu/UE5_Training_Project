@@ -49,7 +49,7 @@ void ADNPlayerCharacter::fire()
 		_line_trace->OnFire(this);
 		OnFire.Broadcast();
 		ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
-		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, AActor::GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue,GetActorLocation());
 		if (controller->get_camera_shake() != nullptr)
 			controller->ClientStartCameraShake(controller->get_camera_shake());
 
