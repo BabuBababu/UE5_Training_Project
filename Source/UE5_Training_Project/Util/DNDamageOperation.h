@@ -33,6 +33,7 @@ public:
 		if (after_hp <= 0)
 		{
 			damaged_character_in->get_status_component().Get()->_dead = true;
+			
 		}
 	}
 
