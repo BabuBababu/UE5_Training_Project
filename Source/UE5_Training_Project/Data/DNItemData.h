@@ -43,19 +43,23 @@ public:
 
 	// 추가 HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	float						add_hp;
+	float							add_hp;
 
 	// 추가 스테미너
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	float						add_sp;
+	float							add_sp;
 
 	// 추가 대미지
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	float						add_damage;
+	float							add_damage;
 
 	// 추가 방어력
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	float						add_armor;
+	float							add_armor;
+
+	// 아이템 개수
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
+	int64							count;
 
 	FDNItemData& operator=(const FDNItemData& data)
 	{
@@ -68,6 +72,7 @@ public:
 		add_sp = data.add_sp;
 		add_damage = data.add_damage;
 		add_armor = data.add_armor;
+		count = data.count;
 		
 
 		return *this;

@@ -6,6 +6,9 @@
 #include <CoreMinimal.h>
 #include <UObject/NoExportTypes.h>
 
+// Data
+#include "UE5_Training_Project/Data/DNItemData.h"
+
 // generated
 #include "DNEnemyLineTrace.generated.h"
 

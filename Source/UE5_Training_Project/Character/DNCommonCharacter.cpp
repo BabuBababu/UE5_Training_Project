@@ -29,6 +29,7 @@
 
 
 
+
 ADNCommonCharacter::ADNCommonCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -137,6 +138,7 @@ void ADNCommonCharacter::add_event()
 		return;
 
 	anim_instance->OnDieEnd.AddDynamic(this, &ADNCommonCharacter::destroy_object_handler);
+
 	anim_instance->OnReloadEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
 }
 
@@ -185,6 +187,10 @@ void ADNCommonCharacter::reload()
 
 	if (_is_reloading == false)
 	{
+
+		if (true == _is_near_wall)	//벽 근처에서 장전할 때 앉기
+			_is_crouch = true;
+
 		_is_reloading = true;
 		_character_state = E_CHARACTER_STATE::CS_RELOAD;
 		UGameplayStatics::PlaySoundAtLocation(this, _reload_soundcue,GetActorLocation());
@@ -283,11 +289,13 @@ void ADNCommonCharacter::aiming()
 		return;
 
 	_is_aiming = true;
+	_follow_camera->SetRelativeTransform(set_camera_transform(true));
 }
 
 void ADNCommonCharacter::stop_aiming()
 {
 	_is_aiming = false;
+	_follow_camera->SetRelativeTransform(set_camera_transform(false));
 }
 
 void ADNCommonCharacter::interaction()
@@ -313,6 +321,10 @@ void ADNCommonCharacter::return_to_armed_handler()
 {
 	_is_reloading = false;
 	// 장전이 끝났을때 기준 총을 들고있다면 그거에 맞춰서 들고 있어야하므로 armed함수와는 반대로 돌아감
+
+	if(_character_type != E_CHARACTER_TYPE::CT_PLAYER)	//플레이어는 제외
+		_is_crouch = false;
+
 	if (_is_armed_weapon == false)
 	{
 
@@ -333,4 +345,22 @@ void ADNCommonCharacter::return_to_armed_handler()
 		_pre_upper_character_state = _character_state;
 		_character_state = E_CHARACTER_STATE::CS_ARM;
 	}
+}
+
+
+FTransform ADNCommonCharacter::set_camera_transform(bool flag_in)
+{
+
+	const FVector OriginLocation(100.f, 0.f, 0.f);
+	const FVector AimCameraLocation(350.f, 0.f, 50.f);
+	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
+	const FVector OriginCameraScale(1.f, 1.f, 1.f);
+
+	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
+	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
+
+	if (true != flag_in)
+		return OriginCameraTransform;
+
+	return AimCameraTransform;
 }

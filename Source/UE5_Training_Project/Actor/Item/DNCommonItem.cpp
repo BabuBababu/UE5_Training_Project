@@ -8,6 +8,17 @@
 #include <Components/BoxComponent.h>
 
 
+ADNCommonItem::ADNCommonItem()
+{
+	// 캐릭터 데이터 테이블 초기화
+	static ConstructorHelpers::FObjectFinder<UDataTable> ItemDataObject(TEXT("/Game/Blueprint/Data/DT_DNItemData"));
+	if (ItemDataObject.Succeeded())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DataTable Succeed!"));
+		_item_datatable = ItemDataObject.Object;
+	}
+}
+
 void ADNCommonItem::BeginPlay()
 {
 	Super::BeginPlay();
@@ -19,10 +30,6 @@ void ADNCommonItem::BeginPlay()
 
 void ADNCommonItem::add_event()
 {
-	if (nullptr == _box_collision)
-		return;
-
-	_box_collision->OnComponentBeginOverlap.AddDynamic(this, &ADNCommonItem::overlap_item_handler);
 
 }
 
@@ -40,6 +47,9 @@ void ADNCommonItem::Tick(float DeltaTime)
 
 void ADNCommonItem::item_init()
 {
+	if (nullptr == _item_datatable)
+		return;
+
 	TArray<FDNItemData*> data_array;
 	_item_datatable->GetAllRows<FDNItemData>("", data_array);
 
@@ -50,13 +60,6 @@ void ADNCommonItem::item_init()
 			_item_data = data;
 		}
 	}
+
 }
 
-
-void ADNCommonItem::overlap_item_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
-	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	OnOverlapItemInteraction.Broadcast(*_item_data);
-
-	UE_LOG(LogTemp, Warning, TEXT("Item Overlap actor is %s"), *otherActor->GetName());
-}

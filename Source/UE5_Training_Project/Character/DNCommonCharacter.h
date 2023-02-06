@@ -70,6 +70,9 @@ public:
 	void set_position_index(const uint8 num_in) { _position_index = num_in; };
 	void set_idle_animation();
 
+
+	FTransform set_camera_transform(bool flag_in);
+
 public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
@@ -191,4 +194,5 @@ public:
 
 	UFUNCTION()
 	void return_to_armed_handler();
+
 };

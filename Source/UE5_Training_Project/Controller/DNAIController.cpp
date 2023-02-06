@@ -122,12 +122,12 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 			}
 
-			// 타겟이 죽었다면
-			if (insight_me_character->_status.Get()->_dead)
-			{
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-			}
+			//// 타겟이 죽었다면
+			//if (insight_me_character->_status.Get()->_dead)
+			//{
+			//	get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+			//	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+			//}
 		}
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
@@ -149,12 +149,12 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 			}
 
-			// 타겟이 죽었다면
-			if (insight_me_character->_status.Get()->_dead)
-			{
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-			}
+			//// 타겟이 죽었다면
+			//if (insight_me_character->_status.Get()->_dead)
+			//{
+			//	get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+			//	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+			//}
 
 		
 		}

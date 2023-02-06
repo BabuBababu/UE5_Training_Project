@@ -26,11 +26,13 @@ class UE5_TRAINING_PROJECT_API ADNPlayerCharacter : public ADNCommonCharacter
 	
 protected:
 	void BeginPlay() override;
+	void Tick(float DeltaTime) override;
 
 public:
 	void fire() override;
 	void armed() override;
 	void crouch() override;
+	void reload() override;
 
 public:
 	void start_fire();
@@ -46,3 +48,4 @@ public:
 	UFUNCTION()
 	void player_crouch_event(bool crouch_in);
 };
+

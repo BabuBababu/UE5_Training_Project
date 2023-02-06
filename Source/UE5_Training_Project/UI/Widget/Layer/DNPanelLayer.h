@@ -8,6 +8,12 @@
 // Base
 #include "UE5_Training_Project/UI/Base/DNBaseLayer.h"
 
+// Panel
+#include "UE5_Training_Project/UI/Widget/Panel/DNPlayerCombatPanel.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNInteractionPanel.h"
+
+
+
 // Generated
 #include "DNPanelLayer.generated.h"
 
@@ -16,6 +22,8 @@
  */
 
 class UImage;
+class UDNPlayerCombatPanel;
+class UDNInteractionPanel;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNPanelLayer : public UDNBaseLayer
@@ -30,5 +38,10 @@ private:
 	UPROPERTY()
 	TObjectPtr<UImage> umg_crosshair_image;
 
-	//PlayerUI를 C++ 클래스로 만들고 umg로 넣어서 관리해야함 일단은 그냥 부르는걸로 .
+
+	UPROPERTY()
+	TObjectPtr<UDNPlayerCombatPanel> umg_comabat_panel;
+
+	UPROPERTY()
+	TObjectPtr<UDNPlayerCombatPanel> umg_interaction_panel;
 };

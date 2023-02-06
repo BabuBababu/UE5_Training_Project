@@ -20,6 +20,10 @@
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 
+// Item
+#include "UE5_Training_Project/Actor/DNCommonActor.h"
+#include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
+
 // Util
 #include "UE5_Training_Project/Util/DNDamageOperation.h"
 
@@ -97,4 +101,51 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 		}
 	}
 
+}
+
+
+void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
+{
+	FQuat rotate = FQuat(player_in->GetControlRotation());		// 임시로 -15.f 로 카메라 각도만큼 해놧는데 확인예정
+
+	auto status = player_in->get_status_component().Get();
+
+	FVector camera_location = player_in->_camera_boom->GetComponentLocation();
+	FVector start_location = camera_location;
+
+	// 카메라 회전값 * 카메라의 포워드 벡터 = 사격 방향
+	FVector temp_forward = rotate.GetForwardVector();
+	// 사격 끝 지점
+	FVector end_location = camera_location + (temp_forward * 300.f); // 사거리 3M
+	FHitResult hit_result;
+
+	// 무시할 오브젝트
+	FCollisionQueryParams params;
+	params.AddIgnoredActor(player_in);
+
+	//라인 트레이스 시작
+	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_PhysicsBody, params);
+	//DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
+
+
+	if (hit_result.GetActor() != nullptr)
+	{
+		auto actor = Cast<ADNCommonActor>(hit_result.GetActor());
+
+		if (nullptr == actor)
+		{
+			//위젯 숨기기
+			_item_data = nullptr;
+		}
+		else if (actor->_actor_type == E_ACTOR_TYPE::AT_ITEM)
+		{
+			// 획득 위젯 보이기
+			auto* item = dynamic_cast<ADNCommonItem*>(actor);
+			_item_data = item->_item_data;
+		}
+		else if (actor->_actor_type == E_ACTOR_TYPE::AT_VEHICLE)
+		{
+			// 탑승 위젯 보이기
+		}
+	}
 }

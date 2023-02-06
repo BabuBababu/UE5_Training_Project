@@ -6,6 +6,9 @@
 #include <CoreMinimal.h>
 #include <UObject/NoExportTypes.h>
 
+// Data
+#include "UE5_Training_Project/Data/DNItemData.h"
+
 // generated
 #include "DNPlayerLineTrace.generated.h"
 
@@ -35,6 +38,12 @@ public:
 		UParticleSystem* fire_particle;
 
 public:
+	FDNItemData* _item_data;
+
+public:
 	UFUNCTION(BlueprintCallable)
 	void OnFire(ADNCommonCharacter* player_in);
+
+	UFUNCTION(BlueprintCallable)
+	void OnInteraction(ADNCommonCharacter* player_in);
 };

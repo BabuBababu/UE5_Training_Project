@@ -19,6 +19,12 @@ void ADNPlayerCharacter::BeginPlay()
 
 }
 
+void ADNPlayerCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	_line_trace->OnInteraction(this);
+}
+
 
 void ADNPlayerCharacter::start_fire()
 {
@@ -26,6 +32,29 @@ void ADNPlayerCharacter::start_fire()
 	fire();
 
 	
+}
+
+
+void ADNPlayerCharacter::reload()
+{
+	if (_status->_has_ammo == 0)																//총알이 없다면 장전 불가능
+		return;
+
+	if (_status->_current_ammo == _status->_chartacter_data->character_status_data.max_ammo)	//총알이 꽉찼다면 장전 불가능
+		return;
+
+	if (false == _is_armed_weapon)																//총을 들고 있지 않다면 장전 불가능
+		return;
+
+	if (_is_reloading == false)
+	{
+
+		_is_reloading = true;
+		_character_state = E_CHARACTER_STATE::CS_RELOAD;
+		UGameplayStatics::PlaySoundAtLocation(this, _reload_soundcue, GetActorLocation());
+		OnReload.Broadcast();
+	}
+
 }
 
 

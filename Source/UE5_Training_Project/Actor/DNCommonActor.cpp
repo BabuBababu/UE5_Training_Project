@@ -37,6 +37,9 @@ void ADNCommonActor::remove_event()
 
 void ADNCommonActor::init()
 {
+
+	RootComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Root"));
+
 	_actor_skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 	_actor_static_mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	_box_collision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
