@@ -85,5 +85,5 @@ void ADNPlayerCharacter::player_arm_event(bool armed_in)
 
 void ADNPlayerCharacter::player_crouch_event(bool crouch_in)
 {
-	on_crouch.Broadcast(crouch_in);
+	//on_crouch.Broadcast(crouch_in);		일단 기능을 꺼둡니다. 플레이어가 숙일 때 다른 인형들도 숙이는 기능
 }

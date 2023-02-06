@@ -239,3 +239,62 @@ enum class E_UI_PANEL_TYPE
 	UPT_QUICK_SLOT
 };
 
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////
+//
+//  Actor
+//
+//////////////////////////////////////////////////////////
+UENUM(BlueprintType)
+enum class E_ACTOR_TYPE : uint8
+{
+	AT_NONE = 0		UMETA(DisplayName = "None"),		//비어있음
+	AT_WALL			UMETA(DisplayName = "Wall"),		//벽
+	AT_ITEM			UMETA(DisplayName = "Item"),		//아이템
+	AT_VEHICLE		UMETA(DisplayName = "Vehicle"),		//탈것
+	AT_LOCATION		UMETA(DisplayName = "Location"),	//지역체크
+
+	AT_COUNT
+};
+
+
+UENUM(BlueprintType)
+enum class E_ITEM_TYPE : uint8
+{
+	IT_NONE = 0				UMETA(DisplayName = "None"),		//비어있음
+	IT_AMMO					UMETA(DisplayName = "Ammo"),		//총알
+	IT_HELMET				UMETA(DisplayName = "Helmet"),		//헬멧
+	IT_ARMOR				UMETA(DisplayName = "Armor"),		//갑옷
+	IT_GLOVE				UMETA(DisplayName = "Glove"),		//장갑
+	IT_BOOTS				UMETA(DisplayName = "Boots"),		//신발
+	IT_BACK_PACK			UMETA(DisplayName = "BackPack"),		//가방
+	IT_WEAPON_ADD_ON_1		UMETA(DisplayName = "add1"),		//무기 부착물 1
+	IT_WEAPON_ADD_ON_2		UMETA(DisplayName = "add2"),		//무기 부착물 2
+	IT_WEAPON_ADD_ON_3		UMETA(DisplayName = "add3"),		//무기 부착물 3
+	
+	IT_COUNT
+};
+
+
+
+UENUM(BlueprintType)
+enum class E_ITEM_GRADE : uint8
+{
+	IG_NONE = 0			UMETA(DisplayName = "None"),			//비어있음
+	IG_COMMON			UMETA(DisplayName = "Common"),			//1성
+	IG_UNCOMMON			UMETA(DisplayName = "UnCommon"),		//2성
+	IG_RARE				UMETA(DisplayName = "Rare"),			//3성
+	IG_SUPERRARE		UMETA(DisplayName = "SuperRare"),		//4성
+	IG_ULTRARARE		UMETA(DisplayName = "UltraRare"),		//5성
+
+
+
+	IG_COUNT
+};
+
