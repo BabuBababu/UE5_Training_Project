@@ -61,4 +61,5 @@ public:
 	int64		 _actor_id;										//액터 구분용
 
 
+
 };

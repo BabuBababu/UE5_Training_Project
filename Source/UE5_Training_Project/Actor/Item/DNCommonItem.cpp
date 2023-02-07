@@ -3,9 +3,11 @@
 
 #include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
 
-
 // Engine
 #include <Components/BoxComponent.h>
+
+// Character
+#include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 
 
 ADNCommonItem::ADNCommonItem()
@@ -31,6 +33,8 @@ void ADNCommonItem::BeginPlay()
 void ADNCommonItem::add_event()
 {
 
+	ADNPlayerCharacter* player = Cast<ADNPlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	player->OnItemPickup.AddDynamic(this, &ADNCommonItem::destroy_item_handler);
 }
 
 
@@ -47,6 +51,8 @@ void ADNCommonItem::Tick(float DeltaTime)
 
 void ADNCommonItem::item_init()
 {
+	_is_selected = false;
+
 	if (nullptr == _item_datatable)
 		return;
 
@@ -63,3 +69,12 @@ void ADNCommonItem::item_init()
 
 }
 
+
+void ADNCommonItem::destroy_item_handler(ADNCommonItem* actor_in)
+{
+	if (this != actor_in)
+		return;
+
+	UE_LOG(LogTemp, Warning, TEXT("Destroy this Item"));
+	Destroy();
+}

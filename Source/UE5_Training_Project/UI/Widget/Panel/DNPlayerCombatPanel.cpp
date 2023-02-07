@@ -15,8 +15,8 @@
 
 void UDNPlayerCombatPanel::NativeConstruct()
 {
-	set_panel_type(E_UI_PANEL_TYPE::UPT_GAUGE);
 
+	set_panel_type(E_UI_PANEL_TYPE::UPT_COMBAT);
 	Super::NativeConstruct();
 
 	init_gauge();

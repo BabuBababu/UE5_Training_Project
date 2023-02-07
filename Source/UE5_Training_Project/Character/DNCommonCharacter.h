@@ -21,6 +21,8 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputStartDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnIteractionFinishDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnIteractionFinishItemDelegate,ADNCommonItem*, item );
 
 
 class USpringArmComponent;
@@ -188,6 +190,10 @@ public:
 public:
 	FOnInputStartDelegate OnFire;
 	FOnInputStartDelegate OnReload;
+	FOnIteractionFinishItemDelegate OnItemPickup;
+	FOnIteractionFinishDelegate OnVehicleRiding;
+	FOnIteractionFinishDelegate OnNPCTalk;
+
 public:
 	UFUNCTION()
 	void destroy_object_handler();

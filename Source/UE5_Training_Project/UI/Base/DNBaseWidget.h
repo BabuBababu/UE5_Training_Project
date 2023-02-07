@@ -9,6 +9,13 @@
 // Defs
 #include "UE5_Training_Project/Defs/DNDefs.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNUIManager.h"
+#include "UE5_Training_Project/UI/Manager/DNWidgetManager.h"
+
+// Instance
+#include "UE5_Training_Project/Core/DNGameInstance.h"
+
 // Generated
 #include "DNBaseWidget.generated.h"
 
@@ -26,5 +33,14 @@ protected:
 
 	virtual void add_event();
 	virtual void remove_event();
+
+
+public:
+	const int64		get_widget_index() const { return _widget_index; };
+	void			set_widget_index(int64 index_in) { _widget_index = index_in; };
+
+private:
+	UPROPERTY()
+	int64	_widget_index = -1;
 
 };

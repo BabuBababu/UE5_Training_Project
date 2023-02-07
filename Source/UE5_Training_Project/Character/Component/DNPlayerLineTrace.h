@@ -18,6 +18,7 @@
 
 
 class ADNCommonCharacter;
+class ADNCommonItem;
 
  UCLASS(Transient, Blueprintable, HideCategories = AnimInstance, BlueprintType)
 class UE5_TRAINING_PROJECT_API UDNPlayerLineTrace : public UObject
@@ -38,8 +39,8 @@ public:
 		UParticleSystem* fire_particle;
 
 public:
-	FDNItemData* _item_data;
-
+	ADNCommonItem* _item;
+	bool		   _is_targeted;
 public:
 	UFUNCTION(BlueprintCallable)
 	void OnFire(ADNCommonCharacter* player_in);

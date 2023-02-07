@@ -1,21 +1,44 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 // Engine
 #include <CoreMinimal.h>
-#include <UObject/NoExportTypes.h>
+
+// Base
+#include "UE5_Training_Project/UI/Base/DNBaseManager.h"
+
 
 // generated
 #include "DNUIManager.generated.h"
 
+#define	UI_MANAGER				UDNUIManager::get_ui_manager()
+#define WIDGET_MANAGER			UDNUIManager::get_ui_manager()->get_widget_manager()
+
+
 /**
- *  À§Á¬µéÀ» °ü¸®ÇÏ±â À§ÇÑ ¸Å´ÏÀú Å¬·¡½ºÀÔ´Ï´Ù.
+ *  ìœ„ì ¯ë“¤ì„ ê´€ë¦¬í•˜ê¸° ìœ„í•œ ë§¤ë‹ˆì € í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
  */
 
+class UDNWidgetManager;
 UCLASS()
-class UE5_TRAINING_PROJECT_API UDNUIManager : public UObject
+class UE5_TRAINING_PROJECT_API UDNUIManager : public UDNBaseManager
 {
 	GENERATED_BODY()
-	
+
+
+protected:
+	void init_manager() override;
+	void destroy_manager() override;
+
+private:
+	TObjectPtr<UDNWidgetManager> _widget_manager = nullptr;
+
+public:
+	static TObjectPtr<UDNUIManager> get_ui_manager();
+
+
+public:
+	FORCEINLINE TObjectPtr<UDNWidgetManager> get_widget_manager() { return _widget_manager; };
+
 };

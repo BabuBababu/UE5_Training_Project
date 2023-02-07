@@ -46,6 +46,10 @@ public:
 	FDNItemData* _item_data;
 	E_ITEM_TYPE _item_type = E_ITEM_TYPE::IT_NONE;
 
+	bool _is_selected;
 
+public:
+	UFUNCTION()
+	void destroy_item_handler(ADNCommonItem* actor_in);
 
 };

@@ -24,6 +24,9 @@
 #include "UE5_Training_Project/Character/Component/DNEnemyLineTrace.h"
 #include <UE5_Training_Project/Component/DNStatusComponent.h>
 
+// Item
+#include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
+
 // AnimInstance
 #include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
 
@@ -300,7 +303,16 @@ void ADNCommonCharacter::stop_aiming()
 
 void ADNCommonCharacter::interaction()
 {
-	_character_state = E_CHARACTER_STATE::CS_INTERACTION;
+	//일단 임시방편으로 이렇게 작성 해둠. 함수 하나 만들어서 이름값이나 타입,ID값을 통해 기능을 넣을 예정
+	if (false == _line_trace->_is_targeted)
+		return;
+	
+	if (_line_trace->_item->_item_data->type == E_ITEM_TYPE::IT_AMMO)
+	{
+		_status->_has_ammo += _line_trace->_item->_item_data->count;
+		OnItemPickup.Broadcast(_line_trace->_item);
+	}
+
 }
 
 

@@ -154,6 +154,19 @@ enum class E_GAME_MODE_TYPE : uint8
 //  UI
 //
 //////////////////////////////////////////////////////////
+
+UENUM()
+enum class E_UI_MANAGER_TYPE : uint8
+{
+	UMT_NONE = 0,
+	UMT_UI_MANAGER,
+	UMT_WIDGET_MANAGER,
+
+	UMT_COUNT
+};
+
+
+
 UENUM()
 enum class E_UI_HUD_TYPE : uint8
 {
@@ -230,16 +243,26 @@ enum class E_UI_PANEL_TYPE
 	UPT_NONE,
 
 	UPT_MINIMAP,
+	UPT_INTERACTION,
 	UPT_SKILL,
 	UPT_ITEM,
 	UPT_MENU,
 	UPT_QUEST,
-	UPT_GAUGE, //플레이어 패널
+	UPT_COMBAT, //플레이어 패널
 	UPT_TARGET_INFORMATION,
 	UPT_QUICK_SLOT
 };
 
+UENUM()
+enum class E_UI_INTERACTION_TYPE : uint8
+{
+	UIT_NONE = 0,
+	UIT_ITEM,
+	UIT_VEHICLE,
+	UIT_NPC,
 
+	UIT_COUNT
+};
 
 
 
@@ -259,6 +282,7 @@ enum class E_ACTOR_TYPE : uint8
 	AT_ITEM			UMETA(DisplayName = "Item"),		//아이템
 	AT_VEHICLE		UMETA(DisplayName = "Vehicle"),		//탈것
 	AT_LOCATION		UMETA(DisplayName = "Location"),	//지역체크
+	AT_NPC			UMETA(DisplayName = "NPC"),			//NPC
 
 	AT_COUNT
 };

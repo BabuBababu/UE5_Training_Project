@@ -7,6 +7,7 @@
 #include <Components/BoxComponent.h>
 
 
+
 ADNCommonActor::ADNCommonActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -48,4 +49,5 @@ void ADNCommonActor::init()
 	_actor_static_mesh->SetupAttachment(RootComponent);
 	_box_collision->SetupAttachment(RootComponent);
 }
+
 

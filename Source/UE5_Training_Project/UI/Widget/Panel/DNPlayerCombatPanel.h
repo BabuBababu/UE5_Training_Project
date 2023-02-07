@@ -8,6 +8,9 @@
 // Base
 #include "UE5_Training_Project/UI/Base/DNBasePanel.h"
 
+// Defs
+#include "UE5_Training_Project/Defs/DNDefs.h"
+
 // Generated
 #include "DNPlayerCombatPanel.generated.h"
 
@@ -124,6 +127,8 @@ private:
 	float _current_sp = 0.0f;
 	float _max_sp = 0.0f;
 
+	
+
 protected:
 	virtual void	NativeConstruct() override;
 	virtual void	NativeDestruct() override;
@@ -142,5 +147,6 @@ private:
 
 public:
 	void set_hp(float current_hp_in, float max_hp_in);
+
 
 };

@@ -24,6 +24,13 @@
 #include "UE5_Training_Project/Actor/DNCommonActor.h"
 #include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNUIManager.h"
+#include "UE5_Training_Project/UI/Manager/DNWidgetManager.h"
+
+// UI
+#include "UE5_Training_Project/UI/Widget/Panel/DNInteractionPanel.h"
+
 // Util
 #include "UE5_Training_Project/Util/DNDamageOperation.h"
 
@@ -38,6 +45,9 @@ UDNPlayerLineTrace::UDNPlayerLineTrace()
 
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> Fire_ParticleAdd(TEXT("/Game/Assets/Weapon/Griffin/WeaponEffects/P_AssaultRifle_MF"));
 	fire_particle = Fire_ParticleAdd.Object;
+
+
+	_item = nullptr;
 }
 
 
@@ -128,24 +138,86 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 	//DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
 
 
+	
+
+	// 히트 액터가 없다면 위젯 숨기기
+	WIDGET_MANAGER->close_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
+	if (nullptr != _item)
+	{
+		_item->_is_selected = false;
+		_item = nullptr;
+		_is_targeted = false;
+	}
+
+
 	if (hit_result.GetActor() != nullptr)
 	{
 		auto actor = Cast<ADNCommonActor>(hit_result.GetActor());
+		//GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Green, FString::Printf(TEXT("hit Actor name is : %s"), *hit_result.GetActor()->GetName()));
 
 		if (nullptr == actor)
 		{
-			//위젯 숨기기
-			_item_data = nullptr;
+			WIDGET_MANAGER->close_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
+			if (nullptr != _item)
+			{
+				_item->_is_selected = false;
+				_item = nullptr;
+				_is_targeted = false;
+			}
 		}
 		else if (actor->_actor_type == E_ACTOR_TYPE::AT_ITEM)
 		{
 			// 획득 위젯 보이기
+			UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
+			if (nullptr == base_panel)
+				return;
+
+			UDNInteractionPanel* panel = dynamic_cast<UDNInteractionPanel*>(base_panel);		
+			if (nullptr == panel)
+				return;
+
+			_is_targeted = true;
+
+			panel->change_interaction_type(E_UI_INTERACTION_TYPE::UIT_ITEM);
+			panel->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+
 			auto* item = dynamic_cast<ADNCommonItem*>(actor);
-			_item_data = item->_item_data;
+			_item = item;
+			_item->_is_selected = true;
+
+			DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 		}
 		else if (actor->_actor_type == E_ACTOR_TYPE::AT_VEHICLE)
 		{
 			// 탑승 위젯 보이기
+			UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
+			if (nullptr == base_panel)
+				return;
+
+			UDNInteractionPanel* panel = dynamic_cast<UDNInteractionPanel*>(base_panel);
+			if (nullptr == panel)
+				return;
+
+			_is_targeted = true;
+
+			panel->change_interaction_type(E_UI_INTERACTION_TYPE::UIT_VEHICLE);
+			panel->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		}
+		else if (actor->_actor_type == E_ACTOR_TYPE::AT_NPC)
+		{
+			// NPC 위젯 보이기
+			UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
+			if (nullptr == base_panel)
+				return;
+
+			UDNInteractionPanel* panel = dynamic_cast<UDNInteractionPanel*>(base_panel);
+			if (nullptr == panel)
+				return;
+
+			_is_targeted = true;
+
+			panel->change_interaction_type(E_UI_INTERACTION_TYPE::UIT_NPC);
+			panel->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		}
 	}
 }
