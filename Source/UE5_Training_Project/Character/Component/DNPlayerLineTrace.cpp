@@ -126,7 +126,7 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 	// 카메라 회전값 * 카메라의 포워드 벡터 = 사격 방향
 	FVector temp_forward = rotate.GetForwardVector();
 	// 사격 끝 지점
-	FVector end_location = camera_location + (temp_forward * 300.f); // 사거리 3M
+	FVector end_location = camera_location + (temp_forward * 600.f); // 사거리 3M
 	FHitResult hit_result;
 
 	// 무시할 오브젝트

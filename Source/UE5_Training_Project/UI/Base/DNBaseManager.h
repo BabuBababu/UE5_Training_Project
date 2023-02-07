@@ -26,7 +26,7 @@ protected:
 	E_UI_MANAGER_TYPE _manager_type = E_UI_MANAGER_TYPE::UMT_NONE;
 
 
-private:
+protected:
 	bool _is_initialize = false;
 	bool _is_destroy = false;
 

@@ -34,6 +34,9 @@ void UDNGameInstance::Init()
 		UE_LOG(LogTemp, Warning, TEXT("UI_Manager Initialize Succeed"));
 	}
 
+
+	_is_initialize = true;
+
 }
 
 void UDNGameInstance::Shutdown()
@@ -41,15 +44,15 @@ void UDNGameInstance::Shutdown()
 	if (false == _is_initialize)
 		return;
 
+	Super::Shutdown();
 
 	// UI 매니저
 	if (_ui_manager)
 	{
 		_ui_manager->destroy();
+		_ui_manager = nullptr;
 	}
-	_ui_manager = nullptr;
 
-	Super::Shutdown();
 
 	UE_LOG(LogTemp, Warning, TEXT("GameInstance Destroy Succeed"));
 }

@@ -20,7 +20,6 @@ bool UDNBaseManager::initialize()
 	}
 
 	init_manager();
-
 	_is_initialize = true;
 
 	return true;
@@ -34,7 +33,6 @@ bool UDNBaseManager::destroy()
 	}
 
 	destroy_manager();
-
 	_is_initialize = false;
 
 	return true;

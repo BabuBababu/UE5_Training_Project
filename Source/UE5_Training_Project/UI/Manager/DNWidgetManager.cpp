@@ -11,15 +11,11 @@
 void UDNWidgetManager::init_manager()
 {
 	_manager_type = E_UI_MANAGER_TYPE::UMT_WIDGET_MANAGER;
-	Super::init_manager();
 
 }
 
 void UDNWidgetManager::destroy_manager()
 {
-
-	clear_panel_data();
-	Super::destroy_manager();
 }
 
 
