@@ -32,6 +32,7 @@ protected:
 	void destroy_manager() override;
 
 private:
+	UPROPERTY()
 	TObjectPtr<UDNWidgetManager> _widget_manager = nullptr;
 
 public:

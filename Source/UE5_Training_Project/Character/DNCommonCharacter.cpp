@@ -28,6 +28,9 @@
 // Item
 #include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
 
+// Character
+#include "UE5_Training_Project/Character/DNPlayerCharacter.h"
+
 // AnimInstance
 #include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
 
@@ -137,7 +140,7 @@ void ADNCommonCharacter::Tick(float DeltaTime)
 	// 대미지 인디케이터를 항상 플레이어가 보는 방향으로 돌립니다.
 	if (nullptr != _damage_indicator_widget)
 	{
-		ADNCommonCharacter* player = dynamic_cast<ADNCommonCharacter*>(GetWorld()->GetFirstPlayerController()->GetOwner());
+		ADNCommonCharacter* player = Cast<ADNCommonCharacter>(GetWorld()->GetFirstPlayerController()->GetOwner());
 		if(nullptr != player)
 			_damage_indicator_widget->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(_damage_indicator_widget->GetComponentLocation(), player->_camera_boom.Get()->GetComponentLocation()));
 	}
@@ -378,7 +381,7 @@ void ADNCommonCharacter::return_to_armed_handler()
 
 void ADNCommonCharacter::init_ui_event()
 {
-	UDNDamageIndicator* widget = dynamic_cast<UDNDamageIndicator*>(_damage_indicator_widget->GetWidget());
+	UDNDamageIndicator* widget = Cast<UDNDamageIndicator>(_damage_indicator_widget->GetWidget());
 
 	if (nullptr != widget)
 		widget->add_function_handler(this);
@@ -386,7 +389,7 @@ void ADNCommonCharacter::init_ui_event()
 
 void ADNCommonCharacter::remove_ui_event()
 {
-	UDNDamageIndicator* widget = dynamic_cast<UDNDamageIndicator*>(_damage_indicator_widget->GetWidget());
+	UDNDamageIndicator* widget = Cast<UDNDamageIndicator>(_damage_indicator_widget->GetWidget());
 
 	if (nullptr != widget)
 		widget->remove_function_handler(this);

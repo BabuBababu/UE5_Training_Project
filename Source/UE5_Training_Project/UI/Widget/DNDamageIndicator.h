@@ -32,10 +32,10 @@ protected:
 
 private:
 	UPROPERTY()
-	TObjectPtr<UTextBlock> _umg_damage_text;
+	TObjectPtr<UTextBlock> umg_damage_text;
 
 	UPROPERTY()
-	TObjectPtr<UImage> _umg_damage_image;
+	TObjectPtr<UImage> umg_damage_image;
 
 	UPROPERTY(Meta = (BindWidgetAnim), Transient)
 	class UWidgetAnimation* umg_show_damage_normal;

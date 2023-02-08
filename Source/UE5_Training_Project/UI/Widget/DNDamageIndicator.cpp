@@ -36,13 +36,13 @@ void UDNDamageIndicator::play_animation(E_DAMAGE_TYPE type_in)
 void UDNDamageIndicator::show_indicator_handler(float damage_in, E_DAMAGE_TYPE type_in)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("I Check Damage 2 ")));
-	if(nullptr == _umg_damage_text)
+	if(nullptr == umg_damage_text)
 		return;
 
 	//대미지 타입별로 이미지를 바꾼다거나 애니메이션을 바꾼다거나 그런걸 할 수 있음
 
 	FString damage = FString::SanitizeFloat(damage_in);
-	_umg_damage_text->SetText(FText::FromString(damage));
+	umg_damage_text->SetText(FText::FromString(damage));
 
 
 	// play animation
