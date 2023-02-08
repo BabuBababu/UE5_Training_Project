@@ -43,5 +43,5 @@ private:
 	TObjectPtr<UDNPlayerCombatPanel> umg_comabat_panel;
 
 	UPROPERTY()
-	TObjectPtr<UDNPlayerCombatPanel> umg_interaction_panel;
+	TObjectPtr<UDNInteractionPanel> umg_interaction_panel;
 };

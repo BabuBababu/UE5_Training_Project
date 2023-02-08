@@ -145,7 +145,16 @@ enum class E_GAME_MODE_TYPE : uint8
 
 
 
+UENUM()
+enum class E_MANAGER_TYPE : uint8
+{
+	MT_NONE = 0,
+	MT_UI_MANAGER,
+	MT_WIDGET_MANAGER,
+	MT_OBJECT_MANAGER,
 
+	MT_COUNT
+};
 
 
 
@@ -154,16 +163,6 @@ enum class E_GAME_MODE_TYPE : uint8
 //  UI
 //
 //////////////////////////////////////////////////////////
-
-UENUM()
-enum class E_UI_MANAGER_TYPE : uint8
-{
-	UMT_NONE = 0,
-	UMT_UI_MANAGER,
-	UMT_WIDGET_MANAGER,
-
-	UMT_COUNT
-};
 
 
 
@@ -320,5 +319,19 @@ enum class E_ITEM_GRADE : uint8
 
 
 	IG_COUNT
+};
+
+
+
+UENUM()
+enum class E_DAMAGE_TYPE : uint8
+{
+	DT_NONE = 0,
+	DT_NORMAL,		//일반 대미지
+	DT_WEAK,		//약점 대미지
+	DT_CRITICAL,	//크리티컬
+	DT_RESIST,		//저항 대미지 (반감 대미지)
+
+	DT_COUNT
 };
 

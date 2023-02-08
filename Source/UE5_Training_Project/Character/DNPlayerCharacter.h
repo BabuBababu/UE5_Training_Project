@@ -33,9 +33,18 @@ public:
 	void armed() override;
 	void crouch() override;
 	void reload() override;
+	void aiming() override;
+	void stop_aiming() override;
+
 
 public:
 	void start_fire();
+
+	void init_ui_event() override;
+	void remove_ui_event() override;
+
+private:
+	FTransform set_camera_transform(bool flag_in);
 
 public:
 	FOnArmDelegate on_armed;

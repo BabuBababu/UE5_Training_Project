@@ -34,6 +34,15 @@ void UDNGameInstance::Init()
 		UE_LOG(LogTemp, Warning, TEXT("UI_Manager Initialize Succeed"));
 	}
 
+	if (nullptr == _object_manager)
+	{
+		_object_manager = NewObject<UDNObjectManager>(this, UDNObjectManager::StaticClass());
+		_object_manager->initialize();
+
+
+		UE_LOG(LogTemp, Warning, TEXT("UI_Manager Initialize Succeed"));
+	}
+
 
 	_is_initialize = true;
 
@@ -51,6 +60,12 @@ void UDNGameInstance::Shutdown()
 	{
 		_ui_manager->destroy();
 		_ui_manager = nullptr;
+	}
+
+	if (_object_manager)
+	{
+		_object_manager->destroy();
+		_object_manager = nullptr;
 	}
 
 

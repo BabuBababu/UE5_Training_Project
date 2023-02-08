@@ -19,7 +19,7 @@
  */
 
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDamageIndicator, float, damage, E_DAMAGE_TYPE, type_in);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputStartDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnIteractionFinishDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnIteractionFinishItemDelegate,ADNCommonItem*, item );
@@ -27,6 +27,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnIteractionFinishItemDelegate,ADNC
 
 class USpringArmComponent;
 class UCameraComponent;
+class UWidgetComponent;
 class UDNPlayerLineTrace;
 class UDNEnemyLineTrace;
 class UDNStatusComponent;
@@ -41,6 +42,8 @@ public:
 
 	virtual void add_event();
 	virtual void remove_event();
+	virtual void init_ui_event();
+	virtual void remove_ui_event();
 
 protected:
 	virtual void BeginPlay() override;
@@ -89,6 +92,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 	TObjectPtr<UStaticMeshComponent> _weapon_un_armed;
 
+
+	// 위젯
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+	TObjectPtr<UWidgetComponent> _damage_indicator_widget;
 
 	// 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -193,6 +200,8 @@ public:
 	FOnIteractionFinishItemDelegate OnItemPickup;
 	FOnIteractionFinishDelegate OnVehicleRiding;
 	FOnIteractionFinishDelegate OnNPCTalk;
+
+	FOnDamageIndicator OnDamageIndicator;
 
 public:
 	UFUNCTION()

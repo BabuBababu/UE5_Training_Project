@@ -7,6 +7,7 @@
 #include <Engine/GameInstance.h>
 
 #include "UE5_Training_Project/Manager/DNUIManager.h"
+#include "UE5_Training_Project/Manager/DNObjectManager.h"
 
 // generated
 #include "DNGameInstance.generated.h"
@@ -16,6 +17,7 @@
  */
 
 class UDNUIManager;
+class UDNObjectManager;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNGameInstance : public UGameInstance
@@ -35,6 +37,9 @@ public:
 private:
 	UPROPERTY()
 	UDNUIManager* _ui_manager = nullptr;
+
+	UPROPERTY()
+	UDNObjectManager* _object_manager = nullptr;
 
 	bool _is_initialize;
 };

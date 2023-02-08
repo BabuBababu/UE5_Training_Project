@@ -17,6 +17,9 @@
  */
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractionLineDelegate, E_UI_INTERACTION_TYPE, type);
+
+
 class ADNCommonCharacter;
 class ADNCommonItem;
 
@@ -27,6 +30,7 @@ class UE5_TRAINING_PROJECT_API UDNPlayerLineTrace : public UObject
 		
 public:
 	UDNPlayerLineTrace();
+
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")
@@ -39,6 +43,9 @@ public:
 		UParticleSystem* fire_particle;
 
 public:
+	FOnInteractionLineDelegate OnInteractionLinetrace;
+
+public:
 	ADNCommonItem* _item;
 	bool		   _is_targeted;
 public:
@@ -47,4 +54,5 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnInteraction(ADNCommonCharacter* player_in);
+
 };

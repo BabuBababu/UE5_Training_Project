@@ -11,7 +11,7 @@
 
 void UDNUIManager::init_manager()
 {
-	_manager_type = E_UI_MANAGER_TYPE::UMT_UI_MANAGER;
+	_manager_type = E_MANAGER_TYPE::MT_UI_MANAGER;
 
 	if (_widget_manager == nullptr)
 	{

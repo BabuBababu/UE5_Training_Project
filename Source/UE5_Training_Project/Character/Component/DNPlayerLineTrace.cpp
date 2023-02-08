@@ -51,6 +51,7 @@ UDNPlayerLineTrace::UDNPlayerLineTrace()
 }
 
 
+
 void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 {
 	FQuat rotate = FQuat(player_in->GetControlRotation());		// 임시로 -15.f 로 카메라 각도만큼 해놧는데 확인예정
@@ -98,7 +99,8 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 			DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);
 			
-			DNDamageOperation::DNReceiveDamage(damage, hit_result.BoneName, _enemy);
+			DNDamageOperation::ReceiveDamage(damage, hit_result.BoneName, _enemy);
+			DNDamageOperation::DamageShowUI(damage, _enemy,E_DAMAGE_TYPE::DT_NORMAL);//헤드일 경우 약점 대미지로 판단, ReceiveDamage에서 약점부위를 판단하고 넣어야할듯.. 순서가.. 일단은 노멀로 통일
 		}
 		else
 		{
@@ -141,7 +143,7 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 	
 
 	// 히트 액터가 없다면 위젯 숨기기
-	WIDGET_MANAGER->close_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
+	OnInteractionLinetrace.Broadcast(E_UI_INTERACTION_TYPE::UIT_NONE);
 	if (nullptr != _item)
 	{
 		_item->_is_selected = false;
@@ -157,7 +159,7 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 
 		if (nullptr == actor)
 		{
-			WIDGET_MANAGER->close_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
+			OnInteractionLinetrace.Broadcast(E_UI_INTERACTION_TYPE::UIT_NONE);
 			if (nullptr != _item)
 			{
 				_item->_is_selected = false;
@@ -178,9 +180,7 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 
 			_is_targeted = true;
 
-			panel->change_interaction_type(E_UI_INTERACTION_TYPE::UIT_ITEM);
-			panel->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-
+			OnInteractionLinetrace.Broadcast(E_UI_INTERACTION_TYPE::UIT_ITEM);
 			auto* item = dynamic_cast<ADNCommonItem*>(actor);
 			_item = item;
 			_item->_is_selected = true;
@@ -200,8 +200,7 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 
 			_is_targeted = true;
 
-			panel->change_interaction_type(E_UI_INTERACTION_TYPE::UIT_VEHICLE);
-			panel->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+			OnInteractionLinetrace.Broadcast(E_UI_INTERACTION_TYPE::UIT_VEHICLE);
 		}
 		else if (actor->_actor_type == E_ACTOR_TYPE::AT_NPC)
 		{
@@ -216,8 +215,9 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 
 			_is_targeted = true;
 
-			panel->change_interaction_type(E_UI_INTERACTION_TYPE::UIT_NPC);
-			panel->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+			OnInteractionLinetrace.Broadcast(E_UI_INTERACTION_TYPE::UIT_NPC);
 		}
 	}
 }
+
+

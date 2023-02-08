@@ -7,9 +7,12 @@
 void UDNPanelLayer::NativeConstruct()
 {
 	Super::NativeConstruct();
+
 }
 
 void UDNPanelLayer::NativeDestruct()
 {
+
+
 	Super::NativeDestruct();
 }

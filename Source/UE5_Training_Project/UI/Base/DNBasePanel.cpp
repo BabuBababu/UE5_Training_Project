@@ -10,7 +10,7 @@ void UDNBasePanel::NativeConstruct()
 	UI_MANAGER->get_widget_manager()->add_panel(this);
 
 
-	//UE_LOG(LogTemp, Warning, TEXT("BasePanel Initialize Succeed"));
+	UE_LOG(LogTemp, Warning, TEXT("BasePanel Initialize Succeed"));
 }
 
 

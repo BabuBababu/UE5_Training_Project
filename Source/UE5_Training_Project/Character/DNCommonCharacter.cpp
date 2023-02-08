@@ -7,11 +7,12 @@
 #include <Camera/CameraComponent.h>
 #include <Components/CapsuleComponent.h>
 #include <Components/InputComponent.h>
+#include <Components/WidgetComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 #include <GameFramework/Controller.h>
 #include <GameFramework/SpringArmComponent.h>
 #include <Engine/Classes/Kismet/GameplayStatics.h>
-
+#include <Kismet/KismetMathLibrary.h>
 
 // UE5_Training_Project_Setting
 #include "UE5_Training_Project_Setting/Core/DNCharacterAssetSetting.h"
@@ -29,6 +30,9 @@
 
 // AnimInstance
 #include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
+
+// UI
+#include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
 
 
 
@@ -81,6 +85,9 @@ ADNCommonCharacter::ADNCommonCharacter()
 	_follow_camera->SetupAttachment(_camera_boom); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	_follow_camera->bUsePawnControlRotation = true; // Camera does not rotate relative to arm
 
+	// 위젯
+	_damage_indicator_widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("DamageIndicatorWidget"));
+	_damage_indicator_widget->SetupAttachment(_character_skeletal_mesh);
 
 
 	// 에셋 불러오기 테스트
@@ -119,11 +126,21 @@ void ADNCommonCharacter::BeginPlay()
 		_status->init();
 		_status->add_event(this);
 	}
+
+	init_ui_event();		//이벤트 추가할 UI 델리게이트 등록
 }
 
 void ADNCommonCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	// 대미지 인디케이터를 항상 플레이어가 보는 방향으로 돌립니다.
+	if (nullptr != _damage_indicator_widget)
+	{
+		ADNCommonCharacter* player = dynamic_cast<ADNCommonCharacter*>(GetWorld()->GetFirstPlayerController()->GetOwner());
+		if(nullptr != player)
+			_damage_indicator_widget->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(_damage_indicator_widget->GetComponentLocation(), player->_camera_boom.Get()->GetComponentLocation()));
+	}
 
 }
 
@@ -292,13 +309,11 @@ void ADNCommonCharacter::aiming()
 		return;
 
 	_is_aiming = true;
-	_follow_camera->SetRelativeTransform(set_camera_transform(true));
 }
 
 void ADNCommonCharacter::stop_aiming()
 {
 	_is_aiming = false;
-	_follow_camera->SetRelativeTransform(set_camera_transform(false));
 }
 
 void ADNCommonCharacter::interaction()
@@ -326,7 +341,9 @@ void ADNCommonCharacter::set_idle_animation()
 
 void ADNCommonCharacter::destroy_object_handler()
 {
+	remove_ui_event();
 	Destroy();
+
 }
 
 void ADNCommonCharacter::return_to_armed_handler()
@@ -359,20 +376,18 @@ void ADNCommonCharacter::return_to_armed_handler()
 	}
 }
 
-
-FTransform ADNCommonCharacter::set_camera_transform(bool flag_in)
+void ADNCommonCharacter::init_ui_event()
 {
+	UDNDamageIndicator* widget = dynamic_cast<UDNDamageIndicator*>(_damage_indicator_widget->GetWidget());
 
-	const FVector OriginLocation(100.f, 0.f, 0.f);
-	const FVector AimCameraLocation(350.f, 0.f, 50.f);
-	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
-	const FVector OriginCameraScale(1.f, 1.f, 1.f);
+	if (nullptr != widget)
+		widget->add_function_handler(this);
+}
 
-	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
-	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
+void ADNCommonCharacter::remove_ui_event()
+{
+	UDNDamageIndicator* widget = dynamic_cast<UDNDamageIndicator*>(_damage_indicator_widget->GetWidget());
 
-	if (true != flag_in)
-		return OriginCameraTransform;
-
-	return AimCameraTransform;
+	if (nullptr != widget)
+		widget->remove_function_handler(this);
 }

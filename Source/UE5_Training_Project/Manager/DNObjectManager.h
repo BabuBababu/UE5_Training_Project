@@ -1,25 +1,32 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 // Engine
 #include <CoreMinimal.h>
-#include <UObject/NoExportTypes.h>
+
+// Base
+#include "UE5_Training_Project/UI/Base/DNBaseManager.h"
 
 // generated
 #include "DNObjectManager.generated.h"
 
 /**
- *	 ¾ÆÁ÷Àº È®½ÇÈ÷ Á¤ÇØµÎÁø ¾Ê¾ÒÁö¸¸ 
- *	 ±×¸®Æù ÀÎÇü Å¬·¡½º¿Í ½ºÅ×ÀÌÁö¿¡ »ı¼ºÇÏ°Ô µÉ ¸¹Àº Àû±º °´Ã¼µéÀ» °ü¸®ÇÏ±â À§ÇØ ¸¸µé¾ú½À´Ï´Ù.
- *	 ÃÑ¾Ë »ı¼º ¹× ÆÄ±«ÇÒ ¶§ »ó´çÇÑ ¿¬»êÀ» ÇÊ¿ä·Î ÇÑ´Ù°í »ı°¢Çß¾î¿ä. 
- *   ÆÄ±«ÇÏÁö¾Ê°í »ç¶óÁö°Ô ÇÑ´ÙÀ½ ¸ğ¾Æ³ù´Ù°¡ ÀçÈ°¿ëÇÏ¸é ¾î¶³±î ¶ó´Â »ı°¢À» Çß½À´Ï´ç!
- *	 ±×·¡¼­ ¿ÀºêÁ§Æ®Ç®·Î¼­ °ü¸®¸¦ ÇÒ ¼öµµ ÀÖ°Ú´Ù ½Í¾î¼­ ¸¸µç ¸Å´ÏÀú Å¬·¡½ºÀÔ´Ï´Ù!
+ *	 ì•„ì§ì€ í™•ì‹¤íˆ ì •í•´ë‘ì§„ ì•Šì•˜ì§€ë§Œ 
+ *	 ê·¸ë¦¬í° ì¸í˜• í´ë˜ìŠ¤ì™€ ìŠ¤í…Œì´ì§€ì— ìƒì„±í•˜ê²Œ ë  ë§ì€ ì êµ° ê°ì²´ë“¤ì„ ê´€ë¦¬í•˜ê¸° ìœ„í•´ ë§Œë“¤ì—ˆìŠµë‹ˆë‹¤.
+ *	 ì´ì•Œ ìƒì„± ë° íŒŒê´´í•  ë•Œ ìƒë‹¹í•œ ì—°ì‚°ì„ í•„ìš”ë¡œ í•œë‹¤ê³  ìƒê°í–ˆì–´ìš”. 
+ *   íŒŒê´´í•˜ì§€ì•Šê³  ì‚¬ë¼ì§€ê²Œ í•œë‹¤ìŒ ëª¨ì•„ë†¨ë‹¤ê°€ ì¬í™œìš©í•˜ë©´ ì–´ë–¨ê¹Œ ë¼ëŠ” ìƒê°ì„ í–ˆìŠµë‹ˆë‹¹!
+ *	 ê·¸ë˜ì„œ ì˜¤ë¸Œì íŠ¸í’€ë¡œì„œ ê´€ë¦¬ë¥¼ í•  ìˆ˜ë„ ìˆê² ë‹¤ ì‹¶ì–´ì„œ ë§Œë“  ë§¤ë‹ˆì € í´ë˜ìŠ¤ì…ë‹ˆë‹¤!
  */
 
 UCLASS()
-class UE5_TRAINING_PROJECT_API UDNObjectManager : public UObject
+class UE5_TRAINING_PROJECT_API UDNObjectManager : public UDNBaseManager
 {
 	GENERATED_BODY()
 	
+protected:
+	void init_manager() override;
+	void destroy_manager() override;
+
+
 };

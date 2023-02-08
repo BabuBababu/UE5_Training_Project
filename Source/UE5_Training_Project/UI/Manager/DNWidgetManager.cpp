@@ -10,7 +10,7 @@
 
 void UDNWidgetManager::init_manager()
 {
-	_manager_type = E_UI_MANAGER_TYPE::UMT_WIDGET_MANAGER;
+	_manager_type = E_MANAGER_TYPE::MT_WIDGET_MANAGER;
 
 }
 
@@ -60,6 +60,9 @@ void UDNWidgetManager::remove_panel(E_UI_PANEL_TYPE panel_type_in)
 
 UDNBasePanel* UDNWidgetManager::get_panel(E_UI_PANEL_TYPE panel_type_in) const
 {
+	if (_panel_array.IsEmpty())
+		return nullptr;
+		
 	UDNBasePanel* return_panel = _panel_array.FindRef(panel_type_in);
 	return return_panel;
 }

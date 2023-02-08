@@ -19,6 +19,7 @@
  */
 
 class ADNCommonActor;
+class UDNPlayerLineTrace;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNInteractionPanel : public UDNBasePanel
@@ -29,6 +30,9 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
+public:
+	void add_function_handler(UDNPlayerLineTrace* trace_in);
+	void remove_function_handler(UDNPlayerLineTrace* trace_in);
 
 private:
 	UPROPERTY()
@@ -68,14 +72,9 @@ public:
 
 	void change_interaction_type(E_UI_INTERACTION_TYPE type_in);
 
-
-//private:
-//	ADNCommonActor* _actor_data;						/이건 보류, 일단 라인트레이스에서 데이터를 가지고 있음
-//
-//public:
-//	void set_actor_data(ADNCommonActor* actor_in) { _actor_data = actor_in; };	
-
-
+public:
+	UFUNCTION()
+		void interaction_type_handler(E_UI_INTERACTION_TYPE type_in);
 
 
 };

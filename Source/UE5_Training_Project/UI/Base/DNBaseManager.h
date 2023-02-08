@@ -23,7 +23,7 @@ public:
 	UDNBaseManager(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
-	E_UI_MANAGER_TYPE _manager_type = E_UI_MANAGER_TYPE::UMT_NONE;
+	E_MANAGER_TYPE _manager_type = E_MANAGER_TYPE::MT_NONE;
 
 
 protected:
@@ -34,7 +34,7 @@ public:
 	bool initialize();
 	bool destroy();
 
-	E_UI_MANAGER_TYPE get_manager_type() const { return _manager_type; };
+	E_MANAGER_TYPE get_manager_type() const { return _manager_type; };
 
 protected:
 	virtual void init_manager() {};

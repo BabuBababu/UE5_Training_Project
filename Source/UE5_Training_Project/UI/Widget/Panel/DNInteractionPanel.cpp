@@ -6,18 +6,22 @@
 // Actor
 #include "UE5_Training_Project/Actor/DNCommonActor.h"
 
+// Character
+#include "UE5_Training_Project/Character/DNPlayerCharacter.h"
+
+// Component
+#include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
+
 
 
 
 void UDNInteractionPanel::NativeConstruct()
 {
 	set_panel_type(E_UI_PANEL_TYPE::UPT_INTERACTION);
-	//_actor_data = nullptr;
+
 	Super::NativeConstruct();
 
 }
-
-
 
 void UDNInteractionPanel::NativeDestruct()
 {
@@ -25,6 +29,20 @@ void UDNInteractionPanel::NativeDestruct()
 
 }
 
+
+void UDNInteractionPanel::add_function_handler(UDNPlayerLineTrace* trace_in)
+{
+
+	trace_in->OnInteractionLinetrace.AddDynamic(this, &UDNInteractionPanel::interaction_type_handler);
+	UE_LOG(LogTemp, Warning, TEXT("interaction add event!!!!"));
+
+}
+
+void UDNInteractionPanel::remove_function_handler(UDNPlayerLineTrace* trace_in)
+{
+	trace_in->OnInteractionLinetrace.RemoveDynamic(this, &UDNInteractionPanel::interaction_type_handler);
+	UE_LOG(LogTemp, Warning, TEXT("interaction remove event!!!!"));
+}
 
 void UDNInteractionPanel::change_interaction_type(E_UI_INTERACTION_TYPE type_in)
 {
@@ -56,5 +74,20 @@ void UDNInteractionPanel::change_interaction_type(E_UI_INTERACTION_TYPE type_in)
 		_umg_item_text->SetVisibility(ESlateVisibility::Collapsed);
 		_umg_vehicle_text->SetVisibility(ESlateVisibility::Collapsed);
 		_umg_npc_text->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	}
+}
+
+
+void UDNInteractionPanel::interaction_type_handler(E_UI_INTERACTION_TYPE type_in)
+{
+
+	if (type_in == E_UI_INTERACTION_TYPE::UIT_NONE)
+	{
+		SetVisibility(ESlateVisibility::Collapsed);
+	}
+	else
+	{
+		change_interaction_type(type_in);
+		SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
 }
