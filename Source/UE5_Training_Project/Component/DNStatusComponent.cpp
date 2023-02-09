@@ -36,7 +36,7 @@ UDNStatusComponent::UDNStatusComponent()
 		_exp_datatable = EXPDataObject.Object;
 	}
 
-	_has_ammo = 30;		// 테스트용 일단 여기에 초기화해둠
+	_has_ammo = 5000;		// 테스트용 일단 여기에 초기화해둠
 }
 
 

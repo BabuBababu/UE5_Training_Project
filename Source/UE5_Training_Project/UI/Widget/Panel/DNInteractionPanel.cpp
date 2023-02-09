@@ -53,12 +53,13 @@ void UDNInteractionPanel::change_interaction_type(E_UI_INTERACTION_TYPE type_in)
 		nullptr == _umg_npc_text)
 		return;
 
-
+	UE_LOG(LogTemp, Warning, TEXT("interaction item 1!!!!"));
 	if (type_in == E_UI_INTERACTION_TYPE::UIT_ITEM)
 	{
 		_umg_item_text->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		_umg_vehicle_text->SetVisibility(ESlateVisibility::Collapsed);
 		_umg_npc_text->SetVisibility(ESlateVisibility::Collapsed);
+		UE_LOG(LogTemp, Warning, TEXT("interaction item 2!!!!"));
 
 	}
 	else if (type_in == E_UI_INTERACTION_TYPE::UIT_VEHICLE)
