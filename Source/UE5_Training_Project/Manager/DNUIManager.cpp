@@ -8,8 +8,7 @@
 
 
 
-
-void UDNUIManager::init_manager()
+void UDNUIManager::initialize()
 {
 	_manager_type = E_MANAGER_TYPE::MT_UI_MANAGER;
 
@@ -21,18 +20,17 @@ void UDNUIManager::init_manager()
 		UE_LOG(LogTemp, Warning, TEXT("WidgetManager Initialize Succeed"));
 	}
 
+	Super::initialize();
 }
 
-
-void UDNUIManager::destroy_manager()
+void UDNUIManager::destroy()
 {
 	if (_widget_manager != nullptr)
 	{
 		_widget_manager->destroy();
-
 		_widget_manager = nullptr;
 	}
-
+	Super::destroy();
 }
 
 

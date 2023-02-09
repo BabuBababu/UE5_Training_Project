@@ -31,12 +31,8 @@ protected:
 	bool _is_destroy = false;
 
 public:
-	bool initialize();
-	bool destroy();
+	virtual void initialize();
+	virtual void destroy();
 
 	E_MANAGER_TYPE get_manager_type() const { return _manager_type; };
-
-protected:
-	virtual void init_manager() {};
-	virtual void destroy_manager() {};
 };

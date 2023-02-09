@@ -30,10 +30,10 @@ void ADNUnEnemyCharacter::BeginPlay()
 	_is_attacking = false;
 }
 
-void ADNUnEnemyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	remove_event();
-}
+//void ADNUnEnemyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+//{
+//	remove_event();
+//}
 
 void ADNUnEnemyCharacter::Tick(float DeltaTime)
 {

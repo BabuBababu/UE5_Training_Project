@@ -8,14 +8,19 @@
 
 
 
-void UDNWidgetManager::init_manager()
+void UDNWidgetManager::initialize()
 {
 	_manager_type = E_MANAGER_TYPE::MT_WIDGET_MANAGER;
 
+	Super::initialize();
+
 }
 
-void UDNWidgetManager::destroy_manager()
+void UDNWidgetManager::destroy()
 {
+	clear_panel_data();
+
+	Super::destroy();
 }
 
 

@@ -24,9 +24,9 @@ class UE5_TRAINING_PROJECT_API UDNObjectManager : public UDNBaseManager
 {
 	GENERATED_BODY()
 	
-protected:
-	void init_manager() override;
-	void destroy_manager() override;
+public:
+	void initialize() override;
+	void destroy() override;
 
 
 };

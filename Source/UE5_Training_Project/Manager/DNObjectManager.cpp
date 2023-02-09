@@ -5,17 +5,18 @@
 
 
 
-void UDNObjectManager::init_manager()
+void UDNObjectManager::initialize()
 {
 	_manager_type = E_MANAGER_TYPE::MT_OBJECT_MANAGER;
 
 	
-
+	Super::initialize();
 }
 
 
-void UDNObjectManager::destroy_manager()
+void UDNObjectManager::destroy()
 {
 
+	Super::destroy();
 
 }

@@ -12,28 +12,12 @@ UDNBaseManager::UDNBaseManager(const FObjectInitializer& ObjectInitializer)
 
 
 
-bool UDNBaseManager::initialize()
+void UDNBaseManager::initialize()
 {
-	if (_is_initialize == true)
-	{
-		return false;
-	}
 
-	init_manager();
-	_is_initialize = true;
-
-	return true;
 }
 
-bool UDNBaseManager::destroy()
+void UDNBaseManager::destroy()
 {
-	if (_is_initialize == false)
-	{
-		return false;
-	}
 
-	destroy_manager();
-	_is_initialize = false;
-
-	return true;
 }

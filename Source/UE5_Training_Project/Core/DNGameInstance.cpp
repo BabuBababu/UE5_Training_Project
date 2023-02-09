@@ -30,7 +30,6 @@ void UDNGameInstance::Init()
 		_ui_manager = NewObject<UDNUIManager>(this, UDNUIManager::StaticClass());
 		_ui_manager->initialize();
 
-
 		UE_LOG(LogTemp, Warning, TEXT("UI_Manager Initialize Succeed"));
 	}
 
@@ -38,7 +37,6 @@ void UDNGameInstance::Init()
 	{
 		_object_manager = NewObject<UDNObjectManager>(this, UDNObjectManager::StaticClass());
 		_object_manager->initialize();
-
 
 		UE_LOG(LogTemp, Warning, TEXT("UI_Manager Initialize Succeed"));
 	}
