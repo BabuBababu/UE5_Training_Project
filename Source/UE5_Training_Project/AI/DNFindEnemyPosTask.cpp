@@ -52,7 +52,7 @@ EBTNodeResult::Type UDNFindEnemyPosTask::ExecuteTask(UBehaviorTreeComponent& own
 		UNavigationSystemV1* const NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
 		if (nullptr == NavSystem) {
 			//navi mesh가 없다면 실패를 반환
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No Enemy in Navi"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No Enemy in Navi"));
 			return EBTNodeResult::Failed;
 		}
 

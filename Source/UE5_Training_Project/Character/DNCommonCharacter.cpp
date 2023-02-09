@@ -140,7 +140,10 @@ void ADNCommonCharacter::Tick(float DeltaTime)
 	// 대미지 인디케이터를 항상 플레이어가 보는 방향으로 돌립니다.
 	if (nullptr != _damage_indicator_widget)
 	{
-		ADNCommonCharacter* player = Cast<ADNCommonCharacter>(GetWorld()->GetFirstPlayerController()->GetOwner());
+		ADNCommonCharacter* player = Cast<ADNCommonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%s"), *player->GetName()));
+
 		if(nullptr != player)
 			_damage_indicator_widget->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(_damage_indicator_widget->GetComponentLocation(), player->_camera_boom.Get()->GetComponentLocation()));
 	}
