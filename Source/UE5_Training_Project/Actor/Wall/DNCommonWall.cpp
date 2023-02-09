@@ -50,7 +50,7 @@ void ADNCommonWall::overlap_wall_handler(class UPrimitiveComponent* selfComp, cl
 
 	character->_is_near_wall = true;
 
-	UE_LOG(LogTemp, Warning, TEXT("Wall Overlap actor is %s"), *otherActor->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("Wall Overlap actor is %s"), *otherActor->GetName());
 }
 
 
@@ -64,5 +64,5 @@ void ADNCommonWall::unoverlap_wall_handler(UPrimitiveComponent* OverlappedComp, 
 
 	character->_is_near_wall = false;
 
-	UE_LOG(LogTemp, Warning, TEXT("Wall Un Overlap actor is %s"), *otherActor->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("Wall Un Overlap actor is %s"), *otherActor->GetName());
 }

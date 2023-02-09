@@ -36,7 +36,7 @@ UDNStatusComponent::UDNStatusComponent()
 		_exp_datatable = EXPDataObject.Object;
 	}
 
-	_has_ammo = 5000;		// 테스트용 일단 여기에 초기화해둠
+	_has_ammo = 30;		// 테스트용 일단 여기에 초기화해둠
 }
 
 
@@ -138,7 +138,7 @@ int64 UDNStatusComponent::get_max_ammo() const
 {
 
 	if (nullptr == _chartacter_data)
-		return 0.f;
+		return 0;
 
 	return _chartacter_data->character_status_data.max_ammo;
 }
@@ -176,9 +176,12 @@ void UDNStatusComponent::reload_ammo_handler()
 	
 	_has_ammo -= _chartacter_data->character_status_data.max_ammo - _current_ammo;
 
-	if (_has_ammo < 0)			//남은총알이 40발 미만일 때
-		_current_ammo = _chartacter_data->character_status_data.max_ammo -_has_ammo;
-	else                        //남은총알이 40발 이상일 때
+	if (_has_ammo < 0)			//예시) 남은총알이 40발 미만일 때
+	{
+		_current_ammo = _chartacter_data->character_status_data.max_ammo + _has_ammo;
+		_has_ammo = 0;
+	}
+	else                        //예시) 남은총알이 40발 이상일 때
 		_current_ammo = _chartacter_data->character_status_data.max_ammo;
 
 }

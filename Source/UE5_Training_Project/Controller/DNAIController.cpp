@@ -74,6 +74,10 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 
 	RunBehaviorTree(btree);			//beginplay되면서 폰에 빙의될때 실행
 	behavior_tree_component->StartTree(*btree);
+
+	add_event(character);
+
+
 }
 
 void ADNAIController::OnUnPossess()
@@ -112,14 +116,9 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
 			if (Stimulus.WasSuccessfullySensed())
 			{
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
+				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, Stimulus.WasSuccessfullySensed());
 				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
 				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I See %s"), insight_me_character));
-			}
-			else
-			{
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 			}
 
 			//// 타겟이 죽었다면
@@ -139,14 +138,9 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
 			if (Stimulus.WasSuccessfullySensed())
 			{
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
+				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, Stimulus.WasSuccessfullySensed());
 				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
 				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("I See %s"), insight_me_character));
-			}
-			else
-			{
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 			}
 
 			//// 타겟이 죽었다면
@@ -161,6 +155,19 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 	}
 
 	
+}
+
+void ADNAIController::add_event(ADNCommonCharacter* character_in)
+{
+	character_in->OnEmptyAmmo.AddDynamic(this, &ADNAIController::update_empty_ammo_handler);
+	character_in->OnAtStartAmmo.AddDynamic(this, &ADNAIController::update_beginplay_ammo_handler);
+}
+
+
+void ADNAIController::remove_event(ADNCommonCharacter* character_in)
+{
+	character_in->OnEmptyAmmo.RemoveDynamic(this, &ADNAIController::update_empty_ammo_handler);
+	character_in->OnAtStartAmmo.AddDynamic(this, &ADNAIController::update_beginplay_ammo_handler);
 }
 
 void ADNAIController::SetPerceptionSystem()
@@ -191,4 +198,23 @@ TObjectPtr<UBlackboardComponent> ADNAIController::get_blackboard() const
 		return nullptr;
 
 	return _blackboard;
+}
+
+
+void ADNAIController::update_empty_ammo_handler()
+{
+	get_blackboard()->SetValueAsInt(all_ai_bb_keys::has_ammo, 0);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Update empty Ammo!!")));
+}
+
+
+void ADNAIController::update_get_ammo_handler(int64 count_in)
+{
+	int64 ammo_count = get_blackboard()->GetValueAsInt(all_ai_bb_keys::has_ammo) + count_in;
+	get_blackboard()->SetValueAsInt(all_ai_bb_keys::has_ammo, ammo_count);
+}
+
+void ADNAIController::update_beginplay_ammo_handler(int64 count_in)
+{
+	get_blackboard()->SetValueAsInt(all_ai_bb_keys::has_ammo, count_in);
 }

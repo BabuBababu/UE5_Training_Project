@@ -30,12 +30,12 @@ void UDNDamageIndicator::play_animation(E_DAMAGE_TYPE type_in)
 		}
 	}
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("I Check Damage 3 ")));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("I Check Damage 3 ")));
 }
 
 void UDNDamageIndicator::show_indicator_handler(float damage_in, E_DAMAGE_TYPE type_in)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("I Check Damage 2 ")));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("I Check Damage 2 ")));
 	if(nullptr == umg_damage_text)
 		return;
 

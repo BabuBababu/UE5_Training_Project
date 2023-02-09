@@ -19,6 +19,7 @@
 
 // Controller
 #include "UE5_Training_Project/Controller/DNPlayerController.h"
+#include "UE5_Training_Project/Controller/DNAIController.h"
 
 // Component
 #include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
@@ -99,7 +100,7 @@ ADNCommonCharacter::ADNCommonCharacter()
 	{
 		for (auto character_asset : DefaultSetting->_character_assets)
 		{
-			UE_LOG(LogTemp,Warning, TEXT("Character Asset : %s"), *character_asset.ToString());
+			//UE_LOG(LogTemp,Warning, TEXT("Character Asset : %s"), *character_asset.ToString());
 		}
 	}
 	//_character_position = E_CHARACTER_POSITION::CP_RUSH; // 우선은 테스트를 위해 전위로 둡니다.
@@ -130,7 +131,8 @@ void ADNCommonCharacter::BeginPlay()
 		_status->add_event(this);
 	}
 
-	init_ui_event();		//이벤트 추가할 UI 델리게이트 등록
+	OnAtStartAmmo.Broadcast(_status->_has_ammo);	//블랙보드 총알 등록
+	init_ui_event();								//이벤트 추가할 UI 델리게이트 등록
 }
 
 void ADNCommonCharacter::Tick(float DeltaTime)
@@ -165,6 +167,8 @@ void ADNCommonCharacter::add_event()
 	anim_instance->OnDieEnd.AddDynamic(this, &ADNCommonCharacter::destroy_object_handler);
 
 	anim_instance->OnReloadEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
+	OnTargetDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
+	
 }
 
 
@@ -230,6 +234,8 @@ void ADNCommonCharacter::fire()
 	// .075f는 데이터 테이블을 이용하여 캐릭터별로 다르게 설정할 예정
 	//UE_LOG(LogTemp, Warning, TEXT("Doll Name : %s"), *this->GetClass()->GetDefaultObjectName().ToString());
 
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Fire"));
+
 	if (_is_reloading)			//장전중이면 사격 안됨
 		return;
 
@@ -241,6 +247,11 @@ void ADNCommonCharacter::fire()
 
 	if (_status->get_current_ammo() == 0) //총알이 0발이면 사격 안됨
 	{
+		if (_status->_has_ammo + _status->_current_ammo == 0)		// 남은 총알도 없을 경우
+		{
+			OnEmptyAmmo.Broadcast();
+		}
+
 		reload();
 		return;
 	}
@@ -257,7 +268,6 @@ void ADNCommonCharacter::fire()
 			_enemy_line_trace->OnFire(this);
 
 		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Doll Attack Now"));
 	}
 
 
@@ -395,4 +405,12 @@ void ADNCommonCharacter::remove_ui_event()
 
 	if (nullptr != widget)
 		widget->remove_function_handler(this);
+}
+
+void ADNCommonCharacter::reset_fire_state_handler(ADNCommonCharacter* chracter_in)
+{
+	if (this == chracter_in)
+	{
+		set_idle_animation();
+	}
 }

@@ -18,6 +18,7 @@ class UBehaviorTreeComponent;
 class UBehaviorTree;
 class UBlackboardComponent;
 class UAISenseConfig_Sight;
+class ADNCommonCharacter;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNAIController : public AAIController
@@ -30,6 +31,9 @@ public:
 	virtual void OnUnPossess() override;
 
 	TObjectPtr<UBlackboardComponent> get_blackboard() const;
+
+	void add_event(ADNCommonCharacter* character_in);
+	void remove_event(ADNCommonCharacter* character_in);
 public:
 	UFUNCTION()
 	void OnUpdated(TArray<AActor*> const& updated_actors);
@@ -68,4 +72,14 @@ private:
 	TObjectPtr<UBlackboardComponent> _blackboard;
 	TObjectPtr<UAISenseConfig_Sight> _sight_config;
 
+
+public:
+	UFUNCTION()
+	void update_beginplay_ammo_handler(int64 count_in);
+
+	UFUNCTION()
+	void update_empty_ammo_handler();
+
+	UFUNCTION()
+	void update_get_ammo_handler(int64 count_in);
 };

@@ -99,7 +99,7 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 			DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);
 			
-			DNDamageOperation::ReceiveDamage(damage, hit_result.BoneName, _enemy);
+			DNDamageOperation::ReceiveDamage(damage, hit_result.BoneName, _enemy, player_in);
 			DNDamageOperation::DamageShowUI(damage, _enemy,E_DAMAGE_TYPE::DT_NORMAL);//헤드일 경우 약점 대미지로 판단, ReceiveDamage에서 약점부위를 판단하고 넣어야할듯.. 순서가.. 일단은 노멀로 통일
 		}
 		else

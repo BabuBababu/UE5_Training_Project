@@ -12,6 +12,7 @@ namespace all_ai_bb_keys
 	TCHAR const* const can_see_enemy = TEXT("CanSeeEnemy");
 	TCHAR const* const player_is_in_range = TEXT("IsEnemyInMeRange");
 	TCHAR const* const current_ammo = TEXT("CurrentAmmo");
+	TCHAR const* const has_ammo = TEXT("HasAmmo");
 	TCHAR const* const reloading = TEXT("Reloading");
 
 }

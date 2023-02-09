@@ -58,21 +58,20 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 		UDNCharacterAnimInstance* anim = dynamic_cast<UDNCharacterAnimInstance*>(self_actor->_character_skeletal_mesh->GetAnimInstance());
 
 
-		if (nullptr == target)					//타겟 없으면 실패
+		if (nullptr == target)											//타겟 없으면 실패
 		{
 			self_actor->set_idle_animation();
-
 
 			return EBTNodeResult::Failed;
 		}
 
 
-		//if (true == target_character->_status->_dead)					//타겟이 죽어있으면 실패
-		//{
-		//	self_actor->set_idle_animation();
+		if (true == target_character->_status->_dead)					//타겟이 죽어있으면 실패
+		{
+			self_actor->set_idle_animation();
 
-		//	return EBTNodeResult::Failed;
-		//}
+			return EBTNodeResult::Failed;
+		}
 
 		
 
@@ -85,13 +84,12 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 
 
 		controller->SetFocus(target_character);		// 타겟 바라보기
-		if (false == self_actor->_is_attacking)
-		{
-			self_actor->_is_fire = true;			// 사격 조건 On
-			self_actor->fire();						// 사격
-			self_actor->_is_attacking = true;
-		}
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attack Now"));
+
+		self_actor->_is_fire = true;			// 사격 조건 On
+		self_actor->fire();						// 사격
+		self_actor->_is_attacking = true;
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Task::Fire"));
 		//if (nullptr != anim)
 		//	anim->OnAttackEnd.AddLambda([self_actor]()->void {self_actor->_is_attacking = false; });		//람다로 델리게이트 추가하는 방법
 

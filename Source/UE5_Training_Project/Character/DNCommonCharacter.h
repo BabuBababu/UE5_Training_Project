@@ -22,7 +22,10 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDamageIndicator, float, damage, E_DAMAGE_TYPE, type_in);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputStartDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnIteractionFinishDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAIAmmoDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStartAIAmmoDelegate,int64,ammo_count);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnIteractionFinishItemDelegate,ADNCommonItem*, item );
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadDelegate, ADNCommonCharacter*, character);
 
 
 class USpringArmComponent;
@@ -200,6 +203,9 @@ public:
 	FOnIteractionFinishItemDelegate OnItemPickup;
 	FOnIteractionFinishDelegate OnVehicleRiding;
 	FOnIteractionFinishDelegate OnNPCTalk;
+	FOnAIAmmoDelegate OnEmptyAmmo;
+	FOnStartAIAmmoDelegate OnAtStartAmmo;
+	FOnDeadDelegate OnTargetDead;
 
 	FOnDamageIndicator OnDamageIndicator;
 
@@ -209,5 +215,8 @@ public:
 
 	UFUNCTION()
 	void return_to_armed_handler();
+
+	UFUNCTION()
+	void reset_fire_state_handler(ADNCommonCharacter* chracter_in);
 
 };
