@@ -41,7 +41,8 @@ void UDNDamageIndicator::show_indicator_handler(float damage_in, E_DAMAGE_TYPE t
 
 	//대미지 타입별로 이미지를 바꾼다거나 애니메이션을 바꾼다거나 그런걸 할 수 있음
 
-	FString damage = FString::SanitizeFloat(damage_in);
+	int damage_int = damage_in;
+	FString damage = FString::FromInt(damage_int);
 	umg_damage_text->SetText(FText::FromString(damage));
 
 
