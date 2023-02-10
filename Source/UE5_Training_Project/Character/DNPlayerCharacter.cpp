@@ -12,8 +12,10 @@
 
 // Component
 #include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
-#include <UE5_Training_Project/Component/DNStatusComponent.h>
+#include "UE5_Training_Project/Component/DNStatusComponent.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNSoundManager.h"
 // UI
 #include "UE5_Training_Project/UI/Widget/Panel/DNInteractionPanel.h"
 #include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
@@ -28,6 +30,7 @@ void ADNPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	_line_trace->OnInteraction(this);
+
 }
 
 

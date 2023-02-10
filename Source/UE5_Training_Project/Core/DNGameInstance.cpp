@@ -38,9 +38,17 @@ void UDNGameInstance::Init()
 		_object_manager = NewObject<UDNObjectManager>(this, UDNObjectManager::StaticClass());
 		_object_manager->initialize();
 
-		UE_LOG(LogTemp, Warning, TEXT("UI_Manager Initialize Succeed"));
+		UE_LOG(LogTemp, Warning, TEXT("Object_Manager Initialize Succeed"));
 	}
 
+	if (nullptr == _sound_manager)
+	{
+		_sound_manager = NewObject<UDNSoundManager>(this, UDNSoundManager::StaticClass());
+		_sound_manager->initialize();
+
+		UE_LOG(LogTemp, Warning, TEXT("Sound_Manager Initialize Succeed"));
+	}
+	
 
 	_is_initialize = true;
 
@@ -66,6 +74,11 @@ void UDNGameInstance::Shutdown()
 		_object_manager = nullptr;
 	}
 
+	if (_sound_manager)
+	{
+		_sound_manager->destroy();
+		_sound_manager = nullptr;
+	}
 
 	UE_LOG(LogTemp, Warning, TEXT("GameInstance Destroy Succeed"));
 }

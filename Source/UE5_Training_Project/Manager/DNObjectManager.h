@@ -19,6 +19,9 @@
  *	 그래서 오브젝트풀로서 관리를 할 수도 있겠다 싶어서 만든 매니저 클래스입니다!
  */
 
+
+#define OBJECT_MANAGER			UDNObjectManager::get_object_manager()
+
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNObjectManager : public UDNBaseManager
 {
@@ -29,4 +32,6 @@ public:
 	void destroy() override;
 
 
+public:
+	static TObjectPtr<UDNObjectManager> get_object_manager();
 };

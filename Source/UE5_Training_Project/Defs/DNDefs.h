@@ -152,6 +152,7 @@ enum class E_MANAGER_TYPE : uint8
 	MT_UI_MANAGER,
 	MT_WIDGET_MANAGER,
 	MT_OBJECT_MANAGER,
+	MT_SOUND_MANAGER,
 
 	MT_COUNT
 };
@@ -335,3 +336,20 @@ enum class E_DAMAGE_TYPE : uint8
 	DT_COUNT
 };
 
+//////////////////////////////////////////////////////////
+//
+//  Sound
+//
+//////////////////////////////////////////////////////////
+
+
+UENUM()
+enum class E_SOUND_TYPE : uint8
+{
+	ST_NONE = 0,
+	ST_BGM,					//BGM
+	ST_EFFECT,				//Effect
+	ST_UI,					//UI
+
+	ST_COUNT
+};
