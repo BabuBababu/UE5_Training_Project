@@ -18,6 +18,7 @@
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
+#include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 
 // Component
 #include <UE5_Training_Project/Component/DNStatusComponent.h>
@@ -38,6 +39,17 @@ ADNAIController::ADNAIController(FObjectInitializer const& object_initializer)
 
 }
 
+void ADNAIController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
+	if (nullptr != character)
+		_blackboard->SetValueAsBool(all_ai_bb_keys::is_armed, character->_is_armed_weapon);
+
+}
+
+
 void ADNAIController::OnPossess(APawn* pawn_in)
 {
 	Super::OnPossess(pawn_in);
@@ -52,6 +64,8 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 			btree = BTObject;
 			UE_LOG(LogTemp, Warning, TEXT("bt Griffin succeeded!"));
 		}
+
+
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 	{
@@ -77,12 +91,17 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 
 	add_event(character);
 
+	get_blackboard()->SetValueAsObject(all_ai_bb_keys::self_actor, pawn_in);
 
 }
 
 void ADNAIController::OnUnPossess()
 {
 	Super::OnUnPossess();
+
+	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetPawn());
+	if(nullptr != character)
+		remove_event(character);
 }
 
 void ADNAIController::OnUpdated(TArray<AActor*> const& updated_actors)
@@ -101,23 +120,30 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 	{
 		get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
 		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr); 
+
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I lost sight")));
 
 	}
 
-	
+	if (nullptr == insight_me_character)
+	{
+		get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+		return;
+	}
 
 
 	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)
 	{
-		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)		//적일 경우
 		{
-			
+			get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
+			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+
 			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
 			if (Stimulus.WasSuccessfullySensed())
 			{
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, Stimulus.WasSuccessfullySensed());
-				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+				
 				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I See %s"), insight_me_character));
 			}
 
@@ -128,18 +154,24 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 			//	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 			//}
 		}
+		else                                                                               //적이 아닐 경우
+		{
+		/*	get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);*/
+		}
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 	{
 		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN ||
 			insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
 		{
-			
+			get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
+			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+
 			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
 			if (Stimulus.WasSuccessfullySensed())
 			{
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, Stimulus.WasSuccessfullySensed());
-				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+				
 				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("I See %s"), insight_me_character));
 			}
 
@@ -152,6 +184,11 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 
 		
 		}
+		else                                                                               //적이 아닐 경우
+		{
+			/*get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);*/
+		}
 	}
 
 	
@@ -161,13 +198,15 @@ void ADNAIController::add_event(ADNCommonCharacter* character_in)
 {
 	character_in->OnEmptyAmmo.AddDynamic(this, &ADNAIController::update_empty_ammo_handler);
 	character_in->OnAtStartAmmo.AddDynamic(this, &ADNAIController::update_beginplay_ammo_handler);
+
 }
 
 
 void ADNAIController::remove_event(ADNCommonCharacter* character_in)
 {
 	character_in->OnEmptyAmmo.RemoveDynamic(this, &ADNAIController::update_empty_ammo_handler);
-	character_in->OnAtStartAmmo.AddDynamic(this, &ADNAIController::update_beginplay_ammo_handler);
+	character_in->OnAtStartAmmo.RemoveDynamic(this, &ADNAIController::update_beginplay_ammo_handler);
+
 }
 
 void ADNAIController::SetPerceptionSystem()
@@ -218,3 +257,4 @@ void ADNAIController::update_beginplay_ammo_handler(int64 count_in)
 {
 	get_blackboard()->SetValueAsInt(all_ai_bb_keys::has_ammo, count_in);
 }
+

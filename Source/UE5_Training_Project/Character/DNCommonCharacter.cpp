@@ -356,6 +356,11 @@ void ADNCommonCharacter::set_idle_animation()
 
 void ADNCommonCharacter::destroy_object_handler()
 {
+
+	ADNCommonCharacter* player = Cast<ADNCommonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());		//플레이어 삭제는 위험하므로 일단은 리턴시킵니다.
+	if (player == this)
+		return;
+
 	remove_ui_event();
 	Destroy();
 

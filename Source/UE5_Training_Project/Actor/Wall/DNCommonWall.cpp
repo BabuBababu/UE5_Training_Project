@@ -5,9 +5,13 @@
 
 // Engine
 #include <Components/BoxComponent.h>
+#include <BehaviorTree/BlackboardComponent.h>
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
+
+// Controller
+#include "UE5_Training_Project/Controller/DNAIController.h"
 
 
 void ADNCommonWall::BeginPlay()
@@ -48,7 +52,12 @@ void ADNCommonWall::overlap_wall_handler(class UPrimitiveComponent* selfComp, cl
 	if (nullptr == character)
 		return;
 
+
 	character->_is_near_wall = true;
+
+	ADNAIController* ai_controller = Cast<ADNAIController>(character->GetController());
+	if(nullptr != ai_controller)
+		ai_controller->get_blackboard()->SetValueAsBool("IsNearbyWall", true);
 
 	//UE_LOG(LogTemp, Warning, TEXT("Wall Overlap actor is %s"), *otherActor->GetName());
 }
@@ -63,6 +72,10 @@ void ADNCommonWall::unoverlap_wall_handler(UPrimitiveComponent* OverlappedComp, 
 		return;
 
 	character->_is_near_wall = false;
+
+	ADNAIController* ai_controller = Cast<ADNAIController>(character->GetController());
+	if (nullptr != ai_controller)
+		ai_controller->get_blackboard()->SetValueAsBool("IsNearbyWall", false);
 
 	//UE_LOG(LogTemp, Warning, TEXT("Wall Un Overlap actor is %s"), *otherActor->GetName());
 }

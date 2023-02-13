@@ -44,9 +44,11 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 	// 캐릭터
 	ADNCommonCharacter* self_actor = dynamic_cast<ADNCommonCharacter*>(self_pawn);
 
-
+	
 	if (self_actor->get_status_component().Get()->_dead)
+	{
 		return EBTNodeResult::Failed;
+	}
 
 
 
@@ -62,6 +64,7 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 		{
 			self_actor->set_idle_animation();
 
+
 			return EBTNodeResult::Failed;
 		}
 
@@ -69,7 +72,6 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 		if (true == target_character->_status->_dead)					//타겟이 죽어있으면 실패
 		{
 			self_actor->set_idle_animation();
-
 			return EBTNodeResult::Failed;
 		}
 
@@ -78,7 +80,6 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 		if (false == self_actor->_is_armed_weapon) // 무기를 들고 있지않으면 실패
 		{
 			self_actor->set_idle_animation();
-
 			return EBTNodeResult::Failed;
 		}
 

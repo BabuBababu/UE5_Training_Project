@@ -133,6 +133,8 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 			}
 		}
 
+		self_actor->set_idle_animation();
+
 	return EBTNodeResult::Succeeded;
 	
 }

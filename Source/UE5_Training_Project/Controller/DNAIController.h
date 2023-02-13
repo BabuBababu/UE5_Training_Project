@@ -29,6 +29,7 @@ public:
 	ADNAIController(FObjectInitializer const& object_initializer);
 	virtual void OnPossess(APawn* pawn_in) override;
 	virtual void OnUnPossess() override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	TObjectPtr<UBlackboardComponent> get_blackboard() const;
 
@@ -82,4 +83,5 @@ public:
 
 	UFUNCTION()
 	void update_get_ammo_handler(int64 count_in);
+
 };
