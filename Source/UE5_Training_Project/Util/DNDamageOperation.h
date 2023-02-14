@@ -32,7 +32,7 @@ public:
 		
 		float after_hp = damaged_character_in->get_status_component().Get()->get_current_hp() - damage_in;
 		damaged_character_in->get_status_component().Get()->set_current_hp(after_hp);
-		SOUND_MANAGER->start_combat_sound(E_SOUND_TYPE::ST_BGM,2,0.f);
+		SOUND_MANAGER->start_combat_sound();
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Griffin Damage to Enemy : %f"), damage_in));
 
 		if (after_hp <= 0)

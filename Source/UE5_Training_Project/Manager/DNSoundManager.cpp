@@ -54,6 +54,8 @@ UMetaSoundSource* UDNSoundManager::find_meta_sound_data(E_SOUND_TYPE type_in, in
 	UMetaSoundSource* return_sound_source = nullptr;
 	TArray<FDNMetaSoundSourceData*> meta_sound_source_data_array;
 
+
+
 	switch (type_in)
 	{
 	case E_SOUND_TYPE::ST_EFFECT:
@@ -169,7 +171,7 @@ void UDNSoundManager::stop_meta_sound(E_SOUND_TYPE type_in, float delay_in)
 	UAudioComponent* target_audio_component = get_audio_component(type_in);
 	if (nullptr !=  target_audio_component)
 	{
-		target_audio_component->StopDelayed(delay_in);
+		target_audio_component->Stop();
 	}
 	//else //UE_LOG(LogTemp, Warning, TEXT("SoundManager - Audio Component Is Not Valid"));
 }
@@ -184,8 +186,8 @@ void UDNSoundManager::pause_meta_sound(E_SOUND_TYPE type_in, bool is_paused_in)
 	//else //UE_LOG(LogTemp, Warning, TEXT("SoundManager - Audio Component Is Not Valid"));
 }
 
-void UDNSoundManager::add_sound_mix(E_SOUND_TYPE type_in, int64 id_in, UAudioComponent* audio_component_in)    //play_meta_sound에서 호출하고 이곳에서 해당 uid가 있다면 믹스 실행, 없으면 그냥 넘어가는 방식으로.
-{																													 //사운드 믹스에 딜레이값을 줘서 언제 적용시킬지를 추가하면 사운드팀이 테스트하기 편할듯?
+void UDNSoundManager::add_sound_mix(E_SOUND_TYPE type_in, int64 id_in, UAudioComponent* audio_component_in)			//play_meta_sound에서 호출하고 이곳에서 해당 uid가 있다면 믹스 실행, 없으면 그냥 넘어가는 방식으로.
+{																													 //사운드 믹스에 딜레이값을 줘서 언제 적용시킬지를 추가
 																													 // duration 값, 딜레이값을  메타사운드에서 조절하는것이 좋을듯.
 	USoundMix* return_sound_mix = find_sound_mix_data(id_in);
 	if (nullptr != audio_component_in)
@@ -269,16 +271,16 @@ TObjectPtr<UDNSoundManager> UDNSoundManager::get_sound_manager()
 
 
 
-void UDNSoundManager::play_combat_meta_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in)
+void UDNSoundManager::play_combat_meta_sound()
 {
 
-	if (false == _is_combat)
+	if (false == _is_combat && false == _is_ui_danger_now)
 	{
-		stop_meta_sound(type_in, 1.f);
+		stop_meta_sound(E_SOUND_TYPE::ST_UI, -1);
+		stop_meta_sound(E_SOUND_TYPE::ST_BGM, -1);
 		GetWorld()->GetTimerManager().ClearTimer(_periodhandle_timer);
 		GetWorld()->GetTimerManager().ClearTimer(_initialhandle_timer);
 		_is_bgm_playing_now = false;
-			
 	}
 
 }
@@ -288,25 +290,27 @@ void UDNSoundManager::set_combat_off()
 	_is_combat = false;
 }
 
-void UDNSoundManager::start_combat_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in)
+void UDNSoundManager::start_combat_sound()
 {
 
-	if (false == _is_bgm_playing_now)											//처음 한번만 실행
+	if (false == _is_bgm_playing_now && false ==_is_ui_danger_now)				//처음 한번만 실행
 	{
-		stop_meta_sound(type_in, 1.f);
-		play_meta_sound(type_in, id_in, start_time_in);
+		stop_meta_sound(E_SOUND_TYPE::ST_BGM, -1);
+		stop_meta_sound(E_SOUND_TYPE::ST_UI, -1);
+		play_meta_sound(E_SOUND_TYPE::ST_BGM, 2);								//Fight BGM
+		play_meta_sound(E_SOUND_TYPE::ST_UI, 3);								//UnderAttack
 		_is_bgm_playing_now = true;
+
+		GetWorld()->GetTimerManager().SetTimer(_periodhandle_timer, this, &UDNSoundManager::play_combat_meta_sound, 15.f, true);	//15초마다 검사
+		GetWorld()->GetTimerManager().SetTimer(_initialhandle_timer, this, &UDNSoundManager::set_combat_off, 14.f, true);			//14초마다 컴뱃오프
 	}
 	
 	_is_combat = true; 
 
 
-	// BGM이라면 15초마다 전투가 종료되었는지 체크하고 종료되었다면 꺼줍니다.
-	if (type_in == E_SOUND_TYPE::ST_BGM)
-	{
-		GetWorld()->GetTimerManager().SetTimer(_periodhandle_timer, FTimerDelegate::CreateUObject(this, &UDNSoundManager::play_combat_meta_sound, type_in, id_in, start_time_in), 15.f, true);
-		GetWorld()->GetTimerManager().SetTimer(_initialhandle_timer, this, &UDNSoundManager::set_combat_off, 14.f, true);	//14초마다 컴뱃오프
-
-	}
+	//매개변수있는 함수 호출은 이렇게 해주기
+	//GetWorld()->GetTimerManager().SetTimer(_periodhandle_timer, FTimerDelegate::CreateUObject(this, &UDNSoundManager::play_combat_meta_sound, type_in, id_in, start_time_in), 15.f, true);
 		
+	
+	
 }

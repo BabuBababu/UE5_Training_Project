@@ -84,7 +84,7 @@ private:
 
 public:
 	void				play_meta_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in = 0.0f);		//범용적으로 쓸 것
-	void				play_combat_meta_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in = 0.0f);
+	void				play_combat_meta_sound();
 
 	void				stop_meta_sound(E_SOUND_TYPE type_in, float delay_in);
 	void				pause_meta_sound(E_SOUND_TYPE type_in, bool is_paused_in);
@@ -98,7 +98,7 @@ public:
 
 public:
 	void				set_combat_off();
-	void				start_combat_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in);
+	void				start_combat_sound();
 
 public:
 	static TObjectPtr<UDNSoundManager> get_sound_manager();
