@@ -1,0 +1,12 @@
+BGM 
+1 : Peace
+2 : Fight
+3 : Danger
+
+
+Announce
+1 : FoundEnemy
+2 : AgentDown
+3 : UnderAttack
+4 : DangerNow
+5 : DollDangerNow

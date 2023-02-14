@@ -32,7 +32,10 @@ UCLASS()
 class UE5_TRAINING_PROJECT_API UDNSoundManager : public UDNBaseManager
 {
 	GENERATED_BODY()
-	
+
+public:
+	UDNSoundManager();
+
 public:
 	void initialize() override;
 	void destroy() override;
@@ -67,8 +70,6 @@ private:
 	float				_temp_mix_duration = 0.0f;
 
 private:
-	void				load_meta_sound_data();
-
 	UMetaSoundSource*	find_meta_sound_data(E_SOUND_TYPE type_in, int64 id_in);
 	USoundMix*			find_sound_mix_data(int64 id_in);
 

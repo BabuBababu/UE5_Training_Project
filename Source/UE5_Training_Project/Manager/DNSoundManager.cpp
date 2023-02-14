@@ -13,21 +13,7 @@
 
 
 
-void UDNSoundManager::initialize()
-{
-	_manager_type = E_MANAGER_TYPE::MT_SOUND_MANAGER;
-
-	Super::initialize();
-}
-
-void UDNSoundManager::destroy()
-{
-	Super::destroy();
-}
-
-
-//// meta sound test
-void UDNSoundManager::load_meta_sound_data()
+UDNSoundManager::UDNSoundManager()
 {
 	static ConstructorHelpers::FObjectFinder<UDataTable>effect(TEXT("/Game/Blueprint/Data/DT_DNEffectSoundData.DT_DNEffectSoundData"));
 	_effect_sound_data = effect.Object;
@@ -46,6 +32,19 @@ void UDNSoundManager::load_meta_sound_data()
 
 	////if (UNUIUtil::IsValid(_sound_mix_data)) //UE_LOG(LogTemp, Warning, TEXT("[NUI] UNUISoundManager - Sound Mix Data Load Completed"));
 }
+
+void UDNSoundManager::initialize()
+{
+	_manager_type = E_MANAGER_TYPE::MT_SOUND_MANAGER;
+
+	Super::initialize();
+}
+
+void UDNSoundManager::destroy()
+{
+	Super::destroy();
+}
+
 
 UMetaSoundSource* UDNSoundManager::find_meta_sound_data(E_SOUND_TYPE type_in, int64 id_in)
 {

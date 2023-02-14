@@ -3,11 +3,21 @@
 
 #include "UE5_Training_Project/UI/Base/DNBaseHUD.h"
 
+// Engine
+#include <Metasound.h>
+
 // Layer
 #include "UE5_Training_Project/UI/Widget/Layer/DNPanelLayer.h"
 #include "UE5_Training_Project/UI/Widget/Layer/DNIntroLayer.h"
 
 
+
+ADNBaseHUD::ADNBaseHUD(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer),
+	_hud_type(E_UI_HUD_TYPE::UHT_NONE)
+{
+	add_audio_component();
+}
 
 void ADNBaseHUD::BeginPlay()
 {
@@ -17,12 +27,14 @@ void ADNBaseHUD::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("[UI] HUD Ready - %s"), *GetName());
 	UE_LOG(LogTemp, Warning, TEXT("I will add_layer [2]"));
 
-	add_layer();
+	add_layer(); 
+	set_audio_component();
 }
 
 void ADNBaseHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	remove_layer();
+	remove_audio_component();
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -100,4 +112,98 @@ UDNBaseLayer* ADNBaseHUD::create_layer(E_UI_LAYER_TYPE layer_type_in)
 	}
 
 	return return_layer;
+}
+
+
+void ADNBaseHUD::add_audio_component()
+{
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("root_component"));
+
+	_audio_component_component = CreateDefaultSubobject<UAudioComponent>(TEXT("audio_component_component"));
+	if (!IsValid(_audio_component_component))
+	{
+		_audio_component_component->AddToRoot();
+		_audio_component_component->SetUISound(true);
+	}
+
+	_audio_component_effect = CreateDefaultSubobject<UAudioComponent>(TEXT("audio_component_effect"));
+	if (!IsValid(_audio_component_effect))
+	{
+		_audio_component_effect->AddToRoot();
+		_audio_component_effect->SetUISound(true);
+	}
+
+	_audio_component_background = CreateDefaultSubobject<UAudioComponent>(TEXT("audio_component_background"));
+	if (!IsValid(_audio_component_background))
+	{
+		_audio_component_background->AddToRoot();
+		_audio_component_background->SetUISound(true);
+	}
+}
+
+void ADNBaseHUD::remove_audio_component()
+{
+	if (IsValid(_audio_component_component))
+	{
+		_audio_component_component->RemoveFromRoot();
+	}
+
+	if (IsValid(_audio_component_effect))
+	{
+		_audio_component_effect->RemoveFromRoot();
+	}
+
+	if (IsValid(_audio_component_background))
+	{
+		_audio_component_background->RemoveFromRoot();
+	}
+
+	_audio_component_component = nullptr;
+	_audio_component_effect = nullptr;
+	_audio_component_background = nullptr;
+}
+
+void ADNBaseHUD::set_audio_component()
+{
+	if (IsValid(_audio_component_component))
+	{
+		SOUND_MANAGER->set_audio_component(E_SOUND_TYPE::ST_UI, _audio_component_component);
+	}
+
+	if (IsValid(_audio_component_effect))
+	{
+		SOUND_MANAGER->set_audio_component(E_SOUND_TYPE::ST_EFFECT, _audio_component_effect);
+	}
+
+	if (IsValid(_audio_component_background))
+	{
+		SOUND_MANAGER->set_audio_component(E_SOUND_TYPE::ST_BGM, _audio_component_background);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// get set
+//////////////////////////////////////////////////////////////////////////
+UAudioComponent* ADNBaseHUD::get_audio_component(E_SOUND_TYPE sound_type_in)
+{
+	UAudioComponent* return_audio_component = nullptr;
+
+	switch (sound_type_in)
+	{
+	case E_SOUND_TYPE::ST_UI:
+		return_audio_component = _audio_component_component;
+		break;
+	case E_SOUND_TYPE::ST_EFFECT:
+		return_audio_component = _audio_component_effect;
+		break;
+	case E_SOUND_TYPE::ST_BGM:
+		return_audio_component = _audio_component_background;
+		break;
+	case E_SOUND_TYPE::ST_NONE:
+	case E_SOUND_TYPE::ST_COUNT:
+	default:
+		break;
+	}
+
+	return return_audio_component;
 }
