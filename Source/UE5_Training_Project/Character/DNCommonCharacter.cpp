@@ -289,6 +289,7 @@ void ADNCommonCharacter::armed()
 		_is_armed_weapon = true;
 		_pre_upper_character_state = _character_state;
 		_character_state = E_CHARACTER_STATE::CS_ARM;
+
 	}
 	else
 	{
@@ -297,6 +298,8 @@ void ADNCommonCharacter::armed()
 		_weapon_un_armed->SetVisibility(true);
 		_is_armed_weapon = false;
 		_character_state = _pre_upper_character_state;
+
+		//SOUND_MANAGER->set_combat_flag(false);		//반대로
 	}
 
 }
@@ -360,6 +363,10 @@ void ADNCommonCharacter::destroy_object_handler()
 	ADNCommonCharacter* player = Cast<ADNCommonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());		//플레이어 삭제는 위험하므로 일단은 리턴시킵니다.
 	if (player == this)
 		return;
+
+
+	if(_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+		SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_UI, 2);		//에이전트 다운
 
 	remove_ui_event();
 	Destroy();

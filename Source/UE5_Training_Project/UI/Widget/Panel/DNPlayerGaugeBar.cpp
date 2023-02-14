@@ -6,6 +6,8 @@
 // Engine
 #include <Components/ProgressBar.h>
 
+// Manager
+#include "UE5_Training_Project/Manager/DNSoundManager.h"
 
 void UDNPlayerGaugeBar::NativeConstruct()
 {
@@ -87,7 +89,25 @@ void UDNPlayerGaugeBar::set_gauge(float current_value_in, float max_value_in)
 		umg_main_progress->SetPercent(_percent_value);
 	}
 
-	//check_gauge();
+
+	// 체력이 일정수치 이하로 떨어지면 경고음 플래그 온
+	if (_percent_value <= 0.4f && false == SOUND_MANAGER->_is_ui_danger_now)
+	{
+		SOUND_MANAGER->stop_meta_sound(E_SOUND_TYPE::ST_UI, 1.f);
+		SOUND_MANAGER->stop_meta_sound(E_SOUND_TYPE::ST_BGM, 1.f);
+
+		SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_UI,4);
+		SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_BGM,3);
+		SOUND_MANAGER->_is_ui_danger_now = true;
+	}
+
+	// 체력을 일정수치 이상으로 회복했다면 경고문 플래그 오프
+	if (_percent_value > 0.4f)
+	{
+		SOUND_MANAGER->stop_meta_sound(E_SOUND_TYPE::ST_BGM, 1.f);
+		SOUND_MANAGER->_is_ui_danger_now = false;
+	}
+
 }
 
 void UDNPlayerGaugeBar::set_gauge_enable(bool is_enable_in)

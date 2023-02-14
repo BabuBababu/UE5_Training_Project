@@ -1,12 +1,12 @@
 BGM 
-1 : Peace
-2 : Fight
-3 : Danger
+1 : Peace			ㅇ
+2 : Fight			ㅇ
+3 : Danger		ㅇ
 
 
 Announce
 1 : FoundEnemy
-2 : AgentDown
+2 : AgentDown		ㅇ
 3 : UnderAttack
-4 : DangerNow
+4 : DangerNow		ㅇ
 5 : DollDangerNow

@@ -43,6 +43,7 @@ void ADNUnEnemyCharacter::Tick(float DeltaTime)
 
 }
 
+
 void ADNUnEnemyCharacter::add_event()
 {
 	Super::add_event();

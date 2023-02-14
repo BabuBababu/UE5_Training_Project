@@ -69,13 +69,24 @@ private:
 	FName				_temp_input_name;
 	float				_temp_mix_duration = 0.0f;
 
+public:
+	FTimerHandle	_initialhandle_timer;
+	FTimerHandle	_periodhandle_timer;
+
+
+	bool				_is_combat;
+	bool				_is_bgm_playing_now;
+	bool				_is_ui_danger_now;
+
 private:
 	UMetaSoundSource*	find_meta_sound_data(E_SOUND_TYPE type_in, int64 id_in);
 	USoundMix*			find_sound_mix_data(int64 id_in);
 
 public:
-	void				play_meta_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in = 0.0f);
-	void				stop_meta_sound(E_SOUND_TYPE type_in, float delay_in = 0.0f);
+	void				play_meta_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in = 0.0f);		//범용적으로 쓸 것
+	void				play_combat_meta_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in = 0.0f);
+
+	void				stop_meta_sound(E_SOUND_TYPE type_in, float delay_in);
 	void				pause_meta_sound(E_SOUND_TYPE type_in, bool is_paused_in);
 
 	void				add_sound_mix(E_SOUND_TYPE type_in, int64 id_in, UAudioComponent* audio_component_in);
@@ -85,6 +96,9 @@ public:
 	void				set_audio_component(E_SOUND_TYPE type_in, UAudioComponent* component_in);
 
 
+public:
+	void				set_combat_off();
+	void				start_combat_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in);
 
 public:
 	static TObjectPtr<UDNSoundManager> get_sound_manager();

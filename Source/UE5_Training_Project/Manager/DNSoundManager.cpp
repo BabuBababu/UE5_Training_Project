@@ -30,7 +30,10 @@ UDNSoundManager::UDNSoundManager()
 	static ConstructorHelpers::FObjectFinder<UDataTable> mix(TEXT("/Game/Blueprint/Data/DT_DNSoundMixData.DT_DNSoundMixData"));
 	_sound_mix_data = mix.Object;
 
-	////if (UNUIUtil::IsValid(_sound_mix_data)) //UE_LOG(LogTemp, Warning, TEXT("[NUI] UNUISoundManager - Sound Mix Data Load Completed"));
+
+	_is_combat = false;
+	_is_bgm_playing_now = false;	//BGM
+	_is_ui_danger_now = false;		//UI
 }
 
 void UDNSoundManager::initialize()
@@ -118,6 +121,8 @@ USoundMix* UDNSoundManager::find_sound_mix_data(int64 id_in)
 
 	return return_sound_mix;
 }
+
+
 
 void UDNSoundManager::play_meta_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in)
 {
@@ -259,4 +264,49 @@ TObjectPtr<UDNSoundManager> UDNSoundManager::get_sound_manager()
 	}
 
 	return nullptr;
+}
+
+
+
+
+void UDNSoundManager::play_combat_meta_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in)
+{
+
+	if (false == _is_combat)
+	{
+		stop_meta_sound(type_in, 1.f);
+		GetWorld()->GetTimerManager().ClearTimer(_periodhandle_timer);
+		GetWorld()->GetTimerManager().ClearTimer(_initialhandle_timer);
+		_is_bgm_playing_now = false;
+			
+	}
+
+}
+
+void UDNSoundManager::set_combat_off()
+{
+	_is_combat = false;
+}
+
+void UDNSoundManager::start_combat_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in)
+{
+
+	if (false == _is_bgm_playing_now)											//처음 한번만 실행
+	{
+		stop_meta_sound(type_in, 1.f);
+		play_meta_sound(type_in, id_in, start_time_in);
+		_is_bgm_playing_now = true;
+	}
+	
+	_is_combat = true; 
+
+
+	// BGM이라면 15초마다 전투가 종료되었는지 체크하고 종료되었다면 꺼줍니다.
+	if (type_in == E_SOUND_TYPE::ST_BGM)
+	{
+		GetWorld()->GetTimerManager().SetTimer(_periodhandle_timer, FTimerDelegate::CreateUObject(this, &UDNSoundManager::play_combat_meta_sound, type_in, id_in, start_time_in), 15.f, true);
+		GetWorld()->GetTimerManager().SetTimer(_initialhandle_timer, this, &UDNSoundManager::set_combat_off, 14.f, true);	//14초마다 컴뱃오프
+
+	}
+		
 }
