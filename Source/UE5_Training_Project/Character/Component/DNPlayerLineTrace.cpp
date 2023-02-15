@@ -257,7 +257,10 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 	{
 		if (nullptr != _temp_character)
 		{
-			_temp_character->_character_skeletal_mesh->SetRenderCustomDepth(false);
+			if (nullptr == _temp_character->_character_skeletal_mesh)				//바로 아래 주석을 이유로 메쉬 널체크
+				return;
+
+			_temp_character->_character_skeletal_mesh->SetRenderCustomDepth(false);	//여기에 왜 파티클시스템컴포넌트가 잡히는거지 이해가 안되넼ㅋㅋㅋㅋㅋㅋ
 			_temp_character = nullptr;	// 텅텅빈곳이므로 null값을 넣는다
 		}
 	}

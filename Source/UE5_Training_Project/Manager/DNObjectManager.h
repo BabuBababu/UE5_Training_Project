@@ -22,6 +22,10 @@
 
 #define OBJECT_MANAGER			UDNObjectManager::get_object_manager()
 
+
+
+class ADNTargetPointActor;
+
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNObjectManager : public UDNBaseManager
 {
@@ -34,4 +38,8 @@ public:
 
 public:
 	static TObjectPtr<UDNObjectManager> get_object_manager();
+
+
+public:
+	TMap<int64,ADNTargetPointActor*> _location_actor_array;			//타겟포인트액터 모음 맵
 };

@@ -8,7 +8,7 @@
 void UDNObjectManager::initialize()
 {
 	_manager_type = E_MANAGER_TYPE::MT_OBJECT_MANAGER;
-
+	_location_actor_array.Empty();
 	
 	Super::initialize();
 }

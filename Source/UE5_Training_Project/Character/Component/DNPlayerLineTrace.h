@@ -34,7 +34,7 @@ public:
 
 
 private:
-	ADNEnemyCharacter* _temp_character;
+	TObjectPtr<ADNEnemyCharacter> _temp_character;
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")

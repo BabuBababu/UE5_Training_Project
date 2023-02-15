@@ -143,21 +143,11 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
 			if (Stimulus.WasSuccessfullySensed())
 			{
-				
-				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I See %s"), insight_me_character));
 			}
 
-			//// 타겟이 죽었다면
-			//if (insight_me_character->_status.Get()->_dead)
-			//{
-			//	get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-			//	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-			//}
 		}
 		else                                                                               //적이 아닐 경우
 		{
-		/*	get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);*/
 		}
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
@@ -172,22 +162,12 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 			if (Stimulus.WasSuccessfullySensed())
 			{
 				
-				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("I See %s"), insight_me_character));
 			}
-
-			//// 타겟이 죽었다면
-			//if (insight_me_character->_status.Get()->_dead)
-			//{
-			//	get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-			//	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-			//}
 
 		
 		}
 		else                                                                               //적이 아닐 경우
 		{
-			/*get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);*/
 		}
 	}
 

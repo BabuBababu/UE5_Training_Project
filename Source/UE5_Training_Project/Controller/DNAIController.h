@@ -30,7 +30,7 @@ public:
 	virtual void OnPossess(APawn* pawn_in) override;
 	virtual void OnUnPossess() override;
 	virtual void Tick(float DeltaSeconds) override;
-
+	
 	TObjectPtr<UBlackboardComponent> get_blackboard() const;
 
 	void add_event(ADNCommonCharacter* character_in);

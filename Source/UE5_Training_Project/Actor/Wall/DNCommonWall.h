@@ -35,9 +35,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
-private:
-	void init();
-
 public:
 	FOnWallDelegate		OnOverlapWall;
 	FOnWallDelegate		OffOverlapWall;
