@@ -119,6 +119,7 @@ void ADNPlayerCharacter::aiming()
 {
 	Super::aiming();
 
+	_line_trace->OnAiming(this);
 	_camera_boom->SetRelativeTransform(set_camera_transform(true));
 }
 

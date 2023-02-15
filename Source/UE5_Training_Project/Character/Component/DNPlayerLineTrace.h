@@ -21,6 +21,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractionLineDelegate, E_UI_INT
 
 
 class ADNCommonCharacter;
+class ADNEnemyCharacter;
 class ADNCommonItem;
 
  UCLASS(Transient, Blueprintable, HideCategories = AnimInstance, BlueprintType)
@@ -31,6 +32,9 @@ class UE5_TRAINING_PROJECT_API UDNPlayerLineTrace : public UObject
 public:
 	UDNPlayerLineTrace();
 
+
+private:
+	ADNEnemyCharacter* _temp_character;
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")
@@ -54,5 +58,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnInteraction(ADNCommonCharacter* player_in);
+
+	UFUNCTION(BlueprintCallable)
+	void OnAiming(ADNCommonCharacter* player_in);
 
 };

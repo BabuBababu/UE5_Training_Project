@@ -48,6 +48,7 @@ UDNPlayerLineTrace::UDNPlayerLineTrace()
 
 
 	_item = nullptr;
+	_temp_character = nullptr;
 }
 
 
@@ -95,10 +96,12 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 		if (_enemy)
 		{
 			// 무기 데이터 테이블을 이용해서 대미지 적용하는 방식을 쓸 예정이므로 아래 코드는 결국 수정할 것.
-			//UE_LOG(LogTemp, Warning, TEXT("SucceedCastDouble"));
 			DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);
 			
+			
+
+			// 대미지 적용
 			DNDamageOperation::ReceiveDamage(damage, hit_result.BoneName, _enemy, player_in);
 			DNDamageOperation::DamageShowUI(damage, _enemy,E_DAMAGE_TYPE::DT_NORMAL);//헤드일 경우 약점 대미지로 판단, ReceiveDamage에서 약점부위를 판단하고 넣어야할듯.. 순서가.. 일단은 노멀로 통일
 		}
@@ -221,3 +224,72 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 }
 
 
+
+
+void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
+{
+	if (player_in->_character_type != E_CHARACTER_TYPE::CT_PLAYER)	//플레이어가 아니라면 리턴
+		return;
+
+
+	FQuat rotate = FQuat(player_in->GetControlRotation());		// 임시로 -15.f 로 카메라 각도만큼 해놧는데 확인예정
+
+	auto status = player_in->get_status_component().Get();
+
+	FVector camera_location = player_in->_camera_boom->GetComponentLocation();
+	FVector start_location = camera_location;
+
+	// 카메라 회전값 * 카메라의 포워드 벡터 = 사격 방향
+	FVector temp_forward = rotate.GetForwardVector();
+	// 사격 끝 지점
+	FVector end_location = camera_location + (temp_forward * 20000.f); // 사거리 2KM
+	FHitResult hit_result;
+
+	// 무시할 오브젝트
+	FCollisionQueryParams params;
+	params.AddIgnoredActor(player_in);
+
+	//라인 트레이스 시작
+	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_PhysicsBody, params);
+	//DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
+
+	if (nullptr == hit_result.GetActor())
+	{
+		if (nullptr != _temp_character)
+		{
+			_temp_character->_character_skeletal_mesh->SetRenderCustomDepth(false);
+			_temp_character = nullptr;	// 텅텅빈곳이므로 null값을 넣는다
+		}
+	}
+	else
+	{
+		auto _enemy = Cast<ADNEnemyCharacter>(hit_result.GetActor());
+	
+		if (nullptr == _enemy)
+			return;
+
+		// 아웃라인 보여주기
+		_enemy->_character_skeletal_mesh->SetRenderCustomDepth(true);
+		//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
+
+
+		if (_temp_character != _enemy)	// 적중한 캐릭터가 이전 캐릭터와 다르다면
+		{
+			if (nullptr == _temp_character)
+			{
+				//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Red, false, 2.f);
+
+				_temp_character = _enemy;	// 현재 적중된 캐릭터를 넣어준다.
+			}
+			else
+			{
+				//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Yellow, false, 2.f);
+
+				_temp_character->_character_skeletal_mesh->SetRenderCustomDepth(false);
+				_temp_character = _enemy;	// 현재 적중된 캐릭터를 다시 바꿔준다.
+			}
+		}
+
+
+	}
+}
