@@ -266,7 +266,7 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 	}
 	else
 	{
-		auto _enemy = Cast<ADNEnemyCharacter>(hit_result.GetActor());
+		ADNEnemyCharacter* _enemy = Cast<ADNEnemyCharacter>(hit_result.GetActor());
 	
 		if (nullptr == _enemy)
 			return;
