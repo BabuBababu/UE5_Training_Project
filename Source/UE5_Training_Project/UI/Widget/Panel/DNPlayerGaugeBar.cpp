@@ -101,7 +101,7 @@ void UDNPlayerGaugeBar::set_gauge(float current_value_in, float max_value_in)
 		SOUND_MANAGER->_is_ui_danger_now = true;
 	}
 
-	// 체력을 일정수치 이상으로 회복했다면 경고문 플래그 오프
+	// 체력을 일정수치 이상으로 회복했다면 경고문 플래그 오프					//인형용 체력바 클래스 만들어서 쭉 긁어오고 이부분만 고치기
 	if (_percent_value > 0.4f)
 	{
 		SOUND_MANAGER->_is_ui_danger_now = false;
