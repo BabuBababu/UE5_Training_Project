@@ -45,4 +45,12 @@ public:
 	UFUNCTION()
 	void change_crouch_state_handler(bool crouch_in);
 
+
+public:
+	bool	_is_in_squad;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Squad)			//전투시 스쿼드 위치 구분용
+	int64	_squad_index;
+
+
 };

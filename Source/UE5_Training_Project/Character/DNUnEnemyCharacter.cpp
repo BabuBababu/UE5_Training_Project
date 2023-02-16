@@ -15,11 +15,20 @@
 // Component
 #include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNObjectManager.h"
+
 
 ADNUnEnemyCharacter::ADNUnEnemyCharacter()
 {
+	
+
+
 	init_base();
 	init_ai();
+
+	
+
 }
 
 
@@ -28,6 +37,7 @@ void ADNUnEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	_is_attacking = false;
+	OBJECT_MANAGER->_in_squad_doll_array.Emplace(_character_id,this);		//시작시 오브젝트 매니저에 넣어줍니다.
 }
 
 void ADNUnEnemyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -78,6 +88,10 @@ void ADNUnEnemyCharacter::init_ai()
 void ADNUnEnemyCharacter::init_base()
 {
 	_character_type = E_CHARACTER_TYPE::CT_GRIFFIN;
+	_squad_index = -1;			//초기 인덱스는 -1로
+	_is_in_squad = true;		//원래는 false로 하고 ui에서 스쿼드 배치가 되면 true바꿔줘야함! 일단은 테스트를 위해 true로!
+
+
 }
 
 

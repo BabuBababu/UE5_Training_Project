@@ -10,7 +10,7 @@
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 
 // Component
-#include <UE5_Training_Project/Component/DNStatusComponent.h>
+#include "UE5_Training_Project/Component/DNStatusComponent.h"
 
 
 void UDNPlayerCombatPanel::NativeConstruct()

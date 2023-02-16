@@ -9,6 +9,8 @@ void UDNObjectManager::initialize()
 {
 	_manager_type = E_MANAGER_TYPE::MT_OBJECT_MANAGER;
 	_location_actor_array.Empty();
+	_in_squad_doll_array.Empty();
+	_player = nullptr;
 	
 	Super::initialize();
 }

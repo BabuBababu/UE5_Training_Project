@@ -38,6 +38,9 @@
 // UI
 #include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNObjectManager.h"
+
 
 
 

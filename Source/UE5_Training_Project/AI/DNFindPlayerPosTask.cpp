@@ -10,6 +10,7 @@
 // Controller
 #include "UE5_Training_Project/Controller/DNAIController.h"
 
+
 // Character
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
@@ -31,6 +32,23 @@
 UDNFindPlayerPosTask::UDNFindPlayerPosTask(FObjectInitializer const& object_initializer)
 {
 	NodeName = TEXT("FindPlayerPosTask");
+
+	// 캐릭터 포지션 데이터 테이블 초기화
+	static ConstructorHelpers::FObjectFinder<UDataTable> CharacterPositionDataObject(TEXT("/Game/Blueprint/Data/DT_DNCharacterPositionData"));
+	if (CharacterPositionDataObject.Succeeded())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DataTable Succeed!"));
+		_position_datatable = CharacterPositionDataObject.Object;
+
+		TArray<FDNCharacterPositionData*> data_array;	//사실 Num은 1개임
+		_position_datatable->GetAllRows<FDNCharacterPositionData>("", data_array);
+
+		for (auto& data : data_array)
+		{
+			_chartacter_position_data = data;
+		}
+
+	}
 }
 
 
@@ -57,83 +75,75 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 
 	FVector player_location = player->GetActorLocation();
 	FNavLocation NextPatrol;
-	FVector target_location_rush = FVector(500.f, 0.f,0.f);
-	FVector target_location_guard = FVector(0.f, 200.f,0.f);
-	FVector target_location_support = FVector(-1000.f,0.f, 0.f);
+	FVector target_location;
 
 	if(self_actor->get_status_component().Get()->_dead)
 		return EBTNodeResult::Failed;
 
 
 
-		if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_RUSH)
-		{
-			//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
-			if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_rush, _search_radius, NextPatrol, nullptr))
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
-
-
-				FVector new_vector = (NextPatrol.Location - player_location);
-				FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
-				Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
-
-				//그 다음 이동할 곳을 확인하기 위한 디버그메시지
-			//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetControlRotation().Yaw));
-
-			//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
-			//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
-
-
-			}
-		}
-		else if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_GUARD)
-		{
-			//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
-			if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_guard, _search_radius, NextPatrol, nullptr))
-			{
-				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
-
-
-				FVector new_vector = (NextPatrol.Location - player_location);
-				FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
-				Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
-
-
-
-				//그 다음 이동할 곳을 확인하기 위한 디버그메시지
-		//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("controller rotation : %f"), player->GetControlRotation().Yaw));
-		//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetActorRotation().Yaw));
-
-		//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
-		//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
-
-			}
-		}
-		else if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_SUPPORT)
-		{
-			//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
-			if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location_support, _search_radius, NextPatrol, nullptr))
-			{
-		//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
-
-
-				FVector new_vector = (NextPatrol.Location - player_location);
-				FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
-				Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
+	if (self_actor->_squad_index == 1)
+	{
+		target_location = _chartacter_position_data->support_1;
+	}
+	else if (self_actor->_squad_index == 2)
+	{
+		target_location = _chartacter_position_data->support_2;
+	}
+	else if (self_actor->_squad_index == 3)
+	{
+		target_location = _chartacter_position_data->support_3;
+	}
+	else if (self_actor->_squad_index == 4)
+	{
+		target_location = _chartacter_position_data->guard_4;
+	}
+	else if (self_actor->_squad_index == 6)
+	{
+		target_location = _chartacter_position_data->guard_6;
+	}
+	else if (self_actor->_squad_index == 7)
+	{
+		target_location = _chartacter_position_data->rush_7;
+	}
+	else if (self_actor->_squad_index == 8)
+	{
+		target_location = _chartacter_position_data->rush_8;
+	}
+	else if (self_actor->_squad_index == 9)
+	{
+		target_location = _chartacter_position_data->rush_9;
+	}
 
 
 
-				//그 다음 이동할 곳을 확인하기 위한 디버그메시지
-		//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetControlRotation().Yaw));
+	//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
+	if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location, _search_radius, NextPatrol, nullptr))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
 
-		//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
-		//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
 
-			}
-		}
+		FVector new_vector = (NextPatrol.Location - player_location);
+		FVector final_location = new_vector.RotateAngleAxis(player->GetControlRotation().Yaw, FVector::UpVector);
+		Controller->get_blackboard()->SetValueAsVector(all_ai_bb_keys::target_location, final_location + player_location);
 
-		self_actor->set_idle_animation();
+		//그 다음 이동할 곳을 확인하기 위한 디버그메시지
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("player rotation : %f"), player->GetControlRotation().Yaw));
+
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("doll position : %s"), *(final_location + player_location).ToString()));
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("player position :%s"), *player_location.ToString()));
+
+
+	}
+
+
+
+
+
+
+
+
+	self_actor->set_idle_animation();
 
 	return EBTNodeResult::Succeeded;
 	

@@ -8,6 +8,7 @@
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
+#include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
 
 // Component
 #include <UE5_Training_Project/Component/DNStatusComponent.h>
@@ -47,7 +48,16 @@ public:
 		if (nullptr == damaged_character_in)
 			return;
 
+		// 대미지 인디케이터 위젯 보여주기
 		damaged_character_in->OnDamageIndicator.Broadcast(damage_in, damage_type_in);
+		
+		// 스쿼드 위젯의 애니메이션 실행
+		if (damaged_character_in->_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+		{
+			ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(damaged_character_in);
+			doll->OnDamaged.Broadcast(doll->_squad_index);
+		}
+		
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("I Check Damage 1 ")));
 	}
 

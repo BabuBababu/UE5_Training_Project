@@ -20,6 +20,7 @@
 
 class UDNPlayerGaugeBar;
 class ADNCommonCharacter;
+class UDNSquadPanel;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNPlayerCombatPanel : public UDNBasePanel
@@ -109,6 +110,10 @@ private:
 	// 체력
 	UPROPERTY()
 		TObjectPtr<UDNPlayerGaugeBar> umg_bar_hp;
+
+	UPROPERTY()
+	TObjectPtr<UDNSquadPanel> umg_squad_panel;
+	
 
 
 	//UPROPERTY()

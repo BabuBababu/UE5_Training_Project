@@ -16,6 +16,7 @@
 
 // Manager
 #include "UE5_Training_Project/Manager/DNSoundManager.h"
+#include "UE5_Training_Project/Manager/DNObjectManager.h"
 // UI
 #include "UE5_Training_Project/UI/Widget/Panel/DNInteractionPanel.h"
 #include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
@@ -25,6 +26,7 @@ void ADNPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	//SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_BGM, 1, 0.f);								//게임 시작시 평화 BGM
+	OBJECT_MANAGER->_player = this;
 }
 
 void ADNPlayerCharacter::Tick(float DeltaTime)

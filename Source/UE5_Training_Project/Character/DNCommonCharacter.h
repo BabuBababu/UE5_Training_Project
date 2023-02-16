@@ -20,6 +20,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDamageIndicator, float, damage, E_DAMAGE_TYPE, type_in);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamaged,int64, squad_index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputStartDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnIteractionFinishDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAIAmmoDelegate);
@@ -208,6 +209,7 @@ public:
 	FOnDeadDelegate OnTargetDead;
 
 	FOnDamageIndicator OnDamageIndicator;
+	FOnDamaged OnDamaged;
 
 public:
 	UFUNCTION()
