@@ -272,6 +272,9 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 			return;
 
 		// 아웃라인 보여주기
+		if (nullptr == _enemy->_character_skeletal_mesh)				//바로 아래 주석을 이유로 메쉬 널체크
+			return;
+
 		_enemy->_character_skeletal_mesh->SetRenderCustomDepth(true);
 		//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 
@@ -286,6 +289,8 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 			}
 			else
 			{
+				if (nullptr == _temp_character->_character_skeletal_mesh)				//바로 아래 주석을 이유로 메쉬 널체크
+					return;
 				//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Yellow, false, 2.f);
 
 				_temp_character->_character_skeletal_mesh->SetRenderCustomDepth(false);
