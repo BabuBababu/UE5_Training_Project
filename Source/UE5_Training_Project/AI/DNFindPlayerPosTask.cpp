@@ -120,7 +120,7 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 	//NextPatrol변수에 임의의 location 데이터를 넣고 다시 TargetLocation키의 value에 값을 넣어준다.
 	if (NavSystem->GetRandomPointInNavigableRadius(player_location + target_location, _search_radius, NextPatrol, nullptr))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Next Patrol position :%s"), *NextPatrol.Location.ToString()));
 
 
 		FVector new_vector = (NextPatrol.Location - player_location);
