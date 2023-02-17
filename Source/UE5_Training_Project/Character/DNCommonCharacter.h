@@ -194,6 +194,8 @@ public:
 	E_CHARACTER_STATE _pre_upper_character_state = E_CHARACTER_STATE::CS_NONE;
 	bool _is_attacking;
 
+	FVector  _my_spawn_location = FVector(0.f, 0.f, 0.f);
+
 
 
 
@@ -213,7 +215,7 @@ public:
 
 public:
 	UFUNCTION()
-	void destroy_object_handler();
+	void destroy_object_handler();		//월드상에서 안보이게 하는 핸들러
 
 	UFUNCTION()
 	void return_to_armed_handler();

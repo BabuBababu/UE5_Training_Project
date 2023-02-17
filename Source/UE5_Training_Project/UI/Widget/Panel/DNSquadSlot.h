@@ -21,7 +21,7 @@
  * 
  */
 
-class UDNPlayerGaugeBar;
+class UDNSquadGaugeBar;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNSquadSlot : public UDNBaseWidget
@@ -50,7 +50,7 @@ private:
 	TObjectPtr<UTextBlock> umg_name_text;
 
 	UPROPERTY()
-	TObjectPtr<UDNPlayerGaugeBar> umg_hp_bar;
+	TObjectPtr<UDNSquadGaugeBar> umg_hp_bar;
 
 	UPROPERTY(Meta = (BindWidgetAnim), Transient)
 	class UWidgetAnimation* umg_damaged_animation;

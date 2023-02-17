@@ -5,7 +5,7 @@
 
 
 // Panel
-#include "UE5_Training_Project/UI/Widget/Panel/DNPlayerGaugeBar.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNSquadGaugeBar.h"
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
@@ -44,6 +44,7 @@ void UDNSquadSlot::remove_event()
 void UDNSquadSlot::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
+
 	sync_gauge();
 }
 
@@ -80,14 +81,18 @@ void UDNSquadSlot::sync_gauge()
 	//오브젝트 매니저에서 해당 인형 가져와서 싱크 맞추기
 	for (const auto& doll : OBJECT_MANAGER->_in_squad_doll_array)
 	{
-		if (doll.Value->_squad_index == get_widget_index())		// 해당 인형의 스쿼드 인덱스와 이 슬롯의 인덱스가 같다면
+
+		if (nullptr != doll.Value && doll.Value->_squad_index == get_widget_index())		// 해당 인형의 스쿼드 인덱스와 이 슬롯의 인덱스가 같다면
 		{
-			_current_hp = doll.Value->_status->_current_hp;
-			_max_hp = doll.Value->_status->get_max_hp();
+			if (false == doll.Value->_status->_dead)										// 죽지 않았다면
+			{
+				_current_hp = doll.Value->_status->_current_hp;
+				_max_hp = doll.Value->_status->get_max_hp();
+				set_hp(_current_hp, _max_hp);
+			}
 		}
 	}
 
-	set_hp(_current_hp, _max_hp);
 
 }
 

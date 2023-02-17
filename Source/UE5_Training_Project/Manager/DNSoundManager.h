@@ -70,13 +70,14 @@ private:
 	float				_temp_mix_duration = 0.0f;
 
 public:
-	FTimerHandle	_initialhandle_timer;
-	FTimerHandle	_periodhandle_timer;
+	FTimerHandle		_initialhandle_timer;
+	FTimerHandle		_periodhandle_timer;
 
 
 	bool				_is_combat;
 	bool				_is_bgm_playing_now;
 	bool				_is_ui_danger_now;
+
 
 private:
 	UMetaSoundSource*	find_meta_sound_data(E_SOUND_TYPE type_in, int64 id_in);

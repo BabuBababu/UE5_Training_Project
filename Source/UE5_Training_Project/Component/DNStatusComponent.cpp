@@ -106,6 +106,11 @@ void UDNStatusComponent::init()
 
 }
 
+void UDNStatusComponent::reset()
+{
+	set_begin_status();
+}
+
 void UDNStatusComponent::set_begin_status()
 {
 	_dead = false;

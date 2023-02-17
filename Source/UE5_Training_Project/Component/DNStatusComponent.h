@@ -30,6 +30,7 @@ public:
 	void init();				//레벨 적용전 한번 초기화
 	void apply_level();			//레벨 적용
 	void set_begin_status();	//초기 hp, 장탄수 current 적용
+	void reset();				//다시 스폰할때 디폴트값으로 리셋
 
 
 protected:

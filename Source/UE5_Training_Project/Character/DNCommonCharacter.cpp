@@ -136,6 +136,8 @@ void ADNCommonCharacter::BeginPlay()
 
 	OnAtStartAmmo.Broadcast(_status->_has_ammo);	//블랙보드 총알 등록
 	init_ui_event();								//이벤트 추가할 UI 델리게이트 등록
+
+	_my_spawn_location = GetActorLocation();		//나중에 다시 스폰하기 위해 위치를 저장
 }
 
 void ADNCommonCharacter::Tick(float DeltaTime)
@@ -363,16 +365,15 @@ void ADNCommonCharacter::set_idle_animation()
 void ADNCommonCharacter::destroy_object_handler()
 {
 
-	ADNCommonCharacter* player = Cast<ADNCommonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());		//플레이어 삭제는 위험하므로 일단은 리턴시킵니다.
-	if (player == this)
-		return;
-
 
 	if(_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
 		SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_UI, 2);		//에이전트 다운
 
-	remove_ui_event();
-	Destroy();
+	SetActorLocation(_my_spawn_location);
+	_status->reset();
+
+	//SetActorHiddenInGame(true);
+	//SetActorEnableCollision(false);
 
 }
 
