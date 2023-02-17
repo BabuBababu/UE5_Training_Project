@@ -18,6 +18,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractionLineDelegate, E_UI_INTERACTION_TYPE, type);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTargetLimitAmmoDelegate);
 
 
 class ADNCommonCharacter;
@@ -48,6 +49,7 @@ public:
 
 public:
 	FOnInteractionLineDelegate OnInteractionLinetrace;
+	FOnTargetLimitAmmoDelegate OnTargetHit;
 
 public:
 	ADNCommonItem* _item;

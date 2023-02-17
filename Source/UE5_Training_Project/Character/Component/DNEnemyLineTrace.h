@@ -12,9 +12,15 @@
 // generated
 #include "DNEnemyLineTrace.generated.h"
 
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnETargetLimitAmmoDelegate);
+
 /**
  * 
  */
+
+
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNEnemyLineTrace : public UObject
 {
@@ -35,4 +41,8 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 		void OnFire(ADNCommonCharacter* player_in);
+
+
+public:
+	FOnETargetLimitAmmoDelegate OnTargetHit;
 };

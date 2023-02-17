@@ -84,4 +84,7 @@ public:
 	UFUNCTION()
 	void update_get_ammo_handler(int64 count_in);
 
+	UFUNCTION()
+	void reset_target_handler();
+
 };

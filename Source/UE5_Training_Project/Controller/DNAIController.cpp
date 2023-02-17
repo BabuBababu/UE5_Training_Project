@@ -56,6 +56,7 @@ void ADNAIController::Tick(float DeltaSeconds)
 	}
 
 
+
 }
 
 
@@ -187,6 +188,7 @@ void ADNAIController::add_event(ADNCommonCharacter* character_in)
 {
 	character_in->OnEmptyAmmo.AddDynamic(this, &ADNAIController::update_empty_ammo_handler);
 	character_in->OnAtStartAmmo.AddDynamic(this, &ADNAIController::update_beginplay_ammo_handler);
+	character_in->OnStopShotAmmo.AddDynamic(this, &ADNAIController::reset_target_handler);
 
 }
 
@@ -195,7 +197,7 @@ void ADNAIController::remove_event(ADNCommonCharacter* character_in)
 {
 	character_in->OnEmptyAmmo.RemoveDynamic(this, &ADNAIController::update_empty_ammo_handler);
 	character_in->OnAtStartAmmo.RemoveDynamic(this, &ADNAIController::update_beginplay_ammo_handler);
-
+	character_in->OnStopShotAmmo.RemoveDynamic(this, &ADNAIController::reset_target_handler);
 }
 
 void ADNAIController::SetPerceptionSystem()
@@ -247,3 +249,9 @@ void ADNAIController::update_beginplay_ammo_handler(int64 count_in)
 	get_blackboard()->SetValueAsInt(all_ai_bb_keys::has_ammo, count_in);
 }
 
+
+void ADNAIController::reset_target_handler()
+{
+	get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+}

@@ -113,7 +113,6 @@ ADNCommonCharacter::ADNCommonCharacter()
 void ADNCommonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	add_event();
 
 	// 라인 트레이스 생성
 	if (_line_trace == nullptr)
@@ -135,6 +134,7 @@ void ADNCommonCharacter::BeginPlay()
 	}
 
 	OnAtStartAmmo.Broadcast(_status->_has_ammo);	//블랙보드 총알 등록
+	add_event();									//기본 델리게이트 등록
 	init_ui_event();								//이벤트 추가할 UI 델리게이트 등록
 
 	_my_spawn_location = GetActorLocation();		//나중에 다시 스폰하기 위해 위치를 저장
@@ -173,6 +173,15 @@ void ADNCommonCharacter::add_event()
 
 	anim_instance->OnReloadEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
 	OnTargetDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
+
+	if (_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+	{
+		_line_trace->OnTargetHit.AddDynamic(this, &ADNCommonCharacter::ammo_hit_handler);
+	}
+	else if (_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+	{
+		_enemy_line_trace->OnTargetHit.AddDynamic(this, &ADNCommonCharacter::ammo_hit_handler);
+	}
 	
 }
 
@@ -261,10 +270,19 @@ void ADNCommonCharacter::fire()
 		return;
 	}
 
+	if (_target_change_current_ammo >= _target_change_limit_ammo)	//제한 총알 개수만큼 오사격을 했을 경우
+	{
+		_target_change_current_ammo = 0;
+		OnStopShotAmmo.Broadcast();
+		return;
+	}
+
+
 	if (_is_fire)
 	{
 		_is_aiming = true;
 		OnFire.Broadcast();
+		_target_change_current_ammo += 1;
 		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
 
 		if (_character_type != E_CHARACTER_TYPE::CT_ENEMY)
@@ -429,4 +447,10 @@ void ADNCommonCharacter::reset_fire_state_handler(ADNCommonCharacter* chracter_i
 	{
 		set_idle_animation();
 	}
+}
+
+
+void ADNCommonCharacter::ammo_hit_handler()
+{
+	_target_change_current_ammo = 0;
 }

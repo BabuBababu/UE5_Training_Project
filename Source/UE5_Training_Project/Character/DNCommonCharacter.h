@@ -195,6 +195,8 @@ public:
 	bool _is_attacking;
 
 	FVector  _my_spawn_location = FVector(0.f, 0.f, 0.f);
+	int64 _target_change_limit_ammo = 10;				// 병과마다 다르게 가야할듯?
+	int64 _target_change_current_ammo = 0;
 
 
 
@@ -207,6 +209,7 @@ public:
 	FOnIteractionFinishDelegate OnVehicleRiding;
 	FOnIteractionFinishDelegate OnNPCTalk;
 	FOnAIAmmoDelegate OnEmptyAmmo;
+	FOnAIAmmoDelegate OnStopShotAmmo;
 	FOnStartAIAmmoDelegate OnAtStartAmmo;
 	FOnDeadDelegate OnTargetDead;
 
@@ -222,5 +225,8 @@ public:
 
 	UFUNCTION()
 	void reset_fire_state_handler(ADNCommonCharacter* chracter_in);
+
+	UFUNCTION()
+	void ammo_hit_handler();
 
 };
