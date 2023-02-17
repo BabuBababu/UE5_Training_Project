@@ -45,7 +45,16 @@ void ADNAIController::Tick(float DeltaSeconds)
 
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
 	if (nullptr != character)
+	{
 		_blackboard->SetValueAsBool(all_ai_bb_keys::is_armed, character->_is_armed_weapon);
+
+		if (character->_status->_dead)
+		{
+			_blackboard->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+			_blackboard->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+		}
+	}
+
 
 }
 
