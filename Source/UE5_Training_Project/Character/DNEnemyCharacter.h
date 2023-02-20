@@ -28,9 +28,10 @@ public:
 	void BeginPlay() override;
 
 
-private:
+
+protected:
 	void init_ai();
-	void init_base();
+	virtual void init_base();
 
 
 };

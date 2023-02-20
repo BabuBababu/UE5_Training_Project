@@ -13,7 +13,7 @@
 #include "DNPlayerLineTrace.generated.h"
 
 /**
- * 
+ *	 현재 플레이어 및 전술인형(아군)이 공용으로 사용중입니다.
  */
 
 
