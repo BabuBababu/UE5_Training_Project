@@ -19,6 +19,7 @@
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
+#include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 
 // Component
 #include <UE5_Training_Project/Component/DNStatusComponent.h>
@@ -79,12 +80,38 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 	{
-		UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Enemy.BT_Combat_Enemy"), NULL, LOAD_None, NULL);
-		if (nullptr != BTObject)
+		ADNEnemyCharacter* enemy = Cast<ADNEnemyCharacter>(character);
+
+		if (nullptr == enemy)
 		{
-			btree = BTObject;
-			UE_LOG(LogTemp, Warning, TEXT("bt Enemy succeeded!"));
+			return;
 		}
+		else
+		{
+			if (enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE)
+			{
+				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Melee_Enemy.BT_Combat_Melee_Enemy"), NULL, LOAD_None, NULL);
+				if (nullptr != BTObject)
+				{
+					btree = BTObject;
+					UE_LOG(LogTemp, Warning, TEXT("bt Enemy succeeded!"));
+				}
+			}
+			else   //일단은 이런식으로 적군 타입에 따라 BT를 다르게 초기화합니다.
+			{
+				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Enemy.BT_Combat_Enemy"), NULL, LOAD_None, NULL);
+				if (nullptr != BTObject)
+				{
+					btree = BTObject;
+					UE_LOG(LogTemp, Warning, TEXT("bt Enemy succeeded!"));
+				}
+			}
+
+
+			
+			
+		}
+		
 	}
 
 

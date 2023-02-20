@@ -33,5 +33,8 @@ protected:
 	void init_ai();
 	virtual void init_base();
 
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
+	E_ENEMY_TYPE _enemy_type;
 
 };

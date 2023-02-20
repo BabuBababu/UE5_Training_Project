@@ -29,14 +29,19 @@ void UDNMeleeRangeCheckServiceTask::OnBecomeRelevant(UBehaviorTreeComponent& own
 	ADNAIController* const Cont = Cast<ADNAIController>(owner_comp.GetAIOwner());
 	ADNDogEnemyCharacter* const dog = Cast<ADNDogEnemyCharacter>(Cont->GetPawn());
 
-	ACharacter* const Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%f"),Enemy->GetDistanceTo(Player)));
 
+	ADNCommonCharacter* target = Cast<ADNCommonCharacter>(Cont->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor));
+	if (nullptr == target)
+		return;
+	float temp = dog->GetDistanceTo(target);
 
-	Cont->get_blackboard()->SetValueAsBool(all_ai_bb_keys::enemy_is_in_melee_range, dog->GetDistanceTo(Player) <= MeleeRange);
+	if(temp <= MeleeRange)
+		Cont->get_blackboard()->SetValueAsBool(all_ai_bb_keys::enemy_is_in_melee_range, true);
+	else
+		Cont->get_blackboard()->SetValueAsBool(all_ai_bb_keys::enemy_is_in_melee_range, false);
 
 	if (all_ai_bb_keys::enemy_is_in_melee_range)
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("range is true!"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Range is : %f"), temp));
 	}
 }

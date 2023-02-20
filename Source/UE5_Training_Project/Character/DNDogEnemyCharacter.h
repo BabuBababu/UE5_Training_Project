@@ -15,6 +15,9 @@
 /**
  * 
  */
+
+class ADNCommonCharacter;
+
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNDogEnemyCharacter : public ADNEnemyCharacter
 {
@@ -34,9 +37,13 @@ public:
 private:
 	void init_base() override;
 
+private:
+	bool	_is_overlap;
+	ADNCommonCharacter* _damaged_character;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USphereComponent* AttackHead;
+
 
 
 public:

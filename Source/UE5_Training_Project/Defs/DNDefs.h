@@ -119,6 +119,22 @@ enum class E_CHARACTER_GRADE : uint8
 
 
 
+UENUM(BlueprintType)
+enum class E_ENEMY_TYPE : uint8
+{
+	ET_NONE = 0			UMETA(DisplayName = "None"),				//비어있음
+	ET_MELEE			UMETA(DisplayName = "Melee"),				//근접 공격 몬스터
+	ET_MELEE_SHIELD		UMETA(DisplayName = "Melee Shield"),		//근접 방패 몬스터
+	ET_RANGER_AR		UMETA(DisplayName = "Ranger AR"),			//AR 사격 몬스터
+	ET_RANGER_LC		UMETA(DisplayName = "Ranger LC"),			//LC 사격 몬스터
+
+
+	CG_COUNT
+};
+
+
+
+
 
 
 

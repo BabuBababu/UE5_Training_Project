@@ -14,6 +14,8 @@
 // Component
 #include "UE5_Training_Project/Component/DNStatusComponent.h"
 
+// Util
+#include "UE5_Training_Project/Util/DNDamageOperation.h"
 
 
 ADNDogEnemyCharacter::ADNDogEnemyCharacter()
@@ -39,7 +41,9 @@ void ADNDogEnemyCharacter::BeginPlay()
 void ADNDogEnemyCharacter::init_base()
 {
 	Super::init_base();
-
+	_enemy_type = E_ENEMY_TYPE::ET_MELEE;
+	_is_overlap = false;
+	_damaged_character = nullptr;
 }
 
 
@@ -64,6 +68,20 @@ void ADNDogEnemyCharacter::fire()
 	{
 		OnFire.Broadcast();	//공격 애니메이션 재생
 		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
+
+		if (_is_overlap)
+		{
+			float damage = _status->_chartacter_data->character_status_data.damage;
+			if (nullptr != _damaged_character)
+			{
+				DNDamageOperation::melee_damage(damage, _damaged_character, this);
+				DNDamageOperation::DamageShowUI(damage, _damaged_character, E_DAMAGE_TYPE::DT_NORMAL);	//헤드일 경우 약점 대미지로 판단, ReceiveDamage에서 약점부위를 판단하고 넣어야할듯.. 순서가.. 일단은 노멀로 통일
+
+				_is_overlap = false;
+			}
+		}
+
+		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNDogEnemyCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
 	}
 }
 
@@ -77,15 +95,16 @@ void ADNDogEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, A
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(OtherActor);
 
 	if (nullptr == character)
+	{
+		_is_overlap = false;
 		return;
+	}
 
 
-	float damage = _status->_chartacter_data->character_status_data.damage;
 	if (character->get_character_type() != E_CHARACTER_TYPE::CT_ENEMY)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("DangDang Overlap Begin!!"));
-		//해당 캐릭터에 대미지 입력
-
+		_is_overlap = true;
+		_damaged_character = character;
 	}
 
 }
