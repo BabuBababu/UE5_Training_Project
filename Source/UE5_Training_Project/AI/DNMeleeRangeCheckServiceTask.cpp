@@ -40,8 +40,4 @@ void UDNMeleeRangeCheckServiceTask::OnBecomeRelevant(UBehaviorTreeComponent& own
 	else
 		Cont->get_blackboard()->SetValueAsBool(all_ai_bb_keys::enemy_is_in_melee_range, false);
 
-	if (all_ai_bb_keys::enemy_is_in_melee_range)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Range is : %f"), temp));
-	}
 }

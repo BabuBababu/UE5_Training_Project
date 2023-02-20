@@ -19,6 +19,7 @@
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
+#include "UE5_Training_Project/Character/DNDogEnemyCharacter.h"
 
 // Item
 #include "UE5_Training_Project/Actor/DNCommonActor.h"
@@ -97,7 +98,17 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 		{
 			// 무기 데이터 테이블을 이용해서 대미지 적용하는 방식을 쓸 예정이므로 아래 코드는 결국 수정할 것.
 			//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
-			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1.2f), true, EPSCPoolMethod::None, true);
+			ADNDogEnemyCharacter* dog = Cast<ADNDogEnemyCharacter>(_enemy);
+
+			//적 쭉쭉쭉 추가
+			if(nullptr != dog)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+			}
+			else
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1.2f), true, EPSCPoolMethod::None, true);
+			}
 			
 			// 명중 델리게이트
 			OnTargetHit.Broadcast();
