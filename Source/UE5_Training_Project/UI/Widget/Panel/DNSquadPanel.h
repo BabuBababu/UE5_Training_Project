@@ -67,6 +67,9 @@ private:
 private:
 	void init_panel();
 
+public:
+	void update_squad(int64 first_index_in, int64 second_index_in);
+
 
 public:
 	UFUNCTION()

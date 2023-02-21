@@ -52,6 +52,9 @@ void UDNSquadSlot::init_data(int64 squad_index_in , FDNCharacterData * data_in)	
 {
 	set_widget_index(squad_index_in);
 
+	if (nullptr == data_in)
+		return;
+
 
 	if (IsValid(umg_image))
 	{
@@ -81,18 +84,19 @@ void UDNSquadSlot::sync_gauge()
 	//오브젝트 매니저에서 해당 인형 가져와서 싱크 맞추기
 	for (const auto& doll : OBJECT_MANAGER->_in_squad_doll_array)
 	{
-
-		if (nullptr != doll.Value && doll.Value->_squad_index == get_widget_index())		// 해당 인형의 스쿼드 인덱스와 이 슬롯의 인덱스가 같다면
+		if (nullptr != doll.Value)
 		{
-			if (false == doll.Value->_status->_dead)										// 죽지 않았다면
+			if (nullptr != doll.Value && doll.Value->_squad_index == get_widget_index())		// 해당 인형의 스쿼드 인덱스와 이 슬롯의 인덱스가 같다면
 			{
-				_current_hp = doll.Value->_status->_current_hp;
-				_max_hp = doll.Value->_status->get_max_hp();
-				set_hp(_current_hp, _max_hp);
+				if (false == doll.Value->_status->_dead)										// 죽지 않았다면
+				{
+					_current_hp = doll.Value->_status->_current_hp;
+					_max_hp = doll.Value->_status->get_max_hp();
+					set_hp(_current_hp, _max_hp);
+				}
 			}
 		}
 	}
-
 
 }
 

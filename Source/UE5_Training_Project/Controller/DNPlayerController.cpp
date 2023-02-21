@@ -19,15 +19,26 @@
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "EnhancedInput/Public/InputActionValue.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNUIManager.h"
+#include "UE5_Training_Project/Manager/DNObjectManager.h"
+#include "UE5_Training_Project/UI/Manager/DNWidgetManager.h"
 
 // Character
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
 
 
+// UI
+#include "UE5_Training_Project/UI/Widget/Panel/DNSquadPanel.h"
+
+
 ADNPlayerController::ADNPlayerController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	
+	_order_now = false;
+	_selected_first = false;
+	_selected_num_first = -1;
+	_selected_num_second = -1;
 }
 
 
@@ -84,6 +95,18 @@ void ADNPlayerController::SetupInputComponent()
 	PEI->BindAction(InputActions->InputCameraRotate, ETriggerEvent::Triggered, this, &ADNPlayerController::CameraRotate);
 	PEI->BindAction(InputActions->InputCameraRotate, ETriggerEvent::Completed, this, &ADNPlayerController::StopCameraRotate);
 	
+
+	// 전투중 스쿼드에서 인형 선택
+
+	PEI->BindAction(InputActions->IA_Num_1, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_1>);
+	PEI->BindAction(InputActions->IA_Num_2, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_2>);
+	PEI->BindAction(InputActions->IA_Num_3, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_3>);
+	PEI->BindAction(InputActions->IA_Num_4, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_4>);
+	PEI->BindAction(InputActions->IA_Num_5, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_5>);
+	PEI->BindAction(InputActions->IA_Num_6, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_6>);
+	PEI->BindAction(InputActions->IA_Num_7, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_7>);
+	PEI->BindAction(InputActions->IA_Num_8, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_8>);
+	PEI->BindAction(InputActions->IA_Num_9, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_9>);
 }
 
 
@@ -289,3 +312,147 @@ void ADNPlayerController::StopCameraRotate(const FInputActionValue& Value)
 	UE_LOG(LogTemp, Warning, TEXT("StopCameraRotate"));
 }
 
+template<E_INPUT_KEY Key>
+void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
+{
+	// 5번은 플레이어이므로 제외
+
+	if (_selected_num_first == -1 )
+		_selected_first = true;
+
+
+	if (Key == E_INPUT_KEY::IK_1)
+	{
+		if (true == _selected_first)
+		{
+			_selected_num_first = 1;
+			_selected_first = false;
+		}
+		else
+		{
+			_selected_num_second = 1;
+		}
+	}
+	else if (Key == E_INPUT_KEY::IK_2)
+	{
+		if (true == _selected_first)
+		{
+			_selected_num_first = 2;
+			_selected_first = false;
+		}
+		else
+		{
+			_selected_num_second = 2;
+		}
+	}
+	else if (Key == E_INPUT_KEY::IK_3)
+	{
+		if (true == _selected_first)
+		{
+			_selected_num_first = 3;
+			_selected_first = false;
+		}
+		else
+		{
+			_selected_num_second = 3;
+		}
+	}
+	else if (Key == E_INPUT_KEY::IK_4)
+	{
+		if (true == _selected_first)
+		{
+			_selected_num_first = 4;
+			_selected_first = false;
+		}
+		else
+		{
+			_selected_num_second = 4;
+		}
+	}
+	
+	else if (Key == E_INPUT_KEY::IK_6)
+	{
+		if (true == _selected_first)
+		{
+			_selected_num_first = 6;
+			_selected_first = false;
+		}
+		else
+		{
+			_selected_num_second = 6;
+		}
+	}
+	else if (Key == E_INPUT_KEY::IK_7)
+	{
+		if (true == _selected_first)
+		{
+			_selected_num_first = 7;
+			_selected_first = false;
+		}
+		else
+		{
+			_selected_num_second = 7;
+		}
+	}
+	else if (Key == E_INPUT_KEY::IK_8)
+	{
+		if (true == _selected_first)
+		{
+			_selected_num_first = 8;
+			_selected_first = false;
+		}
+		else
+		{
+			_selected_num_second = 8;
+		}
+	}
+	else if (Key == E_INPUT_KEY::IK_9)
+	{
+		if (true == _selected_first)
+		{
+			_selected_num_first = 9;
+			_selected_first = false;
+		}
+		else
+		{
+			_selected_num_second = 9;
+		}
+	}
+
+
+
+
+
+
+
+	// 두번의 숫자를 눌렀다면 
+	if (-1 != _selected_num_first && -1 != _selected_num_second)
+	{
+
+		if (_selected_num_first == _selected_num_second)			//숫자가 같은거면 개인 명령
+		{
+			//오더할 내용 추가
+			_order_now = true;
+			return;
+		}
+
+		UDNSquadPanel* panel = Cast<UDNSquadPanel>(WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_SQUAD));
+
+		if (IsValid(panel))
+		{
+			panel->update_squad(_selected_num_first, _selected_num_second);								//UI 업데이트
+			OBJECT_MANAGER->update_combat_squad_postion(_selected_num_first, _selected_num_second);		//오브젝트 업데이트
+		}
+
+
+
+		_selected_first = false;
+		_selected_num_first = -1;
+		_selected_num_second = -1;
+
+	}
+
+
+
+
+}

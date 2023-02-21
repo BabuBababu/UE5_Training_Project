@@ -266,7 +266,8 @@ enum class E_UI_PANEL_TYPE
 	UPT_QUEST,
 	UPT_COMBAT, //플레이어 패널
 	UPT_TARGET_INFORMATION,
-	UPT_QUICK_SLOT
+	UPT_QUICK_SLOT,
+	UPT_SQUAD
 };
 
 UENUM()
@@ -368,4 +369,37 @@ enum class E_SOUND_TYPE : uint8
 	ST_UI,					//UI
 
 	ST_COUNT
+};
+
+
+//////////////////////////////////////////////////////////
+//
+//  Input
+//
+//////////////////////////////////////////////////////////
+
+
+UENUM(BlueprintType)
+enum class E_INPUT_KEY : uint8
+{
+	// 1
+	IK_1						UMETA(DisplayName = "1"),
+	// 2
+	IK_2						UMETA(DisplayName = "2"),
+	// 3
+	IK_3						UMETA(DisplayName = "3"),
+	// 4
+	IK_4						UMETA(DisplayName = "4"),
+	// 5
+	IK_5						UMETA(DisplayName = "5"),
+	// 6
+	IK_6						UMETA(DisplayName = "6"),
+	// 7
+	IK_7						UMETA(DisplayName = "7"),
+	// 8
+	IK_8						UMETA(DisplayName = "8"),
+	// 9
+	IK_9						UMETA(DisplayName = "9"),
+	// 0
+	IK_0						UMETA(DisplayName = "0")
 };

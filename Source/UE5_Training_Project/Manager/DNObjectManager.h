@@ -41,6 +41,8 @@ public:
 public:
 	static TObjectPtr<UDNObjectManager> get_object_manager();
 
+	void update_combat_squad_postion(int32 first_in, int32 second_in);
+
 
 public:
 	TMap<int64,ADNTargetPointActor*> _location_actor_array;			//타겟포인트액터 모음 맵

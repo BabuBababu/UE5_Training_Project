@@ -9,6 +9,8 @@
 // Data
 #include "UE5_Training_Project/Data/DNInputConfigData.h"
 
+// Defs
+#include "UE5_Training_Project/Defs/DNDefs.h"
 
 // generated
 #include "DNPlayerController.generated.h"
@@ -48,6 +50,10 @@ public:
 	void Interaction(const FInputActionValue& Value);
 	void CameraRotate(const FInputActionValue& Value);
 	void StopCameraRotate(const FInputActionValue& Value);
+	
+
+	template<E_INPUT_KEY Key>
+	void SelectCharacter(const FInputActionValue& Value);
 
 protected:
 	virtual void BeginPlay() override;
@@ -70,6 +76,13 @@ protected:
 	// 카메라 셰이크
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Shake")
 	TSubclassOf<UCameraShakeBase> CameraShake;
+
+
+private:
+	bool		_order_now;
+	bool		_selected_first;
+	int32		_selected_num_first;
+	int32		_selected_num_second;
 //////////////////////////////////////////////////////////////////////////
 // delegate
 //////////////////////////////////////////////////////////////////////////
