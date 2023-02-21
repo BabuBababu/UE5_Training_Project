@@ -117,3 +117,24 @@ void UDNSquadSlot::play_damaged_animation()
 		PlayAnimation(umg_damaged_animation);
 	}
 }
+
+
+
+void UDNSquadSlot::change_position_animation()
+{
+	if (nullptr != umg_change_animation)
+	{
+		PlayAnimation(umg_change_animation,0.f,0);
+	}
+}
+
+void UDNSquadSlot::stop_animation()
+{
+	if (nullptr != umg_change_animation)
+	{
+		if (umg_change_animation)
+		{
+			StopAnimation(umg_change_animation);
+		}
+	}
+}

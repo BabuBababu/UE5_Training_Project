@@ -419,7 +419,7 @@ void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 		}
 	}
 
-
+	OnSquadPosition.Broadcast(_selected_num_first);
 
 
 
@@ -442,6 +442,7 @@ void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 		{
 			panel->update_squad(_selected_num_first, _selected_num_second);								//UI 업데이트
 			OBJECT_MANAGER->update_combat_squad_postion(_selected_num_first, _selected_num_second);		//오브젝트 업데이트
+			OnStopAnimation.Broadcast();
 		}
 
 

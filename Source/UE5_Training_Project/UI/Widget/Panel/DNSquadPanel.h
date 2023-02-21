@@ -74,4 +74,10 @@ public:
 public:
 	UFUNCTION()
 	void play_damaged_animation_handler(int64 squad_index_in);
+
+	UFUNCTION()
+	void change_position_animation_handler(int32 squad_index_in);
+
+	UFUNCTION()
+	void stop_animation_handler();
 };

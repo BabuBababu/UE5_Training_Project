@@ -55,6 +55,8 @@ private:
 	UPROPERTY(Meta = (BindWidgetAnim), Transient)
 	class UWidgetAnimation* umg_damaged_animation;
 	
+	UPROPERTY(Meta = (BindWidgetAnim), Transient)
+		class UWidgetAnimation* umg_change_animation;
 
 private:
 	float _current_hp = 0.0f;
@@ -67,5 +69,6 @@ public:
 	void sync_gauge();
 	void set_hp(float current_hp_in, float max_hp_in);
 	void play_damaged_animation();
-
+	void change_position_animation();
+	void stop_animation();
 };

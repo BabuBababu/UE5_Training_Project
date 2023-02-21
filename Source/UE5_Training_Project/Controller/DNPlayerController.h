@@ -22,6 +22,9 @@
 //DECLARE_DYNAMIC_DELEGATE(FJumpInputEvent);
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSquadPositionDelegate, int32, squad_inex);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSquadPositionStopDelegate);
+
 class UInputMappingContext;
 class UDNInputConfigData;
 
@@ -83,10 +86,14 @@ private:
 	bool		_selected_first;
 	int32		_selected_num_first;
 	int32		_selected_num_second;
+
+
 //////////////////////////////////////////////////////////////////////////
 // delegate
 //////////////////////////////////////////////////////////////////////////
-
+public:
+	FOnSquadPositionDelegate	OnSquadPosition;
+	FOnSquadPositionStopDelegate OnStopAnimation;
 
 
 

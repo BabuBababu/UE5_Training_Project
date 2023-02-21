@@ -6,6 +6,9 @@
 // Panel
 #include "UE5_Training_Project/UI/Widget/Panel/DNSquadSlot.h"
 
+// Controller
+#include "UE5_Training_Project/Controller/DNPlayerController.h"
+
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
@@ -37,6 +40,14 @@ void UDNSquadPanel::add_event()
 		if( nullptr != doll.Value)
 			doll.Value->OnDamaged.AddDynamic(this, &UDNSquadPanel::play_damaged_animation_handler);
 	}
+
+	ADNPlayerController* controller = Cast<ADNPlayerController>(GetWorld()->GetFirstPlayerController());
+	if (nullptr != controller)
+	{
+		controller->OnSquadPosition.AddDynamic(this, &UDNSquadPanel::change_position_animation_handler);
+		controller->OnStopAnimation.AddDynamic(this, &UDNSquadPanel::stop_animation_handler);
+	}
+
 }
 
 
@@ -47,6 +58,15 @@ void UDNSquadPanel::remove_event()
 		if (nullptr != doll.Value)
 			doll.Value->OnDamaged.RemoveDynamic(this, &UDNSquadPanel::play_damaged_animation_handler);
 	}
+	ADNPlayerController* controller = Cast<ADNPlayerController>(GetWorld()->GetFirstPlayerController());
+	if (nullptr != controller)
+	{
+		controller->OnSquadPosition.RemoveDynamic(this, &UDNSquadPanel::change_position_animation_handler);
+		controller->OnStopAnimation.RemoveDynamic(this, &UDNSquadPanel::stop_animation_handler);
+		
+	}
+
+
 }
 
 
@@ -285,5 +305,23 @@ void UDNSquadPanel::play_damaged_animation_handler(int64 squad_index_in)
 	{
 		if (slot->get_widget_index() == squad_index_in)
 			slot->play_damaged_animation();
+	}
+}
+
+void UDNSquadPanel::change_position_animation_handler(int32 squad_index_in)
+{
+	for (const auto& slot : _slot_array)
+	{
+		if (slot->get_widget_index() == squad_index_in)
+			slot->change_position_animation();
+	}
+}
+
+
+void UDNSquadPanel::stop_animation_handler()
+{
+	for (const auto& slot : _slot_array)
+	{
+		slot->stop_animation();
 	}
 }
