@@ -70,6 +70,10 @@ void ADNUnEnemyCharacter::add_event()
 
 	player->on_armed.AddDynamic(this, &ADNUnEnemyCharacter::change_armed_state_handler);
 	player->on_crouch.AddDynamic(this, &ADNUnEnemyCharacter::change_crouch_state_handler);
+	player->on_sprint.AddDynamic(this, &ADNUnEnemyCharacter::change_sprint_state_handler);
+
+	player->OnOrderMove.AddDynamic(this, &ADNUnEnemyCharacter::order_move_handler);
+	player->OnOrderAttack.AddDynamic(this, &ADNUnEnemyCharacter::order_attack_handler);
 }
 
 void ADNUnEnemyCharacter::remove_event()
@@ -78,6 +82,9 @@ void ADNUnEnemyCharacter::remove_event()
 	//ADNPlayerCharacter* player = dynamic_cast<ADNPlayerCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	//player->on_armed.RemoveDynamic(this, &ADNUnEnemyCharacter::change_armed_state_handler);
 	//player->on_crouch.RemoveDynamic(this, &ADNUnEnemyCharacter::change_crouch_state_handler);
+	//player->on_sprint.RemoveDynamic(this, &ADNUnEnemyCharacter::change_sprint_state_handler);
+	//player->OnOrderMove.RemoveDynamic(this, &ADNUnEnemyCharacter::order_move_handler);
+	//player->OnOrderAttack.RemoveDynamic(this, &ADNUnEnemyCharacter::order_attack_handler);
 }
 
 
@@ -95,7 +102,7 @@ void ADNUnEnemyCharacter::init_base()
 	_character_type = E_CHARACTER_TYPE::CT_GRIFFIN;
 	_squad_index = -1;			//초기 인덱스는 -1로
 	_is_in_squad = true;		//원래는 false로 하고 ui에서 스쿼드 배치가 되면 true바꿔줘야함! 일단은 테스트를 위해 true로!
-
+	_is_ordered = false;
 
 }
 
@@ -139,3 +146,45 @@ void ADNUnEnemyCharacter::change_crouch_state_handler(bool crouch_in)
 	_is_crouch = crouch_in;
 }
 
+void ADNUnEnemyCharacter::change_sprint_state_handler(bool sprint_in)
+{
+	_is_sprint = sprint_in;
+}
+
+void ADNUnEnemyCharacter::order_move_handler(FVector destination_in, ADNUnEnemyCharacter* doll_in)
+{
+	if (this != doll_in)
+		return;
+
+	ADNAIController* controller = Cast<ADNAIController>(GetController());
+	if (nullptr != controller)
+	{
+		controller->ordered_move(destination_in, doll_in);
+		_is_ordered = true;
+	}
+}
+
+void ADNUnEnemyCharacter::order_attack_handler(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in)
+{
+	if (this != doll_in)
+		return;
+
+	ADNAIController* controller = Cast<ADNAIController>(GetController());
+	if (nullptr != controller)
+	{
+		controller->ordered_attack(enemy_in, doll_in);
+		_is_ordered = true;
+	}
+}
+
+
+void ADNUnEnemyCharacter::order_stop_handler()
+{
+
+	ADNAIController* controller = Cast<ADNAIController>(GetController());
+	if (nullptr != controller)
+	{
+		controller->order_stop();
+		_is_ordered = false;
+	}
+}

@@ -44,10 +44,20 @@ public:
 	void change_armed_state_handler(bool armed_in);
 	UFUNCTION()
 	void change_crouch_state_handler(bool crouch_in);
+	UFUNCTION()
+	void change_sprint_state_handler(bool sprint_in);
 
+
+	UFUNCTION()
+	void order_move_handler(FVector destination_in, ADNUnEnemyCharacter* doll_in);
+	UFUNCTION()
+	void order_attack_handler(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in);
+
+	void order_stop_handler();					// 이거는 델리게이트 사용하지않음
 
 public:
 	bool	_is_in_squad;
+	bool	_is_ordered;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Squad)			//전투시 스쿼드 위치 구분용
 	int64	_squad_index;

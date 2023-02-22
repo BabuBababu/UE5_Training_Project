@@ -39,13 +39,16 @@ private:
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")
-		UParticleSystem* blood_particle;
+	UParticleSystem* blood_particle;
 
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")
-		UParticleSystem* block_particle;
+	UParticleSystem* block_particle;
 
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")
-		UParticleSystem* fire_particle;
+	UParticleSystem* fire_particle;
+
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")
+	UParticleSystem* order_move_particle;
 
 public:
 	FOnInteractionLineDelegate OnInteractionLinetrace;
@@ -60,6 +63,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnInteraction(ADNCommonCharacter* player_in);
+
+
+	UFUNCTION(BlueprintCallable)
+	void OnOrder(ADNCommonCharacter* player_in, ADNUnEnemyCharacter* doll_in);
 
 	UFUNCTION(BlueprintCallable)
 	void OnAiming(ADNCommonCharacter* player_in);

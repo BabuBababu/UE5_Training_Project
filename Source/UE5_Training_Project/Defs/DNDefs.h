@@ -401,5 +401,30 @@ enum class E_INPUT_KEY : uint8
 	// 9
 	IK_9						UMETA(DisplayName = "9"),
 	// 0
-	IK_0						UMETA(DisplayName = "0")
+	IK_0						UMETA(DisplayName = "0"),
+	// `
+	IK_TILDE					UMETA(DisplayName = "`"),
+	// Q
+	IK_Q						UMETA(DisplayName = "Q")
+};
+
+
+
+
+//////////////////////////////////////////////////////////
+//
+//  AI Order
+//
+//////////////////////////////////////////////////////////
+
+
+
+UENUM(BlueprintType)
+enum class E_ORDER_TYPE : uint8
+{
+
+	OT_NONE						UMETA(DisplayName = "None"),		//명령없음
+	OT_MOVEHOLD					UMETA(DisplayName = "MoveAndHold"),	//해당 위치 이동 및 사수
+	OT_ATTACK					UMETA(DisplayName = "Attack")		//강제 공격
+
 };

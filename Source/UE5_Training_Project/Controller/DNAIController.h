@@ -7,6 +7,9 @@
 #include <AIController.h>
 #include <Perception/AIPerceptionTypes.h>
 
+// Defs
+#include "UE5_Training_Project/Defs/DNDefs.h"
+
 // generated
 #include "DNAIController.generated.h"
 
@@ -19,6 +22,9 @@ class UBehaviorTree;
 class UBlackboardComponent;
 class UAISenseConfig_Sight;
 class ADNCommonCharacter;
+class ADNUnEnemyCharacter;
+class ADNEnemyCharacter;
+
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNAIController : public AAIController
@@ -35,6 +41,12 @@ public:
 
 	void add_event(ADNCommonCharacter* character_in);
 	void remove_event(ADNCommonCharacter* character_in);
+
+public:
+	void ordered_move(FVector destination_in, ADNUnEnemyCharacter* doll_in);
+	void ordered_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in);
+	void order_stop();
+
 public:
 	UFUNCTION()
 	void OnUpdated(TArray<AActor*> const& updated_actors);

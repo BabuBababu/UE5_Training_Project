@@ -11,6 +11,11 @@
 
 // Character
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
+#include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
+
+
+// Component
+#include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
 
 
 // EnhancedInput
@@ -24,10 +29,6 @@
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
 #include "UE5_Training_Project/UI/Manager/DNWidgetManager.h"
 
-// Character
-#include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
-
-
 // UI
 #include "UE5_Training_Project/UI/Widget/Panel/DNSquadPanel.h"
 
@@ -35,7 +36,6 @@
 ADNPlayerController::ADNPlayerController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	_order_now = false;
 	_selected_first = false;
 	_selected_num_first = -1;
 	_selected_num_second = -1;
@@ -107,6 +107,7 @@ void ADNPlayerController::SetupInputComponent()
 	PEI->BindAction(InputActions->IA_Num_7, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_7>);
 	PEI->BindAction(InputActions->IA_Num_8, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_8>);
 	PEI->BindAction(InputActions->IA_Num_9, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_9>);
+	PEI->BindAction(InputActions->IA_Q, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_Q>);
 }
 
 
@@ -317,13 +318,12 @@ void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 {
 	// 5번은 플레이어이므로 제외
 
-	if (_selected_num_first == -1 )
+	if (_selected_num_first == -1 )			//첫번째로 키입력
 		_selected_first = true;
-
 
 	if (Key == E_INPUT_KEY::IK_1)
 	{
-		if (true == _selected_first)
+		if (true == _selected_first)		//첫번째로 키입력을 했을 때
 		{
 			_selected_num_first = 1;
 			_selected_first = false;
@@ -418,6 +418,19 @@ void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 			_selected_num_second = 9;
 		}
 	}
+	else if (Key == E_INPUT_KEY::IK_Q)		//명령 취소
+	{
+		if (false == _selected_first)			//두번째 키 입력 때 눌렀을 경우
+		{
+
+
+			OBJECT_MANAGER->_in_squad_doll_array[_selected_num_first]->order_stop_handler();		// 해당 인형 명령 취소
+			_selected_first = false;
+			_selected_num_first = -1;
+			_selected_num_second = -1;
+			OnStopAnimation.Broadcast();
+		}
+	}
 
 	OnSquadPosition.Broadcast(_selected_num_first);
 
@@ -432,8 +445,13 @@ void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 		if (_selected_num_first == _selected_num_second)			//숫자가 같은거면 개인 명령
 		{
 			//오더할 내용 추가
-			_order_now = true;
-			return;
+			ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
+
+			if (character == nullptr)
+				return;
+
+			// 키입력 -> 라인트레이스 실행 -> 플레이어에서 해당 명령 실행 -> 다시 인형의 AI컨트롤러에서 실행
+			character->_line_trace->OnOrder(character, OBJECT_MANAGER->_in_squad_doll_array[_selected_num_first]);
 		}
 
 		UDNSquadPanel* panel = Cast<UDNSquadPanel>(WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_SQUAD));

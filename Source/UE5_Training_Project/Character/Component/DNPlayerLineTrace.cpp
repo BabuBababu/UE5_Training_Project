@@ -18,6 +18,7 @@
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
+#include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 #include "UE5_Training_Project/Character/DNDogEnemyCharacter.h"
 
@@ -35,7 +36,6 @@
 // Util
 #include "UE5_Training_Project/Util/DNDamageOperation.h"
 
-
 UDNPlayerLineTrace::UDNPlayerLineTrace()
 {
 	//파티클 시스템 
@@ -46,6 +46,10 @@ UDNPlayerLineTrace::UDNPlayerLineTrace()
 
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> Fire_ParticleAdd(TEXT("/Game/Assets/Weapon/Griffin/WeaponEffects/P_AssaultRifle_MF"));
 	fire_particle = Fire_ParticleAdd.Object;
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> Order_move_ParticleAdd(TEXT("/Game/Assets/Particle/P_Targeting_Player_Movement"));
+	order_move_particle = Order_move_ParticleAdd.Object;
+
 
 
 	_item = nullptr;
@@ -314,4 +318,67 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 
 
 	}
+}
+
+
+
+
+
+void UDNPlayerLineTrace::OnOrder(ADNCommonCharacter* player_in, ADNUnEnemyCharacter* doll_in)
+{
+	if (player_in->_character_type != E_CHARACTER_TYPE::CT_PLAYER)	//플레이어가 아니라면 리턴
+		return;
+
+
+	FQuat rotate = FQuat(player_in->GetControlRotation());		// 임시로 -15.f 로 카메라 각도만큼 해놧는데 확인예정
+
+	auto status = player_in->get_status_component().Get();
+
+	FVector camera_location = player_in->_camera_boom->GetComponentLocation();
+	FVector start_location = camera_location;
+
+	// 카메라 회전값 * 카메라의 포워드 벡터 = 사격 방향
+	FVector temp_forward = rotate.GetForwardVector();
+	// 명령 끝 지점
+	FVector end_location = camera_location + (temp_forward * 20000.f); // 사거리 2KM
+	FHitResult hit_result;
+
+	// 무시할 오브젝트
+	FCollisionQueryParams params;
+	params.AddIgnoredActor(player_in);		//플레이어와 자기 자신 인형은 무시합니다.
+	params.AddIgnoredActor(doll_in);
+
+	// 채널 결합, 열거형을 활용해서
+	ECollisionChannel TraceChannel = static_cast<ECollisionChannel>(ECC_PhysicsBody | ECC_WorldStatic);
+
+	//라인 트레이스 시작 (지형, 액터 전부 체크)
+	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, TraceChannel, params);
+	
+	if (hit_result.GetActor() != nullptr)
+	{
+		// 캐릭터 액터인지 체크
+		auto actor = Cast<ADNCommonCharacter>(hit_result.GetActor());
+		// 플레이어 유효한지 체크
+		ADNPlayerCharacter* player = Cast<ADNPlayerCharacter>(player_in);
+		
+		if (nullptr == player)
+			return;
+
+		//GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Green, FString::Printf(TEXT("hit Actor name is : %s"), *hit_result.GetActor()->GetName()));
+
+		if (nullptr == actor)			//캐릭터 액터가 아니라면 지형
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), order_move_particle, hit_result.ImpactPoint, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+			player->order_move(hit_result.ImpactPoint, doll_in);
+		}
+		else if (actor->_character_type == E_CHARACTER_TYPE::CT_ENEMY)   // 적군
+		{
+			ADNEnemyCharacter* enemy = Cast<ADNEnemyCharacter>(actor);
+
+			if (nullptr != enemy)
+				player->order_attack(enemy, doll_in);
+		}
+	}
+
+
 }

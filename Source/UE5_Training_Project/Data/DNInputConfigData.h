@@ -79,4 +79,6 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UInputAction* IA_Num_9;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* IA_Q;
 };

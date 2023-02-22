@@ -82,7 +82,6 @@ protected:
 
 
 private:
-	bool		_order_now;
 	bool		_selected_first;
 	int32		_selected_num_first;
 	int32		_selected_num_second;

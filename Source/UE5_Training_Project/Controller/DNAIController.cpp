@@ -19,10 +19,12 @@
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
+#include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 
 // Component
-#include <UE5_Training_Project/Component/DNStatusComponent.h>
+#include "UE5_Training_Project/Component/DNStatusComponent.h"
+#include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
 
 // BlackBoard
 #include "UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h"
@@ -47,13 +49,23 @@ void ADNAIController::Tick(float DeltaSeconds)
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
 	if (nullptr != character)
 	{
-		_blackboard->SetValueAsBool(all_ai_bb_keys::is_armed, character->_is_armed_weapon);
-
+		
 		if (character->_status->_dead)
 		{
 			_blackboard->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
 			_blackboard->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+
+			return;
 		}
+
+
+		ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
+		if (nullptr != doll)
+		{
+			_blackboard->SetValueAsBool(all_ai_bb_keys::is_armed, doll->_is_armed_weapon);
+			_blackboard->SetValueAsBool(all_ai_bb_keys::is_ordered, doll->_is_ordered);
+		}
+
 	}
 
 
@@ -257,6 +269,24 @@ TObjectPtr<UBlackboardComponent> ADNAIController::get_blackboard() const
 	return _blackboard;
 }
 
+
+void ADNAIController::ordered_move(FVector destination_in, ADNUnEnemyCharacter* doll_in)
+{
+	_blackboard->SetValueAsEnum(all_ai_bb_keys::order_type, static_cast<uint8>(E_ORDER_TYPE::OT_MOVEHOLD));
+	_blackboard->SetValueAsVector(all_ai_bb_keys::target_location, destination_in);
+}
+
+
+void ADNAIController::ordered_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in)
+{
+	_blackboard->SetValueAsEnum(all_ai_bb_keys::order_type, static_cast<uint8>(E_ORDER_TYPE::OT_ATTACK));
+	_blackboard->SetValueAsObject(all_ai_bb_keys::target_actor, enemy_in);		//can_see_enemy는 그대로이므로 볼수있을때 사격
+}
+
+void ADNAIController::order_stop()
+{
+	_blackboard->SetValueAsEnum(all_ai_bb_keys::order_type, static_cast<uint8>(E_ORDER_TYPE::OT_NONE));
+}
 
 void ADNAIController::update_empty_ammo_handler()
 {

@@ -178,11 +178,10 @@ void ADNCommonCharacter::add_event()
 	{
 		_line_trace->OnTargetHit.AddDynamic(this, &ADNCommonCharacter::ammo_hit_handler);
 	}
-	else if (_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+	else if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)
 	{
 		_enemy_line_trace->OnTargetHit.AddDynamic(this, &ADNCommonCharacter::ammo_hit_handler);
 	}
-	
 }
 
 

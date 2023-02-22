@@ -17,6 +17,8 @@ namespace all_ai_bb_keys
 	TCHAR const* const reloading = TEXT("Reloading");
 	TCHAR const* const is_wall = TEXT("IsNearbyWall");
 	TCHAR const* const is_armed = TEXT("IsArmed");
+	TCHAR const* const is_ordered = TEXT("IsOrdered");
+	TCHAR const* const order_type = TEXT("OrderType");
 	
 
 }

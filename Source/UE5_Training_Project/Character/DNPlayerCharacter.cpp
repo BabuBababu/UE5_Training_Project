@@ -117,6 +117,21 @@ void ADNPlayerCharacter::crouch()
 	player_crouch_event(_is_crouch);
 }
 
+
+void ADNPlayerCharacter::sprint()
+{
+	Super::sprint();
+	player_sprint_event(_is_sprint);
+}
+
+void ADNPlayerCharacter::stop_sprint()
+{
+	Super::stop_sprint();
+	player_sprint_event(_is_sprint);
+}
+
+
+
 void ADNPlayerCharacter::aiming()
 {
 	Super::aiming();
@@ -153,6 +168,18 @@ FTransform ADNPlayerCharacter::set_camera_transform(bool flag_in)
 
 
 
+void ADNPlayerCharacter::order_move(FVector destination_in, ADNUnEnemyCharacter* doll_in)
+{
+	OnOrderMove.Broadcast(destination_in, doll_in);
+}
+
+
+void ADNPlayerCharacter::order_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in)
+{
+	OnOrderAttack.Broadcast(enemy_in, doll_in);
+}
+
+
 void ADNPlayerCharacter::player_arm_event(bool armed_in)
 {
 	on_armed.Broadcast(armed_in);
@@ -163,7 +190,10 @@ void ADNPlayerCharacter::player_crouch_event(bool crouch_in)
 	//on_crouch.Broadcast(crouch_in);		일단 기능을 꺼둡니다. 플레이어가 숙일 때 다른 인형들도 숙이는 기능
 }
 
-
+void ADNPlayerCharacter::player_sprint_event(bool sprint_in)
+{
+	on_sprint.Broadcast(sprint_in);
+}
 
 
 void ADNPlayerCharacter::init_ui_event()
