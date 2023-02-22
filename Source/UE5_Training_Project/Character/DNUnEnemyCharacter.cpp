@@ -148,7 +148,10 @@ void ADNUnEnemyCharacter::change_crouch_state_handler(bool crouch_in)
 
 void ADNUnEnemyCharacter::change_sprint_state_handler(bool sprint_in)
 {
-	_is_sprint = sprint_in;
+	if (sprint_in)
+		sprint();
+	else
+		stop_sprint();
 }
 
 void ADNUnEnemyCharacter::order_move_handler(FVector destination_in, ADNUnEnemyCharacter* doll_in)
