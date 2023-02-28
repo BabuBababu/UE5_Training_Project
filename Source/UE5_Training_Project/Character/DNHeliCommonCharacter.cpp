@@ -5,6 +5,7 @@
 
 // Engine
 #include <GameFramework/FloatingPawnMovement.h>
+#include <Engine/Classes/Kismet/GameplayStatics.h>
 
 ADNHeliCommonCharacter::ADNHeliCommonCharacter()
 {
@@ -23,6 +24,7 @@ void ADNHeliCommonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UGameplayStatics::PlaySoundAtLocation(this, _engine_soundcue, GetActorLocation());
 }
 
 void ADNHeliCommonCharacter::Tick(float DeltaTime)

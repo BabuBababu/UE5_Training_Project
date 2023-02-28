@@ -50,7 +50,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UFloatingPawnMovement> _floting_movement;
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//엔진 소리
+	TObjectPtr<USoundBase> _engine_soundcue;
 public:
 	float _running_time;
 	float _rotor_mast;

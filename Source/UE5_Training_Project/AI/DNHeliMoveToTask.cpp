@@ -92,8 +92,6 @@ bool UDNHeliMoveToTask::is_moving_complete(UBehaviorTreeComponent& owner_comp_in
 	FVector origin_location = FVector(origin.X, origin.Y, 0.f);
 
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Tick is moving complete??"));
-
 	// 이동이 완료되었으면 true를 반환합니다.
 	return FVector::Distance(origin_location, target_location) < 100.f;
 }
