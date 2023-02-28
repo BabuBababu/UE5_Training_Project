@@ -32,6 +32,7 @@ enum class E_CHARACTER_TYPE : uint8
 	CT_NONE = 0		UMETA(DisplayName = "None"),
 	CT_PLAYER		UMETA(DisplayName = "Player"),
 	CT_GRIFFIN		UMETA(DisplayName = "Griffin"),
+	CT_HELI			UMETA(DisplayName = "HeliCoptor"),
 	CT_ENEMY		UMETA(DisplayName = "Enemy"),
 
 	CT_COUNT

@@ -59,7 +59,7 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 	auto Controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
 	auto self = Controller->GetPawn();
 
-	ADNUnEnemyCharacter* self_actor = dynamic_cast<ADNUnEnemyCharacter*>(self);
+	ADNUnEnemyCharacter* self_actor = Cast<ADNUnEnemyCharacter>(self);
 	ADNPlayerCharacter* player = dynamic_cast<ADNPlayerCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 
 
@@ -76,6 +76,9 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 	FVector player_location = player->GetActorLocation();
 	FNavLocation NextPatrol;
 	FVector target_location;
+
+	if (nullptr == self_actor)
+		return EBTNodeResult::Failed;
 
 	if(self_actor->get_status_component().Get()->_dead)
 		return EBTNodeResult::Failed;

@@ -41,8 +41,12 @@ void ADNUnEnemyCharacter::BeginPlay()
 
 	_is_attacking = false;
 
-	if (_squad_index < MAX_SUQAD_POSITION_NUMBER)							//인덱스가 10을 넘는다면 오류
-		OBJECT_MANAGER->_in_squad_doll_array[_squad_index] = this;			//시작시 스쿼드 인덱스 기준으로 오브젝트 매니저에 넣어줍니다.
+	if (_squad_index >= 0)
+	{
+		if (_squad_index < MAX_SUQAD_POSITION_NUMBER)							//인덱스가 10을 넘는다면 오류
+			OBJECT_MANAGER->_in_squad_doll_array[_squad_index] = this;			//시작시 스쿼드 인덱스 기준으로 오브젝트 매니저에 넣어줍니다.
+
+	}
 }
 
 void ADNUnEnemyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)

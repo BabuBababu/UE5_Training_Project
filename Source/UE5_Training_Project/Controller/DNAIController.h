@@ -52,7 +52,7 @@ public:
 	void OnUpdated(TArray<AActor*> const& updated_actors);
 
 	UFUNCTION()
-	void OnTargetDetected(AActor* actor, FAIStimulus const Stimulus);
+	virtual void OnTargetDetected(AActor* actor, FAIStimulus const Stimulus);
 
 	UFUNCTION()
 	void SetPerceptionSystem();
@@ -81,7 +81,7 @@ public:
 
 
 
-private:
+protected:
 	TObjectPtr<UBlackboardComponent> _blackboard;
 	TObjectPtr<UAISenseConfig_Sight> _sight_config;
 

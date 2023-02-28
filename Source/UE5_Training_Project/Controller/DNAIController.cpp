@@ -90,6 +90,17 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 
 
 	}
+	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_HELI)
+	{
+		UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Heli.BT_Combat_Heli"), NULL, LOAD_None, NULL);
+		if (nullptr != BTObject)
+		{
+			btree = BTObject;
+			UE_LOG(LogTemp, Warning, TEXT("bt Heli succeeded!"));
+		}
+
+
+	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 	{
 		ADNEnemyCharacter* enemy = Cast<ADNEnemyCharacter>(character);
@@ -161,7 +172,7 @@ void ADNAIController::OnUpdated(TArray<AActor*> const& updated_actors)
 void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus)
 {
 	// 본인
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(GetPawn());
+	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
 	// 타겟
 	ADNCommonCharacter* insight_me_character = dynamic_cast<ADNCommonCharacter*>(actor);
 
@@ -181,8 +192,11 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 		return;
 	}
 
+	if (nullptr == character)
+		return;
 
-	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)
+	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN || 
+		character->get_character_type() == E_CHARACTER_TYPE::CT_HELI)
 	{
 		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)		//적일 경우
 		{
