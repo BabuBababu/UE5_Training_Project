@@ -6,15 +6,15 @@
 
 // Engine
 
-#include "Engine/Engine.h"
-#include "particles/ParticleSystem.h"
-#include "DrawDebugHelpers.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Engine/Classes/Kismet/GameplayStatics.h"
-#include "Engine/Classes/Kismet/KismetMathLibrary.h"
+#include <Engine/Engine.h>
+#include <particles/ParticleSystem.h>
+#include <DrawDebugHelpers.h>
+#include <GameFramework/SpringArmComponent.h>
+#include <Engine/Classes/Kismet/GameplayStatics.h>
+#include <Engine/Classes/Kismet/KismetMathLibrary.h>
 
 // Component
-#include <UE5_Training_Project/Component/DNStatusComponent.h>
+#include "UE5_Training_Project/Component/DNStatusComponent.h"
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
@@ -41,6 +41,7 @@ UDNPlayerLineTrace::UDNPlayerLineTrace()
 	//파티클 시스템 
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>Blood_ParticleAdd(TEXT("/Game/Assets/Weapon/Griffin/WeaponEffects/P_body_bullet_impact.P_body_bullet_impact"));
 	blood_particle = Blood_ParticleAdd.Object;
+
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> Block_ParticleAdd(TEXT("/Game/Assets/Weapon/Griffin/WeaponEffects/P_AssaultRifle_IH"));
 	block_particle = Block_ParticleAdd.Object;
 

@@ -21,7 +21,7 @@ class UE5_TRAINING_PROJECT_API ADNUnEnemyCharacter : public ADNCommonCharacter
 
 public:
 	ADNUnEnemyCharacter();
-	void fire() override;
+	virtual void fire() override;
 
 	
 protected:

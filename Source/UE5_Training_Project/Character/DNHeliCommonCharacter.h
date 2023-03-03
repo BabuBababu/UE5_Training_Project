@@ -5,6 +5,8 @@
 // Engine
 #include <CoreMinimal.h>
 #include <Components/TimeLineComponent.h>
+#include <NiagaraSystem.h>
+#include <NiagaraFunctionLibrary.h>
 
 // Character
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
@@ -17,6 +19,8 @@
  */
 
 class UFloatingPawnMovement;
+class UAudioComponent;
+class ADNBullet;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNHeliCommonCharacter : public ADNUnEnemyCharacter
@@ -32,9 +36,14 @@ protected:
 	void add_event() override;
 	void remove_event() override;
 
+
 public:
 	void set_flying_move(float DeltaTime);
 	void init_base();
+	void init_missile();
+
+	void fire_missile(ADNCommonCharacter* target_in);
+
 
 	// 미정
 	void set_rotor_mast();
@@ -50,13 +59,35 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UFloatingPawnMovement> _floting_movement;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//엔진 소리
-	TObjectPtr<USoundBase> _engine_soundcue;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAudioComponent> _audio_component;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
+	TSubclassOf<ADNBullet> _missile_class;
+
+
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//직격 파티클
+		UNiagaraSystem* _bomb_particle;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//발사 소리
+	TObjectPtr<USoundBase> _missile_fire_soundcue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//직격 소리
+		TObjectPtr<USoundBase> _bomb_soundcue;
+
+
 public:
 	float _running_time;
 	float _rotor_mast;
 	float _rotor_back;
 	float _rotor_minigun;
+	float _missile_cool_time;
+	float _missile_current_time;
+
+	bool _missile_cool_time_start;
+
+	TObjectPtr<ADNBullet> _missile;
 
 	UPROPERTY(EditAnywhere, Category = Move)
 	float XValue;
@@ -66,4 +97,5 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Move)
 	float ZValue;
+
 };

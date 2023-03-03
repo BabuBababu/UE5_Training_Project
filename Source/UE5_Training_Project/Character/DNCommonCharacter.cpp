@@ -41,6 +41,8 @@
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
 
+// Util
+#include "UE5_Training_Project/Util/DNDamageOperation.h"
 
 
 
@@ -160,6 +162,23 @@ void ADNCommonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+float ADNCommonCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	// 범위 대미지용으로 사용중인 함수.
+	// 범위 대미지는 현재 500이므로 이렇게 일단 적용. 추후에 데이터 테이블로 관리해야할 듯.
+	// 현재 총알로  받는 대미지는 이 함수를 통해 적용하고 있지 않습니다.
+
+	_status->set_current_hp(_status->get_current_hp() - DamageAmount);
+	DNDamageOperation::DamageShowUI(500.f, this, E_DAMAGE_TYPE::DT_NORMAL);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%s"), *this->GetName()));
+	if (_status->get_current_hp() <= 0)
+	{
+		_status->_dead = true;
+	}
+
+	return DamageAmount;
 }
 
 

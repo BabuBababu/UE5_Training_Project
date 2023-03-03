@@ -15,6 +15,7 @@
 
 // Manager
 #include "UE5_Training_Project/Manager/DNSoundManager.h"
+#include "UE5_Training_Project/Manager/DNObjectManager.h"
 
 
 /**
@@ -60,6 +61,10 @@ public:
 		}
 	}
 
+	static void radial_damage(UObject* world_in,float damage_in, FVector damage_location_in, float damage_radius_in,  ADNCommonCharacter* player_in)
+	{
+		UGameplayStatics::ApplyRadialDamage(world_in, damage_in, damage_location_in, damage_radius_in, nullptr, OBJECT_MANAGER->_griffin_player_array, player_in);
+	}
 
 	static void DamageShowUI(float damage_in, ADNCommonCharacter* damaged_character_in, E_DAMAGE_TYPE damage_type_in)
 	{

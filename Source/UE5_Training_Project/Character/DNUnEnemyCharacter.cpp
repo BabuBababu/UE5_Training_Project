@@ -47,6 +47,8 @@ void ADNUnEnemyCharacter::BeginPlay()
 			OBJECT_MANAGER->_in_squad_doll_array[_squad_index] = this;			//시작시 스쿼드 인덱스 기준으로 오브젝트 매니저에 넣어줍니다.
 
 	}
+
+	OBJECT_MANAGER->_griffin_player_array.Add(this);
 }
 
 void ADNUnEnemyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)

@@ -95,7 +95,7 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 		//if (nullptr != anim)
 		//	anim->OnAttackEnd.AddLambda([self_actor]()->void {self_actor->_is_attacking = false; });		//람다로 델리게이트 추가하는 방법
 
-		return EBTNodeResult::Succeeded;		//프로그레스로해야하는데 일단 성공으로 놓고 테스트
+		return EBTNodeResult::Succeeded;		
 }
 
 void UDNAttackEnemyTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in, float DeltaSeconds)

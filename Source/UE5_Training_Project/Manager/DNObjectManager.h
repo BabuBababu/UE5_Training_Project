@@ -49,4 +49,6 @@ public:
 	TMap<int64,ADNUnEnemyCharacter*> _in_squad_doll_array;			//캐릭터의 ID, 캐릭터를 담은 배열
 	TObjectPtr<ADNPlayerCharacter>	 _player;
 
+	TArray<AActor*> _griffin_player_array;							//아군,플레이어 담은 배열
+
 };

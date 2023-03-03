@@ -34,13 +34,11 @@ protected:
 
 	virtual void add_event();
 	virtual void remove_event();
+	virtual void init();
 
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-
-private:
-	void init();
 
 public:
 	// 메쉬
