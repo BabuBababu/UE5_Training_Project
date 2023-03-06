@@ -81,4 +81,13 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UInputAction* IA_Q;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* IA_F;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* IA_G;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* IA_H;
 };

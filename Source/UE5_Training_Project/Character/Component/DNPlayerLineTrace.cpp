@@ -22,6 +22,9 @@
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 #include "UE5_Training_Project/Character/DNDogEnemyCharacter.h"
 
+// Actor
+#include "UE5_Training_Project/Actor/DNCommonShield.h"
+
 // Item
 #include "UE5_Training_Project/Actor/DNCommonActor.h"
 #include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
@@ -124,13 +127,26 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 		}
 		else   
 		{
+			// _enemy가 nullptr이라면 쉴드를 가격했는지 확인
+			auto _shield = Cast<ADNCommonShield>(hit_result.GetActor());
+			if (nullptr != _shield)
+			{
+				// 대미지 적용
+				DNDamageOperation::gun_damage_to_shield(damage, _shield, player_in);
+				_shield->play_damaged_sound();
+				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+
+			}
+			else
+			{
+				// 어떤 액터도 아니라면
+				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+			}
+
 			//UE_LOG(LogTemp, Warning, TEXT("FailedCast"));
 			//GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("LOCATION: %s"),*HitLoc.ToString()));
-			
-			
 			//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Purple, false, 2.f);
-			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
-
+		
 		
 		}
 	}

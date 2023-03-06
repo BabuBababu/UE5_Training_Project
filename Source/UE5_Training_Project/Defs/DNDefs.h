@@ -298,6 +298,7 @@ enum class E_ACTOR_TYPE : uint8
 	AT_NONE = 0		UMETA(DisplayName = "None"),		//비어있음
 	AT_WALL			UMETA(DisplayName = "Wall"),		//벽
 	AT_ITEM			UMETA(DisplayName = "Item"),		//아이템
+	AT_SHIELD		UMETA(DisplayName = "Shield"),		//쉴드
 	AT_VEHICLE		UMETA(DisplayName = "Vehicle"),		//탈것
 	AT_LOCATION		UMETA(DisplayName = "Location"),	//지역체크
 	AT_NPC			UMETA(DisplayName = "NPC"),			//NPC
@@ -315,7 +316,7 @@ enum class E_ITEM_TYPE : uint8
 	IT_ARMOR				UMETA(DisplayName = "Armor"),		//갑옷
 	IT_GLOVE				UMETA(DisplayName = "Glove"),		//장갑
 	IT_BOOTS				UMETA(DisplayName = "Boots"),		//신발
-	IT_BACK_PACK			UMETA(DisplayName = "BackPack"),		//가방
+	IT_BACK_PACK			UMETA(DisplayName = "BackPack"),	//가방
 	IT_WEAPON_ADD_ON_1		UMETA(DisplayName = "add1"),		//무기 부착물 1
 	IT_WEAPON_ADD_ON_2		UMETA(DisplayName = "add2"),		//무기 부착물 2
 	IT_WEAPON_ADD_ON_3		UMETA(DisplayName = "add3"),		//무기 부착물 3

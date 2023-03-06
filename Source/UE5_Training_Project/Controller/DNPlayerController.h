@@ -58,6 +58,9 @@ public:
 	template<E_INPUT_KEY Key>
 	void SelectCharacter(const FInputActionValue& Value);
 
+	template<E_INPUT_KEY Key>
+	void ActiveSkill(const FInputActionValue& Value);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

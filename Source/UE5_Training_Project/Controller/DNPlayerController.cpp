@@ -475,3 +475,21 @@ void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 
 
 }
+
+
+template<E_INPUT_KEY Key>
+void ADNPlayerController::ActiveSkill(const FInputActionValue& Value)
+{
+	if (Key == E_INPUT_KEY::IK_F)
+	{
+
+	}
+	else if (Key == E_INPUT_KEY::IK_G)
+	{
+
+	}
+	else if (Key == E_INPUT_KEY::IK_H)
+	{
+
+	}
+}
