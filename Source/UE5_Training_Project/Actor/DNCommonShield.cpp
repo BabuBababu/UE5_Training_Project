@@ -15,6 +15,7 @@ ADNCommonShield::ADNCommonShield()
 void ADNCommonShield::BeginPlay()
 {
 	Super::BeginPlay();
+	_current_hp = _max_hp;
 
 }
 
@@ -47,12 +48,15 @@ void ADNCommonShield::destroy_object()
 
 void ADNCommonShield::reset()
 {
+	set_current_hp(_max_hp);
+
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 }
 
 void ADNCommonShield::play_damaged_sound()
 {
+
 	// 사운드
 	if (IsValid(_damaged_soundcue))
 		UGameplayStatics::PlaySoundAtLocation(this, _damaged_soundcue, GetActorLocation());

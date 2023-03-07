@@ -16,6 +16,11 @@
 
 
 
+//
+//		모든 캐리겉의 근접 공격 사거리 체크용이지만 현재 적군만 이 서비스를 사용하기위해 작성되었습니다.
+//
+
+
 UDNMeleeRangeCheckServiceTask::UDNMeleeRangeCheckServiceTask()
 {
 	bNotifyBecomeRelevant = true;
@@ -27,13 +32,13 @@ void UDNMeleeRangeCheckServiceTask::OnBecomeRelevant(UBehaviorTreeComponent& own
 	Super::OnBecomeRelevant(owner_comp, NodeMemory);
 
 	ADNAIController* const Cont = Cast<ADNAIController>(owner_comp.GetAIOwner());
-	ADNDogEnemyCharacter* const dog = Cast<ADNDogEnemyCharacter>(Cont->GetPawn());
+	ADNEnemyCharacter* const melee_enemy = Cast<ADNEnemyCharacter>(Cont->GetPawn());
 
 
 	ADNCommonCharacter* target = Cast<ADNCommonCharacter>(Cont->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor));
 	if (nullptr == target)
 		return;
-	float temp = dog->GetDistanceTo(target);
+	float temp = melee_enemy->GetDistanceTo(target);
 
 	if(temp <= MeleeRange)
 		Cont->get_blackboard()->SetValueAsBool(all_ai_bb_keys::enemy_is_in_melee_range, true);

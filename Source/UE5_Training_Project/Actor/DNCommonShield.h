@@ -36,17 +36,20 @@ public:
 
 
 public:
-	float get_current_hp() const { return _hp; };
-	void set_current_hp(const float hp_in) { _hp = hp_in; };
+	float get_current_hp() const { return _current_hp; };
+	void set_current_hp(const float hp_in) { _current_hp = hp_in; };
 	void play_damaged_sound();
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status)
-	float	_hp;
+	float	_max_hp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)			// 타격 소리
 	TObjectPtr<USoundBase> _damaged_soundcue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)			// 부서지는 소리
 	TObjectPtr<USoundBase> _destroy_soundcue;
+
+public:
+	float _current_hp;
 };

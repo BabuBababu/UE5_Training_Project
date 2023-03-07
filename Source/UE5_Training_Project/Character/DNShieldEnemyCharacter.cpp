@@ -21,11 +21,6 @@
 
 ADNShieldEnemyCharacter::ADNShieldEnemyCharacter()
 {
-	// 쉴드는 액터로 따로 만들었으므로 해당 액터에 콜리전이 있습니다. 따라서 여기에서는 소켓으로 붙여주기만 하면 됩니다.
-	// 또한 이 스태틱매쉬 컴포넌트는 단순히 BP 쉴드를 담기 위함입니다. 추가로 설정할 필요없습니다.
-	_weapon_left_shield = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponShield"));
-	_weapon_left_shield->SetupAttachment(_character_skeletal_mesh,"weapon_l");
-
 
 	//_weapon_armed는 총이 될수도 있고 이 캐릭터의 경우 검이 될 수도 있습니다. 캐릭터의 무기 공용입니다.
 	_attack_sword_collision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("AttackSword"));
@@ -39,10 +34,38 @@ ADNShieldEnemyCharacter::ADNShieldEnemyCharacter()
 
 void ADNShieldEnemyCharacter::BeginPlay()
 {
+	Super::BeginPlay();
+
 	_is_attacking = false;
 	_is_armed_weapon = true;
 	_character_state = E_CHARACTER_STATE::CS_ARM;			//우선은 테스트를 위해 무기를 들었다고 설정
+
+	if (nullptr != _weapon_left_shield)
+	{
+		FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("weapon_l"));
+		FRotator socket_rotation = _character_skeletal_mesh->GetSocketRotation(FName("weapon_l"));
+		_shield = GetWorld()->SpawnActor<ADNCommonShield>(_weapon_left_shield, socket_location, socket_rotation); // 방패 생성
+		_shield->SetActorLocation(socket_location);
+		_shield->SetActorRotation(socket_rotation);
+
+		_shield->AttachToComponent(_character_skeletal_mesh,FAttachmentTransformRules::SnapToTargetIncludingScale, FName("weapon_l"));
+	}
 }
+
+void ADNShieldEnemyCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (nullptr != _shield)
+	{
+		/*FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("weapon_l"));
+		FRotator socket_rotation = _character_skeletal_mesh->GetSocketRotation(FName("weapon_l"));
+		_shield->SetActorLocation(socket_location);
+		_shield->SetActorRotation(socket_rotation);*/
+	}
+
+}
+
 
 void ADNShieldEnemyCharacter::init_base()
 {
@@ -50,6 +73,8 @@ void ADNShieldEnemyCharacter::init_base()
 	_enemy_type = E_ENEMY_TYPE::ET_MELEE;
 	_is_overlap = false;
 	_damaged_character = nullptr;
+	_shield = nullptr;
+
 }
 
 void ADNShieldEnemyCharacter::add_event()
@@ -114,4 +139,14 @@ void ADNShieldEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp
 		_damaged_character = character;
 	}
 
+}
+
+void ADNShieldEnemyCharacter::destroy_object_handler()
+{
+	Super::destroy_object_handler();
+
+	if (nullptr != _shield)
+	{
+		_shield->reset();
+	}
 }

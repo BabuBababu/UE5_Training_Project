@@ -219,7 +219,7 @@ public:
 
 public:
 	UFUNCTION()
-	void destroy_object_handler();		//월드상에서 안보이게 하는 핸들러
+	virtual void destroy_object_handler();		//월드상에서 안보이게 하는 핸들러
 
 	UFUNCTION()
 	void return_to_armed_handler();
