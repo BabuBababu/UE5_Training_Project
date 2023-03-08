@@ -56,7 +56,7 @@ private:
 	class UWidgetAnimation* umg_damaged_animation;
 	
 	UPROPERTY(Meta = (BindWidgetAnim), Transient)
-		class UWidgetAnimation* umg_change_animation;
+	class UWidgetAnimation* umg_change_animation;
 
 private:
 	float _current_hp = 0.0f;

@@ -17,9 +17,21 @@
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
+#include "UE5_Training_Project/UI/Manager/DNWidgetManager.h"
+#include "UE5_Training_Project/Manager/DNUIManager.h"
+
+// UI
+#include "UE5_Training_Project/UI/Widget/Panel/DNCommentPanel.h"
 
 
 #define MAX_SUQAD_POSITION_NUMBER 10
+
+
+/// <summary>
+///	하.. 죽거나 무슨 이벤트가 발생할 때 하나로 모아서 델리게이트로 다같이 쏴주면되는데
+/// 여기서 호출하고 저기서 호출하고 저쪽에서도 호출하고 이러면 관리가 너무 안돼
+/// </summary>
+
 
 
 ADNUnEnemyCharacter::ADNUnEnemyCharacter()
@@ -170,6 +182,8 @@ void ADNUnEnemyCharacter::order_move_handler(FVector destination_in, ADNUnEnemyC
 	{
 		controller->ordered_move(destination_in, doll_in);
 		_is_ordered = true;
+		// 여기에 캐릭터 코멘트 UI 호출
+		//WIDGET_MANAGER->
 	}
 }
 

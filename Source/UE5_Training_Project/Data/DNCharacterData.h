@@ -117,6 +117,96 @@ public:
 
 
 
+
+USTRUCT(Atomic, BlueprintType)
+struct FDNCharacterDialogData : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		int64							character_id = 0;										// 캐릭터 ID
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							gain = TEXT("");										// 캐릭터 획득
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							rein_force = TEXT("");									// 캐릭터 강화
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							go_out = TEXT("");										// 캐릭터 방출
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							encounter = TEXT("");									// 캐릭터 적 만남
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							attack = TEXT("");										// 캐릭터 적 공격
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							reload = TEXT("");										// 캐릭터 장전
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							ordered = TEXT("");										// 캐릭터 명령 응답
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							un_ordered = TEXT("");									// 캐릭터 명령 취소
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							skill_1 = TEXT("");										// 캐릭터 스킬 1
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							skill_2 = TEXT("");										// 캐릭터 스킬 2
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							worry = TEXT("");										// 지휘관 걱정
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							dead = TEXT("");										// 캐릭터 사망
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							lobby_1 = TEXT("");										// 캐릭터 로비 대화 1
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							lobby_2 = TEXT("");										// 캐릭터 로비 대화 2
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							lobby_3 = TEXT("");										// 캐릭터 로비 대화 3
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							lobby_4 = TEXT("");										// 캐릭터 로비 대화 4
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
+		FString							lobby_5 = TEXT("");										// 캐릭터 로비 대화 5
+
+
+	FDNCharacterDialogData& operator=(const FDNCharacterDialogData& data)
+	{
+		gain = data.gain;
+		rein_force = data.rein_force;
+		go_out = data.go_out;
+		encounter = data.encounter;
+		attack = data.attack;
+		reload = data.reload;
+		ordered = data.ordered;
+		un_ordered = data.un_ordered;
+		skill_1 = data.skill_1;
+		skill_2 = data.skill_2;
+		worry = data.worry;
+		dead = data.dead;
+		lobby_1 = data.lobby_1;
+		lobby_2 = data.lobby_2;
+		lobby_3 = data.lobby_3;
+		lobby_4 = data.lobby_4;
+		lobby_5 = data.lobby_5;
+
+
+		return *this;
+	}
+};
+
+
+
+
 USTRUCT(Atomic, BlueprintType)
 struct FDNEXPTableData : public FTableRowBase
 {
@@ -159,6 +249,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
 	FDNCharacterMentalData			character_mental_data;											//  캐릭터 멘탈 데이터
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
+	FDNCharacterDialogData			character_dialog_data;											//  캐릭터 다이얼로그 데이터
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
 	FString			character_main_image_path = TEXT("");											//  캐릭터 메인 이미지
@@ -175,6 +267,7 @@ public:
 		character_name = data.character_name;
 		character_status_data = data.character_status_data;
 		character_mental_data = data.character_mental_data;
+		character_dialog_data = data.character_dialog_data;
 		character_main_image_path = data.character_main_image_path;
 		character_dead_image_path = data.character_dead_image_path;
 		character_portrait_image_path = data.character_portrait_image_path;
@@ -218,3 +311,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Position Data")
 		FVector						support_3;
 };
+
+

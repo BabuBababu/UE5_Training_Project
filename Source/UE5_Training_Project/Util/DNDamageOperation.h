@@ -16,6 +16,8 @@
 // UI
 #include "UE5_Training_Project/UI/Base/DNBasePanel.h"
 #include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNPortraitPanel.h"
+
 
 
 // Component
@@ -34,6 +36,38 @@
 class UE5_TRAINING_PROJECT_API DNDamageOperation
 {
 public:
+
+	// 캐릭터 사망시 행동할 함수
+	static void die_from_damage(ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* player_in)
+	{
+
+		if (false == damaged_character_in->get_status_component().Get()->_dead)
+		{
+			// 인형 사망
+			if (damaged_character_in->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)
+			{
+				// 전신샷 위젯 보여주기
+				UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_PORTRAIT);
+
+				if (IsValid(panel))
+				{
+					UDNPortraitPanel* widget = Cast<UDNPortraitPanel>(panel);
+
+					if (IsValid(widget))
+					{
+						widget->play_portrait_panel(damaged_character_in->_character_id, true);
+					}
+				}
+
+			}
+		}
+
+		damaged_character_in->get_status_component().Get()->_dead = true;
+		damaged_character_in->OnTargetDead.Broadcast(player_in);
+
+		
+	}
+
 	// 원거리 사격
 	static void gun_damage(float damage_in, FName bone_name_in, ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* player_in)
 	{
@@ -70,8 +104,7 @@ public:
 
 		if (after_hp <= 0)
 		{
-			damaged_character_in->get_status_component().Get()->_dead = true;
-			damaged_character_in->OnTargetDead.Broadcast(player_in);
+			die_from_damage(damaged_character_in, player_in);
 			
 		}
 	}
@@ -99,8 +132,7 @@ public:
 
 		if (after_hp <= 0)
 		{
-			damaged_character_in->get_status_component().Get()->_dead = true;
-			damaged_character_in->OnTargetDead.Broadcast(player_in);
+			die_from_damage(damaged_character_in, player_in);
 
 		}
 	}
