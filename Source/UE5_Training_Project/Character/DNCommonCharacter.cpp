@@ -35,8 +35,6 @@
 // AnimInstance
 #include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
 
-// UI
-#include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
@@ -94,9 +92,7 @@ ADNCommonCharacter::ADNCommonCharacter()
 	_follow_camera->SetupAttachment(_camera_boom); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	_follow_camera->bUsePawnControlRotation = true; // Camera does not rotate relative to arm
 
-	// 위젯
-	_damage_indicator_widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("DamageIndicatorWidget"));
-	_damage_indicator_widget->SetupAttachment(_character_skeletal_mesh);
+
 
 
 	// 에셋 불러오기 테스트
@@ -146,16 +142,6 @@ void ADNCommonCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// 대미지 인디케이터를 항상 플레이어가 보는 방향으로 돌립니다.
-	if (nullptr != _damage_indicator_widget)
-	{
-		ADNCommonCharacter* player = Cast<ADNCommonCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%s"), *player->GetName()));
-
-		if(nullptr != player)
-			_damage_indicator_widget->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(_damage_indicator_widget->GetComponentLocation(), player->_camera_boom.Get()->GetComponentLocation()));
-	}
-
 }
 
 void ADNCommonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -171,7 +157,7 @@ float ADNCommonCharacter::TakeDamage(float DamageAmount, struct FDamageEvent con
 	// 현재 총알로  받는 대미지는 이 함수를 통해 적용하고 있지 않습니다.
 
 	_status->set_current_hp(_status->get_current_hp() - DamageAmount);
-	DNDamageOperation::DamageShowUI(500.f, this, E_DAMAGE_TYPE::DT_NORMAL);
+
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%s"), *this->GetName()));
 	if (_status->get_current_hp() <= 0)
 	{
@@ -445,18 +431,12 @@ void ADNCommonCharacter::return_to_armed_handler()
 
 void ADNCommonCharacter::init_ui_event()
 {
-	UDNDamageIndicator* widget = Cast<UDNDamageIndicator>(_damage_indicator_widget->GetWidget());
-
-	if (nullptr != widget)
-		widget->add_function_handler(this);
+	
 }
 
 void ADNCommonCharacter::remove_ui_event()
 {
-	UDNDamageIndicator* widget = Cast<UDNDamageIndicator>(_damage_indicator_widget->GetWidget());
-
-	if (nullptr != widget)
-		widget->remove_function_handler(this);
+	
 }
 
 void ADNCommonCharacter::reset_fire_state_handler(ADNCommonCharacter* chracter_in)

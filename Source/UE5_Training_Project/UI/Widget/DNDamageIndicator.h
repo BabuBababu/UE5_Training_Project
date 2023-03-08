@@ -6,7 +6,7 @@
 #include <CoreMinimal.h>
 
 // Base
-#include "UE5_Training_Project/UI/Base/DNBaseWidget.h"
+#include "UE5_Training_Project/UI/Base/DNBasePanel.h"
 
 // Defs
 #include "UE5_Training_Project/Defs/DNDefs.h"
@@ -21,7 +21,7 @@
 class ADNCommonCharacter;
 
 UCLASS()
-class UE5_TRAINING_PROJECT_API UDNDamageIndicator : public UDNBaseWidget
+class UE5_TRAINING_PROJECT_API UDNDamageIndicator : public UDNBasePanel
 {
 	GENERATED_BODY()
 
@@ -29,6 +29,8 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
+	void add_event() override;
+	void remove_event() override;
 
 private:
 	UPROPERTY()
@@ -53,13 +55,6 @@ private:
 	void play_animation(E_DAMAGE_TYPE type_in);
 
 public:
-	UFUNCTION()
-	void add_function_handler(ADNCommonCharacter* character_in);
-
-	UFUNCTION()
-	void remove_function_handler(ADNCommonCharacter* character_in);
-
-	UFUNCTION()
-	void show_indicator_handler(float damage_in, E_DAMAGE_TYPE type_in);
+	void show_indicator(float damage_in, E_DAMAGE_TYPE type_in);
 
 };

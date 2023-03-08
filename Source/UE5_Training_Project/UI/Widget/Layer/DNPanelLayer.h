@@ -24,6 +24,7 @@
 class UImage;
 class UDNPlayerCombatPanel;
 class UDNInteractionPanel;
+class UDNDamageIndicator;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNPanelLayer : public UDNBaseLayer
@@ -44,4 +45,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UDNInteractionPanel> umg_interaction_panel;
+
+	UPROPERTY()
+	TObjectPtr<UDNDamageIndicator> _umg_damage_indicator;
 };

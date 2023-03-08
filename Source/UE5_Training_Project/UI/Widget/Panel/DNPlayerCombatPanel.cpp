@@ -12,6 +12,9 @@
 // Component
 #include "UE5_Training_Project/Component/DNStatusComponent.h"
 
+// UI
+#include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
+
 
 void UDNPlayerCombatPanel::NativeConstruct()
 {

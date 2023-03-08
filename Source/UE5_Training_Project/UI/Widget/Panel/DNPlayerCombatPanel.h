@@ -110,11 +110,7 @@ private:
 	// 체력
 	UPROPERTY()
 		TObjectPtr<UDNPlayerGaugeBar> umg_bar_hp;
-
-	UPROPERTY()
-	TObjectPtr<UDNSquadPanel> umg_squad_panel;
 	
-
 
 	//UPROPERTY()
 	//UNUIBuffPanel* umg_buff_panel;

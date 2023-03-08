@@ -123,7 +123,8 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 
 			// 대미지 적용
 			DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
-			DNDamageOperation::DamageShowUI(damage, _enemy,E_DAMAGE_TYPE::DT_NORMAL);//헤드일 경우 약점 대미지로 판단, ReceiveDamage에서 약점부위를 판단하고 넣어야할듯.. 순서가.. 일단은 노멀로 통일
+
+			
 		}
 		else   
 		{

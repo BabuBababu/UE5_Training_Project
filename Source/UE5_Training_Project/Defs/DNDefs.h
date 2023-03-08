@@ -265,11 +265,23 @@ enum class E_UI_PANEL_TYPE
 	UPT_ITEM,
 	UPT_MENU,
 	UPT_QUEST,
-	UPT_COMBAT, //플레이어 패널
+	UPT_COMBAT,					 //플레이어 패널
 	UPT_TARGET_INFORMATION,
 	UPT_QUICK_SLOT,
-	UPT_SQUAD
+	UPT_SQUAD,
+	UPT_DAMAGE_INDICATOR
 };
+
+
+UENUM()
+enum class E_UI_WIDGET_TYPE
+{
+	UWT_NONE
+
+	
+};
+
+
 
 UENUM()
 enum class E_UI_INTERACTION_TYPE : uint8

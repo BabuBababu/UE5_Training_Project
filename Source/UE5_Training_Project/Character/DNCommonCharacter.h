@@ -98,9 +98,6 @@ public:
 	TObjectPtr<UStaticMeshComponent> _weapon_un_armed;
 
 
-	// 위젯
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
-	TObjectPtr<UWidgetComponent> _damage_indicator_widget;
 
 	// 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))

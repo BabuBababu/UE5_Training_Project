@@ -106,7 +106,6 @@ void ADNShieldEnemyCharacter::fire()
 			if (nullptr != _damaged_character)
 			{
 				DNDamageOperation::melee_damage(damage, _damaged_character, this);
-				DNDamageOperation::DamageShowUI(damage, _damaged_character, E_DAMAGE_TYPE::DT_NORMAL);	//헤드일 경우 약점 대미지로 판단, ReceiveDamage에서 약점부위를 판단하고 넣어야할듯.. 순서가.. 일단은 노멀로 통일
 
 				_is_overlap = false;
 			}

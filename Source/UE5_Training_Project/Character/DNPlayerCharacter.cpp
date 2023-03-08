@@ -211,11 +211,6 @@ void ADNPlayerCharacter::init_ui_event()
 
 	panel->add_function_handler(this->_line_trace);
 
-	//대미지 인디케이터 위젯
-	UDNDamageIndicator* widget = dynamic_cast<UDNDamageIndicator*>(_damage_indicator_widget->GetWidget());
-
-	if (nullptr != widget)
-		widget->add_function_handler(this);
 
 }
 
