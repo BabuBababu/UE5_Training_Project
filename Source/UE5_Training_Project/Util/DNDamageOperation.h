@@ -62,19 +62,19 @@ public:
 					}
 				}
 
-			}
-			// 코멘트 출력
-			// 코멘트 출력
-			UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_COMMENT);
-			if (IsValid(panel))
-			{
-				UDNCommentPanel* widget = Cast<UDNCommentPanel>(panel);
-
-				if (IsValid(widget))
+				// 코멘트 출력
+				UDNBasePanel* comment_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_COMMENT);
+				if (IsValid(comment_panel))
 				{
-					widget->play_comment_isac(5);
+					UDNCommentPanel* widget = Cast<UDNCommentPanel>(comment_panel);
+
+					if (IsValid(widget))
+					{
+						widget->play_comment_isac(5);
+					}
 				}
 			}
+			
 		}
 
 		damaged_character_in->get_status_component().Get()->_dead = true;
