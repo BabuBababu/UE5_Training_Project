@@ -18,6 +18,8 @@
 #include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
 #include "UE5_Training_Project/UI/Widget/Panel/DNPortraitPanel.h"
 #include "UE5_Training_Project/UI/Widget/Panel/DNCrosshairPanel.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNCommentPanel.h"
+
 
 
 
@@ -60,6 +62,18 @@ public:
 					}
 				}
 
+			}
+			// 코멘트 출력
+			// 코멘트 출력
+			UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_COMMENT);
+			if (IsValid(panel))
+			{
+				UDNCommentPanel* widget = Cast<UDNCommentPanel>(panel);
+
+				if (IsValid(widget))
+				{
+					widget->play_comment_isac(5);
+				}
 			}
 		}
 
