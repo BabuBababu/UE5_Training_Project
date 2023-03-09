@@ -59,6 +59,33 @@ void UDNGunSpiderBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	calculate_speed_direction(TryGetPawnOwner());
 	_bIsInAir = TryGetPawnOwner()->GetMovementComponent()->IsFalling();
 
+
+	// 사망 몽타쥬 재생 체크
+	if (nullptr != _owner->get_status_component())
+	{
+		if (_owner->get_status_component()->_dead)
+		{
+			if (false == _playing_die_montage)
+			{
+				Montage_Play(die_montage);
+				_playing_die_montage = true;
+			}
+
+			if (false == Montage_IsPlaying(die_montage))
+				on_die_montage_ended();
+		}
+
+
+	}
+
+
+	// 장전 재생 체크
+	if (true == _playing_reload_montage)
+	{
+		if (false == Montage_IsPlaying(reload_montage))
+			on_reload_montage_ended();
+	}
+
 }
 
 
@@ -90,32 +117,37 @@ void UDNGunSpiderBossAnimInstance::calculate_speed_direction(APawn* pawn_in)
 
 void UDNGunSpiderBossAnimInstance::play_fire_1_montage()
 {
-
+	Montage_Play(fire_1_montage);
 }
 
 
 void UDNGunSpiderBossAnimInstance::play_fire_2_montage()
 {
-
+	Montage_Play(fire_2_montage);
 }
 
 
 void UDNGunSpiderBossAnimInstance::play_melee_1_montage()
 {
-
+	Montage_Play(melee_1_montage);
 }
 
 
 void UDNGunSpiderBossAnimInstance::play_melee_2_montage()
 {
-
+	Montage_Play(melee_2_montage);
 }
 
 
 
 void UDNGunSpiderBossAnimInstance::play_reload_montage()
 {
-
+	if (false == _playing_reload_montage)
+	{
+		Montage_Play(reload_montage);
+		_playing_reload_montage = true;
+	}
+	
 }
 
 

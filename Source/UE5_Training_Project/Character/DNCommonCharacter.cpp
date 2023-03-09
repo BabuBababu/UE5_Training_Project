@@ -174,7 +174,7 @@ float ADNCommonCharacter::TakeDamage(float DamageAmount, struct FDamageEvent con
 
 void ADNCommonCharacter::add_event()
 {
-	UDNCharacterAnimInstance* anim_instance = dynamic_cast<UDNCharacterAnimInstance*>(_character_skeletal_mesh->GetAnimInstance());
+	UDNCharacterAnimInstance* anim_instance = Cast<UDNCharacterAnimInstance>(_character_skeletal_mesh->GetAnimInstance());
 	if (nullptr == anim_instance)
 		return;
 
