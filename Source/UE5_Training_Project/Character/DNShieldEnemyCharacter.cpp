@@ -56,13 +56,6 @@ void ADNShieldEnemyCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (nullptr != _shield)
-	{
-		/*FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("weapon_l"));
-		FRotator socket_rotation = _character_skeletal_mesh->GetSocketRotation(FName("weapon_l"));
-		_shield->SetActorLocation(socket_location);
-		_shield->SetActorRotation(socket_rotation);*/
-	}
 
 }
 

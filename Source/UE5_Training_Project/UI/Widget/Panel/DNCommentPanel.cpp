@@ -8,6 +8,13 @@
 #define ISAC -1
 #define NONE -1
 
+#define ENCOUNTER 1
+#define ATTACK 2
+#define RELOAD 3
+#define WORRY 4
+#define DEAD 5
+
+
 
 UDNCommentPanel::UDNCommentPanel(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -51,6 +58,7 @@ void UDNCommentPanel::clear_panel()
 	// 먼저 초기화
 	if (IsValid(umg_face_image) && IsValid(umg_comment_text))
 	{
+		umg_face_image->SetOpacity(1.f);
 		umg_face_image->SetBrushFromTexture(nullptr);
 		umg_comment_text->SetText(FText::FromString(""));
 	}
@@ -105,9 +113,20 @@ void UDNCommentPanel::init_data(int64 id_in, int64 comment_id_in)
 
 void UDNCommentPanel::set_image_comment_isac(int64 comment_id_in)
 {
+
+	if (IsValid(umg_face_image))
+	{
+		umg_face_image->SetOpacity(0.f);
+	}
 	if (IsValid(umg_comment_text))
 	{
 		// 코멘트 id를 가져와서 초기화합니다.
+		if (ENCOUNTER == comment_id_in)
+			umg_comment_text->SetText(FText::FromString(_dialog_data->encounter));
+		else if (WORRY == comment_id_in)
+			umg_comment_text->SetText(FText::FromString(_dialog_data->worry));
+		else if (DEAD == comment_id_in)
+			umg_comment_text->SetText(FText::FromString(_dialog_data->dead));
 	}
 }
 
@@ -122,7 +141,17 @@ void UDNCommentPanel::set_image_comment_character(int64 comment_id_in)
 
 	if (IsValid(umg_comment_text))
 	{
-
+		// 코멘트 id를 가져와서 초기화합니다.
+		if (ENCOUNTER == comment_id_in)
+			umg_comment_text->SetText(FText::FromString(_dialog_data->encounter));
+		else if (ATTACK == comment_id_in)
+			umg_comment_text->SetText(FText::FromString(_dialog_data->attack));
+		else if (RELOAD == comment_id_in)
+			umg_comment_text->SetText(FText::FromString(_dialog_data->reload));
+		else if (WORRY == comment_id_in)
+			umg_comment_text->SetText(FText::FromString(_dialog_data->worry));
+		else if (DEAD == comment_id_in)
+			umg_comment_text->SetText(FText::FromString(_dialog_data->dead));
 	}
 }
 

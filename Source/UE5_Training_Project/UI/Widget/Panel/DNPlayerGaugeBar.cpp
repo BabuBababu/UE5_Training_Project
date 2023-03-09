@@ -8,6 +8,11 @@
 
 // Manager
 #include "UE5_Training_Project/Manager/DNSoundManager.h"
+#include "UE5_Training_Project/Manager/DNUIManager.h"
+
+// UI
+#include "UE5_Training_Project/UI/Widget/Panel/DNCommentPanel.h"
+
 
 void UDNPlayerGaugeBar::NativeConstruct()
 {
@@ -99,6 +104,17 @@ void UDNPlayerGaugeBar::set_gauge(float current_value_in, float max_value_in)
 		SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_UI,4);
 		SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_BGM,3);
 		SOUND_MANAGER->_is_ui_danger_now = true;
+
+		UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_COMMENT);
+		if (IsValid(panel))
+		{
+			UDNCommentPanel* widget = Cast<UDNCommentPanel>(panel);
+
+			if (IsValid(widget))
+			{
+				widget->play_comment_isac(4);
+			}
+		}
 	}
 
 	// 체력을 일정수치 이상으로 회복했다면 경고문 플래그 오프					//인형용 체력바 클래스 만들어서 쭉 긁어오고 이부분만 고치기

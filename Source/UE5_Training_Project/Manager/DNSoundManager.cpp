@@ -11,6 +11,11 @@
 // meta sound
 #include <MetasoundSource.h>
 
+// Manager
+#include "UE5_Training_Project/Manager/DNUIManager.h"
+
+// UI
+#include "UE5_Training_Project/UI/Widget/Panel/DNCommentPanel.h"
 
 
 UDNSoundManager::UDNSoundManager()
@@ -301,12 +306,26 @@ void UDNSoundManager::start_combat_sound()
 		play_meta_sound(E_SOUND_TYPE::ST_UI, 3);								//UnderAttack
 		_is_bgm_playing_now = true;
 
+		// 코멘트 출력
+		UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_COMMENT);
+		if (IsValid(panel))
+		{
+			UDNCommentPanel* widget = Cast<UDNCommentPanel>(panel);
+
+			if (IsValid(widget))
+			{
+				widget->play_comment_isac(1);
+			}
+		}
+
+
 		GetWorld()->GetTimerManager().SetTimer(_periodhandle_timer, this, &UDNSoundManager::play_combat_meta_sound, 15.f, true);	//15초마다 검사
 		GetWorld()->GetTimerManager().SetTimer(_initialhandle_timer, this, &UDNSoundManager::set_combat_off, 14.f, true);			//14초마다 컴뱃오프
 	}
 	
 	_is_combat = true; 
 
+	
 
 	//매개변수있는 함수 호출은 이렇게 해주기
 	//GetWorld()->GetTimerManager().SetTimer(_periodhandle_timer, FTimerDelegate::CreateUObject(this, &UDNSoundManager::play_combat_meta_sound, type_in, id_in, start_time_in), 15.f, true);

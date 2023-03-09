@@ -38,6 +38,10 @@
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
+#include "UE5_Training_Project/Manager/DNUIManager.h"
+
+// UI
+#include "UE5_Training_Project/UI/Widget/Panel/DNCommentPanel.h"
 
 // Util
 #include "UE5_Training_Project/Util/DNDamageOperation.h"
@@ -241,6 +245,22 @@ void ADNCommonCharacter::reload()
 		_is_reloading = true;
 		_character_state = E_CHARACTER_STATE::CS_RELOAD;
 		UGameplayStatics::PlaySoundAtLocation(this, _reload_soundcue,GetActorLocation());
+
+		if (_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+		{
+			UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_COMMENT);
+			if (IsValid(panel))
+			{
+				UDNCommentPanel* widget = Cast<UDNCommentPanel>(panel);
+
+				if (IsValid(widget))
+				{
+					widget->play_comment_character(_character_id,3);
+				}
+			}
+		}
+
+
 		OnReload.Broadcast();
 	}
 
@@ -388,8 +408,21 @@ void ADNCommonCharacter::destroy_object_handler()
 {
 
 
-	if(_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+	if (_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+	{
 		SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_UI, 2);		//에이전트 다운
+
+		UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_COMMENT);
+		if (IsValid(panel))
+		{
+			UDNCommentPanel* widget = Cast<UDNCommentPanel>(panel);
+
+			if (IsValid(widget))
+			{
+				widget->play_comment_isac(5);
+			}
+		}
+	}
 
 	SetActorLocation(_my_spawn_location);
 	_status->reset();
