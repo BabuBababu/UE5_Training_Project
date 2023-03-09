@@ -271,7 +271,8 @@ enum class E_UI_PANEL_TYPE
 	UPT_SQUAD,
 	UPT_DAMAGE_INDICATOR,
 	UPT_COMMENT,				//대사
-	UPT_PORTRAIT				//초상화 컷신
+	UPT_PORTRAIT,				//초상화 컷신
+	UPT_CROSSHAIR
 };
 
 

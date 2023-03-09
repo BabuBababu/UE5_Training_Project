@@ -17,6 +17,7 @@
 #include "UE5_Training_Project/UI/Base/DNBasePanel.h"
 #include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
 #include "UE5_Training_Project/UI/Widget/Panel/DNPortraitPanel.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNCrosshairPanel.h"
 
 
 
@@ -79,9 +80,12 @@ public:
 		{
 			float head_damage = damage_in *= 2;
 
-			// 플레이어라면 대미지 인디케이터 표시
+			// 플레이어라면 대미지 인디케이터 및 크로스헤어 표시
 			if (player_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+			{
 				DNDamageOperation::ShowIndicatorUI(head_damage, damaged_character_in, E_DAMAGE_TYPE::DT_CRITICAL);
+				DNDamageOperation::ShowCrossHairUI(true);
+			}
 
 			after_hp = damaged_character_in->get_status_component().Get()->get_current_hp() - head_damage;
 			damaged_character_in->get_status_component().Get()->set_current_hp(after_hp);
@@ -89,15 +93,23 @@ public:
 		}
 		else
 		{
-			// 플레이어라면 대미지 인디케이터 표시
+			// 플레이어라면 대미지 인디케이터 및 크로스헤어 표시
 			if (player_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+			{
 				DNDamageOperation::ShowIndicatorUI(damage_in, damaged_character_in, E_DAMAGE_TYPE::DT_NORMAL);
+				DNDamageOperation::ShowCrossHairUI(false);
+			}
 
 			after_hp = damaged_character_in->get_status_component().Get()->get_current_hp() - damage_in;
 			damaged_character_in->get_status_component().Get()->set_current_hp(after_hp);
 			SOUND_MANAGER->start_combat_sound();
 		}
 		
+		// 플레이어가 대미지를 받았다면 피격UI 표시
+		if (damaged_character_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+		{
+			DNDamageOperation::ShowBloodUI();
+		}
 
 		
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Griffin Damage to Enemy : %f"), damage_in));
@@ -116,6 +128,13 @@ public:
 		SOUND_MANAGER->start_combat_sound();
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Griffin Damage to Enemy : %f"), damage_in));
 
+
+		// 크로스헤어 표시
+		if (player_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+		{
+			DNDamageOperation::ShowCrossHairUI(false);
+		}
+
 		if (after_hp <= 0)
 		{
 			damaged_shield_in->destroy_object();
@@ -129,6 +148,12 @@ public:
 		damaged_character_in->get_status_component().Get()->set_current_hp(after_hp);
 		SOUND_MANAGER->start_combat_sound();
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Griffin Damage to Enemy : %f"), damage_in));
+
+		// 플레이어가 대미지를 받았다면 피격UI 표시
+		if (damaged_character_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+		{
+			DNDamageOperation::ShowBloodUI();
+		}
 
 		if (after_hp <= 0)
 		{
@@ -183,5 +208,40 @@ public:
 		}
 
 
+	}
+
+	static void ShowCrossHairUI(bool is_critical_in)
+	{
+		UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_CROSSHAIR);
+
+		if (IsValid(panel))
+		{
+			UDNCrosshairPanel* widget = Cast<UDNCrosshairPanel>(panel);
+
+			if (IsValid(widget))
+			{
+				if (is_critical_in)
+					widget->play_critical_hit_animation();
+				else
+					widget->play_hit_animation();
+
+			}
+		}
+	}
+
+	static void ShowBloodUI()
+	{
+		UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_CROSSHAIR);
+
+		if (IsValid(panel))
+		{
+			UDNCrosshairPanel* widget = Cast<UDNCrosshairPanel>(panel);
+
+			if (IsValid(widget))
+			{
+				widget->play_damaged_animation();
+
+			}
+		}
 	}
 };
