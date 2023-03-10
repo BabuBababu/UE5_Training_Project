@@ -1,10 +1,12 @@
-
+ï»¿
 
 #pragma once
 
 // Engine
 #include <CoreMinimal.h> 
 #include <GameFramework/Actor.h>
+#include <NiagaraSystem.h>
+#include <NiagaraFunctionLibrary.h>
 
 // Defs
 #include "UE5_Training_Project/Defs/DNDefs.h"
@@ -14,7 +16,7 @@
 
 
 //
-//	¿ì¼±Àº ¹Ì»çÀÏ ¹ß»ç¿ë Å¬·¡½º·Î ¸¸µé¾ú½À´Ï´Ù.
+//	ìš°ì„ ì€ ë¯¸ì‚¬ì¼ ë°œì‚¬ìš© í´ë˜ìŠ¤ë¡œ ë§Œë“¤ì—ˆìŠµë‹ˆë‹¤.
 //
 //
 //
@@ -47,7 +49,7 @@ public:
 
 public:
 	void fire(ADNCommonCharacter* target_in );
-	void init();
+	virtual void init();
 	void active_bullet();
 	void non_active_bullet();
 	void delay_destroy();
@@ -55,7 +57,7 @@ public:
 
 
 public:
-	// ¸Ş½¬
+	// ë©”ì‰¬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 	TObjectPtr<UStaticMeshComponent> _actor_static_mesh;
 
@@ -67,7 +69,23 @@ public:
 
 
 
-	ADNHeliCommonCharacter* _owner;
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//ì§ê²© íŒŒí‹°í´
+	UNiagaraSystem* _bomb_particle;
+	
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//ê¼¬ë¦¬ íŒŒí‹°í´
+	UNiagaraSystem* _tail_particle;
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//ë°œì‚¬ ì†Œë¦¬
+		TObjectPtr<USoundBase> _missile_fire_soundcue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//ì§ê²© ì†Œë¦¬
+		TObjectPtr<USoundBase> _bomb_soundcue;
+
+
+
+	ADNCommonCharacter*		_owner;
 	float					_limit_time;
 	bool					_ready_destroy;
 

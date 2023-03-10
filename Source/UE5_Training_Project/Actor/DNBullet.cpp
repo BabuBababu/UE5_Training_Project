@@ -1,4 +1,4 @@
-
+ï»¿
 
 
 #include "UE5_Training_Project/Actor/DNBullet.h"
@@ -17,7 +17,7 @@
 #include "UE5_Training_Project/Util/DNDamageOperation.h"
 
 //
-//	¿©±âµµ ¾ðÁ¨°¡´Â Çï±â µ¥ÀÌÅÍ¿¡ µû¶ó ¹Ì»çÀÏÀÇ ´ë¹ÌÁö »ç°Å¸® ÀÌµ¿¼Óµµ ¸Þ½Ã¸¦ Á¤ÇÒ¼öÀÖµµ·Ï ±¸ÇöÇØ¾ßÇÕ´Ï´Ù.
+//	ì—¬ê¸°ë„ ì–¸ì  ê°€ëŠ” í—¬ê¸° ë°ì´í„°ì— ë”°ë¼ ë¯¸ì‚¬ì¼ì˜ ëŒ€ë¯¸ì§€ ì‚¬ê±°ë¦¬ ì´ë™ì†ë„ ë©”ì‹œë¥¼ ì •í• ìˆ˜ìžˆë„ë¡ êµ¬í˜„í•´ì•¼í•©ë‹ˆë‹¤.
 //
 
 
@@ -43,7 +43,7 @@ ADNBullet::ADNBullet()
 		_projectile_movement_component->bRotationFollowsVelocity = true;
 		_projectile_movement_component->bAutoActivate = true;
 		_projectile_movement_component->ProjectileGravityScale = 0.0f;
-							// ¼ø¼ö ·çÆ®ÄÄÆ÷³ÍÆ®·Î ÇØµÎ¸é ¾Æ·¡¿¡ ¹Ì»çÀÏ À§Ä¡ ÃÊ±âÈ­°¡ ¾ÈµÇ¼­ ±×³É ÀÌ·¸°ÔÇÔ. 
+							// ìˆœìˆ˜ ë£¨íŠ¸ì»´í¬ë„ŒíŠ¸ë¡œ í•´ë‘ë©´ ì•„ëž˜ì— ë¯¸ì‚¬ì¼ ìœ„ì¹˜ ì´ˆê¸°í™”ê°€ ì•ˆë˜ì„œ ê·¸ëƒ¥ ì´ë ‡ê²Œí•¨. 
 		_projectile_movement_component->SetUpdatedComponent(RootComponent);	
 	}
 
@@ -116,7 +116,7 @@ void ADNBullet::fire(ADNCommonCharacter* target_in)
 	if (nullptr == _owner)
 		return;
 
-	FVector socket_location = _owner->_heli_skeletal_mesh->GetSocketLocation(FName("Rocket_Muzzle_L"));
+	FVector socket_location = _owner->_character_skeletal_mesh->GetSocketLocation(FName("Rocket_Muzzle_L"));
 	
 
 
@@ -124,9 +124,9 @@ void ADNBullet::fire(ADNCommonCharacter* target_in)
 	SetActorLocation(socket_location);
 	SetActorRotation(_owner->GetActorRotation());
 
-	// »ç¿îµå
-	if(IsValid(_owner->_missile_fire_soundcue))
-		UGameplayStatics::PlaySoundAtLocation(this, _owner->_missile_fire_soundcue, GetActorLocation());
+	// ì‚¬ìš´ë“œ
+	if(IsValid(_missile_fire_soundcue))
+		UGameplayStatics::PlaySoundAtLocation(this, _missile_fire_soundcue, GetActorLocation());
 
 	FVector direction_vector = target_in->GetActorLocation() - _owner->GetActorLocation();
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Direction Vector :%s"), *direction_vector.ToString()));
@@ -134,28 +134,32 @@ void ADNBullet::fire(ADNCommonCharacter* target_in)
 	_projectile_movement_component->Velocity = direction_vector * _projectile_movement_component->InitialSpeed;
 	_ready_destroy = true;
 
+
+	if (IsValid(_tail_particle))			// ê¼¬ë¦¬ íŒŒí‹°í´
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _tail_particle, _box_collision->GetRelativeLocation());
+
 }
 
 
 
 void ADNBullet::overlap_actor_handler(const FHitResult& HitResult)
 {
-	if (nullptr == HitResult.GetActor())												// ¹Ù´Ú¿¡ ²ÈÇûÀ» ¶§
+	if (nullptr == HitResult.GetActor())												// ë°”ë‹¥ì— ê½‚í˜”ì„ ë•Œ
 	{
-		if (IsValid(_owner->_missile_fire_soundcue) && nullptr != _owner->_bomb_particle)				// ÆÄÆ¼Å¬ ¹× »ç¿îµå
+		if (IsValid(_missile_fire_soundcue) && nullptr != _bomb_particle)				// íŒŒí‹°í´ ë° ì‚¬ìš´ë“œ
 		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _owner->_bomb_particle, GetActorLocation());
-			UGameplayStatics::PlaySoundAtLocation(this, _owner->_bomb_soundcue, GetActorLocation());
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
+			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 
 		}
 	}
 
-	if (_owner != HitResult.GetActor())													// Çï±â ÀÚ½Å°ú Ãæµ¹ Ã¼Å©
+	if (_owner != HitResult.GetActor())													// í—¬ê¸° ìžì‹ ê³¼ ì¶©ëŒ ì²´í¬
 	{
-		if (IsValid(_owner->_missile_fire_soundcue) && nullptr != _owner->_bomb_particle)				// ÆÄÆ¼Å¬ ¹× »ç¿îµå
+		if (IsValid(_missile_fire_soundcue) && nullptr != _bomb_particle)				// íŒŒí‹°í´ ë° ì‚¬ìš´ë“œ
 		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _owner->_bomb_particle, GetActorLocation() - FVector(0.f,0.f,200.f));
-			UGameplayStatics::PlaySoundAtLocation(this, _owner->_bomb_soundcue, GetActorLocation());
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f,0.f,200.f));
+			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 			
 			DNDamageOperation::radial_damage(GetWorld(), 500.f, GetActorLocation(), 2000.f, _owner);
 

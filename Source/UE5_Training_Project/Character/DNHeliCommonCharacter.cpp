@@ -17,8 +17,8 @@
 ADNHeliCommonCharacter::ADNHeliCommonCharacter()
 {
 	// Mesh
-	_heli_skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HeliSkeletalMesh"));
-	_heli_skeletal_mesh->SetupAttachment(RootComponent);
+	_sub_character_skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SubSkeletalMesh"));
+	_sub_character_skeletal_mesh->SetupAttachment(RootComponent);
 
 	_audio_component = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
 	_audio_component->SetupAttachment(RootComponent);
@@ -125,7 +125,7 @@ void ADNHeliCommonCharacter::fire_missile(ADNCommonCharacter* target_in)
 {
 	if (nullptr != _missile_class)
 	{
-		FVector socket_location = _heli_skeletal_mesh->GetSocketLocation(FName("Rocket_Muzzle_L"));
+		FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("Rocket_Muzzle_L"));
 		ADNBullet* bullet = GetWorld()->SpawnActor<ADNBullet>(_missile_class, socket_location, GetActorRotation()); // 미사일 생성
 		bullet->SetActorLocation(socket_location);
 		//bullet->non_active_bullet();

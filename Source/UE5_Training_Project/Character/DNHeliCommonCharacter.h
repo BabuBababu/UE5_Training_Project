@@ -53,7 +53,7 @@ public:
 public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
-	TObjectPtr<USkeletalMeshComponent> _heli_skeletal_mesh;
+	TObjectPtr<USkeletalMeshComponent> _sub_character_skeletal_mesh;	//기관 사수 캐릭터
 
 	// 무브 컴포넌트
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -64,17 +64,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
 	TSubclassOf<ADNBullet> _missile_class;
-
-
-	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//직격 파티클
-		UNiagaraSystem* _bomb_particle;
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//발사 소리
-	TObjectPtr<USoundBase> _missile_fire_soundcue;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//직격 소리
-		TObjectPtr<USoundBase> _bomb_soundcue;
 
 
 public:
