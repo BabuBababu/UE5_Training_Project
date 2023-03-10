@@ -66,7 +66,7 @@ void ADNBullet::Tick(float DeltaTime)
 	if (_ready_destroy)
 	{
 		_limit_time += DeltaTime;
-		if (_limit_time > 5.f)
+		if (_limit_time > 2.f)
 			Destroy();
 	}
 
