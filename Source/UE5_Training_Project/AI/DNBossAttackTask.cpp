@@ -1,7 +1,7 @@
 ﻿
 
 
-#include "UE5_Training_Project/AI/DNHeliMissileAttackTask.h"
+#include "UE5_Training_Project/AI/DNBossAttackTask.h"
 
 // Engine
 #include <BehaviorTree/BlackboardComponent.h>
@@ -16,18 +16,18 @@
 #include "UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h"
 
 // Character
-#include "UE5_Training_Project/Character/DNHeliCommonCharacter.h"
+#include "UE5_Training_Project/Character/DNCommonBossCharacter.h"
 
 
-UDNHeliMissileAttackTask::UDNHeliMissileAttackTask(FObjectInitializer const& object_initializer)
+UDNBossAttackTask::UDNBossAttackTask(FObjectInitializer const& object_initializer)
 {
 
-	NodeName = TEXT("HeliMissileAttackTask");
+	NodeName = TEXT("BossAttackTask");
 	//bNotifyTick = true;			// 틱 활성화
 }
 
 
-EBTNodeResult::Type UDNHeliMissileAttackTask::ExecuteTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in)
+EBTNodeResult::Type UDNBossAttackTask::ExecuteTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in)
 {
 	Super::ExecuteTask(owner_comp_in, NodeMemory_in);
 
@@ -36,7 +36,7 @@ EBTNodeResult::Type UDNHeliMissileAttackTask::ExecuteTask(UBehaviorTreeComponent
 	APawn* self_pawn = controller->GetPawn();
 
 	// 캐릭터
-	ADNHeliCommonCharacter* self_actor = Cast<ADNHeliCommonCharacter>(self_pawn);
+	ADNCommonBossCharacter* self_actor = Cast<ADNCommonBossCharacter>(self_pawn);
 
 	if (self_actor->get_status_component().Get()->_dead)
 	{
@@ -63,14 +63,17 @@ EBTNodeResult::Type UDNHeliMissileAttackTask::ExecuteTask(UBehaviorTreeComponent
 	}
 
 	controller->SetFocus(target_character);		// 타겟 바라보기
-	if (self_actor->_missile_current_time <= 1.f)
-		self_actor->fire_missile(target_character);			// 미사일 발사
+
+	if (self_actor->_fire_2_current_time <= 1.f)
+		self_actor->fire_2(target_character);			// 쿨타임 없으면 미사일 발사
+	else
+		self_actor->fire_1(target_character);			// 쿨타임 있으면 기관총 발사
 
 	return EBTNodeResult::Succeeded;
 }
 
 
-void UDNHeliMissileAttackTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in, float DeltaSeconds)
+void UDNBossAttackTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in, float DeltaSeconds)
 {
 	Super::TickTask(owner_comp_in, NodeMemory_in, DeltaSeconds);
 

@@ -48,7 +48,7 @@ public:
 
 
 public:
-	void fire(ADNCommonCharacter* target_in );
+	void fire(ADNCommonCharacter* target_in,  FVector location_in);
 	virtual void init();
 	void active_bullet();
 	void non_active_bullet();

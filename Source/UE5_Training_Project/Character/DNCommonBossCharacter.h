@@ -36,7 +36,7 @@ public:
 	virtual void melee_1(ADNCommonCharacter* target_in);
 	virtual void melee_2(ADNCommonCharacter* target_in);
 
-	
+	void init_base();
 public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
@@ -57,7 +57,7 @@ public:
 	float _melee_1_current_time;
 	float _melee_2_current_time;
 
-	bool _fire_cool_time_start;
+	bool _fire_2_cool_time_start;
 
 	TArray<TObjectPtr<ADNBossMissile>> _missile_array;
 };

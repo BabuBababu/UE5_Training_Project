@@ -76,7 +76,7 @@ void ADNHeliCommonCharacter::init_base()
 	_rotor_back = 0.f;
 	_rotor_minigun = 0.f;
 	_missile_current_time = 0.f;
-	_missile_cool_time = 60.f;	//이것도 다 데이터테이블로 옮길예정
+	_missile_cool_time = 10.f;	//이것도 다 데이터테이블로 옮길예정
 	_missile_cool_time_start = false;
 
 	_missile = nullptr;
@@ -128,15 +128,13 @@ void ADNHeliCommonCharacter::fire_missile(ADNCommonCharacter* target_in)
 		FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("Rocket_Muzzle_L"));
 		ADNBullet* bullet = GetWorld()->SpawnActor<ADNBullet>(_missile_class, socket_location, GetActorRotation()); // 미사일 생성
 		bullet->SetActorLocation(socket_location);
-		//bullet->non_active_bullet();
+		bullet->SetActorRotation(GetActorRotation());
 		bullet->_owner = this;
+
+		bullet->fire(target_in, socket_location);
+		_missile_cool_time_start = true;
 
 		_missile = bullet;
 	}
 
-	if (nullptr != _missile)
-	{
-		_missile->fire(target_in);
-		_missile_cool_time_start = true;
-	}
 }

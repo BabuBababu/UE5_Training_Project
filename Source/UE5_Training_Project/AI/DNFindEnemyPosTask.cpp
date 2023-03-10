@@ -15,6 +15,7 @@
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 
+
 // Component
 #include <UE5_Training_Project/Component/DNStatusComponent.h>
 
@@ -37,7 +38,7 @@ EBTNodeResult::Type UDNFindEnemyPosTask::ExecuteTask(UBehaviorTreeComponent& own
 
 	auto Controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
 	auto self = Controller->GetPawn();
-	ADNCommonCharacter* self_actor = dynamic_cast<ADNCommonCharacter*>(self);
+	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self);
 
 
 	if (nullptr == self) {

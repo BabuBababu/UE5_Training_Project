@@ -1,7 +1,8 @@
 ﻿
 
 
-#include "UE5_Training_Project/AI/DNFindCheckPointTask.h"
+#include "UE5_Training_Project/AI/DNBossFindCheckPointTask.h"
+
 
 
 // Engine
@@ -32,14 +33,14 @@
 
 
 
-UDNFindCheckPointTask::UDNFindCheckPointTask(FObjectInitializer const& object_initializer)
+UDNBossFindCheckPointTask::UDNBossFindCheckPointTask(FObjectInitializer const& object_initializer)
 {
-	NodeName = TEXT("FindCheckPointTask");
+	NodeName = TEXT("BossFindCheckPointTask");
 }
 
 
 
-EBTNodeResult::Type UDNFindCheckPointTask::ExecuteTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in)
+EBTNodeResult::Type UDNBossFindCheckPointTask::ExecuteTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in)
 {
 	Super::ExecuteTask(owner_comp_in, NodeMemory_in);
 

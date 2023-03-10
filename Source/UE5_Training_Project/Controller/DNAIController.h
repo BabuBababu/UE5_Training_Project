@@ -68,7 +68,7 @@ public:
 
 	//AI Perception 변수
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float AISightRadius = 5000.f;
+	float AISightRadius = 7000.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float AILoseSightRadius = 50.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

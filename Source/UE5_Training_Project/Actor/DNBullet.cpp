@@ -109,34 +109,39 @@ void ADNBullet::non_active_bullet()
 }
 
 
-void ADNBullet::fire(ADNCommonCharacter* target_in)
+void ADNBullet::fire(ADNCommonCharacter* target_in,FVector location_in)
 {
 	//active_bullet();
 
 	if (nullptr == _owner)
 		return;
 
-	FVector socket_location = _owner->_character_skeletal_mesh->GetSocketLocation(FName("Rocket_Muzzle_L"));
-	
+	//FVector socket_location = _owner->_character_skeletal_mesh->GetSocketLocation(FName("Rocket_Muzzle_L"));
+	//
 
 
-	//_projectile_movement_component->StopMovementImmediately();
-	SetActorLocation(socket_location);
-	SetActorRotation(_owner->GetActorRotation());
+	////_projectile_movement_component->StopMovementImmediately();
+	//SetActorLocation(socket_location);
+	//SetActorRotation(_owner->GetActorRotation());
 
 	// 사운드
 	if(IsValid(_missile_fire_soundcue))
 		UGameplayStatics::PlaySoundAtLocation(this, _missile_fire_soundcue, GetActorLocation());
 
-	FVector direction_vector = target_in->GetActorLocation() - _owner->GetActorLocation();
+
+	float random_position_x = FMath::FRandRange(-500.f, 500.f);
+	float random_position_y = FMath::FRandRange(-500.f, 500.f);
+
+	FVector direction_vector = (target_in->GetActorLocation() + FVector(random_position_x, random_position_y, 0.f )) - location_in;
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Direction Vector :%s"), *direction_vector.ToString()));
 
 	_projectile_movement_component->Velocity = direction_vector * _projectile_movement_component->InitialSpeed;
-	_ready_destroy = true;
+	//DrawDebugLine(GetWorld(), location_in, target_in->GetActorLocation(), FColor::Cyan, true, -1, 0, 10);
+	
 
 
-	if (IsValid(_tail_particle))			// 꼬리 파티클
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _tail_particle, _box_collision->GetRelativeLocation());
+	//if (IsValid(_tail_particle))			// 꼬리 파티클
+	//	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _tail_particle, RootComponent->GetRelativeLocation());
 
 }
 
@@ -146,7 +151,7 @@ void ADNBullet::overlap_actor_handler(const FHitResult& HitResult)
 {
 	if (nullptr == HitResult.GetActor())												// 바닥에 꽂혔을 때
 	{
-		if (IsValid(_missile_fire_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
+		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
 			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
@@ -156,17 +161,27 @@ void ADNBullet::overlap_actor_handler(const FHitResult& HitResult)
 
 	if (_owner != HitResult.GetActor())													// 헬기 자신과 충돌 체크
 	{
-		if (IsValid(_missile_fire_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
+		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f,0.f,200.f));
-			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 			
-			DNDamageOperation::radial_damage(GetWorld(), 500.f, GetActorLocation(), 2000.f, _owner);
+			if (_owner->get_character_type() != E_CHARACTER_TYPE::CT_ENEMY)				// 아군이 쏜 것이라면
+			{
+				DNDamageOperation::radial_damage_to_enemy(GetWorld(), 500.f, GetActorLocation(), 2000.f, _owner);
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 200.f));
+				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
+			}
+			else
+			{
+				DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		//적군이 쏜 것이라면
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
+				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
+			}
 
 		}
 	}
 	
 	
 
+	_ready_destroy = true;
 }
 

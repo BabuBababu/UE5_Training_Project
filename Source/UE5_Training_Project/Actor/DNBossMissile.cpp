@@ -18,7 +18,6 @@ void ADNBossMissile::BeginPlay()
 {
 	Super::BeginPlay();
 
-	add_event();
 }
 
 void ADNBossMissile::Tick(float DeltaTime)
@@ -31,12 +30,13 @@ void ADNBossMissile::Tick(float DeltaTime)
 
 void ADNBossMissile::add_event()
 {
-	
+	Super::add_event();
 }
 
 void ADNBossMissile::remove_event()
 {
-	
+
+	Super::remove_event();
 }
 
 
