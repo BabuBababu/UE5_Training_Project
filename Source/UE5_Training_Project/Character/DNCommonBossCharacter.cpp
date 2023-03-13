@@ -171,7 +171,8 @@ void ADNCommonBossCharacter::melee_2(ADNCommonCharacter* target_in)
 void ADNCommonBossCharacter::rotate_head(float deleta_time_in, ADNCommonCharacter* target_in)
 {
 	// 타겟 바라보기
-
+	if (nullptr == target_in)
+		return;
 
 	FVector target_location = target_in->GetActorLocation();
 	FVector self_actor_location = _character_sub_skeletal_mesh->GetComponentLocation();
@@ -179,9 +180,10 @@ void ADNCommonBossCharacter::rotate_head(float deleta_time_in, ADNCommonCharacte
 
 	FRotator current_rotation = _character_sub_skeletal_mesh->GetComponentRotation();
 
-	FRotator NewRotation = FMath::RInterpTo(current_rotation, FocusRotation, deleta_time_in, 1.f);
+	FRotator NewRotation = FMath::RInterpTo(current_rotation, FocusRotation, deleta_time_in, 2.f);
 
 	_character_sub_skeletal_mesh->SetWorldRotation(NewRotation);
+
 }
 
 void ADNCommonBossCharacter::show_smoke()

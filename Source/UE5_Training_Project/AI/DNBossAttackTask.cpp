@@ -23,6 +23,8 @@ UDNBossAttackTask::UDNBossAttackTask(FObjectInitializer const& object_initialize
 {
 
 	NodeName = TEXT("BossAttackTask");
+	_limit_time = 3.f;
+	_current_time = 0.f;
 }
 
 
@@ -63,18 +65,9 @@ EBTNodeResult::Type UDNBossAttackTask::ExecuteTask(UBehaviorTreeComponent& owner
 	}
 	
 
-	if (self_actor->_fire_2_current_time <= 1.f)
-	{
-		self_actor->fire_2(target_character);			// 쿨타임 없으면 미사일 발사
-		return EBTNodeResult::InProgress;
-	}
-	else if (self_actor->_fire_1_current_time <= 1.f)
-	{
-		self_actor->fire_1(target_character);			// 쿨타임 있으면 거대 미사일 발사
-		return EBTNodeResult::InProgress;
-	}
-	else
-		return EBTNodeResult::InProgress;
+	
+		
+	return EBTNodeResult::InProgress;
 }
 
 
@@ -88,12 +81,34 @@ void UDNBossAttackTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* N
 	APawn* self_pawn = controller->GetPawn();
 	// 타겟 캐릭터
 	auto target = controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor);
+
+
+	if (nullptr == target)
+		return;
+
 	ADNCommonCharacter* target_character = Cast<ADNCommonCharacter>(target);
 
 	// 캐릭터
 	ADNCommonBossCharacter* self_actor = Cast<ADNCommonBossCharacter>(self_pawn);
 	self_actor->rotate_head(DeltaSeconds, target_character);
 
-	// 머리 돌리기전과 후를 비교해서 같으면 성공 반환해야할듯
-	//FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);		
+
+	// 머리 돌리는 시간 최대 5초
+	if (_limit_time < _current_time)
+	{
+		if (self_actor->_fire_2_current_time <= 1.f)
+		{
+			self_actor->fire_2(target_character);			// 미사일 발사
+		}
+
+		if (self_actor->_fire_1_current_time <= 1.f)
+		{
+			self_actor->fire_1(target_character);			// 거대 미사일 발사
+		}
+
+		FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);
+		_current_time = 0.f;
+	}
+	else
+		_current_time += DeltaSeconds;
 }

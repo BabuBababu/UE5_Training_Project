@@ -75,6 +75,7 @@ public:
 
 	bool _fire_1_cool_time_start;
 	bool _fire_2_cool_time_start;
+
 	
 
 	ADNBossMissile*					   _fire_1_missile;
