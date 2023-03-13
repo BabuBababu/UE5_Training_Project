@@ -426,6 +426,7 @@ void ADNCommonCharacter::destroy_object_handler()
 
 	SetActorLocation(_my_spawn_location);
 	_status->reset();
+	GetMovementComponent()->Activate();
 
 	//SetActorHiddenInGame(true);
 	//SetActorEnableCollision(false);

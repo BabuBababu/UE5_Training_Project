@@ -39,11 +39,6 @@ ADNBullet::ADNBullet()
 	_niagara_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
 	_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-	if (IsValid(_tail_particle))
-	{
-		_niagara_component->SetAsset(_tail_particle);
-	}
-
 
 	if (IsValid(_projectile_movement_component))
 	{

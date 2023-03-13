@@ -80,6 +80,7 @@ public:
 		}
 
 		damaged_character_in->get_status_component().Get()->_dead = true;
+		damaged_character_in->GetMovementComponent()->Deactivate();
 		damaged_character_in->OnTargetDead.Broadcast(player_in);
 
 		

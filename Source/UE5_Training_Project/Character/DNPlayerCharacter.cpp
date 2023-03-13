@@ -152,7 +152,7 @@ FTransform ADNPlayerCharacter::set_camera_transform(bool flag_in)
 {
 	// 카메라와 뷰포트 거리 , 좌우, 높이
 	const FVector OriginLocation(50.f, 90.f, 25.f);
-	const FVector AimCameraLocation(250.f, 150.f, 50.f);
+	const FVector AimCameraLocation(150.f, 150.f, 50.f);
 	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
 	const FVector OriginCameraScale(1.f, 1.f, 1.f);
 
