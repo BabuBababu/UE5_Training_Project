@@ -38,6 +38,9 @@ public:
 	virtual void melee_1(ADNCommonCharacter* target_in);
 	virtual void melee_2(ADNCommonCharacter* target_in);
 	virtual void show_smoke();
+	virtual void hide_smoke();
+
+	void destroy_object_handler() override;
 
 	void init_base();
 public:
@@ -48,9 +51,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
 	TSubclassOf<ADNBossMissile> _fire_2_class;
 
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음 파티클
+	UNiagaraSystem*				  _danger_particle;
 
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음 파티클
-	UNiagaraSystem* _danger_particle;
+	TObjectPtr<UNiagaraComponent> _niagara_component;
 
 public:
 	float _fire_1_cool_time;

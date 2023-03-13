@@ -21,7 +21,11 @@ ADNCommonBossCharacter::ADNCommonBossCharacter()
 	_character_sub_skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SubBodySkeletalMesh"));
 	_character_sub_skeletal_mesh->SetupAttachment(_character_skeletal_mesh);
 
-	init_base();
+
+	_niagara_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
+	_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+
 }
 
 void ADNCommonBossCharacter::add_event()
@@ -49,6 +53,8 @@ void ADNCommonBossCharacter::remove_event()
 void ADNCommonBossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	init_base();
 }
 
 void ADNCommonBossCharacter::Tick(float DeltaTime)
@@ -76,6 +82,13 @@ void ADNCommonBossCharacter::init_base()
 	_fire_2_cool_time_start = false;
 
 	_missile_array.Empty();
+
+	if (IsValid(_danger_particle))
+	{
+		_niagara_component->SetAsset(_danger_particle);
+		_niagara_component->Deactivate();
+	}
+
 }
 
 
@@ -124,12 +137,29 @@ void ADNCommonBossCharacter::show_smoke()
 {
 	if (IsValid(_danger_particle))
 	{
-		UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _danger_particle, GetActorLocation());
-
-		if (false == NiagaraComp->IsActive())
+		if (false == _niagara_component->IsActive())
 		{
-			NiagaraComp->Activate();
+			_niagara_component->Activate();
 		}
 	}
 		
+}
+
+void ADNCommonBossCharacter::hide_smoke()
+{
+	if (IsValid(_danger_particle))
+	{
+		if (_niagara_component->IsActive())
+		{
+			_niagara_component->Deactivate();
+		}
+	}
+
+}
+
+void ADNCommonBossCharacter::destroy_object_handler()
+{
+	Super::destroy_object_handler();
+	hide_smoke();
+
 }
