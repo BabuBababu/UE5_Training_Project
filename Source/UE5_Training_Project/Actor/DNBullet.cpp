@@ -166,7 +166,7 @@ void ADNBullet::overlap_actor_handler(const FHitResult& HitResult)
 			
 			if (_owner->get_character_type() != E_CHARACTER_TYPE::CT_ENEMY)				// 아군이 쏜 것이라면
 			{
-				DNDamageOperation::radial_damage_to_enemy(GetWorld(), 500.f, GetActorLocation(), 2000.f, _owner);
+				DNDamageOperation::radial_damage_to_enemy(GetWorld(), 500.f, GetActorLocation(), 1500.f, _owner);
 				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 200.f));
 				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 			}
@@ -174,7 +174,7 @@ void ADNBullet::overlap_actor_handler(const FHitResult& HitResult)
 	}
 	
 	
-
+	non_active_bullet();
 	_ready_destroy = true;
 }
 

@@ -91,8 +91,8 @@ void ADNBossMissile::overlap_actor_handler(const FHitResult& HitResult)
 			}
 			else if (_fire_type == E_FIRE_TYPE::FT_MAIN)
 			{
-				DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 500.f, _owner);		// fire 1
-				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, -200.f));
+				DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// fire 1
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(400.f, 0.f, 400.f));
 				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 			}
 			
@@ -101,6 +101,6 @@ void ADNBossMissile::overlap_actor_handler(const FHitResult& HitResult)
 	}
 
 
-
+	non_active_bullet();
 	_ready_destroy = true;
 }
