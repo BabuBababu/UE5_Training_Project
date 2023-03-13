@@ -9,6 +9,7 @@
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
+#include "UE5_Training_Project/Character/DNCommonBossCharacter.h"
 
 // Actor
 #include "UE5_Training_Project/Actor/DNCommonShield.h"
@@ -155,6 +156,62 @@ public:
 
 		}
 	}
+
+	// 원거리 사격 to 보스
+	static void gun_damage_to_gun_spider_boss(float damage_in, FName bone_name_in, ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* player_in)
+	{
+		float after_hp = 0.f;
+
+		// 헤드샷 적용 유무
+		// 본마다 이름이 다른 경우가 있음!!
+		if (bone_name_in == TEXT("knee1_jnt1") || bone_name_in == TEXT("knee1_jnt2") ||
+			bone_name_in == TEXT("knee1_jnt3") || bone_name_in == TEXT("knee1_jnt4") ||
+			bone_name_in == TEXT("vent_jnt"))
+		{
+			float head_damage = damage_in *= 2;
+
+			// 플레이어라면 대미지 인디케이터 및 크로스헤어 표시
+			if (player_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+			{
+				DNDamageOperation::ShowIndicatorUI(head_damage, damaged_character_in, E_DAMAGE_TYPE::DT_CRITICAL);
+				DNDamageOperation::ShowCrossHairUI(true);
+			}
+
+			after_hp = damaged_character_in->get_status_component().Get()->get_current_hp() - head_damage;
+			damaged_character_in->get_status_component().Get()->set_current_hp(after_hp);
+			SOUND_MANAGER->start_combat_sound();
+		}
+		else
+		{
+			// 플레이어라면 대미지 인디케이터 및 크로스헤어 표시
+			if (player_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+			{
+				DNDamageOperation::ShowIndicatorUI(damage_in, damaged_character_in, E_DAMAGE_TYPE::DT_NORMAL);
+				DNDamageOperation::ShowCrossHairUI(false);
+			}
+
+			after_hp = damaged_character_in->get_status_component().Get()->get_current_hp() - damage_in;
+			damaged_character_in->get_status_component().Get()->set_current_hp(after_hp);
+			SOUND_MANAGER->start_combat_sound();
+		}
+
+		float left_hp_percent = (damaged_character_in->get_status_component().Get()->get_current_hp() / damaged_character_in->get_status_component().Get()->get_max_hp()) * 100;
+		
+
+		if (after_hp <= 0)
+		{
+			die_from_damage(damaged_character_in, player_in);
+
+		}
+		
+		if (left_hp_percent / 100 <= 0.3f)
+		{
+			ADNCommonBossCharacter* boss = Cast<ADNCommonBossCharacter>(damaged_character_in);
+			boss->show_smoke();
+		}
+
+	}
+
 
 	static void melee_damage(float damage_in, ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* player_in)
 	{

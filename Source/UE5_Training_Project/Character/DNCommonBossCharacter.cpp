@@ -3,6 +3,9 @@
 
 #include "UE5_Training_Project/Character/DNCommonBossCharacter.h"
 
+// Engine
+#include <NiagaraComponent.h>
+
 // Animation
 #include "UE5_Training_Project/Character/Animation/DNGunSpiderBossAnimInstance.h"
 
@@ -115,4 +118,18 @@ void ADNCommonBossCharacter::melee_1(ADNCommonCharacter* target_in)
 void ADNCommonBossCharacter::melee_2(ADNCommonCharacter* target_in)
 {
 
+}
+
+void ADNCommonBossCharacter::show_smoke()
+{
+	if (IsValid(_danger_particle))
+	{
+		UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _danger_particle, GetActorLocation());
+
+		if (false == NiagaraComp->IsActive())
+		{
+			NiagaraComp->Activate();
+		}
+	}
+		
 }

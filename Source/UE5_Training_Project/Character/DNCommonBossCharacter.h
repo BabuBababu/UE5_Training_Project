@@ -4,6 +4,8 @@
 
 // Engine
 #include <CoreMinimal.h>
+#include <NiagaraSystem.h>
+#include <NiagaraFunctionLibrary.h>
 
 // Character
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
@@ -35,6 +37,7 @@ public:
 	virtual void fire_2(ADNCommonCharacter* target_in);
 	virtual void melee_1(ADNCommonCharacter* target_in);
 	virtual void melee_2(ADNCommonCharacter* target_in);
+	virtual void show_smoke();
 
 	void init_base();
 public:
@@ -45,6 +48,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
 	TSubclassOf<ADNBossMissile> _fire_2_class;
 
+
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음 파티클
+	UNiagaraSystem* _danger_particle;
 
 public:
 	float _fire_1_cool_time;

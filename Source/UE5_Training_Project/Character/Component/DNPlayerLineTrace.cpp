@@ -107,24 +107,30 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 		{
 			// 무기 데이터 테이블을 이용해서 대미지 적용하는 방식을 쓸 예정이므로 아래 코드는 결국 수정할 것.
 			//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
-			if(_enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
+			if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
+			{
 				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);			//보스
+				DNDamageOperation::gun_damage_to_gun_spider_boss(damage, hit_result.BoneName, _enemy, player_in);
+				OnTargetHit.Broadcast();
+			}
 			else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE)
+			{
 				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//댕댕이
+				DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
+				OnTargetHit.Broadcast();
+			}
 			else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE_SHIELD)
+			{
 				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//쉴더
+				DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
+				OnTargetHit.Broadcast();
+			}
 			else
+			{
 				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//나머지 적
-
-
-
-			
-			// 명중 델리게이트
-			OnTargetHit.Broadcast();
-
-			// 대미지 적용
-			DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
-
+				DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
+				OnTargetHit.Broadcast();
+			}
 			
 		}
 		else   
