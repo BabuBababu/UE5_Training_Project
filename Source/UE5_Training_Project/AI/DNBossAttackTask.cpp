@@ -65,11 +65,17 @@ EBTNodeResult::Type UDNBossAttackTask::ExecuteTask(UBehaviorTreeComponent& owner
 	controller->SetFocus(target_character);		// 타겟 바라보기
 
 	if (self_actor->_fire_2_current_time <= 1.f)
+	{
 		self_actor->fire_2(target_character);			// 쿨타임 없으면 미사일 발사
+		return EBTNodeResult::Succeeded;
+	}
+	else if (self_actor->_fire_1_current_time <= 1.f)
+	{
+		self_actor->fire_1(target_character);			// 쿨타임 있으면 거대 미사일 발사
+		return EBTNodeResult::Succeeded;
+	}
 	else
-		self_actor->fire_1(target_character);			// 쿨타임 있으면 기관총 발사
-
-	return EBTNodeResult::Succeeded;
+		return EBTNodeResult::Succeeded;
 }
 
 

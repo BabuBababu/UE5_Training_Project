@@ -47,14 +47,17 @@ public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 	TObjectPtr<USkeletalMeshComponent> _character_sub_skeletal_mesh;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
+		TSubclassOf<ADNBossMissile> _fire_1_class;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
 	TSubclassOf<ADNBossMissile> _fire_2_class;
 
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음 파티클
 	UNiagaraSystem*				  _danger_particle;
 
-	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음 파티클
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음용 나이아가라 컴포넌트
 	TObjectPtr<UNiagaraComponent> _niagara_component;
 
 public:
@@ -68,7 +71,10 @@ public:
 	float _melee_1_current_time;
 	float _melee_2_current_time;
 
+	bool _fire_1_cool_time_start;
 	bool _fire_2_cool_time_start;
+	
 
+	ADNBossMissile*					   _fire_1_missile;
 	TArray<TObjectPtr<ADNBossMissile>> _missile_array;
 };

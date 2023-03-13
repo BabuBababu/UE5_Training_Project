@@ -25,6 +25,7 @@
 
 // Actor
 #include "UE5_Training_Project/Actor/DNCommonShield.h"
+#include "UE5_Training_Project/Actor/DNBossMissile.h"
 
 // Item
 #include "UE5_Training_Project/Actor/DNCommonActor.h"
@@ -147,8 +148,21 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 			}
 			else
 			{
-				// 어떤 액터도 아니라면
-				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+				//_shield가 nullptr이라면 미사일을 가격했는지 확인
+				auto _missile = Cast<ADNBossMissile>(hit_result.GetActor());
+				if (nullptr != _missile)
+				{
+					// 대미지 적용
+					DNDamageOperation::gun_damage_to_missile(damage, _missile, player_in);
+					_missile->play_damaged_sound();
+					UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+				}
+				else
+				{
+					// 어떤 액터도 아니라면
+					UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+				}
+
 			}
 
 			//UE_LOG(LogTemp, Warning, TEXT("FailedCast"));

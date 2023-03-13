@@ -13,6 +13,7 @@
 
 // Actor
 #include "UE5_Training_Project/Actor/DNCommonShield.h"
+#include "UE5_Training_Project/Actor/DNBossMissile.h"
 
 // UI
 #include "UE5_Training_Project/UI/Base/DNBasePanel.h"
@@ -153,6 +154,25 @@ public:
 		if (after_hp <= 0)
 		{
 			damaged_shield_in->destroy_object();
+
+		}
+	}
+
+	static void gun_damage_to_missile(float damage_in, ADNBossMissile* damaged_missile_in, ADNCommonCharacter* player_in)
+	{
+		float after_hp = damaged_missile_in->get_current_hp() - damage_in;
+		damaged_missile_in->set_current_hp(after_hp);
+		SOUND_MANAGER->start_combat_sound();
+
+		// 크로스헤어 표시
+		if (player_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+		{
+			DNDamageOperation::ShowCrossHairUI(false);
+		}
+
+		if (after_hp <= 0)
+		{
+			damaged_missile_in->destroy_object();
 
 		}
 	}

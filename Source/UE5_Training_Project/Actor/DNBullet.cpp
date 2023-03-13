@@ -8,6 +8,7 @@
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Engine/Classes/Kismet/GameplayStatics.h>
 #include <particles/ParticleSystem.h>
+#include <NiagaraComponent.h>
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
@@ -34,6 +35,15 @@ ADNBullet::ADNBullet()
 	RootComponent = _actor_static_mesh;
 
 	_box_collision->SetupAttachment(_actor_static_mesh);
+
+	_niagara_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
+	_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	if (IsValid(_tail_particle))
+	{
+		_niagara_component->SetAsset(_tail_particle);
+	}
+
 
 	if (IsValid(_projectile_movement_component))
 	{
@@ -88,7 +98,7 @@ void ADNBullet::remove_event()
 
 void ADNBullet::init()
 {
-	
+
 }
 
 void ADNBullet::active_bullet()
@@ -116,15 +126,9 @@ void ADNBullet::fire(ADNCommonCharacter* target_in,FVector location_in)
 	if (nullptr == _owner)
 		return;
 
-	//FVector socket_location = _owner->_character_skeletal_mesh->GetSocketLocation(FName("Rocket_Muzzle_L"));
-	//
+	if(IsValid(_niagara_component) && IsValid(_tail_particle))
+		_niagara_component->Activate();
 
-
-	////_projectile_movement_component->StopMovementImmediately();
-	//SetActorLocation(socket_location);
-	//SetActorRotation(_owner->GetActorRotation());
-
-	// 사운드
 	if(IsValid(_missile_fire_soundcue))
 		UGameplayStatics::PlaySoundAtLocation(this, _missile_fire_soundcue, GetActorLocation());
 
@@ -138,10 +142,6 @@ void ADNBullet::fire(ADNCommonCharacter* target_in,FVector location_in)
 	_projectile_movement_component->Velocity = direction_vector * _projectile_movement_component->InitialSpeed;
 	//DrawDebugLine(GetWorld(), location_in, target_in->GetActorLocation(), FColor::Cyan, true, -1, 0, 10);
 	
-
-
-	//if (IsValid(_tail_particle))			// 꼬리 파티클
-	//	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _tail_particle, RootComponent->GetRelativeLocation());
 
 }
 
@@ -170,13 +170,6 @@ void ADNBullet::overlap_actor_handler(const FHitResult& HitResult)
 				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 200.f));
 				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 			}
-			else
-			{
-				DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		//적군이 쏜 것이라면
-				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
-				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
-			}
-
 		}
 	}
 	

@@ -8,6 +8,9 @@
 // Actor
 #include "UE5_Training_Project/Actor/DNBullet.h"
 
+// Defs
+#include "UE5_Training_Project/Defs/DNDefs.h"
+
 // Generated
 #include "DNBossMissile.generated.h"
 
@@ -35,9 +38,26 @@ public:
 	void remove_event() override;
 
 	void init() override;
+	float get_current_hp() const { return _current_hp; };
+	void set_current_hp(const float hp_in) { _current_hp = hp_in; };
+
+
+	virtual void play_damaged_sound();
+	virtual void destroy_object();
 
 public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Move)
 	TObjectPtr<USplineComponent> _spline_component;
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
+	float _max_hp;
+public:
+	float _current_hp;
+	E_FIRE_TYPE _fire_type = E_FIRE_TYPE::FT_NONE;
+
+public:
+	void overlap_actor_handler(const FHitResult& HitResult) override;
 };

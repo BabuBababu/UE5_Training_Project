@@ -26,6 +26,7 @@ ADNCommonBossCharacter::ADNCommonBossCharacter()
 	_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 
+	_enemy_type = E_ENEMY_TYPE::ET_BOSS;
 }
 
 void ADNCommonBossCharacter::add_event()
@@ -71,14 +72,28 @@ void ADNCommonBossCharacter::Tick(float DeltaTime)
 			_fire_2_current_time = 0.f;
 		}
 	}
+
+	if (_fire_1_cool_time_start)
+	{
+		_fire_1_current_time += DeltaTime;
+		if (_fire_1_current_time >= _fire_1_cool_time)
+		{
+			_fire_1_cool_time_start = false;
+			_fire_1_current_time = 0.f;
+		}
+	}
 }
 
 void ADNCommonBossCharacter::init_base()
 {
-	_enemy_type = E_ENEMY_TYPE::ET_BOSS;
 
+	_fire_1_current_time = 0.f;
 	_fire_2_current_time = 0.f;
-	_fire_2_cool_time = 10.f;	//이것도 다 데이터테이블로 옮길예정, 근데 공격task에서 쿨타임으로 맞춰도 되지않나?
+
+	_fire_1_cool_time = 12.f;
+	_fire_2_cool_time = 8.f;	//이것도 다 데이터테이블로 옮길예정, 근데 공격task에서 쿨타임으로 맞추니 우선적으로 적용됨....
+	
+	_fire_1_cool_time_start = false;
 	_fire_2_cool_time_start = false;
 
 	_missile_array.Empty();
@@ -94,7 +109,24 @@ void ADNCommonBossCharacter::init_base()
 
 void ADNCommonBossCharacter::fire_1(ADNCommonCharacter* target_in)
 {
+	if (nullptr == _fire_1_class)
+		return;
+
 	
+	FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName("FirePoint"));
+		ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_1_class, socket_location, GetActorRotation()); // 미사일 생성
+		bullet->SetActorLocation(socket_location);
+		bullet->_fire_type = E_FIRE_TYPE::FT_MAIN;
+		bullet->init();
+
+		bullet->_owner = this;
+		bullet->fire(target_in, socket_location);
+
+		_fire_1_missile = bullet;
+
+
+	_fire_1_cool_time_start = true;
+
 }
 
 void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
@@ -111,7 +143,9 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 		FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName(socket_string));
 		ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_2_class, socket_location, GetActorRotation()); // 미사일 생성
 		bullet->SetActorLocation(socket_location);
-		//bullet->SetActorRotation(GetActorRotation());
+		bullet->_fire_type = E_FIRE_TYPE::FT_SUB;
+		bullet->init();
+
 		bullet->_owner = this;
 		bullet->fire(target_in, socket_location);
 

@@ -75,6 +75,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//꼬리 파티클
 	UNiagaraSystem* _tail_particle;
 
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음용 나이아가라 컴포넌트
+	TObjectPtr<UNiagaraComponent> _niagara_component;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//발사 소리
@@ -92,5 +94,5 @@ public:
 
 public:
 	UFUNCTION()
-		void overlap_actor_handler(const FHitResult& HitResult);
+	virtual	void overlap_actor_handler(const FHitResult& HitResult);
 };

@@ -377,6 +377,18 @@ enum class E_DAMAGE_TYPE : uint8
 //
 //////////////////////////////////////////////////////////
 
+UENUM()
+enum class E_FIRE_TYPE : uint8
+{
+	FT_NONE = 0,
+	FT_MAIN,		//메인 공격
+	FT_SUB,		//서브 공격
+
+	FT_COUNT
+};
+
+
+
 
 UENUM()
 enum class E_SOUND_TYPE : uint8
