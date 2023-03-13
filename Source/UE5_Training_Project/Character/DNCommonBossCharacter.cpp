@@ -5,6 +5,7 @@
 
 // Engine
 #include <NiagaraComponent.h>
+#include <Kismet/KismetMathLibrary.h>
 
 // Animation
 #include "UE5_Training_Project/Character/Animation/DNGunSpiderBossAnimInstance.h"
@@ -165,6 +166,22 @@ void ADNCommonBossCharacter::melee_1(ADNCommonCharacter* target_in)
 void ADNCommonBossCharacter::melee_2(ADNCommonCharacter* target_in)
 {
 
+}
+
+void ADNCommonBossCharacter::rotate_head(float deleta_time_in, ADNCommonCharacter* target_in)
+{
+	// 타겟 바라보기
+
+
+	FVector target_location = target_in->GetActorLocation();
+	FVector self_actor_location = _character_sub_skeletal_mesh->GetComponentLocation();
+	FRotator FocusRotation = UKismetMathLibrary::FindLookAtRotation(self_actor_location, target_location);
+
+	FRotator current_rotation = _character_sub_skeletal_mesh->GetComponentRotation();
+
+	FRotator NewRotation = FMath::RInterpTo(current_rotation, FocusRotation, deleta_time_in, 1.f);
+
+	_character_sub_skeletal_mesh->SetWorldRotation(NewRotation);
 }
 
 void ADNCommonBossCharacter::show_smoke()
