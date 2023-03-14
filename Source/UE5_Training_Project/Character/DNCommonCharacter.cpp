@@ -319,7 +319,7 @@ void ADNCommonCharacter::fire()
 				_enemy_line_trace->OnFire(this);
 
 			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Cover Fire"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Cover Fire"));
 		}
 		else
 		{
@@ -333,7 +333,7 @@ void ADNCommonCharacter::fire()
 				_enemy_line_trace->OnFire(this);
 
 			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Fire"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Fire"));
 		}
 		
 		
@@ -351,6 +351,9 @@ void ADNCommonCharacter::stop_fire()
 
 void ADNCommonCharacter::armed()
 {
+	if (_cover_now)					//커버 상태에서는 조작 불가능
+		return;
+
 	if (_is_armed_weapon == false)
 	{
 		bUseControllerRotationYaw = true;
@@ -420,6 +423,9 @@ void ADNCommonCharacter::interaction()
 
 void ADNCommonCharacter::cover()
 {
+	if (false == _is_armed_weapon)
+		return;
+
 	if (false == _is_near_wall)
 		return;
 
