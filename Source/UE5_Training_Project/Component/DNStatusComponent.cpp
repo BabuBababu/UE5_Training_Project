@@ -63,7 +63,9 @@ void UDNStatusComponent::add_event(ADNCommonCharacter* character_in)
 {
 	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(character_in);
 	if (nullptr != character)
+	{
 		character->OnFire.AddDynamic(this, &UDNStatusComponent::remove_ammo_handler);
+	}
 
 	UDNCharacterAnimInstance* anim_instance = dynamic_cast<UDNCharacterAnimInstance*>(character->_character_skeletal_mesh->GetAnimInstance());
 	if (nullptr != anim_instance)

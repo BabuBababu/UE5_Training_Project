@@ -199,6 +199,10 @@ void UDNCharacterAnimInstance::play_cover_fire_montage()
 		{
 			Montage_Play(fire_montage);
 
+			// 하.. 여기선 애니메이션만 처리해야하는데 
+			// 귀찮네...
+
+			_owner->get_status_component()->_current_ammo -= 1;
 			_owner->_line_trace->OnFire(_owner);
 			ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(_owner->GetController());
 			UGameplayStatics::PlaySoundAtLocation(this, _owner->_fire_soundcue, _owner->GetActorLocation());

@@ -62,7 +62,7 @@ void ADNPlayerCharacter::reload()
 	{
 
 		_is_reloading = true;
-		_character_state = E_CHARACTER_STATE::CS_RELOAD;
+		//_character_state = E_CHARACTER_STATE::CS_RELOAD;
 		UGameplayStatics::PlaySoundAtLocation(this, _reload_soundcue, GetActorLocation());
 		OnReload.Broadcast();
 	}

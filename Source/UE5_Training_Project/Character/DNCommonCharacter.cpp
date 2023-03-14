@@ -243,7 +243,7 @@ void ADNCommonCharacter::reload()
 			_is_crouch = true;
 
 		_is_reloading = true;
-		_character_state = E_CHARACTER_STATE::CS_RELOAD;
+		//_character_state = E_CHARACTER_STATE::CS_RELOAD;
 		UGameplayStatics::PlaySoundAtLocation(this, _reload_soundcue,GetActorLocation());
 
 		if (_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
@@ -505,8 +505,11 @@ void ADNCommonCharacter::return_to_armed_handler()
 		_weapon_armed->SetVisibility(true);
 		_weapon_un_armed->SetVisibility(false);
 		_is_armed_weapon = true;
-		_pre_upper_character_state = _character_state;
-		_character_state = E_CHARACTER_STATE::CS_ARM;
+		_pre_upper_character_state = _character_state;/*
+		if(false == _cover_now)
+			_character_state = E_CHARACTER_STATE::CS_ARM;
+		else
+			_character_state = E_CHARACTER_STATE::CS_COVER;*/
 	}
 }
 
