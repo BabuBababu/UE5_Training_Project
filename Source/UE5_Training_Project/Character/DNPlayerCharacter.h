@@ -42,6 +42,7 @@ public:
 	void stop_aiming() override;
 	void sprint() override;
 	void stop_sprint() override;
+	void cover() override;
 
 public:
 	void start_fire();

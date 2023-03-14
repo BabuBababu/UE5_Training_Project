@@ -44,14 +44,15 @@ enum class E_CHARACTER_TYPE : uint8
 UENUM(BlueprintType)
 enum class E_CHARACTER_STATE : uint8
 {
-	CS_NONE = 0		UMETA(DisplayName = "None"),	//비어있음
-	CS_IDLE			UMETA(DisplayName = "Idle"),	//기본, 총을 들지 않음
-	CS_ATTACK		UMETA(DisplayName = "Attack"),	//사격
-	CS_RELOAD		UMETA(DisplayName = "Reload"),	//장전
-	CS_INTERACTION	UMETA(DisplayName = "Interaction"),	//상호작용
-	CS_AIM			UMETA(DisplayName = "Aimming"),	//조준
-	CS_ARM			UMETA(DisplayName = "Armed"),	//총을 들고 있음
-	CS_DEAD			UMETA(DisplayName = "Dead"),	//사망
+	CS_NONE = 0		UMETA(DisplayName = "None"),					//비어있음
+	CS_IDLE			UMETA(DisplayName = "Idle"),					//기본, 총을 들지 않음
+	CS_ATTACK		UMETA(DisplayName = "Attack"),					//사격
+	CS_RELOAD		UMETA(DisplayName = "Reload"),					//장전
+	CS_INTERACTION	UMETA(DisplayName = "Interaction"),				//상호작용
+	CS_AIM			UMETA(DisplayName = "Aimming"),					//조준
+	CS_ARM			UMETA(DisplayName = "Armed"),					//총을 들고 있음
+	CS_COVER		UMETA(DisplayName = "Cover"),					//커버 모드
+	CS_DEAD			UMETA(DisplayName = "Dead"),					//사망
 
 	CS_COUNT
 };

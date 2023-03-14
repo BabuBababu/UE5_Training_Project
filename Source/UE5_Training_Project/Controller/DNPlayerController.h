@@ -48,6 +48,7 @@ public:
 	void StopJumping(const FInputActionValue& Value);
 	void Armed(const FInputActionValue& Value);
 	void Crouch(const FInputActionValue& Value);
+	void Cover(const FInputActionValue& Value);
 	void Aiming(const FInputActionValue& Value);
 	void StopAiming(const FInputActionValue& Value);
 	void Interaction(const FInputActionValue& Value);

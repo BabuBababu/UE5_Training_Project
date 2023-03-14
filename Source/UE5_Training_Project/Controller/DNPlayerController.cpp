@@ -89,6 +89,7 @@ void ADNPlayerController::SetupInputComponent()
 	PEI->BindAction(InputActions->InputCrouch, ETriggerEvent::Completed, this, &ADNPlayerController::Crouch);
 	PEI->BindAction(InputActions->InputSprint, ETriggerEvent::Triggered, this, &ADNPlayerController::Sprint);
 	PEI->BindAction(InputActions->InputSprint, ETriggerEvent::Completed, this, &ADNPlayerController::StopSprint);
+	PEI->BindAction(InputActions->InputCover, ETriggerEvent::Completed, this, &ADNPlayerController::Cover);
 	
 	PEI->BindAction(InputActions->InputInterRaction, ETriggerEvent::Completed, this, &ADNPlayerController::Interaction);
 
@@ -248,6 +249,17 @@ void ADNPlayerController::Crouch(const FInputActionValue& Value)
 
 	character->crouch();
 	UE_LOG(LogTemp, Warning, TEXT("Crouch"));
+}
+
+void ADNPlayerController::Cover(const FInputActionValue& Value)
+{
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
+	character->cover();
+	UE_LOG(LogTemp, Warning, TEXT("Cover"));
 }
 
 void ADNPlayerController::Aiming(const FInputActionValue& Value)

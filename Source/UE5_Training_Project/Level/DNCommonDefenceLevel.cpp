@@ -44,20 +44,20 @@ void ADNCommonDefenceLevel::BeginPlay()
 	}
 
 
-	for (int count = 0; count < 15; ++count)
+	for (int count = 0; count < _shield_enemy_count; ++count)
 	{
 		FVector temp_location = FVector(count * 100.f, 0.f, 500.f);
 		ADNShieldEnemyCharacter* shield = GetWorld()->SpawnActor<ADNShieldEnemyCharacter>(_shield_enemy, target_point_1_location + temp_location,FRotator::ZeroRotator);
 		
 	}
 
-	for (int count = 0; count < 15; ++count)
+	for (int count = 0; count < _dog_enemy_count; ++count)
 	{
 		FVector temp_location = FVector(count * 100.f, 0.f, 500.f);
 		ADNDogEnemyCharacter* dog = GetWorld()->SpawnActor<ADNDogEnemyCharacter>(_dog_enemy, target_point_2_location+ temp_location, FRotator::ZeroRotator);
 	}
 
-	for (int count = 0; count < 20; ++count)
+	for (int count = 0; count < _gun_enemy_count; ++count)
 	{
 		FVector temp_location = FVector(count * 100.f, 0.f, 500.f);
 		ADNEnemyCharacter* gun = GetWorld()->SpawnActor<ADNEnemyCharacter>(_gun_enemy, target_point_3_location+ temp_location, FRotator::ZeroRotator);

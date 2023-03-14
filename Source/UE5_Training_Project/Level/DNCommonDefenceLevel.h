@@ -40,7 +40,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
 		TSubclassOf<ADNShieldEnemyCharacter> _shield_enemy;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
+	int64	_gun_enemy_count = 15;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
+	int64	_dog_enemy_count = 15;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
+	int64	_shield_enemy_count = 20;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Boss)
-		TSubclassOf<ADNCommonBossCharacter> _boss_enemy;
+	TSubclassOf<ADNCommonBossCharacter> _boss_enemy;
 	
 };

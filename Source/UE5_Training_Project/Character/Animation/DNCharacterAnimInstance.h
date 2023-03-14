@@ -60,6 +60,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void play_fire_montage();
 
+	UFUNCTION(BlueprintCallable)
+	void play_cover_fire_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void unlock_cover_animation();
+
+	// 밑의 2개는 아직 사용 X
+	UFUNCTION(BlueprintCallable)
+	void play_cover_turn_left_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_cover_turn_right_montage();
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
 	float _speed;
@@ -94,6 +107,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
 	bool _near_wall;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
+	bool _cover_now;
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
 	float _ADS_BlendSpeed;
@@ -121,11 +137,29 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAnimMontage> fire_montage;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> cover_fire_left_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> cover_fire_right_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> cover_turn_left_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> cover_turn_right_montage;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAnimMontage> reload_montage;
+
 private:
 	bool	_playing_die_montage;
 	bool	_playing_reload_montage;
+	bool	_playing_cover_fire_montage;
+	bool	_cover_fire_lock;
+	bool	_playing_cover_turn_montage;
 
 	ADNCommonCharacter* _owner = nullptr;
 

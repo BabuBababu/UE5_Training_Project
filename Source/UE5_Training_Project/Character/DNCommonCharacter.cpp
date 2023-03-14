@@ -305,16 +305,38 @@ void ADNCommonCharacter::fire()
 	if (_is_fire)
 	{
 		_is_aiming = true;
-		OnFire.Broadcast();
-		_target_change_current_ammo += 1;
-		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
+		
+		// 커버사격 유무
+		if (_cover_now)
+		{
+			OnCoverFire.Broadcast();
+			_target_change_current_ammo += 1;
+			UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
 
-		if (_character_type != E_CHARACTER_TYPE::CT_ENEMY)
-			_line_trace->OnFire(this);
-		else if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)
-			_enemy_line_trace->OnFire(this);
+			if (_character_type != E_CHARACTER_TYPE::CT_ENEMY)
+				_line_trace->OnFire(this);
+			else if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)
+				_enemy_line_trace->OnFire(this);
 
-		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
+			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Cover Fire"));
+		}
+		else
+		{
+			OnFire.Broadcast();
+			_target_change_current_ammo += 1;
+			UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
+
+			if (_character_type != E_CHARACTER_TYPE::CT_ENEMY)
+				_line_trace->OnFire(this);
+			else if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)
+				_enemy_line_trace->OnFire(this);
+
+			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Fire"));
+		}
+		
+		
 	}
 
 
@@ -323,6 +345,7 @@ void ADNCommonCharacter::fire()
 void ADNCommonCharacter::stop_fire()
 {
 	_is_fire = false;
+	StopFire.Broadcast();
 }
 
 
@@ -395,12 +418,30 @@ void ADNCommonCharacter::interaction()
 
 }
 
+void ADNCommonCharacter::cover()
+{
+	if (false == _is_near_wall)
+		return;
+
+	if (false == _cover_now)
+	{
+		_character_state = E_CHARACTER_STATE::CS_COVER;
+		_cover_now = true;
+	}
+	else
+	{
+		_character_state = E_CHARACTER_STATE::CS_ARM;
+		_cover_now = false;
+	}
+}
+
 
 void ADNCommonCharacter::set_idle_animation()
 {
 	_is_aiming = false;
 	_is_fire = false;
 	_is_attacking = false;
+	_cover_now = false;
 }
 
 

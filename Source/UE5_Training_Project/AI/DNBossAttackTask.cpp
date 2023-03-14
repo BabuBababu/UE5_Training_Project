@@ -93,7 +93,7 @@ void UDNBossAttackTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* N
 	self_actor->rotate_head(DeltaSeconds, target_character);
 
 
-	// 머리 돌리는 시간 최대 5초
+	// 머리 돌리는 시간 최대 3초
 	if (_limit_time < _current_time)
 	{
 		if (self_actor->_fire_2_current_time <= 1.f)

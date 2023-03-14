@@ -86,18 +86,25 @@ void ADNPlayerCharacter::fire()
 
 	if (_is_fire)
 	{
-		
-		_line_trace->OnFire(this);
-		OnFire.Broadcast();
-		ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
-		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue,GetActorLocation());
-		if (controller->get_camera_shake() != nullptr)
-			controller->ClientStartCameraShake(controller->get_camera_shake());
+		// 커버사격 유무
+		if (_cover_now)
+		{
+			OnCoverFire.Broadcast();
 
+			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
+		}
+		else
+		{
+			_line_trace->OnFire(this);
+			OnFire.Broadcast();
+			ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
+			UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
+			if (controller->get_camera_shake() != nullptr)
+				controller->ClientStartCameraShake(controller->get_camera_shake());
 
-		UE_LOG(LogTemp, Warning, TEXT("Player Timer : %s"), *_fire_timer.ToString());
-		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNPlayerCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Player Attack Now"));
+			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Fire"));
+		}
 
 	}
 
@@ -147,6 +154,12 @@ void ADNPlayerCharacter::stop_aiming()
 
 	_camera_boom->SetRelativeTransform(set_camera_transform(false));
 }
+
+void ADNPlayerCharacter::cover()
+{
+	Super::cover();
+}
+
 
 FTransform ADNPlayerCharacter::set_camera_transform(bool flag_in)
 {

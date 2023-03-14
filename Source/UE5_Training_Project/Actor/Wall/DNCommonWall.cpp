@@ -72,6 +72,10 @@ void ADNCommonWall::unoverlap_wall_handler(UPrimitiveComponent* OverlappedComp, 
 		return;
 
 	character->_is_near_wall = false;
+	character->_cover_now = false;
+
+	if(character->_character_state == E_CHARACTER_STATE::CS_COVER)
+		character->_character_state = E_CHARACTER_STATE::CS_ARM;
 
 	ADNAIController* ai_controller = Cast<ADNAIController>(character->GetController());
 	if (nullptr != ai_controller)

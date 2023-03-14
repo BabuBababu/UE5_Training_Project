@@ -70,6 +70,7 @@ public:
 	virtual void sprint();
 	virtual void stop_sprint();
 	virtual void interaction();		//여기에 상호작용 전부 포함됨 해당 관련 컴포넌트 만들어서 알맞게 체크
+	virtual void cover();
 
 public:
 	E_CHARACTER_TYPE get_character_type() const { return _character_type; };
@@ -175,6 +176,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool _is_armed_weapon;
 
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	E_CHARACTER_STATE _character_state = E_CHARACTER_STATE::CS_IDLE;
 
@@ -182,15 +184,16 @@ public:
 protected:
 	float _default_max_speed = 0.0f;
 	uint8 _position_index;
+	FTimerHandle _fire_timer;
 	
 
-	FTimerHandle _fire_timer;
 
 
 public:
 	FRotator _aiming_rotation = FRotator(0.f, 0.f, 0.f);
 	E_CHARACTER_STATE _pre_upper_character_state = E_CHARACTER_STATE::CS_NONE;
 	bool _is_attacking;
+	bool _cover_now = false;
 
 	FVector  _my_spawn_location = FVector(0.f, 0.f, 0.f);
 	int64 _target_change_limit_ammo = 10;				// 병과마다 다르게 가야할듯?
@@ -202,6 +205,8 @@ public:
 	// 델리게이트
 public:
 	FOnInputStartDelegate OnFire;
+	FOnInputStartDelegate StopFire;
+	FOnInputStartDelegate OnCoverFire;
 	FOnInputStartDelegate OnReload;
 	FOnIteractionFinishItemDelegate OnItemPickup;
 	FOnIteractionFinishDelegate OnVehicleRiding;
