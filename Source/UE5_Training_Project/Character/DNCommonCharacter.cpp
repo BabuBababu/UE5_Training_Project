@@ -28,6 +28,8 @@
 
 // Item
 #include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
+#include "UE5_Training_Project/Actor/Item/DNCommonGrenade.h"
+
 
 // Character
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
@@ -79,6 +81,7 @@ ADNCommonCharacter::ADNCommonCharacter()
 	_knife_weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KnifeWeapon"));
 	_knife_collision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("KnifeCollision"));
 	_knife_collision->SetupAttachment(_knife_weapon);
+	_knife_collision->SetGenerateOverlapEvents(false);
 
 	_character_skeletal_mesh->SetupAttachment(RootComponent);
 
@@ -184,6 +187,7 @@ void ADNCommonCharacter::add_event()
 	anim_instance->OnDieEnd.AddDynamic(this, &ADNCommonCharacter::destroy_object_handler);
 	anim_instance->OnReloadEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
 	anim_instance->OnKnifeEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
+	anim_instance->OnThrowEnd.AddDynamic(this, &ADNCommonCharacter::throw_grenade_handler);
 	OnTargetDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
 
 	if (IsValid(_knife_collision))
@@ -378,8 +382,7 @@ void ADNCommonCharacter::throw_grenade()
 	if (_is_fire || _is_sprint || _is_wall_jump)		//사격,조준, 스프린트, 벽넘기중일땐 조작 불가능
 		return;
 	
-	// 수류탄 액터 스폰
-
+	OnThrow.Broadcast();
 }
 
 void ADNCommonCharacter::armed()
@@ -587,5 +590,20 @@ void ADNCommonCharacter::overlap_knife_handler(class UPrimitiveComponent* selfCo
 	{
 		// 일단은 근접대미지 25로 고정합니다. 추후에 데이터 테이블로 대미지를 설정하겠습니다.
 		DNDamageOperation::melee_damage_from_knife(25.f, character, this);
+	}
+}
+
+void ADNCommonCharacter::throw_grenade_handler()
+{
+	// 수류탄 액터 스폰
+	if (nullptr != _grenade_class)
+	{
+		FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("Right Wrist"));
+		ADNCommonGrenade* grenade = GetWorld()->SpawnActor<ADNCommonGrenade>(_grenade_class, socket_location, GetActorRotation()); // 수류탄 생성
+		grenade->_owner = this;
+
+		FVector ThrowDirection = GetControlRotation().Vector();
+		grenade->throw_grenade(ThrowDirection);
+
 	}
 }

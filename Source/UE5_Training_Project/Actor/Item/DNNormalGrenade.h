@@ -30,7 +30,4 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
-
-public:
-	virtual void item_init() override;
 };

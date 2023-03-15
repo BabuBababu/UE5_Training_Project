@@ -80,10 +80,10 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//발사 소리
-		TObjectPtr<USoundBase> _missile_fire_soundcue;
+	TObjectPtr<USoundBase> _missile_fire_soundcue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//직격 소리
-		TObjectPtr<USoundBase> _bomb_soundcue;
+	TObjectPtr<USoundBase> _bomb_soundcue;
 
 
 

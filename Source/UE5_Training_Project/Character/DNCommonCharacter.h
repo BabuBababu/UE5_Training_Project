@@ -41,6 +41,7 @@ class UWidgetComponent;
 class UDNPlayerLineTrace;
 class UDNEnemyLineTrace;
 class UDNStatusComponent;
+class ADNCommonGrenade;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNCommonCharacter : public ACharacter
@@ -112,6 +113,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 	TObjectPtr<UCapsuleComponent> _knife_collision;
 
+	// 수류탄
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
+	TSubclassOf<ADNCommonGrenade> _grenade_class;
 
 	// 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -252,6 +256,9 @@ public:
 
 	UFUNCTION()
 	void ammo_hit_handler();
+
+	UFUNCTION()
+	void throw_grenade_handler();
 
 	UFUNCTION()
 	void overlap_knife_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,

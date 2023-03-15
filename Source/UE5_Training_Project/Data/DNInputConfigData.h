@@ -32,6 +32,9 @@ public:
     UInputAction* InputKnife;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* InputThrow;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UInputAction* InputReload;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

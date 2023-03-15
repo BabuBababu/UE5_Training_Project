@@ -42,8 +42,3 @@ void ADNNormalGrenade::Tick(float DeltaTime)
 
 }
 
-
-void ADNNormalGrenade::item_init()
-{
-	Super::item_init();
-}

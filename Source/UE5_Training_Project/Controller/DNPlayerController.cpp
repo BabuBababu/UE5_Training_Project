@@ -83,6 +83,7 @@ void ADNPlayerController::SetupInputComponent()
 	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Started, this, &ADNPlayerController::Fire);
 	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Completed, this, &ADNPlayerController::StopFire);
 	PEI->BindAction(InputActions->InputKnife, ETriggerEvent::Completed, this, &ADNPlayerController::Knife);
+	PEI->BindAction(InputActions->InputThrow, ETriggerEvent::Completed, this, &ADNPlayerController::Throw);
 	PEI->BindAction(InputActions->InputReload, ETriggerEvent::Completed, this, &ADNPlayerController::Reload);
 	PEI->BindAction(InputActions->InputAiming, ETriggerEvent::Triggered, this, &ADNPlayerController::Aiming);
 	PEI->BindAction(InputActions->InputAiming, ETriggerEvent::Completed, this, &ADNPlayerController::StopAiming);
