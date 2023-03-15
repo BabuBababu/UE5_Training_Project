@@ -123,7 +123,7 @@ void ADNUnEnemyCharacter::init_base()
 	_is_ordered = false;
 
 	_knife_weapon->SetVisibility(false);
-	_knife_collision->SetVisibility(false);
+	_knife_collision->SetGenerateOverlapEvents(false);
 }
 
 

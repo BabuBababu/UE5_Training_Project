@@ -317,7 +317,9 @@ void ADNCommonCharacter::fire()
 		{
 			OnCoverFire.Broadcast();
 			_target_change_current_ammo += 1;
-			UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
+
+			if (IsValid(_fire_soundcue))
+				UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
 
 			if (_character_type != E_CHARACTER_TYPE::CT_ENEMY)
 				_line_trace->OnFire(this);
@@ -331,7 +333,9 @@ void ADNCommonCharacter::fire()
 		{
 			OnFire.Broadcast();
 			_target_change_current_ammo += 1;
-			UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
+
+			if (IsValid(_fire_soundcue))
+				UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
 
 			if (_character_type != E_CHARACTER_TYPE::CT_ENEMY)
 				_line_trace->OnFire(this);
@@ -360,9 +364,13 @@ void ADNCommonCharacter::attack_knife()
 		return;
 
 	_knife_weapon->SetVisibility(true);
-	_knife_collision->SetVisibility(true);
+	_knife_collision->SetGenerateOverlapEvents(true);
 	_weapon_armed->SetVisibility(false);
 	OnKnife.Broadcast();
+
+	if (IsValid(_knife_soundcue))
+		UGameplayStatics::PlaySoundAtLocation(this, _knife_soundcue, GetActorLocation());
+
 }
 
 void ADNCommonCharacter::armed()
@@ -376,7 +384,6 @@ void ADNCommonCharacter::armed()
 		_weapon_armed->SetVisibility(true);
 		_weapon_un_armed->SetVisibility(false);
 		_is_armed_weapon = true;
-		_pre_upper_character_state = _character_state;
 		_character_state = E_CHARACTER_STATE::CS_ARM;
 
 	}
@@ -386,7 +393,7 @@ void ADNCommonCharacter::armed()
 		_weapon_armed->SetVisibility(false);
 		_weapon_un_armed->SetVisibility(true);
 		_is_armed_weapon = false;
-		_character_state = _pre_upper_character_state;
+		_character_state = E_CHARACTER_STATE::CS_IDLE;
 
 		//SOUND_MANAGER->set_combat_flag(false);		//반대로
 	}
@@ -505,7 +512,7 @@ void ADNCommonCharacter::return_to_armed_handler()
 		_is_crouch = false;
 
 	_knife_weapon->SetVisibility(false);
-	_knife_collision->SetVisibility(false);
+	_knife_collision->SetGenerateOverlapEvents(false);
 
 	if (_is_armed_weapon == false)
 	{
@@ -569,7 +576,7 @@ void ADNCommonCharacter::overlap_knife_handler(class UPrimitiveComponent* selfCo
 
 	if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 	{
-		// 일단은 근접대미지 50으로 고정합니다. 추후에 데이터 테이블로 대미지를 설정하겠습니다.
-		DNDamageOperation::melee_damage(50.f, character, this);
+		// 일단은 근접대미지 25로 고정합니다. 추후에 데이터 테이블로 대미지를 설정하겠습니다.
+		DNDamageOperation::melee_damage_from_knife(25.f, character, this);
 	}
 }

@@ -39,5 +39,5 @@ void ADNEnemyCharacter::init_base()
 	_character_type = E_CHARACTER_TYPE::CT_ENEMY;
 	_enemy_type = E_ENEMY_TYPE::ET_NONE;
 	_knife_weapon->SetVisibility(false);
-	_knife_collision->SetVisibility(false);
+	_knife_collision->SetGenerateOverlapEvents(false);
 }

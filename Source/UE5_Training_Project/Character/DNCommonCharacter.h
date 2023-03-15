@@ -142,6 +142,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//사격 소리
 	TObjectPtr<USoundBase> _fire_soundcue;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//나이프 소리
+	TObjectPtr<USoundBase> _knife_soundcue;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//장전 소리
 	TObjectPtr<USoundBase> _reload_soundcue;
 
