@@ -38,7 +38,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	void item_init();
+	virtual void item_init();
 
 public:
 	//데이터

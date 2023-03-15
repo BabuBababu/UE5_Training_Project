@@ -99,6 +99,12 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			on_reload_montage_ended();
 	}
 
+
+	// 적군은 여기서 더 이상 계산 X
+	if (_owner->_character_type == E_CHARACTER_TYPE::CT_ENEMY)
+		return;
+
+
 	// 나이프 재생 체크
 	if (true == _playing_knife_montage)
 	{
@@ -106,11 +112,13 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			on_knife_montage_ended();
 	}
 
+	// 수류탄 재생 체크
+	if (true == _playing_throw_montage)
+	{
+		if (false == Montage_IsPlaying(throw_montage))
+			on_throw_montage_ended();
+	}
 
-
-	// 적군은 여기서 더 이상 계산 X
-	if (_owner->_character_type == E_CHARACTER_TYPE::CT_ENEMY)
-		return;
 
 
 
@@ -174,6 +182,7 @@ void UDNCharacterAnimInstance::add_event()
 	_owner->OnReload.AddDynamic(this, &UDNCharacterAnimInstance::play_reload_montage);
 	_owner->OnWallJump.AddDynamic(this, &UDNCharacterAnimInstance::play_wall_jump_montage);
 	_owner->OnKnife.AddDynamic(this, &UDNCharacterAnimInstance::play_knife_montage);
+	_owner->OnThrow.AddDynamic(this, &UDNCharacterAnimInstance::play_throw_montage);
 
 }
 
@@ -296,6 +305,18 @@ void UDNCharacterAnimInstance::play_knife_montage()
 	}
 }
 
+void UDNCharacterAnimInstance::play_throw_montage()
+{
+	if (nullptr != throw_montage)
+	{
+		if (false == Montage_IsPlaying(throw_montage))
+		{
+			Montage_Play(throw_montage);
+			_playing_throw_montage = true;
+		}
+	}
+}
+
 
 void UDNCharacterAnimInstance::on_die_montage_ended()
 {
@@ -314,4 +335,10 @@ void UDNCharacterAnimInstance::on_knife_montage_ended()
 {
 	_playing_knife_montage = false;
 	OnKnifeEnd.Broadcast();
+}
+
+void UDNCharacterAnimInstance::on_throw_montage_ended()
+{
+	_playing_throw_montage = false;
+	OnThrowEnd.Broadcast();
 }

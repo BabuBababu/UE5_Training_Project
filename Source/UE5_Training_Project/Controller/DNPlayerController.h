@@ -51,6 +51,7 @@ public:
 	void Cover(const FInputActionValue& Value);
 	void Aiming(const FInputActionValue& Value);
 	void Knife(const FInputActionValue& Value);
+	void Throw(const FInputActionValue& Value);
 	void StopAiming(const FInputActionValue& Value);
 	void Interaction(const FInputActionValue& Value);
 	void CameraRotate(const FInputActionValue& Value);

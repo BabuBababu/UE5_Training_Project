@@ -373,6 +373,15 @@ void ADNCommonCharacter::attack_knife()
 
 }
 
+void ADNCommonCharacter::throw_grenade()
+{
+	if (_is_fire || _is_sprint || _is_wall_jump)		//사격,조준, 스프린트, 벽넘기중일땐 조작 불가능
+		return;
+	
+	// 수류탄 액터 스폰
+
+}
+
 void ADNCommonCharacter::armed()
 {
 	if (_cover_now)					//커버 상태에서는 조작 불가능

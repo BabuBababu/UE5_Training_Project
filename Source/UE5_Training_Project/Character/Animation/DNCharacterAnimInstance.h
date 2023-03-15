@@ -43,6 +43,7 @@ public:
 	FOnMontageEndDelegate OnDieEnd;
 	FOnMontageEndDelegate OnReloadEnd;
 	FOnMontageEndDelegate OnKnifeEnd;
+	FOnMontageEndDelegate OnThrowEnd;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -53,6 +54,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void on_knife_montage_ended();
+
+	UFUNCTION(BlueprintCallable)
+	void on_throw_montage_ended();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -74,7 +78,11 @@ public:
 	void play_knife_montage();
 
 	UFUNCTION(BlueprintCallable)
+	void play_throw_montage();
+
+	UFUNCTION(BlueprintCallable)
 	void unlock_cover_animation();
+
 
 
 	// 밑의 2개는 아직 사용 X
@@ -152,6 +160,9 @@ public:
 	TObjectPtr<UAnimMontage> knife_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> throw_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAnimMontage> wall_jump_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -178,6 +189,7 @@ private:
 	bool	_playing_cover_turn_montage;
 	bool	_playing_wall_jump_montage;
 	bool	_playing_knife_montage;
+	bool	_playing_throw_montage;
 
 	ADNCommonCharacter* _owner = nullptr;
 

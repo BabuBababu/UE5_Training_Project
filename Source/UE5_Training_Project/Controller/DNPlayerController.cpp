@@ -223,6 +223,18 @@ void ADNPlayerController::Knife(const FInputActionValue& Value)
 	UE_LOG(LogTemp, Warning, TEXT("Knife"));
 }
 
+void ADNPlayerController::Throw(const FInputActionValue& Value)
+{
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
+	character->throw_grenade();
+
+	UE_LOG(LogTemp, Warning, TEXT("Throw"));
+}
+
 void ADNPlayerController::StopFire(const FInputActionValue& Value)
 {
 	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());

@@ -329,6 +329,7 @@ enum class E_ITEM_TYPE : uint8
 {
 	IT_NONE = 0				UMETA(DisplayName = "None"),		//비어있음
 	IT_AMMO					UMETA(DisplayName = "Ammo"),		//총알
+	IT_GRENADE				UMETA(DisplayName = "Grenade"),		//수류탄
 	IT_HELMET				UMETA(DisplayName = "Helmet"),		//헬멧
 	IT_ARMOR				UMETA(DisplayName = "Armor"),		//갑옷
 	IT_GLOVE				UMETA(DisplayName = "Glove"),		//장갑

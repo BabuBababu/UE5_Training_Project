@@ -26,6 +26,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnIteractionFinishDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAIAmmoDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWallJumpDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnKnifeDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnThrowDelegate);
+
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStartAIAmmoDelegate,int64,ammo_count);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnIteractionFinishItemDelegate,ADNCommonItem*, item );
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadDelegate, ADNCommonCharacter*, character);
@@ -75,6 +78,7 @@ public:
 	virtual void interaction();		//여기에 상호작용 전부 포함됨 해당 관련 컴포넌트 만들어서 알맞게 체크
 	virtual void cover();
 	virtual void attack_knife();
+	virtual void throw_grenade();
 
 public:
 	E_CHARACTER_TYPE get_character_type() const { return _character_type; };
@@ -231,6 +235,7 @@ public:
 	FOnStartAIAmmoDelegate OnAtStartAmmo;
 	FOnDeadDelegate OnTargetDead;
 	FOnKnifeDelegate OnKnife;
+	FOnThrowDelegate OnThrow;
 
 	FOnDamageIndicator OnDamageIndicator;
 	FOnDamaged OnDamaged;
