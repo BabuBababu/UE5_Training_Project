@@ -122,6 +122,8 @@ void ADNUnEnemyCharacter::init_base()
 	_is_in_squad = true;		//원래는 false로 하고 ui에서 스쿼드 배치가 되면 true바꿔줘야함! 일단은 테스트를 위해 true로!
 	_is_ordered = false;
 
+	_knife_weapon->SetVisibility(false);
+	_knife_collision->SetVisibility(false);
 }
 
 

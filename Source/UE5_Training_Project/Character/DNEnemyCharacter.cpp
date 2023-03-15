@@ -3,8 +3,12 @@
 
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 
+// Engine
+#include <Components/CapsuleComponent.h>
+
 // Controller
 #include "UE5_Training_Project/Controller/DNAIController.h"
+
 
 
 ADNEnemyCharacter::ADNEnemyCharacter()
@@ -34,4 +38,6 @@ void ADNEnemyCharacter::init_base()
 {
 	_character_type = E_CHARACTER_TYPE::CT_ENEMY;
 	_enemy_type = E_ENEMY_TYPE::ET_NONE;
+	_knife_weapon->SetVisibility(false);
+	_knife_collision->SetVisibility(false);
 }

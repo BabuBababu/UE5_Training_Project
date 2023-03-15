@@ -360,6 +360,7 @@ void ADNCommonCharacter::attack_knife()
 		return;
 
 	_knife_weapon->SetVisibility(true);
+	_knife_collision->SetVisibility(true);
 	_weapon_armed->SetVisibility(false);
 	OnKnife.Broadcast();
 }
@@ -504,6 +505,7 @@ void ADNCommonCharacter::return_to_armed_handler()
 		_is_crouch = false;
 
 	_knife_weapon->SetVisibility(false);
+	_knife_collision->SetVisibility(false);
 
 	if (_is_armed_weapon == false)
 	{
@@ -561,10 +563,8 @@ void ADNCommonCharacter::overlap_knife_handler(class UPrimitiveComponent* selfCo
 
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(otherActor);
 
-	if (nullptr == character)
-	{
+	if(nullptr == character)
 		return;
-	}
 
 
 	if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)

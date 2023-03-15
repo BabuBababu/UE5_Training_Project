@@ -312,6 +312,6 @@ void UDNCharacterAnimInstance::on_reload_montage_ended()
 
 void UDNCharacterAnimInstance::on_knife_montage_ended()
 {
-	_playing_reload_montage = false;
+	_playing_knife_montage = false;
 	OnKnifeEnd.Broadcast();
 }
