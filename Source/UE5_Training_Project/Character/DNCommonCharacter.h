@@ -24,6 +24,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamaged,int64, squad_index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputStartDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnIteractionFinishDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAIAmmoDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWallJumpDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStartAIAmmoDelegate,int64,ammo_count);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnIteractionFinishItemDelegate,ADNCommonItem*, item );
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadDelegate, ADNCommonCharacter*, character);
@@ -208,6 +209,7 @@ public:
 	FOnInputStartDelegate StopFire;
 	FOnInputStartDelegate OnCoverFire;
 	FOnInputStartDelegate OnReload;
+	FOnWallJumpDelegate OnWallJump;
 	FOnIteractionFinishItemDelegate OnItemPickup;
 	FOnIteractionFinishDelegate OnVehicleRiding;
 	FOnIteractionFinishDelegate OnNPCTalk;

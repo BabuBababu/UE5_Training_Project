@@ -17,6 +17,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnArmDelegate, bool, armed);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCrouchDelegate, bool, crouch);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSprintDelegate, bool, sprint);
 
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnOrderMoveDelegate, FVector, destination, ADNUnEnemyCharacter*, doll);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnOrderAttackDelegate, ADNEnemyCharacter*, enemy, ADNUnEnemyCharacter*, doll);
 
@@ -43,6 +44,7 @@ public:
 	void sprint() override;
 	void stop_sprint() override;
 	void cover() override;
+	void wall_jump();
 
 public:
 	void start_fire();

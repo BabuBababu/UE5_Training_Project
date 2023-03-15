@@ -47,7 +47,7 @@ public:
     UInputAction* InputArmed;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-       UInputAction* InputCover;
+    UInputAction* InputCover;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UInputAction* InputInterRaction;

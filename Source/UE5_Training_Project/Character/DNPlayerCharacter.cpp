@@ -110,6 +110,10 @@ void ADNPlayerCharacter::fire()
 
 }
 
+void ADNPlayerCharacter::wall_jump()
+{
+	OnWallJump.Broadcast();
+}
 
 void ADNPlayerCharacter::armed()
 {

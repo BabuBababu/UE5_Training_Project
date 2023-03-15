@@ -177,10 +177,15 @@ void ADNPlayerController::Look(const FInputActionValue& Value)
 
 void ADNPlayerController::Jump(const FInputActionValue& Value)
 {
-	if (nullptr == GetCharacter())
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
+
+	if (character == nullptr)
 		return;
 
-	GetCharacter()->Jump();
+	if (character->_is_near_wall)
+		character->wall_jump();
+	else
+		character->Jump();
 	UE_LOG(LogTemp, Warning, TEXT("Jump"));
 }
 

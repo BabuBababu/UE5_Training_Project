@@ -58,6 +58,9 @@ public:
 	void play_reload_montage();
 
 	UFUNCTION(BlueprintCallable)
+	void play_wall_jump_montage();
+
+	UFUNCTION(BlueprintCallable)
 	void play_fire_montage();
 
 	UFUNCTION(BlueprintCallable)
@@ -65,6 +68,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void unlock_cover_animation();
+
 
 	// 밑의 2개는 아직 사용 X
 	UFUNCTION(BlueprintCallable)
@@ -139,6 +143,9 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> wall_jump_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAnimMontage> cover_fire_left_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -160,6 +167,7 @@ private:
 	bool	_playing_cover_fire_montage;
 	bool	_cover_fire_lock;
 	bool	_playing_cover_turn_montage;
+	bool	_playing_wall_jump_montage;
 
 	ADNCommonCharacter* _owner = nullptr;
 

@@ -125,6 +125,21 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		}
 	}
 
+	if (true == _playing_wall_jump_montage)											// 벽 점프
+	{
+		_owner->GetMovementComponent()->Deactivate();						//무브먼트 중지
+		_owner->bUseControllerRotationYaw = false;							//카메라 회전에 따른 캐릭터 회전 중지
+
+		FVector result_location = _owner->_character_skeletal_mesh->GetSocketLocation("Hips");
+		if (false == Montage_IsPlaying(wall_jump_montage)) 					//애니메이션 종료시
+		{
+
+			_owner->SetActorLocation(result_location);
+			_owner->GetMovementComponent()->Activate();						// 무브먼트 재시작
+			_owner->bUseControllerRotationYaw = true;						// 다시 카메라 회전에 따른 캐릭터 회전 허용
+			_playing_wall_jump_montage = false;
+		}
+	}
 
 
 
@@ -150,6 +165,7 @@ void UDNCharacterAnimInstance::add_event()
 	_owner->StopFire.AddDynamic(this, &UDNCharacterAnimInstance::unlock_cover_animation);
 	_owner->OnCoverFire.AddDynamic(this, &UDNCharacterAnimInstance::play_cover_fire_montage);
 	_owner->OnReload.AddDynamic(this, &UDNCharacterAnimInstance::play_reload_montage);
+	_owner->OnWallJump.AddDynamic(this, &UDNCharacterAnimInstance::play_wall_jump_montage);
 
 }
 
@@ -234,7 +250,7 @@ void UDNCharacterAnimInstance::play_cover_fire_montage()
 
 void UDNCharacterAnimInstance::play_cover_turn_left_montage()
 {
-	if (false == cover_turn_left_montage)
+	if (nullptr != cover_turn_left_montage)
 	{
 		Montage_Play(cover_turn_left_montage);
 		_playing_cover_turn_montage = true;
@@ -243,13 +259,24 @@ void UDNCharacterAnimInstance::play_cover_turn_left_montage()
 
 void UDNCharacterAnimInstance::play_cover_turn_right_montage()
 {
-	if (false == cover_turn_right_montage)
+	if (nullptr != cover_turn_right_montage)
 	{
 		Montage_Play(cover_turn_right_montage);
 		_playing_cover_turn_montage = true;
 	}
 }
 
+void UDNCharacterAnimInstance::play_wall_jump_montage()
+{
+	if (nullptr != wall_jump_montage)
+	{
+		if (false == Montage_IsPlaying(wall_jump_montage))
+		{
+			Montage_Play(wall_jump_montage);
+			_playing_wall_jump_montage = true;
+		}
+	}
+}
 
 void UDNCharacterAnimInstance::on_die_montage_ended()
 {
