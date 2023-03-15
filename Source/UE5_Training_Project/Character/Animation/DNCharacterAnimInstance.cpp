@@ -99,6 +99,12 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			on_reload_montage_ended();
 	}
 
+	// 나이프 재생 체크
+	if (true == _playing_knife_montage)
+	{
+		if (false == Montage_IsPlaying(knife_montage))
+			on_knife_montage_ended();
+	}
 
 
 
@@ -137,6 +143,7 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			_owner->SetActorLocation(result_location);
 			_owner->GetMovementComponent()->Activate();						// 무브먼트 재시작
 			_owner->bUseControllerRotationYaw = true;						// 다시 카메라 회전에 따른 캐릭터 회전 허용
+			_owner->_is_wall_jump = false;
 			_playing_wall_jump_montage = false;
 		}
 	}
@@ -166,6 +173,7 @@ void UDNCharacterAnimInstance::add_event()
 	_owner->OnCoverFire.AddDynamic(this, &UDNCharacterAnimInstance::play_cover_fire_montage);
 	_owner->OnReload.AddDynamic(this, &UDNCharacterAnimInstance::play_reload_montage);
 	_owner->OnWallJump.AddDynamic(this, &UDNCharacterAnimInstance::play_wall_jump_montage);
+	_owner->OnKnife.AddDynamic(this, &UDNCharacterAnimInstance::play_knife_montage);
 
 }
 
@@ -225,8 +233,6 @@ void UDNCharacterAnimInstance::play_cover_fire_montage()
 			if (controller->get_camera_shake() != nullptr)
 				controller->ClientStartCameraShake(controller->get_camera_shake());
 
-			
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Cover Fire"));
 
 			return;
 		}
@@ -270,13 +276,26 @@ void UDNCharacterAnimInstance::play_wall_jump_montage()
 {
 	if (nullptr != wall_jump_montage)
 	{
-		if (false == Montage_IsPlaying(wall_jump_montage))
+		if (false == Montage_IsPlaying(wall_jump_montage) && false == _bIsInAir)
 		{
 			Montage_Play(wall_jump_montage);
 			_playing_wall_jump_montage = true;
 		}
 	}
 }
+
+void UDNCharacterAnimInstance::play_knife_montage()
+{
+	if (nullptr != knife_montage)
+	{
+		if (false == Montage_IsPlaying(knife_montage))
+		{
+			Montage_Play(knife_montage);
+			_playing_knife_montage = true;
+		}
+	}
+}
+
 
 void UDNCharacterAnimInstance::on_die_montage_ended()
 {
@@ -288,4 +307,11 @@ void UDNCharacterAnimInstance::on_reload_montage_ended()
 {
 	_playing_reload_montage = false;
 	OnReloadEnd.Broadcast();
+}
+
+
+void UDNCharacterAnimInstance::on_knife_montage_ended()
+{
+	_playing_reload_montage = false;
+	OnKnifeEnd.Broadcast();
 }

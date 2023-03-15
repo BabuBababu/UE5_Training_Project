@@ -241,10 +241,14 @@ public:
 		SOUND_MANAGER->start_combat_sound();
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Griffin Damage to Enemy : %f"), damage_in));
 
-		// 플레이어가 대미지를 받았다면 피격UI 표시
-		if (damaged_character_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+		
+		if (damaged_character_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)				// 플레이어가 대미지를 받았다면 피격UI 표시
 		{
 			DNDamageOperation::ShowBloodUI();
+		}
+		else if (damaged_character_in->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)			// 적이 대미지를 받았다면 대미지만 표시
+		{
+			DNDamageOperation::ShowIndicatorUI(damage_in, damaged_character_in, E_DAMAGE_TYPE::DT_CRITICAL);
 		}
 
 		if (after_hp <= 0)

@@ -42,6 +42,7 @@ public:
 public:
 	FOnMontageEndDelegate OnDieEnd;
 	FOnMontageEndDelegate OnReloadEnd;
+	FOnMontageEndDelegate OnKnifeEnd;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -49,6 +50,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void on_reload_montage_ended();
+
+	UFUNCTION(BlueprintCallable)
+	void on_knife_montage_ended();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -65,6 +69,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void play_cover_fire_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_knife_montage();
 
 	UFUNCTION(BlueprintCallable)
 	void unlock_cover_animation();
@@ -141,6 +148,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAnimMontage> fire_montage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> knife_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAnimMontage> wall_jump_montage;
@@ -168,6 +177,7 @@ private:
 	bool	_cover_fire_lock;
 	bool	_playing_cover_turn_montage;
 	bool	_playing_wall_jump_montage;
+	bool	_playing_knife_montage;
 
 	ADNCommonCharacter* _owner = nullptr;
 

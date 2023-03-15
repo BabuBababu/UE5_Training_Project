@@ -112,6 +112,7 @@ void ADNPlayerCharacter::fire()
 
 void ADNPlayerCharacter::wall_jump()
 {
+	_is_wall_jump = true;
 	OnWallJump.Broadcast();
 }
 

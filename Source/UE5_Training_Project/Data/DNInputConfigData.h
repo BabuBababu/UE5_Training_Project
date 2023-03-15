@@ -29,6 +29,9 @@ public:
     UInputAction* InputFire;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* InputKnife;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UInputAction* InputReload;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
@@ -85,8 +88,9 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UInputAction* IA_Q;
 
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    UInputAction* IA_F;
+    UInputAction* IA_E;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UInputAction* IA_G;

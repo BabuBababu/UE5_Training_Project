@@ -25,6 +25,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputStartDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnIteractionFinishDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAIAmmoDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWallJumpDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnKnifeDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStartAIAmmoDelegate,int64,ammo_count);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnIteractionFinishItemDelegate,ADNCommonItem*, item );
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadDelegate, ADNCommonCharacter*, character);
@@ -32,6 +33,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadDelegate, ADNCommonCharacter*
 
 class USpringArmComponent;
 class UCameraComponent;
+class UCapsuleComponent;
 class UWidgetComponent;
 class UDNPlayerLineTrace;
 class UDNEnemyLineTrace;
@@ -72,6 +74,7 @@ public:
 	virtual void stop_sprint();
 	virtual void interaction();		//여기에 상호작용 전부 포함됨 해당 관련 컴포넌트 만들어서 알맞게 체크
 	virtual void cover();
+	virtual void attack_knife();
 
 public:
 	E_CHARACTER_TYPE get_character_type() const { return _character_type; };
@@ -99,6 +102,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 	TObjectPtr<UStaticMeshComponent> _weapon_un_armed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	TObjectPtr<UStaticMeshComponent> _knife_weapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	TObjectPtr<UCapsuleComponent> _knife_collision;
 
 
 	// 카메라
@@ -195,6 +203,8 @@ public:
 	E_CHARACTER_STATE _pre_upper_character_state = E_CHARACTER_STATE::CS_NONE;
 	bool _is_attacking;
 	bool _cover_now = false;
+	bool _is_wall_jump = false;
+	bool _is_knife_overlap = false;
 
 	FVector  _my_spawn_location = FVector(0.f, 0.f, 0.f);
 	int64 _target_change_limit_ammo = 10;				// 병과마다 다르게 가야할듯?
@@ -217,6 +227,7 @@ public:
 	FOnAIAmmoDelegate OnStopShotAmmo;
 	FOnStartAIAmmoDelegate OnAtStartAmmo;
 	FOnDeadDelegate OnTargetDead;
+	FOnKnifeDelegate OnKnife;
 
 	FOnDamageIndicator OnDamageIndicator;
 	FOnDamaged OnDamaged;
@@ -233,5 +244,9 @@ public:
 
 	UFUNCTION()
 	void ammo_hit_handler();
+
+	UFUNCTION()
+	void overlap_knife_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 };

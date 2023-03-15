@@ -76,13 +76,16 @@ ADNCommonCharacter::ADNCommonCharacter()
 	_weapon_armed = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponArmed"));
 	_weapon_un_armed = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponUnArmed"));
 	_character_skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BodySkeletalMesh"));
-
+	_knife_weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KnifeWeapon"));
+	_knife_collision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("KnifeCollision"));
+	_knife_collision->SetupAttachment(_knife_weapon);
 
 	_character_skeletal_mesh->SetupAttachment(RootComponent);
 
 	_back_pack->SetupAttachment(_character_skeletal_mesh, TEXT("back_pack"));
 	_weapon_armed->SetupAttachment(_character_skeletal_mesh, TEXT("weapon_r"));
 	_weapon_un_armed->SetupAttachment(_character_skeletal_mesh, TEXT("weapon_unarmed"));
+	_knife_weapon->SetupAttachment(_character_skeletal_mesh, TEXT("knife_weapon_r"));
 
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
@@ -179,9 +182,12 @@ void ADNCommonCharacter::add_event()
 		return;
 
 	anim_instance->OnDieEnd.AddDynamic(this, &ADNCommonCharacter::destroy_object_handler);
-
 	anim_instance->OnReloadEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
+	anim_instance->OnKnifeEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
 	OnTargetDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
+
+	if (IsValid(_knife_collision))
+		_knife_collision->OnComponentBeginOverlap.AddDynamic(this, &ADNCommonCharacter::overlap_knife_handler);
 
 	if (_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
 	{
@@ -348,6 +354,15 @@ void ADNCommonCharacter::stop_fire()
 	StopFire.Broadcast();
 }
 
+void ADNCommonCharacter::attack_knife()
+{
+	if (_is_fire || _is_sprint || _is_wall_jump)		//사격,조준, 스프린트, 벽넘기중일땐 조작 불가능
+		return;
+
+	_knife_weapon->SetVisibility(true);
+	_weapon_armed->SetVisibility(false);
+	OnKnife.Broadcast();
+}
 
 void ADNCommonCharacter::armed()
 {
@@ -488,6 +503,8 @@ void ADNCommonCharacter::return_to_armed_handler()
 	if(_character_type != E_CHARACTER_TYPE::CT_PLAYER)	//플레이어는 제외
 		_is_crouch = false;
 
+	_knife_weapon->SetVisibility(false);
+
 	if (_is_armed_weapon == false)
 	{
 
@@ -535,4 +552,24 @@ void ADNCommonCharacter::reset_fire_state_handler(ADNCommonCharacter* chracter_i
 void ADNCommonCharacter::ammo_hit_handler()
 {
 	_target_change_current_ammo = 0;
+}
+
+
+void ADNCommonCharacter::overlap_knife_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(otherActor);
+
+	if (nullptr == character)
+	{
+		return;
+	}
+
+
+	if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+	{
+		// 일단은 근접대미지 50으로 고정합니다. 추후에 데이터 테이블로 대미지를 설정하겠습니다.
+		DNDamageOperation::melee_damage(50.f, character, this);
+	}
 }

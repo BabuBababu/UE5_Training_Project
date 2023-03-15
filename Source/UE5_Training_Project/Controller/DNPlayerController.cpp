@@ -82,6 +82,7 @@ void ADNPlayerController::SetupInputComponent()
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Completed, this, &ADNPlayerController::StopJumping);
 	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Started, this, &ADNPlayerController::Fire);
 	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Completed, this, &ADNPlayerController::StopFire);
+	PEI->BindAction(InputActions->InputKnife, ETriggerEvent::Completed, this, &ADNPlayerController::Knife);
 	PEI->BindAction(InputActions->InputReload, ETriggerEvent::Completed, this, &ADNPlayerController::Reload);
 	PEI->BindAction(InputActions->InputAiming, ETriggerEvent::Triggered, this, &ADNPlayerController::Aiming);
 	PEI->BindAction(InputActions->InputAiming, ETriggerEvent::Completed, this, &ADNPlayerController::StopAiming);
@@ -210,6 +211,17 @@ void ADNPlayerController::Fire(const FInputActionValue& Value)
 	UE_LOG(LogTemp, Warning, TEXT("Fire"));
 }
 
+void ADNPlayerController::Knife(const FInputActionValue& Value)
+{
+	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
+
+	if (character == nullptr)
+		return;
+
+	character->attack_knife();
+
+	UE_LOG(LogTemp, Warning, TEXT("Knife"));
+}
 
 void ADNPlayerController::StopFire(const FInputActionValue& Value)
 {
