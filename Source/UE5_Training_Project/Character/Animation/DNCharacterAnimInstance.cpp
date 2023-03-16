@@ -49,7 +49,10 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (nullptr == _owner)
 		return;
 
-	_character_state = _owner->_character_state ;
+	
+
+
+	_character_state = _owner->_character_state;
 	_aiming = _owner->_is_aiming;
 	_near_wall = _owner->_is_near_wall;
 	_sprinting = _owner->_is_sprint;
@@ -57,8 +60,6 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	_firing = _owner->_is_fire;
 	_cover_now = _owner->_cover_now;
 	_climbing = _owner->GetMovementComponent()->IsFlying();
-
-
 
 
 	// 조준할 때 상체 위아래 블렌딩
@@ -100,9 +101,11 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 
 
+
 	// 적군은 여기서 더 이상 계산 X
 	if (_owner->_character_type == E_CHARACTER_TYPE::CT_ENEMY)
 		return;
+
 
 
 	// 나이프 재생 체크
@@ -118,9 +121,6 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		if (false == Montage_IsPlaying(throw_montage))
 			on_throw_montage_ended();
 	}
-
-
-
 
 
 

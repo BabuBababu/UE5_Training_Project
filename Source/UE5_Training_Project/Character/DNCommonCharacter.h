@@ -258,6 +258,9 @@ public:
 	void ammo_hit_handler();
 
 	UFUNCTION()
+	void return_from_knife_handler();
+
+	UFUNCTION()
 	void throw_grenade_handler();
 
 	UFUNCTION()

@@ -35,6 +35,8 @@ void ADNPlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	_line_trace->OnInteraction(this);
 
+
+	
 }
 
 

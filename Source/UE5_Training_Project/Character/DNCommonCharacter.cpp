@@ -152,6 +152,9 @@ void ADNCommonCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+	
+
 }
 
 void ADNCommonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -186,7 +189,7 @@ void ADNCommonCharacter::add_event()
 
 	anim_instance->OnDieEnd.AddDynamic(this, &ADNCommonCharacter::destroy_object_handler);
 	anim_instance->OnReloadEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
-	anim_instance->OnKnifeEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
+	anim_instance->OnKnifeEnd.AddDynamic(this, &ADNCommonCharacter::return_from_knife_handler);
 	anim_instance->OnThrowEnd.AddDynamic(this, &ADNCommonCharacter::throw_grenade_handler);
 	OnTargetDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
 
@@ -382,6 +385,7 @@ void ADNCommonCharacter::throw_grenade()
 	if (_is_fire || _is_sprint || _is_wall_jump)		//사격,조준, 스프린트, 벽넘기중일땐 조작 불가능
 		return;
 	
+	_weapon_armed->SetVisibility(false);
 	OnThrow.Broadcast();
 }
 
@@ -467,11 +471,13 @@ void ADNCommonCharacter::cover()
 	if (false == _cover_now)
 	{
 		_character_state = E_CHARACTER_STATE::CS_COVER;
+		_pre_upper_character_state = _character_state;
 		_cover_now = true;
 	}
 	else
 	{
 		_character_state = E_CHARACTER_STATE::CS_ARM;
+		_pre_upper_character_state = _character_state;
 		_cover_now = false;
 	}
 }
@@ -515,6 +521,20 @@ void ADNCommonCharacter::destroy_object_handler()
 
 }
 
+
+void ADNCommonCharacter::return_from_knife_handler()
+{
+	if(_cover_now)
+		_character_state = E_CHARACTER_STATE::CS_COVER;
+	else
+		_character_state = E_CHARACTER_STATE::CS_ARM;
+
+	_weapon_armed->SetVisibility(true);
+	_weapon_un_armed->SetVisibility(false);
+	_knife_weapon->SetVisibility(false);
+	_knife_collision->SetGenerateOverlapEvents(false);
+}
+
 void ADNCommonCharacter::return_to_armed_handler()
 {
 	_is_reloading = false;
@@ -523,8 +543,6 @@ void ADNCommonCharacter::return_to_armed_handler()
 	if(_character_type != E_CHARACTER_TYPE::CT_PLAYER)	//플레이어는 제외
 		_is_crouch = false;
 
-	_knife_weapon->SetVisibility(false);
-	_knife_collision->SetGenerateOverlapEvents(false);
 
 	if (_is_armed_weapon == false)
 	{
@@ -543,7 +561,9 @@ void ADNCommonCharacter::return_to_armed_handler()
 		_weapon_armed->SetVisibility(true);
 		_weapon_un_armed->SetVisibility(false);
 		_is_armed_weapon = true;
-		_pre_upper_character_state = _character_state;/*
+		_pre_upper_character_state = _character_state;
+
+		/*
 		if(false == _cover_now)
 			_character_state = E_CHARACTER_STATE::CS_ARM;
 		else
@@ -598,12 +618,31 @@ void ADNCommonCharacter::throw_grenade_handler()
 	// 수류탄 액터 스폰
 	if (nullptr != _grenade_class)
 	{
+		// 수류탄을 던질 손의 위치를 가져옴
 		FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("Right Wrist"));
-		ADNCommonGrenade* grenade = GetWorld()->SpawnActor<ADNCommonGrenade>(_grenade_class, socket_location, GetActorRotation()); // 수류탄 생성
+		FRotator socket_rotation = _character_skeletal_mesh->GetSocketRotation(FName("Right Wrist"));
+
+		//// 수류탄 생성
+		ADNCommonGrenade* grenade = GetWorld()->SpawnActor<ADNCommonGrenade>(_grenade_class, socket_location, GetActorRotation());
 		grenade->_owner = this;
 
-		FVector ThrowDirection = GetControlRotation().Vector();
-		grenade->throw_grenade(ThrowDirection);
 
+		FVector forward_vector = _follow_camera->GetForwardVector();
+		FRotator character_rotation = GetActorRotation();
+		FVector sival_vector = character_rotation.Vector();
+		FVector destination_vector =  forward_vector * 1000.f;
+
+		DrawDebugLine(GetWorld(), socket_location, destination_vector, FColor::Cyan, false, 1, 0, 5.f);
+
+		
+			
+		// 계산한 방향 벡터로 수류탄을 던짐
+		grenade->throw_grenade(destination_vector);
+
+
+
+		return_to_armed_handler();
 	}
+
+
 }

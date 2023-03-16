@@ -67,11 +67,7 @@ void ADNCommonGrenade::Tick(float DeltaTime)
 
 void ADNCommonGrenade::init()
 {
-	/*RootComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Root"));
-
-	_actor_static_mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	_box_collision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
-	*/
+	
 
 	_projectile_movement_component = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Movement"));
 	
@@ -83,6 +79,8 @@ void ADNCommonGrenade::init()
 	RootComponent = _actor_static_mesh;
 	_box_collision->SetupAttachment(_actor_static_mesh);
 
+	
+
 	if (IsValid(_projectile_movement_component))
 	{
 		_projectile_movement_component->InitialSpeed = 10.f;
@@ -91,6 +89,7 @@ void ADNCommonGrenade::init()
 		_projectile_movement_component->Bounciness = 0.5f;
 		_projectile_movement_component->Friction = 0.2f;
 		_projectile_movement_component->ProjectileGravityScale = 1.0f;
+		_projectile_movement_component->bRotationFollowsVelocity = true;
 
 		_projectile_movement_component->SetUpdatedComponent(RootComponent);
 	}
@@ -108,8 +107,11 @@ void ADNCommonGrenade::init()
 void ADNCommonGrenade::throw_grenade(FVector direction_in)
 {
 	_is_fire = true;
-	if(IsValid(_projectile_movement_component))
-		_projectile_movement_component->SetVelocityInLocalSpace(direction_in * throw_force);
+	if (IsValid(_projectile_movement_component))
+	{
+		_projectile_movement_component->Velocity = direction_in;
+	}
+		
 }
 
 void ADNCommonGrenade::bomb_grenade()
