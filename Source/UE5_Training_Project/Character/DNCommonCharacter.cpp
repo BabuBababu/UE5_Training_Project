@@ -632,9 +632,6 @@ void ADNCommonCharacter::throw_grenade_handler()
 		FVector sival_vector = character_rotation.Vector();
 		FVector destination_vector =  forward_vector * 1000.f;
 
-		DrawDebugLine(GetWorld(), socket_location, destination_vector, FColor::Cyan, false, 1, 0, 5.f);
-
-		
 			
 		// 계산한 방향 벡터로 수류탄을 던짐
 		grenade->throw_grenade(destination_vector);
