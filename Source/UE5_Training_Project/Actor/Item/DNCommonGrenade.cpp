@@ -125,7 +125,7 @@ void ADNCommonGrenade::bomb_grenade()
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 0.f));
 
 	// 대미지
-	DNDamageOperation::radial_damage_to_enemy(GetWorld(), 200.f, GetActorLocation(), 1000.f, _owner);
+	DNDamageOperation::radial_damage_to_enemy(GetWorld(), 200.f, GetActorLocation(), 500.f, _owner);
 
 	_ready_destroy = true;
 }
