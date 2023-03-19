@@ -31,15 +31,15 @@ void ADNCommonDefenceLevel::BeginPlay()
 
 	for (auto& point : target_point_array)
 	{
-		if (point->GetName() == "TargetPoint_1")
+		if (point->GetActorLabel() == "TargetPoint")
 		{
 			target_point_1_location = point->GetActorLocation();
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("TargetPoint1 Vector :%s"), *point->GetActorLocation().ToString()));
 
 		}
-		else if (point->GetName() == "TargetPoint_2")
+		else if (point->GetActorLabel() == "TargetPoint2")
 			target_point_2_location = point->GetActorLocation();
-		else if (point->GetName() == "TargetPoint_3")
+		else if (point->GetActorLabel() == "TargetPoint3")
 			target_point_3_location = point->GetActorLocation();
 	}
 
