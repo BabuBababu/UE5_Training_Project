@@ -193,4 +193,23 @@ private:
 
 	ADNCommonCharacter* _owner = nullptr;
 
+
+/////////////////////////////////////////////
+//		로비
+/////////////////////////////////////////////
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)					// 로비에서는 모든 인형들도 사용할 듯 일단은 이정도로만
+	TObjectPtr<UAnimMontage> sitting_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> sit_to_standing_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAnimMontage> standing_to_sit_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)					// 로비에서 지휘관 선택시 앞으로 이동하는 애니메이션
+	TObjectPtr<UAnimMontage> lobby_walking_montage;
+
+
+
 };
