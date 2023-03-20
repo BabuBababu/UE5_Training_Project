@@ -10,6 +10,9 @@ ADNLobbyController::ADNLobbyController(const FObjectInitializer& ObjectInitializ
 	: Super(ObjectInitializer)
 {
 
+	bShowMouseCursor = true;
+	bEnableClickEvents = true;
+	bEnableMouseOverEvents = true;
 }
 
 
@@ -19,7 +22,6 @@ ADNLobbyController::ADNLobbyController(const FObjectInitializer& ObjectInitializ
 void ADNLobbyController::BeginPlay()
 {
 	Super::BeginPlay();
-
 
 }
 
