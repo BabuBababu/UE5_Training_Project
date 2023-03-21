@@ -73,8 +73,8 @@ void ADNCommonGrenade::init()
 	
 
 	// 기존에 붙어있던것을 다시 뗍니다.
-	_actor_static_mesh->DetachFromParent();
-	_box_collision->DetachFromParent();
+	_actor_static_mesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	_box_collision->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 
 	RootComponent = _actor_static_mesh;
 	_box_collision->SetupAttachment(_actor_static_mesh);

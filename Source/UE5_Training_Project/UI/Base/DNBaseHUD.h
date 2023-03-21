@@ -20,6 +20,7 @@
 class UDNBaseLayer;
 class UDNPanelLayer;
 class UDNIntroLayer;
+class UDNLobbyLayer;
 
 class UAudioComponent;
 
@@ -42,6 +43,9 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UDNIntroLayer>	_intro_layer = nullptr;
+
+	UPROPERTY()
+	TObjectPtr<UDNLobbyLayer>	_lobby_layer = nullptr;
 
 
 private:

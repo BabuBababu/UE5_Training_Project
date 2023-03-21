@@ -9,6 +9,7 @@
 // Layer
 #include "UE5_Training_Project/UI/Widget/Layer/DNPanelLayer.h"
 #include "UE5_Training_Project/UI/Widget/Layer/DNIntroLayer.h"
+#include "UE5_Training_Project/UI/Widget/Layer/DNLobbyLayer.h"
 
 
 
@@ -51,7 +52,8 @@ void ADNBaseHUD::add_layer()
 
 	//로비
 	case E_UI_HUD_TYPE::UHT_LOBBY_HUD:
-
+		if (_lobby_layer == nullptr) _lobby_layer = Cast<UDNLobbyLayer>(create_layer(E_UI_LAYER_TYPE::ULT_SELECT_CHARACTER));
+		if (_lobby_layer != nullptr) _lobby_layer->AddToViewport();
 		break;
 
 	// 전투
@@ -83,7 +85,7 @@ UDNBaseLayer* ADNBaseHUD::create_layer(E_UI_LAYER_TYPE layer_type_in)
 	switch (layer_type_in)
 	{
 	case E_UI_LAYER_TYPE::ULT_HUD: // 체력, 탄창 크로스헤어 등
-		layer_class = LoadObject<UClass>(NULL, TEXT("/Game/Blueprint/UI/Layer/BP_DNPanelLayer.BP_DNPanelLayer_C")); //패널레이어가 들어가야함
+		layer_class = LoadObject<UClass>(NULL, TEXT("/Game/Blueprint/UI/Layer/BP_DNPanelLayer.BP_DNPanelLayer_C")); //패널 레이어가 들어가야함
 		UE_LOG(LogTemp, Warning, TEXT(" i created_layer [3]"));
 		if (layer_class != nullptr)
 		{
@@ -103,6 +105,13 @@ UDNBaseLayer* ADNBaseHUD::create_layer(E_UI_LAYER_TYPE layer_type_in)
 	case E_UI_LAYER_TYPE::ULT_SYSTEM:
 		break;
 	case E_UI_LAYER_TYPE::ULT_SELECT_CHARACTER:
+		layer_class = LoadObject<UClass>(NULL, TEXT("/Game/Blueprint/UI/Layer/BP_DNLobbyLayer.BP_DNLobbyLayer_C")); //로비 레이어가 들어가야함
+		UE_LOG(LogTemp, Warning, TEXT(" i created_layer [3]"));
+		if (layer_class != nullptr)
+		{
+			return_layer = CreateWidget<UDNLobbyLayer>(GetWorld(), layer_class);
+			UE_LOG(LogTemp, Warning, TEXT(" i made [4]"));
+		}
 		break;
 
 	case E_UI_LAYER_TYPE::ULT_NONE:

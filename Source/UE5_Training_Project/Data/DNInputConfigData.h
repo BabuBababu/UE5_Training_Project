@@ -100,4 +100,12 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     UInputAction* IA_H;
+
+
+    /////////////////////////////////////////////
+    //  로비
+    /////////////////////////////////////////////
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    UInputAction* InputClick;
+    
 };

@@ -7,6 +7,7 @@
 #include <Camera/CameraComponent.h>
 #include <GameFramework/PawnMovementComponent.h>
 #include <Kismet/KismetMathLibrary.h>
+#include <KismetAnimationLibrary.h>
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonBossCharacter.h"
@@ -111,7 +112,7 @@ void UDNGunSpiderBossAnimInstance::calculate_speed_direction(APawn* pawn_in)
 {
 	_speed = pawn_in->GetVelocity().Length();
 
-	_direction = CalculateDirection(pawn_in->GetVelocity(), pawn_in->GetActorRotation());
+	_direction = UKismetAnimationLibrary::CalculateDirection(pawn_in->GetVelocity(), pawn_in->GetActorRotation());
 
 }
 

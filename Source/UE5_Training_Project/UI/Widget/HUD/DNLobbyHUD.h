@@ -18,5 +18,9 @@ UCLASS()
 class UE5_TRAINING_PROJECT_API ADNLobbyHUD : public ADNBaseHUD
 {
 	GENERATED_BODY()
-	
+
+protected:
+	void NativeConstruct();
+	void NativeDestruct();
+	void BeginPlay() override;
 };

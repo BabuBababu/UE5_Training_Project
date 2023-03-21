@@ -67,6 +67,9 @@ public:
 	FOnOrderMoveDelegate	   OnOrderMove;
 	FOnOrderAttackDelegate	   OnOrderAttack;
 
+public: 
+	bool _is_selected = false;
+	bool _lobby_finished = false;
 public:
 	UFUNCTION()
 	void player_arm_event(bool armed_in);

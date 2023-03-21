@@ -4,6 +4,7 @@
 // Engine
 #include <GameFramework/PawnMovementComponent.h>
 #include <Kismet/KismetMathLibrary.h>
+#include <KismetAnimationLibrary.h>
 #include <Engine/Classes/Kismet/GameplayStatics.h>
 
 // Character
@@ -27,7 +28,7 @@ UDNCharacterAnimInstance::UDNCharacterAnimInstance()
 void UDNCharacterAnimInstance::NativeBeginPlay()
 {
 
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(TryGetPawnOwner());
+	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(TryGetPawnOwner());
 
 	if (nullptr != character)
 		_owner = character;
@@ -219,7 +220,7 @@ void UDNCharacterAnimInstance::calculate_speed_direction(APawn* pawn_in)
 {
 	_speed = pawn_in->GetVelocity().Length();
 
-	_direction = CalculateDirection(pawn_in->GetVelocity(), pawn_in->GetActorRotation());
+	_direction = UKismetAnimationLibrary::CalculateDirection(pawn_in->GetVelocity(), pawn_in->GetActorRotation());
 	
 }
 
