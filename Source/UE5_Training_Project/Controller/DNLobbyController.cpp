@@ -99,9 +99,15 @@ void ADNLobbyController::OnMouseClicked()
             if (nullptr != player)
             {
                 if (player->_is_selected)
+                {
                     player->_is_selected = false;
+                    OnSelected.Broadcast(player->_is_selected);
+                }
                 else
+                {
                     player->_is_selected = true;
+                    OnSelected.Broadcast(player->_is_selected);
+                }
             }
         }
     }

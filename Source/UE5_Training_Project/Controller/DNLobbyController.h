@@ -17,6 +17,8 @@
  */
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDNSelectEvent, bool, selected);
+
 
 class UInputMappingContext;
 class UDNInputConfigData;
@@ -49,4 +51,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
 	UDNInputConfigData* InputActions;
+
+
+public:
+	UPROPERTY()
+	FDNSelectEvent	OnSelected;
+
 };

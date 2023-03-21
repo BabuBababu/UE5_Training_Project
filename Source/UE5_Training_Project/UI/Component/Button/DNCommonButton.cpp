@@ -128,7 +128,6 @@ void UDNCommonButton::set_text_color(E_UI_BUTTON_STATE state_in)
 //////////////////////////////////////////////////////////////////////////
 void UDNCommonButton::on_clicked_handler()
 {
-	//_button_state = E_NUI_BUTTON_STATE::NBS_NORMAL;
 	//NUI_SOUND_MANAGER->play_metasound_dev(10002); // 버튼 클릭 사운드
 
 	set_text_color(_button_state);
