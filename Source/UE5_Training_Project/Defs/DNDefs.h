@@ -301,7 +301,19 @@ enum class E_UI_INTERACTION_TYPE : uint8
 
 
 
+UENUM()
+enum class E_UI_BUTTON_STATE : uint8
+{
+	UBS_NONE = 0,
+	UBS_NORMAL,
+	UBS_HOVERED,
+	UBS_UNHOVERED,
+	UBS_PRESSED,
+	UBS_RELEASED,
+	UBS_DISABLED,
 
+	UBS_COUNT
+};
 
 
 //////////////////////////////////////////////////////////
