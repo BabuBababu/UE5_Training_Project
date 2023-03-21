@@ -36,8 +36,8 @@ public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-	void add_event();
-	void remove_event();
+	virtual void add_event();
+	virtual void remove_event();
 
 public:
 	FOnMontageEndDelegate OnDieEnd;

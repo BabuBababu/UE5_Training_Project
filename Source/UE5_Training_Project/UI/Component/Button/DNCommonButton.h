@@ -58,7 +58,7 @@ public:
 
 public:
 	UPROPERTY()
-	FDNButtonEvent	ONClicked;
+	FDNButtonEvent	OnClicked;
 
 	UPROPERTY()
 	FDNButtonEvent	OnHovered;

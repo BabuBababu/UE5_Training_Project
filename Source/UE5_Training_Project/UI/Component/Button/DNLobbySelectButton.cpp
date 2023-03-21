@@ -7,6 +7,9 @@
 // Engine
 #include <Components/Button.h>
 
+// Button
+#include "UE5_Training_Project/UI/Component/Button/DNCommonButton.h"
+
 // Contoller
 #include "UE5_Training_Project/Controller/DNLobbyController.h"
 
@@ -24,7 +27,8 @@ void UDNLobbySelectButton::add_component_event()
 			controller->OnSelected.AddDynamic(this, &UDNLobbySelectButton::change_state_handler);
 
 	}
-
+	
+	OnClicked.AddDynamic(this, &UDNLobbySelectButton::selected_handler);
 
 	
 
@@ -42,6 +46,8 @@ void UDNLobbySelectButton::remove_component_event()
 			controller->OnSelected.RemoveDynamic(this, &UDNLobbySelectButton::change_state_handler);
 
 	}
+	
+	OnClicked.RemoveDynamic(this, &UDNLobbySelectButton::selected_handler);
 
 	Super::remove_component_event();
 }
@@ -64,4 +70,9 @@ void UDNLobbySelectButton::change_state_handler(bool flag_in)
 		set_text_color(_button_state);
 	}
 
+}
+
+void UDNLobbySelectButton::selected_handler(UDNCommonButton* button_in)
+{
+	OnSelected.Broadcast();
 }

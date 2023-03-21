@@ -22,7 +22,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDNSelectEvent, bool, selected);
 
 class UInputMappingContext;
 class UDNInputConfigData;
-
+class ADNPlayerCharacter;
+class ADNPlayerController;
+class ADNStageHUD;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNLobbyController : public APlayerController
@@ -52,9 +54,24 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
 	UDNInputConfigData* InputActions;
 
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameMode")
+	TSubclassOf<ADNPlayerCharacter> _change_character;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameMode")
+	TSubclassOf<ADNPlayerController> _change_controller;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameMode")
+	TSubclassOf<ADNStageHUD> _change_hud;
 
 public:
 	UPROPERTY()
 	FDNSelectEvent	OnSelected;
 
+private:
+	ADNPlayerCharacter* _lobby_character;
+
+public:
+	UFUNCTION()
+	void change_controller_character_handler();
 };

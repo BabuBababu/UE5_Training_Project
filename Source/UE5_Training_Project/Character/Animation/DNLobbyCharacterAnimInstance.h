@@ -32,6 +32,20 @@ public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
+	void add_event() override;
+	void remove_event() override;
+
+public:
+	void on_walking_montage_ended();
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void play_walking_montage();
+
+public:
+
+	FOnMontageEndDelegate OnWalkingEnd;
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)					// 로비에서는 모든 인형들도 사용할 듯 일단은 이정도로만
 		TObjectPtr<UAnimMontage> sitting_montage;
@@ -54,4 +68,8 @@ public:
 
 
 	ADNPlayerCharacter* _owner = nullptr;
+
+
+private:
+	bool	_playing_walking_montage;
 };

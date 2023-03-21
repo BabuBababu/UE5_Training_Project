@@ -14,6 +14,12 @@
 /**
  * 
  */
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSelectButtonEvent);
+
+
+
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNLobbySelectButton : public UDNCommonButton
 {
@@ -28,6 +34,13 @@ protected:
 protected:
 	UFUNCTION()
 	void change_state_handler(bool flag_in);
+
+	UFUNCTION()
+	void selected_handler(UDNCommonButton* button_in);
+
+public:
+	UPROPERTY()
+	FSelectButtonEvent OnSelected;
 
 
 };

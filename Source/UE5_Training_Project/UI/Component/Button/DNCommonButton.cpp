@@ -131,7 +131,7 @@ void UDNCommonButton::on_clicked_handler()
 	//NUI_SOUND_MANAGER->play_metasound_dev(10002); // 버튼 클릭 사운드
 
 	set_text_color(_button_state);
-	ONClicked.Broadcast(this);
+	OnClicked.Broadcast(this);
 }
 
 void UDNCommonButton::on_pressed_handler()
