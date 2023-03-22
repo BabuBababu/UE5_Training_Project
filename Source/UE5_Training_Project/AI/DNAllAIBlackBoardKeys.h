@@ -19,6 +19,9 @@ namespace all_ai_bb_keys
 	TCHAR const* const is_armed = TEXT("IsArmed");
 	TCHAR const* const is_ordered = TEXT("IsOrdered");
 	TCHAR const* const order_type = TEXT("OrderType");
+	TCHAR const* const guard_location = TEXT("GuardLocation");
+	TCHAR const* const is_finish_work = TEXT("IsFinishWork");
+	TCHAR const* const house_bed = TEXT("HouseBed");
 	
 
 }

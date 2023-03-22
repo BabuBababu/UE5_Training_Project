@@ -325,13 +325,13 @@ enum class E_UI_BUTTON_STATE : uint8
 UENUM(BlueprintType)
 enum class E_ACTOR_TYPE : uint8
 {
-	AT_NONE = 0		UMETA(DisplayName = "None"),		//비어있음
-	AT_WALL			UMETA(DisplayName = "Wall"),		//벽
-	AT_ITEM			UMETA(DisplayName = "Item"),		//아이템
-	AT_SHIELD		UMETA(DisplayName = "Shield"),		//쉴드
-	AT_VEHICLE		UMETA(DisplayName = "Vehicle"),		//탈것
-	AT_LOCATION		UMETA(DisplayName = "Location"),	//지역체크
-	AT_NPC			UMETA(DisplayName = "NPC"),			//NPC
+	AT_NONE = 0		UMETA(DisplayName = "None"),			//비어있음
+	AT_WALL			UMETA(DisplayName = "Wall"),			//벽
+	AT_ITEM			UMETA(DisplayName = "Item"),			//아이템
+	AT_SHIELD		UMETA(DisplayName = "Shield"),			//쉴드
+	AT_VEHICLE		UMETA(DisplayName = "Vehicle"),			//탈것
+	AT_FURNITURE	UMETA(DisplayName = "Furniture"),		//가구
+	AT_NPC			UMETA(DisplayName = "NPC"),				//NPC
 
 	AT_COUNT
 };
@@ -373,6 +373,17 @@ enum class E_ITEM_GRADE : uint8
 };
 
 
+UENUM(BlueprintType)
+enum class E_FURNITURE_TYPE : uint8
+{
+	FT_NONE = 0		UMETA(DisplayName = "None"),			//없음
+	FT_BED			UMETA(DisplayName = "Bed"),				//침대
+	FT_CHAIR		UMETA(DisplayName = "Chair"),			//의자
+	FT_COMPUTER		UMETA(DisplayName = "Computer"),		//작전 참가용 컴퓨터
+
+
+	FT_COUNT
+};
 
 UENUM()
 enum class E_DAMAGE_TYPE : uint8
@@ -483,6 +494,7 @@ enum class E_LOBBY_AI_TYPE : uint8
 	LAT_NONE					UMETA(DisplayName = "None"),		//없음
 	LAT_PATROL					UMETA(DisplayName = "Patrol"),		//패트롤 (순찰 근무)
 	LAT_GUARD					UMETA(DisplayName = "Guard"),		//가드   (입초 근무)
+	LAT_POST					UMETA(DisplayName = "Post"),		//당직 부관
 	LAT_REST					UMETA(DisplayName = "Rest"),		//전투 가능 ( 근무 투입은 하지 않음)
 	LAT_CITIZEN					UMETA(DisplayName = "Citizen")		//민간인
 

@@ -39,8 +39,8 @@ public:
 	
 	TObjectPtr<UBlackboardComponent> get_blackboard() const;
 
-	void add_event(ADNCommonCharacter* character_in);
-	void remove_event(ADNCommonCharacter* character_in);
+	virtual void add_event(ADNCommonCharacter* character_in);
+	virtual void remove_event(ADNCommonCharacter* character_in);
 
 public:
 	void ordered_move(FVector destination_in, ADNUnEnemyCharacter* doll_in);

@@ -84,7 +84,8 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 		UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_UnEnemy.BT_Combat_UnEnemy"), NULL, LOAD_None, NULL);
 		if (nullptr != BTObject)
 		{
-			btree = BTObject;
+			if(nullptr ==btree)
+				btree = BTObject;
 			UE_LOG(LogTemp, Warning, TEXT("bt Griffin succeeded!"));
 		}
 
@@ -95,7 +96,8 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 		UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Heli.BT_Combat_Heli"), NULL, LOAD_None, NULL);
 		if (nullptr != BTObject)
 		{
-			btree = BTObject;
+			if (nullptr == btree)
+				btree = BTObject;
 			UE_LOG(LogTemp, Warning, TEXT("bt Heli succeeded!"));
 		}
 
@@ -116,7 +118,8 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Melee_Enemy.BT_Combat_Melee_Enemy"), NULL, LOAD_None, NULL);
 				if (nullptr != BTObject)
 				{
-					btree = BTObject;
+					if (nullptr == btree)
+						btree = BTObject;
 					UE_LOG(LogTemp, Warning, TEXT("bt Enemy succeeded!"));
 				}
 			}
@@ -125,7 +128,8 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Boss.BT_Combat_Boss"), NULL, LOAD_None, NULL);
 				if (nullptr != BTObject)
 				{
-					btree = BTObject;
+					if (nullptr == btree)
+						btree = BTObject;
 					_sight_config->SightRadius = 200000.f;
 					UE_LOG(LogTemp, Warning, TEXT("bt Boss succeeded!"));
 				}
@@ -135,7 +139,8 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Enemy.BT_Combat_Enemy"), NULL, LOAD_None, NULL);
 				if (nullptr != BTObject)
 				{
-					btree = BTObject;
+					if (nullptr == btree)
+						btree = BTObject;
 					UE_LOG(LogTemp, Warning, TEXT("bt Enemy succeeded!"));
 				}
 			}
