@@ -473,3 +473,17 @@ enum class E_ORDER_TYPE : uint8
 	OT_ATTACK					UMETA(DisplayName = "Attack")		//강제 공격
 
 };
+
+
+
+UENUM(BlueprintType)
+enum class E_LOBBY_AI_TYPE : uint8
+{
+
+	LAT_NONE					UMETA(DisplayName = "None"),		//없음
+	LAT_PATROL					UMETA(DisplayName = "Patrol"),		//패트롤 (순찰 근무)
+	LAT_GUARD					UMETA(DisplayName = "Guard"),		//가드   (입초 근무)
+	LAT_REST					UMETA(DisplayName = "Rest"),		//전투 가능 ( 근무 투입은 하지 않음)
+	LAT_CITIZEN					UMETA(DisplayName = "Citizen")		//민간인
+
+};

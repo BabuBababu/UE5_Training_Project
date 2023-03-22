@@ -45,7 +45,7 @@ EBTNodeResult::Type UDNFindCheckPointTask::ExecuteTask(UBehaviorTreeComponent& o
 
 	auto Controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
 	auto self = Controller->GetPawn();
-	ADNEnemyCharacter* self_actor = Cast<ADNEnemyCharacter>(self);
+	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self);
 
 
 	if (nullptr == self) {
