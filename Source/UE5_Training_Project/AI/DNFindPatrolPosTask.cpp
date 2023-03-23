@@ -89,7 +89,7 @@ EBTNodeResult::Type UDNFindPatrolPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 	if (nullptr == _now_point)
 		return EBTNodeResult::Failed;
 
-	if (_now_point->_is_destroyed)								// 점령 당했다면 그 다음 포인트가 적용됩니다.
+	if (self->GetDistanceTo(_now_point) <= 400.f)								// 거리가 4m 안이라면 다음 지점으로 넘어갑니다.
 	{
 		if (false == OBJECT_MANAGER->_patrol_location_actor_array.IsEmpty())
 		{
@@ -98,6 +98,7 @@ EBTNodeResult::Type UDNFindPatrolPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 				
 				if (_now_point_index + _step == location.Key)
 				{
+					_now_point_index = location.Key;
 					_now_point = location.Value;			// 다음 위치의 값을 넣습니다.
 				}
 			}
