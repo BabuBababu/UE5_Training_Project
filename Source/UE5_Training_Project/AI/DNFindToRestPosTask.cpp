@@ -79,6 +79,7 @@ EBTNodeResult::Type UDNFindToRestPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 	AActor* rest_object = Cast<AActor>(Object);
 	if (nullptr != rest_object)
 	{
+		Controller->ClearFocus(EAIFocusPriority::Gameplay);
 		rest_lotation = rest_object->GetActorLocation();
 	}
 

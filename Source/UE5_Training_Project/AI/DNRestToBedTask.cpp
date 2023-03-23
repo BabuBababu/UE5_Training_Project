@@ -56,16 +56,21 @@ EBTNodeResult::Type UDNRestToBedTask::ExecuteTask(UBehaviorTreeComponent& owner_
 	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self_pawn);
 
 
+
 	if (self_actor->get_status_component().Get()->_dead)
 	{
 		return EBTNodeResult::Failed;
 	}
 
-	auto player_controller = Cast<ADNPlayerController>(GetWorld()->GetFirstPlayerController());
-	if (nullptr != player_controller)
+
+	// 침대 바라보기 애니메이션 상태에 따라 변경될수있음
+	UObject* Object = controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::house_bed);
+	if (nullptr != Object)
 	{
-		APawn* player_pawn = player_controller->GetPawn();
-		controller->ClearFocus(EAIFocusPriority::Gameplay);		// 타겟 해제
+		AActor* rest_object = Cast<AActor>(Object);
+		if(nullptr != rest_object)
+			controller->SetFocus(rest_object);		
+
 	}
 
 
