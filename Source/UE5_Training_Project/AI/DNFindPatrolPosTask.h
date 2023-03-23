@@ -13,7 +13,7 @@
  * 
  */
 
-class ADNTargetPointActor;
+class ADNPatrolPointActor;
 
 UCLASS(Blueprintable)
 class UE5_TRAINING_PROJECT_API UDNFindPatrolPosTask : public UBTTaskNode
@@ -30,7 +30,7 @@ public:
 
 
 public:
-	TObjectPtr<ADNTargetPointActor> _now_point;
+	TObjectPtr<ADNPatrolPointActor> _now_point;
 	int64 _now_point_index;
 	int64 _step = 0;
 };

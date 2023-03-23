@@ -40,6 +40,17 @@ enum class E_CHARACTER_TYPE : uint8
 
 
 
+UENUM(BlueprintType)
+enum class E_CHARACTER_SPAWN_LEVEL_TYPE : uint8
+{
+	CSLT_NONE = 0	UMETA(DisplayName = "None"),
+	CSLT_LOBBY		UMETA(DisplayName = "Lobby"),
+	CSLT_STAGE		UMETA(DisplayName = "Stage"),
+
+	CT_COUNT
+};
+
+
 
 UENUM(BlueprintType)
 enum class E_CHARACTER_STATE : uint8

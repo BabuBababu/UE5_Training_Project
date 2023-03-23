@@ -11,7 +11,7 @@
 #include <BehaviorTree/BlackboardComponent.h>
 
 // Actor
-#include "UE5_Training_Project/Actor/DNTargetPointActor.h"
+#include "UE5_Training_Project/Actor/DNPatrolPointActor.h"
 
 // Controller
 #include "UE5_Training_Project/Controller/DNLobbyAIController.h"
@@ -67,9 +67,9 @@ EBTNodeResult::Type UDNFindPatrolPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 
 	if (nullptr == _now_point)									//타겟 포인트가 없다면 넣어줍니다.
 	{
-		if (false == OBJECT_MANAGER->_location_actor_array.IsEmpty())
+		if (false == OBJECT_MANAGER->_patrol_location_actor_array.IsEmpty())
 		{
-			for (auto& location : OBJECT_MANAGER->_location_actor_array)
+			for (auto& location : OBJECT_MANAGER->_patrol_location_actor_array)
 			{
 				if (0 == location.Key)
 				{
@@ -80,17 +80,20 @@ EBTNodeResult::Type UDNFindPatrolPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 		}
 	}
 
-	if (_now_point_index + 1 == OBJECT_MANAGER->_location_actor_array.Num())		//범위의 최대 최소에 따라 +-1을 해줍니다.
+	if (_now_point_index + 1 == OBJECT_MANAGER->_patrol_location_actor_array.Num())		//범위의 최대 최소에 따라 +-1을 해줍니다.
 		_step = -1;
 	else if (_now_point_index == 0)
 		_step = 1;
 
 
+	if (nullptr == _now_point)
+		return EBTNodeResult::Failed;
+
 	if (_now_point->_is_destroyed)								// 점령 당했다면 그 다음 포인트가 적용됩니다.
 	{
-		if (false == OBJECT_MANAGER->_location_actor_array.IsEmpty())
+		if (false == OBJECT_MANAGER->_patrol_location_actor_array.IsEmpty())
 		{
-			for (auto& location : OBJECT_MANAGER->_location_actor_array)
+			for (auto& location : OBJECT_MANAGER->_patrol_location_actor_array)
 			{
 				
 				if (_now_point_index + _step == location.Key)

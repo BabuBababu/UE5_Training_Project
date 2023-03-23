@@ -62,5 +62,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Squad)			//전투시 스쿼드 위치 구분용
 	int64	_squad_index;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
+		E_CHARACTER_SPAWN_LEVEL_TYPE _spawn_level_type = E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_NONE;
 
 };

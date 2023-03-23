@@ -72,14 +72,16 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 		if (true == target_character->_status->_dead)					//타겟이 죽어있으면 실패
 		{
 			controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor,nullptr);
+			controller->ClearFocus(EAIFocusPriority::Gameplay);
 			self_actor->set_idle_animation();
 			return EBTNodeResult::Failed;
 		}
 
 		
 
-		if (false == self_actor->_is_armed_weapon) // 무기를 들고 있지않으면 실패
+		if (false == self_actor->_is_armed_weapon)						// 무기를 들고 있지않으면 실패
 		{
+			controller->ClearFocus(EAIFocusPriority::Gameplay);
 			self_actor->set_idle_animation();
 			return EBTNodeResult::Failed;
 		}

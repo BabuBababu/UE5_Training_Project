@@ -67,9 +67,9 @@ EBTNodeResult::Type UDNBossFindCheckPointTask::ExecuteTask(UBehaviorTreeComponen
 
 	if (nullptr == _now_point)									//타겟 포인트가 없다면 넣어줍니다.
 	{
-		if (false == OBJECT_MANAGER->_location_actor_array.IsEmpty())
+		if (false == OBJECT_MANAGER->_target_location_actor_array.IsEmpty())
 		{
-			for (auto& location : OBJECT_MANAGER->_location_actor_array)
+			for (auto& location : OBJECT_MANAGER->_target_location_actor_array)
 			{
 				if (0 == location.Key)
 				{
@@ -81,9 +81,9 @@ EBTNodeResult::Type UDNBossFindCheckPointTask::ExecuteTask(UBehaviorTreeComponen
 
 	if (_now_point->_is_destroyed)
 	{
-		if (false == OBJECT_MANAGER->_location_actor_array.IsEmpty())
+		if (false == OBJECT_MANAGER->_target_location_actor_array.IsEmpty())
 		{
-			for (auto& location : OBJECT_MANAGER->_location_actor_array)
+			for (auto& location : OBJECT_MANAGER->_target_location_actor_array)
 			{
 				if (_now_point->_index + 1 == location.Key)
 				{

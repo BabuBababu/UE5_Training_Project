@@ -61,6 +61,10 @@ void ADNUnEnemyCharacter::BeginPlay()
 	}
 
 	OBJECT_MANAGER->_griffin_player_array.Add(this);
+
+	// 로비에 생성된 인형이라면
+	if (_spawn_level_type == E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_LOBBY)
+		change_armed_state_handler(true);
 }
 
 void ADNUnEnemyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -86,6 +90,10 @@ void ADNUnEnemyCharacter::add_event()
 	if (nullptr == player)
 		return;
 
+	// 로비에 생성된 인형이라면 패스
+	if (_spawn_level_type == E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_LOBBY)
+		return;
+
 	player->on_armed.AddDynamic(this, &ADNUnEnemyCharacter::change_armed_state_handler);
 	player->on_crouch.AddDynamic(this, &ADNUnEnemyCharacter::change_crouch_state_handler);
 	player->on_sprint.AddDynamic(this, &ADNUnEnemyCharacter::change_sprint_state_handler);
@@ -97,6 +105,10 @@ void ADNUnEnemyCharacter::add_event()
 void ADNUnEnemyCharacter::remove_event()
 {
 	Super::remove_event();
+
+	if (_spawn_level_type == E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_LOBBY)
+		return;
+
 	//ADNPlayerCharacter* player = dynamic_cast<ADNPlayerCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	//player->on_armed.RemoveDynamic(this, &ADNUnEnemyCharacter::change_armed_state_handler);
 	//player->on_crouch.RemoveDynamic(this, &ADNUnEnemyCharacter::change_crouch_state_handler);

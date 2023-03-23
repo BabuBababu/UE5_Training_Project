@@ -13,7 +13,7 @@
 
 
 /**
- * 
+ *		지점으로 이동할 때 사용하는 액터입니다.
  */
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNTargetPointActor : public ADNCommonActor
