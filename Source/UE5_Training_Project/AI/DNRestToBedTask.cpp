@@ -65,7 +65,7 @@ EBTNodeResult::Type UDNRestToBedTask::ExecuteTask(UBehaviorTreeComponent& owner_
 	if (nullptr != player_controller)
 	{
 		APawn* player_pawn = player_controller->GetPawn();
-		controller->SetFocus(player_pawn);		// 타겟 바라보기
+		controller->ClearFocus(EAIFocusPriority::Gameplay);		// 타겟 해제
 	}
 
 
