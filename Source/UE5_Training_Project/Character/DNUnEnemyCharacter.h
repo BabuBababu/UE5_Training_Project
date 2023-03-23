@@ -63,6 +63,6 @@ public:
 	int64	_squad_index;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
-		E_CHARACTER_SPAWN_LEVEL_TYPE _spawn_level_type = E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_NONE;
+	E_CHARACTER_SPAWN_LEVEL_TYPE _spawn_level_type = E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_NONE;
 
 };

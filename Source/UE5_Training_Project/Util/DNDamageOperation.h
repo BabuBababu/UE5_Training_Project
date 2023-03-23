@@ -103,10 +103,8 @@ public:
 				DNDamageOperation::ShowIndicatorUI(head_damage, damaged_character_in, E_DAMAGE_TYPE::DT_CRITICAL);
 				DNDamageOperation::ShowCrossHairUI(true);
 			}
-
 			after_hp = damaged_character_in->get_status_component().Get()->get_current_hp() - head_damage;
-			damaged_character_in->get_status_component().Get()->set_current_hp(after_hp);
-			SOUND_MANAGER->start_combat_sound();
+			
 		}
 		else
 		{
@@ -116,10 +114,8 @@ public:
 				DNDamageOperation::ShowIndicatorUI(damage_in, damaged_character_in, E_DAMAGE_TYPE::DT_NORMAL);
 				DNDamageOperation::ShowCrossHairUI(false);
 			}
-
 			after_hp = damaged_character_in->get_status_component().Get()->get_current_hp() - damage_in;
-			damaged_character_in->get_status_component().Get()->set_current_hp(after_hp);
-			SOUND_MANAGER->start_combat_sound();
+			
 		}
 		
 		// 플레이어가 대미지를 받았다면 피격UI 표시
@@ -128,6 +124,8 @@ public:
 			DNDamageOperation::ShowBloodUI();
 		}
 
+		damaged_character_in->get_status_component().Get()->set_current_hp(after_hp);
+		SOUND_MANAGER->start_combat_sound();
 		
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Griffin Damage to Enemy : %f"), damage_in));
 

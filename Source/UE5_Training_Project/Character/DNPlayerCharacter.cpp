@@ -28,6 +28,9 @@ void ADNPlayerCharacter::BeginPlay()
 	//SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_BGM, 1, 0.f);								//게임 시작시 평화 BGM
 	OBJECT_MANAGER->_player = this;
 	OBJECT_MANAGER->_griffin_player_array.Add(this);
+
+	if (_spawn_level_type == E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_LOBBY)
+		SOUND_MANAGER->_can_play = false;
 }
 
 void ADNPlayerCharacter::Tick(float DeltaTime)

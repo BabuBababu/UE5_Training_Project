@@ -39,6 +39,7 @@ UDNSoundManager::UDNSoundManager()
 	_is_combat = false;
 	_is_bgm_playing_now = false;	//BGM
 	_is_ui_danger_now = false;		//UI
+	_can_play = false;				//실행 가능 여부
 }
 
 void UDNSoundManager::initialize()
@@ -133,6 +134,9 @@ USoundMix* UDNSoundManager::find_sound_mix_data(int64 id_in)
 
 void UDNSoundManager::play_meta_sound(E_SOUND_TYPE type_in, int64 id_in, float start_time_in)
 {
+	if (false == _can_play)
+		return;
+
 	UAudioComponent* target_audio_component = get_audio_component(type_in);
 	int64 temp_check = 0;
 
@@ -278,6 +282,8 @@ TObjectPtr<UDNSoundManager> UDNSoundManager::get_sound_manager()
 
 void UDNSoundManager::play_combat_meta_sound()
 {
+	if (false == _can_play)
+		return;
 
 	if (false == _is_combat && false == _is_ui_danger_now)
 	{
@@ -297,6 +303,8 @@ void UDNSoundManager::set_combat_off()
 
 void UDNSoundManager::start_combat_sound()
 {
+	if (false == _can_play)
+		return;
 
 	if (false == _is_bgm_playing_now && false ==_is_ui_danger_now)				//처음 한번만 실행
 	{

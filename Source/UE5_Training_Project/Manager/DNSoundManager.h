@@ -77,6 +77,7 @@ public:
 	bool				_is_combat;
 	bool				_is_bgm_playing_now;
 	bool				_is_ui_danger_now;
+	bool				_can_play;
 
 
 private:
