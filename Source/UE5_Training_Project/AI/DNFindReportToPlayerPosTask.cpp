@@ -49,6 +49,9 @@ EBTNodeResult::Type UDNFindReportToPlayerPosTask::ExecuteTask(UBehaviorTreeCompo
 	ADNUnEnemyCharacter* self_actor = Cast<ADNUnEnemyCharacter>(self);
 	ADNPlayerCharacter* player = dynamic_cast<ADNPlayerCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 
+	// 타겟에 플레이어를 배정합니다.
+	Controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor,player);
+
 
 	//현재 에디터에 설정된 navi mesh로 초기화
 	UNavigationSystemV1* const NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());

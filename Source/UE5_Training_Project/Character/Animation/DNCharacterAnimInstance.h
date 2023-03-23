@@ -44,6 +44,8 @@ public:
 	FOnMontageEndDelegate OnReloadEnd;
 	FOnMontageEndDelegate OnKnifeEnd;
 	FOnMontageEndDelegate OnThrowEnd;
+	FOnMontageEndDelegate OnSaluteEnd;
+	FOnMontageEndDelegate OnSleepEnd;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -57,6 +59,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void on_throw_montage_ended();
+
+	UFUNCTION(BlueprintCallable)
+	void on_salute_montage_ended();
+
+	UFUNCTION(BlueprintCallable)
+	void on_sleep_montage_ended();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -83,6 +91,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void unlock_cover_animation();
 
+	////////////////////////////
+	// 로비
+	////////////////////////////
+	UFUNCTION(BlueprintCallable)
+	void play_salute_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_sleep_montage();
 
 
 	// 밑의 2개는 아직 사용 X
@@ -151,36 +167,41 @@ private:
 	
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category = Battle)
 	TObjectPtr<UAnimMontage> die_montage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> fire_montage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> knife_montage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> throw_montage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> wall_jump_montage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> cover_fire_left_montage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> cover_fire_right_montage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> cover_turn_left_montage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> cover_turn_right_montage;
 
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> reload_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Lobby)
+	TObjectPtr<UAnimMontage> salute_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Lobby)
+	TObjectPtr<UAnimMontage> sleep_montage;
 
 private:
 	bool	_playing_die_montage;
@@ -191,6 +212,15 @@ private:
 	bool	_playing_wall_jump_montage;
 	bool	_playing_knife_montage;
 	bool	_playing_throw_montage;
+
+
+
+public:
+	// 로비 //
+	bool	_playing_salute_montage;
+	bool	_check_salute_ended = false;
+	bool	_playing_sleep_montage;
+	bool	_check_sleep_ended = false;
 
 private:
 	ADNCommonCharacter* _owner = nullptr;

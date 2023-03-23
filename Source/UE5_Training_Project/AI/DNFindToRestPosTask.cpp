@@ -11,7 +11,7 @@
 #include <BehaviorTree/BlackboardComponent.h>
 
 // Controller
-#include "UE5_Training_Project/Controller/DNAIController.h"
+#include "UE5_Training_Project/Controller/DNLobbyAIController.h"
 
 
 // Character
@@ -43,10 +43,10 @@ EBTNodeResult::Type UDNFindToRestPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 {
 	Super::ExecuteTask(owner_comp_in, NodeMemory_in);
 
-	auto Controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
+	auto Controller = Cast<ADNLobbyAIController>(owner_comp_in.GetAIOwner());
 	auto self = Controller->GetPawn();
 
-	if (nullptr != Controller)
+	if (nullptr == Controller)
 		return EBTNodeResult::Failed;
 
 	ADNUnEnemyCharacter* self_actor = Cast<ADNUnEnemyCharacter>(self);

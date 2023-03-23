@@ -107,7 +107,23 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (_owner->_character_type == E_CHARACTER_TYPE::CT_ENEMY)
 		return;
 
+	//////////////////////////////////////////// 로비 ////////////////////////////////////
+	
+	// 경례 재생 체크
+	if (true == _playing_salute_montage)
+	{
+		if (false == Montage_IsPlaying(salute_montage))
+			on_salute_montage_ended();
+	}
 
+	// 수면 재생 체크
+	if (true == _playing_sleep_montage)
+	{
+		if (false == Montage_IsPlaying(sleep_montage))
+			on_sleep_montage_ended();
+	}
+
+	//////////////////////////////////////////// 전투 ////////////////////////////////////
 
 	// 나이프 재생 체크
 	if (true == _playing_knife_montage)
@@ -319,6 +335,30 @@ void UDNCharacterAnimInstance::play_throw_montage()
 }
 
 
+void UDNCharacterAnimInstance::play_salute_montage()
+{
+	if (nullptr != salute_montage)
+	{
+		if (false == Montage_IsPlaying(salute_montage))
+		{
+			Montage_Play(salute_montage);
+			_playing_salute_montage = true;
+		}
+	}
+}
+
+void UDNCharacterAnimInstance::play_sleep_montage()
+{
+	if (nullptr != sleep_montage)
+	{
+		if (false == Montage_IsPlaying(sleep_montage))
+		{
+			Montage_Play(sleep_montage);
+			_playing_sleep_montage = true;
+		}
+	}
+}
+
 void UDNCharacterAnimInstance::on_die_montage_ended()
 {
 	_playing_die_montage = false;
@@ -342,4 +382,16 @@ void UDNCharacterAnimInstance::on_throw_montage_ended()
 {
 	_playing_throw_montage = false;
 	OnThrowEnd.Broadcast();
+}
+
+void UDNCharacterAnimInstance::on_salute_montage_ended()
+{
+	_playing_salute_montage = false;
+	_check_salute_ended = true;
+}
+
+void UDNCharacterAnimInstance::on_sleep_montage_ended()
+{
+	_playing_sleep_montage = false;
+	_check_sleep_ended = true;
 }

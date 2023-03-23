@@ -12,6 +12,7 @@
 
 // Controller
 #include "UE5_Training_Project/Controller/DNAIController.h"
+#include "UE5_Training_Project/Controller/DNPlayerController.h"
 
 // Character
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
@@ -21,7 +22,7 @@
 #include <UE5_Training_Project/Component/DNStatusComponent.h>
 
 // AnimInstance
-#include "UE5_Training_Project/Character/Animation/DNLobbyCharacterAnimInstance.h"
+#include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
 
 
 // BlackBaord
@@ -51,7 +52,7 @@ EBTNodeResult::Type UDNReportToPlayerTask::ExecuteTask(UBehaviorTreeComponent& o
 	APawn* self_pawn = controller->GetPawn();
 
 	// 캐릭터
-	ADNCommonCharacter* self_actor = dynamic_cast<ADNCommonCharacter*>(self_pawn);
+	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self_pawn);
 
 
 	if (self_actor->get_status_component().Get()->_dead)
@@ -59,36 +60,21 @@ EBTNodeResult::Type UDNReportToPlayerTask::ExecuteTask(UBehaviorTreeComponent& o
 		return EBTNodeResult::Failed;
 	}
 
-
-
-	// 플레이어 캐릭터
-	auto target = controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor);
-
-	ADNCommonCharacter* target_character = Cast<ADNCommonCharacter>(target);
-
-
-	
-	if (nullptr == target)											//플레이어가 없으면 실패
+	auto player_controller = Cast<ADNPlayerController>(GetWorld()->GetFirstPlayerController());
+	if (nullptr != player_controller)
 	{
-		self_actor->set_idle_animation();
-
-
-		return EBTNodeResult::Failed;
+		APawn* player_pawn = player_controller->GetPawn();
+		controller->SetFocus(player_pawn);		// 타겟 바라보기
 	}
 
-
-	if (true == target_character->_status->_dead)					//플레이어가 죽어있으면 실패
-	{
-		controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-		self_actor->set_idle_animation();
-		return EBTNodeResult::Failed;
-	}
-
-
-	controller->SetFocus(target_character);		// 타겟 바라보기
 
 	// 애니메이션 실행
-	UDNLobbyCharacterAnimInstance* anim = Cast<UDNLobbyCharacterAnimInstance>(self_actor->_character_skeletal_mesh->GetAnimInstance());
+	UDNCharacterAnimInstance* anim = Cast<UDNCharacterAnimInstance>(self_actor->_character_skeletal_mesh->GetAnimInstance());
+	if (nullptr != anim)
+	{
+		anim->play_salute_montage();
+		_is_play_animation = true;
+	}
 
 
 	// 자막 실행
@@ -104,6 +90,24 @@ void UDNReportToPlayerTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint
 	Super::TickTask(owner_comp_in, NodeMemory_in, DeltaSeconds);
 
 	// 애니메이션 끝났는지 체크
-	// 끝났다면 성공 반환
-	// return EBTNodeResult::Succeeded;
+	if (_is_play_animation)
+	{
+		// 컨트롤러
+		auto controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
+		APawn* self_pawn = controller->GetPawn();
+
+		// 캐릭터
+		ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self_pawn);
+		UDNCharacterAnimInstance* anim = Cast<UDNCharacterAnimInstance>(self_actor->_character_skeletal_mesh->GetAnimInstance());
+		if (nullptr != anim)
+		{
+			if (anim->_check_salute_ended)
+			{
+				_is_play_animation = false;
+				anim->_check_salute_ended = false;
+				FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);		// 끝났다면 성공 반환
+			}
+		}
+	}
+	
 }
