@@ -73,6 +73,8 @@ EBTNodeResult::Type UDNFindReportToPlayerPosTask::ExecuteTask(UBehaviorTreeCompo
 		return EBTNodeResult::Failed;
 
 
+	// 포커스 해제합니다.
+	Controller->ClearFocus(EAIFocusPriority::Gameplay);
 
 
 

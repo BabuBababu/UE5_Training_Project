@@ -109,14 +109,13 @@ void UDNRestToBedTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* No
 		{
 			if (anim->_check_start_sleep_ended)
 			{
-				self_actor->SetActorLocation(self_actor->_character_skeletal_mesh->GetSocketLocation("Hips"));		//애니메이션 끝지점을 캐릭터 위치로합니다.
+				//self_actor->SetActorLocation(self_actor->_character_skeletal_mesh->GetSocketLocation("Hips"));		//애니메이션 끝지점을 캐릭터 위치로합니다.
 				_is_play_animation = false;
 				anim->_check_start_sleep_ended = false;
 				anim->play_loop_sleep_montage();			//누웠으면 계속 잡니다 일단은. 제한시간 따로 설정한 것 없습니다.
 
 
-				//자고 있는것으로 변경합니다.
-				self_actor->_character_state = E_CHARACTER_STATE::CS_SLEEP;					
+				//자고 있는것으로 변경합니다.			
 				controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_sleep,true);
 
 				FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);		// 끝났다면 성공 반환
