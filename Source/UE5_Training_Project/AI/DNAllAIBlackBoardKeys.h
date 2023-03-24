@@ -22,6 +22,7 @@ namespace all_ai_bb_keys
 	TCHAR const* const guard_location = TEXT("GuardLocation");
 	TCHAR const* const is_finish_work = TEXT("IsFinishWork");
 	TCHAR const* const house_bed = TEXT("HouseBed");
+	TCHAR const* const is_sleep = TEXT("IsSleep");
 	
 
 }

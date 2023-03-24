@@ -117,10 +117,10 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 
 	// 수면 재생 체크
-	if (true == _playing_sleep_montage)
+	if (true == _playing_start_sleep_montage)
 	{
-		if (false == Montage_IsPlaying(sleep_montage))
-			on_sleep_montage_ended();
+		if (false == Montage_IsPlaying(start_sleep_montage))
+			on_start_sleep_montage_ended();
 	}
 
 	//////////////////////////////////////////// 전투 ////////////////////////////////////
@@ -347,14 +347,26 @@ void UDNCharacterAnimInstance::play_salute_montage()
 	}
 }
 
-void UDNCharacterAnimInstance::play_sleep_montage()
+void UDNCharacterAnimInstance::play_start_sleep_montage()
 {
-	if (nullptr != sleep_montage)
+	if (nullptr != start_sleep_montage)
 	{
-		if (false == Montage_IsPlaying(sleep_montage))
+		if (false == Montage_IsPlaying(start_sleep_montage))
 		{
-			Montage_Play(sleep_montage);
-			_playing_sleep_montage = true;
+			Montage_Play(start_sleep_montage);
+			_playing_start_sleep_montage = true;
+		}
+	}
+}
+
+void UDNCharacterAnimInstance::play_loop_sleep_montage()
+{
+	if (nullptr != loop_sleep_montage)
+	{
+		if (false == Montage_IsPlaying(loop_sleep_montage))
+		{
+			Montage_Play(loop_sleep_montage);
+			_playing_loop_sleep_montage = true;
 		}
 	}
 }
@@ -390,8 +402,8 @@ void UDNCharacterAnimInstance::on_salute_montage_ended()
 	_check_salute_ended = true;
 }
 
-void UDNCharacterAnimInstance::on_sleep_montage_ended()
+void UDNCharacterAnimInstance::on_start_sleep_montage_ended()
 {
-	_playing_sleep_montage = false;
-	_check_sleep_ended = true;
+	_playing_start_sleep_montage = false;
+	_check_start_sleep_ended = true;
 }

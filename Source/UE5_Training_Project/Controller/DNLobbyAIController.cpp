@@ -119,7 +119,12 @@ void ADNLobbyAIController::Tick(float DeltaSeconds)
 				return;
 
 			get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_finish_work, true);			// 일정 시간이 만료되면 일을 끝냈다고 블랙보드에 값을 넣습니다.
-			get_blackboard()->SetValueAsObject(all_ai_bb_keys::house_bed, OBJECT_MANAGER->_lobby_bed_array[0]);			// 일단은 오브젝트 매니저에 있는 침대를 사용합니다.
+
+			for (auto& bed : OBJECT_MANAGER->_lobby_bed_array)
+			{
+				if(bed.Key == _owner->_character_id)// 일단은 오브젝트 매니저에 있는 침대를 캐릭터 고유ID와 맞춰서 사용합니다.
+					get_blackboard()->SetValueAsObject(all_ai_bb_keys::house_bed, bed.Value);
+			}		
 			_finish_work = true;
 			_current_time = 0.f;
 		}

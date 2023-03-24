@@ -64,6 +64,10 @@ enum class E_CHARACTER_STATE : uint8
 	CS_ARM			UMETA(DisplayName = "Armed"),					//총을 들고 있음
 	CS_COVER		UMETA(DisplayName = "Cover"),					//커버 모드
 	CS_DEAD			UMETA(DisplayName = "Dead"),					//사망
+	CS_SLEEP		UMETA(DisplayName = "Sleep"),					//수면
+	CS_REST			UMETA(DisplayName = "Rest"),					//휴식
+	CS_CREATING		UMETA(DisplayName = "Creating"),				//생산중
+
 
 	CS_COUNT
 };

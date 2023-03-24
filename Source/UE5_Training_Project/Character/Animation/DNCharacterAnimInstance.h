@@ -64,7 +64,7 @@ public:
 	void on_salute_montage_ended();
 
 	UFUNCTION(BlueprintCallable)
-	void on_sleep_montage_ended();
+	void on_start_sleep_montage_ended();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -98,8 +98,10 @@ public:
 	void play_salute_montage();
 
 	UFUNCTION(BlueprintCallable)
-	void play_sleep_montage();
+	void play_start_sleep_montage();
 
+	UFUNCTION(BlueprintCallable)
+	void play_loop_sleep_montage();
 
 	// 밑의 2개는 아직 사용 X
 	UFUNCTION(BlueprintCallable)
@@ -201,7 +203,10 @@ public:
 	TObjectPtr<UAnimMontage> salute_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Lobby)
-	TObjectPtr<UAnimMontage> sleep_montage;
+	TObjectPtr<UAnimMontage> start_sleep_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Lobby)
+	TObjectPtr<UAnimMontage> loop_sleep_montage;
 
 private:
 	bool	_playing_die_montage;
@@ -215,12 +220,14 @@ private:
 
 
 
+
 public:
 	// 로비 //
 	bool	_playing_salute_montage;
 	bool	_check_salute_ended = false;
-	bool	_playing_sleep_montage;
-	bool	_check_sleep_ended = false;
+	bool	_playing_start_sleep_montage;
+	bool	_check_start_sleep_ended = false;
+	bool	_playing_loop_sleep_montage;
 
 private:
 	ADNCommonCharacter* _owner = nullptr;

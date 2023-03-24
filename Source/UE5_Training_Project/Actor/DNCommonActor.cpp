@@ -48,6 +48,8 @@ void ADNCommonActor::init()
 	_actor_skeletal_mesh->SetupAttachment(RootComponent);
 	_actor_static_mesh->SetupAttachment(RootComponent);
 	_box_collision->SetupAttachment(RootComponent);
+
+	_actor_id = -1;
 }
 
 

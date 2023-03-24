@@ -78,6 +78,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float AILastSeenLocation = 900.f;
 
+	ADNCommonCharacter* _owner = nullptr;
 
 
 

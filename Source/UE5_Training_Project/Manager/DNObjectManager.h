@@ -53,6 +53,6 @@ public:
 	TObjectPtr<ADNPlayerCharacter>	 _player;
 
 	TArray<AActor*> _griffin_player_array;							//아군,플레이어 담은 배열
-	TArray<ADNCommonBed*> _lobby_bed_array;							//로비에 있는 침대를 담은 배열
+	TMap<int64, ADNCommonBed*> _lobby_bed_array;							//로비에 있는 침대를 담은 배열
 
 };

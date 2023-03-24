@@ -169,6 +169,8 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 	get_blackboard()->SetValueAsObject(all_ai_bb_keys::self_actor, pawn_in);
 	get_blackboard()->SetValueAsVector(all_ai_bb_keys::guard_location, character->GetActorLocation());		//에디터 상에서 최초로 스폰한 지점이 가드 위치입니다. 가드가 아니어도 일단 저장해둡니다.
 
+	_owner = character;		// 자주 사용하기 위해 담아둡니다.
+
 }
 
 void ADNAIController::OnUnPossess()

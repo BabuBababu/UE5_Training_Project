@@ -31,7 +31,11 @@ void ADNCommonBed::BeginPlay()
 
 	add_event();
 
-	OBJECT_MANAGER->_lobby_bed_array.Add(this);
+
+	if (_actor_id == -1)		//설정이 안되어있다면 리턴합니다.
+		return;
+
+	OBJECT_MANAGER->_lobby_bed_array.Add(_actor_id,this);
 }
 
 

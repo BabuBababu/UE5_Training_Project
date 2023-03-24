@@ -46,4 +46,5 @@ public:
 public:
 	float _current_time = 0.f;
 	bool  _finish_work = false;
+
 };
