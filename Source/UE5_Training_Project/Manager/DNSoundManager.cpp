@@ -39,7 +39,7 @@ UDNSoundManager::UDNSoundManager()
 	_is_combat = false;
 	_is_bgm_playing_now = false;	//BGM
 	_is_ui_danger_now = false;		//UI
-	_can_play = false;				//실행 가능 여부
+	_can_play = true;				//실행 가능 여부
 }
 
 void UDNSoundManager::initialize()
