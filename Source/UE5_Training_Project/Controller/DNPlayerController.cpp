@@ -136,6 +136,23 @@ void ADNPlayerController::Move(const FInputActionValue& Value)
 	// add movement 
 	GetCharacter()->AddMovementInput(ForwardDirection, MovementVector.Y);
 	GetCharacter()->AddMovementInput(RightDirection, MovementVector.X);
+
+	if (RightDirection.X > 0)
+	{
+		_moving_right = true;
+		_moving_left = false;
+	}
+	else if (RightDirection.X < 0)
+	{
+		_moving_right = false;
+		_moving_left = true;
+	}
+	else
+	{
+		_moving_right = false;
+		_moving_left = false;
+	}
+
 }
 
 

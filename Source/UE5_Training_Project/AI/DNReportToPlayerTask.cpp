@@ -24,6 +24,8 @@
 // AnimInstance
 #include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNLobbyNPCManager.h"
 
 // BlackBaord
 #include "UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h"
@@ -52,7 +54,7 @@ EBTNodeResult::Type UDNReportToPlayerTask::ExecuteTask(UBehaviorTreeComponent& o
 	APawn* self_pawn = controller->GetPawn();
 
 	// 캐릭터
-	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self_pawn);
+	ADNUnEnemyCharacter* self_actor = Cast<ADNUnEnemyCharacter>(self_pawn);
 
 
 	if (self_actor->get_status_component().Get()->_dead)
@@ -72,13 +74,14 @@ EBTNodeResult::Type UDNReportToPlayerTask::ExecuteTask(UBehaviorTreeComponent& o
 	UDNCharacterAnimInstance* anim = Cast<UDNCharacterAnimInstance>(self_actor->_character_skeletal_mesh->GetAnimInstance());
 	if (nullptr != anim)
 	{
+		LOBBY_MANAGER->hide_weapon(self_actor);
 		anim->play_salute_montage();
-		_is_play_animation = true;
+		//_is_play_animation = true;
 	}
 
 
 	// 자막 실행
-
+	// 나는 이렇게 보고 했다요~
 
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Task::Fire"));
 
@@ -89,25 +92,28 @@ void UDNReportToPlayerTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint
 {
 	Super::TickTask(owner_comp_in, NodeMemory_in, DeltaSeconds);
 
-	// 애니메이션 끝났는지 체크
-	if (_is_play_animation)
-	{
-		// 컨트롤러
-		auto controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
-		APawn* self_pawn = controller->GetPawn();
 
-		// 캐릭터
-		ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self_pawn);
-		UDNCharacterAnimInstance* anim = Cast<UDNCharacterAnimInstance>(self_actor->_character_skeletal_mesh->GetAnimInstance());
-		if (nullptr != anim)
+	// 컨트롤러
+	auto controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
+	APawn* self_pawn = controller->GetPawn();
+
+	// 캐릭터
+	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self_pawn);
+	UDNCharacterAnimInstance* anim = Cast<UDNCharacterAnimInstance>(self_actor->_character_skeletal_mesh->GetAnimInstance());
+	if (nullptr != anim)
+	{
+		if (anim->_check_salute_ended)
 		{
-			if (anim->_check_salute_ended)
-			{
-				_is_play_animation = false;
-				anim->_check_salute_ended = false;
-				FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);		// 끝났다면 성공 반환
-			}
+			_is_play_animation = false;
+			anim->_check_salute_ended = false;
+			FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);		// 끝났다면 성공 반환
 		}
 	}
+
+	// 애니메이션 끝났는지 체크
+	/*if (_is_play_animation)
+	{
+		
+	}*/
 	
 }

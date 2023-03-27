@@ -65,4 +65,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
 	E_CHARACTER_SPAWN_LEVEL_TYPE _spawn_level_type = E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_NONE;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Lobby)			//원래 UI에서 설정해줘야하나 우선 테스트를 위해 여기서 설정
+	E_LOBBY_AI_TYPE _lobby_ai_type = E_LOBBY_AI_TYPE::LAT_NONE;
 };

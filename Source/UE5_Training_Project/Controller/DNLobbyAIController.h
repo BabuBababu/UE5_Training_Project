@@ -40,9 +40,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AI)
 	E_LOBBY_AI_TYPE _ai_type = E_LOBBY_AI_TYPE::LAT_NONE;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AI)
-	float _change_time = 600.f;
-
 public:
 	float _current_time = 0.f;
 	bool  _finish_work = false;

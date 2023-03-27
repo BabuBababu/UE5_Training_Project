@@ -123,6 +123,14 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			on_start_sleep_montage_ended();
 	}
 
+	// 기상 재생 체크
+	if (true == _playing_wakeup_montage)
+	{
+		if (false == Montage_IsPlaying(wakeup_montage))
+			on_wakeup_montage_ended();
+	}
+
+
 	//////////////////////////////////////////// 전투 ////////////////////////////////////
 
 	// 나이프 재생 체크
@@ -213,6 +221,21 @@ void UDNCharacterAnimInstance::unlock_cover_animation()
 	_cover_fire_lock = false;
 }
 
+
+void UDNCharacterAnimInstance::calculate_speed_direction(APawn* pawn_in)
+{
+	_speed = pawn_in->GetVelocity().Length();
+
+	_direction = UKismetAnimationLibrary::CalculateDirection(pawn_in->GetVelocity(), pawn_in->GetActorRotation());
+	
+}
+
+
+
+
+
+
+
 void UDNCharacterAnimInstance::play_reload_montage()
 {
 	if (false == _playing_reload_montage)
@@ -229,16 +252,9 @@ void UDNCharacterAnimInstance::play_fire_montage()
 	{
 		Montage_Play(fire_montage);
 	}
-	
+
 }
 
-void UDNCharacterAnimInstance::calculate_speed_direction(APawn* pawn_in)
-{
-	_speed = pawn_in->GetVelocity().Length();
-
-	_direction = UKismetAnimationLibrary::CalculateDirection(pawn_in->GetVelocity(), pawn_in->GetActorRotation());
-	
-}
 
 void UDNCharacterAnimInstance::play_cover_fire_montage()
 {
@@ -371,6 +387,28 @@ void UDNCharacterAnimInstance::play_loop_sleep_montage()
 	}
 }
 
+
+void UDNCharacterAnimInstance::play_wakeup_montage()
+{
+	if (nullptr != wakeup_montage)
+	{
+		if (false == Montage_IsPlaying(wakeup_montage))
+		{
+			Montage_Play(wakeup_montage);
+			_playing_wakeup_montage = true;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
 void UDNCharacterAnimInstance::on_die_montage_ended()
 {
 	_playing_die_montage = false;
@@ -406,4 +444,10 @@ void UDNCharacterAnimInstance::on_start_sleep_montage_ended()
 {
 	_playing_start_sleep_montage = false;
 	_check_start_sleep_ended = true;
+}
+
+void UDNCharacterAnimInstance::on_wakeup_montage_ended()
+{
+	_playing_wakeup_montage = false;
+	_check_wakeup_ended = true;
 }

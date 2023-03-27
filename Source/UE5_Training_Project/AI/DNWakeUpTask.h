@@ -22,4 +22,9 @@ public:
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in);
 	void TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in, float DeltaSeconds);
 
+public:
+	bool	_start_wakeup = false;
+	bool	_is_play_animation = false;
+	float	_rest_left_time = 0.f;
+
 };

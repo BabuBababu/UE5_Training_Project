@@ -9,6 +9,7 @@
 #include "UE5_Training_Project/Manager/DNUIManager.h"
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
 #include "UE5_Training_Project/Manager/DNSoundManager.h"
+#include "UE5_Training_Project/Manager/DNLobbyNPCManager.h"
 
 // generated
 #include "DNGameInstance.generated.h"
@@ -20,6 +21,7 @@
 class UDNUIManager;
 class UDNObjectManager;
 class UDNSoundManager;
+class UDNLobbyNPCManager;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNGameInstance : public UGameInstance
@@ -45,6 +47,9 @@ private:
 
 	UPROPERTY()
 	UDNSoundManager* _sound_manager = nullptr;
+
+	UPROPERTY()
+	UDNLobbyNPCManager* _lobby_npc_manager = nullptr;
 
 	bool _is_initialize;
 };

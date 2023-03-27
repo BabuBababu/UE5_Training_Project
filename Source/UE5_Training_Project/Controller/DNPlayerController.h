@@ -37,25 +37,25 @@ public:
 	ADNPlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 public:
-	void Move(const FInputActionValue& Value);
-	void Sprint(const FInputActionValue& Value);
-	void StopSprint(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
-	void Fire(const FInputActionValue& Value);
-	void StopFire(const FInputActionValue& Value);
-	void Reload(const FInputActionValue& Value);
-	void Jump(const FInputActionValue& Value);
-	void StopJumping(const FInputActionValue& Value);
-	void Armed(const FInputActionValue& Value);
-	void Crouch(const FInputActionValue& Value);
-	void Cover(const FInputActionValue& Value);
-	void Aiming(const FInputActionValue& Value);
-	void Knife(const FInputActionValue& Value);
-	void Throw(const FInputActionValue& Value);
-	void StopAiming(const FInputActionValue& Value);
-	void Interaction(const FInputActionValue& Value);
-	void CameraRotate(const FInputActionValue& Value);
-	void StopCameraRotate(const FInputActionValue& Value);
+	 void Move(const FInputActionValue& Value);
+	 void Sprint(const FInputActionValue& Value);
+	 void StopSprint(const FInputActionValue& Value);
+	 void Look(const FInputActionValue& Value);
+	 void Fire(const FInputActionValue& Value);
+	 void StopFire(const FInputActionValue& Value);
+	 void Reload(const FInputActionValue& Value);
+	 void Jump(const FInputActionValue& Value);
+	 void StopJumping(const FInputActionValue& Value);
+	 void Armed(const FInputActionValue& Value);
+	 void Crouch(const FInputActionValue& Value);
+	 void Cover(const FInputActionValue& Value);
+	 void Aiming(const FInputActionValue& Value);
+	 void Knife(const FInputActionValue& Value);
+	 void Throw(const FInputActionValue& Value);
+	 void StopAiming(const FInputActionValue& Value);
+	 void Interaction(const FInputActionValue& Value);
+	 void CameraRotate(const FInputActionValue& Value);
+	 void StopCameraRotate(const FInputActionValue& Value);
 	
 
 	template<E_INPUT_KEY Key>
@@ -86,6 +86,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Shake")
 	TSubclassOf<UCameraShakeBase> CameraShake;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool		_moving_left;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool		_moving_right;
 
 private:
 	bool		_selected_first;

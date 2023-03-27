@@ -29,6 +29,7 @@
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
+#include "UE5_Training_Project/Manager/DNLobbyNPCManager.h"
 
 
 
@@ -113,11 +114,11 @@ void ADNLobbyAIController::Tick(float DeltaSeconds)
 	if (false == _finish_work)
 	{
 		_current_time += DeltaSeconds;
-		if (_change_time <= _current_time)
+		if (LOBBY_MANAGER->_working_time <= _current_time)
 		{
 			if (true == OBJECT_MANAGER->_lobby_bed_array.IsEmpty())
 				return;
-
+			
 			get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_finish_work, true);			// 일정 시간이 만료되면 일을 끝냈다고 블랙보드에 값을 넣습니다.
 
 			for (auto& bed : OBJECT_MANAGER->_lobby_bed_array)

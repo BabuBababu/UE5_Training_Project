@@ -45,7 +45,8 @@ public:
 	FOnMontageEndDelegate OnKnifeEnd;
 	FOnMontageEndDelegate OnThrowEnd;
 	FOnMontageEndDelegate OnSaluteEnd;
-	FOnMontageEndDelegate OnSleepEnd;
+	FOnMontageEndDelegate OnSleepEnd;			//일단 만들어둠 안쓰는중
+	FOnMontageEndDelegate OnWakeUpEnd;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -65,6 +66,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void on_start_sleep_montage_ended();
+
+	UFUNCTION(BlueprintCallable)
+	void on_wakeup_montage_ended();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -102,6 +106,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void play_loop_sleep_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_wakeup_montage();
+	
 
 	// 밑의 2개는 아직 사용 X
 	UFUNCTION(BlueprintCallable)
@@ -208,6 +216,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Lobby)
 	TObjectPtr<UAnimMontage> loop_sleep_montage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Lobby)
+	TObjectPtr<UAnimMontage> wakeup_montage;
+	
+
 private:
 	bool	_playing_die_montage;
 	bool	_playing_reload_montage;
@@ -228,6 +240,8 @@ public:
 	bool	_playing_start_sleep_montage;
 	bool	_check_start_sleep_ended = false;
 	bool	_playing_loop_sleep_montage;
+	bool	_playing_wakeup_montage;
+	bool	_check_wakeup_ended = false;
 
 private:
 	ADNCommonCharacter* _owner = nullptr;

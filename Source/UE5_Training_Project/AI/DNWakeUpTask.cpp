@@ -29,6 +29,8 @@
 // BlackBaord
 #include "UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNLobbyNPCManager.h"
 
 
 
@@ -54,7 +56,7 @@ EBTNodeResult::Type UDNWakeUpTask::ExecuteTask(UBehaviorTreeComponent& owner_com
 
 
 	// 캐릭터
-	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self_pawn);
+	ADNUnEnemyCharacter* self_actor = Cast<ADNUnEnemyCharacter>(self_pawn);
 
 
 
@@ -63,29 +65,6 @@ EBTNodeResult::Type UDNWakeUpTask::ExecuteTask(UBehaviorTreeComponent& owner_com
 		return EBTNodeResult::Failed;
 	}
 
-	// ToDo
-	//	일정 시간이 있습니다. (피로도라든가 그런거)
-	//  틱 태스크에서 해당 시간을 계속 감소시킵니다.
-	//	해당 시간이 0이 되면 true를 반환합니다. 그전까지 inprogress상태
-	//  반환하면서 캐릭터 스테이트 및 is_sleep을 false로 바꿉니다.
-
-	//// 침대 바라보기 애니메이션 상태에 따라 변경될수있음
-	//UObject* Object = controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::house_bed);
-	//if (nullptr != Object)
-	//{
-	//	AActor* rest_object = Cast<AActor>(Object);
-	//	if (nullptr != rest_object)
-	//		controller->SetFocus(rest_object);
-
-	//}
-
-
-	//// 애니메이션 실행
-	//UDNCharacterAnimInstance* anim = Cast<UDNCharacterAnimInstance>(self_actor->_character_skeletal_mesh->GetAnimInstance());
-	//if (nullptr != anim)
-	//{
-	//	anim->play_start_sleep_montage();
-	//}
 
 
 	return EBTNodeResult::InProgress;
@@ -94,6 +73,74 @@ EBTNodeResult::Type UDNWakeUpTask::ExecuteTask(UBehaviorTreeComponent& owner_com
 void UDNWakeUpTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in, float DeltaSeconds)
 {
 	Super::TickTask(owner_comp_in, NodeMemory_in, DeltaSeconds);
+
+
+	_rest_left_time += DeltaSeconds;
+
+	if (_rest_left_time >= LOBBY_MANAGER->_resting_time)
+	{
+
+		_start_wakeup = true;
+		_rest_left_time = 0.f;
+
+
+		// 일정 시간이 지나면
+		if (_start_wakeup)
+		{
+
+			// 컨트롤러
+			auto controller = Cast<ADNLobbyAIController>(owner_comp_in.GetAIOwner());
+			APawn* self_pawn = controller->GetPawn();
+
+			// 캐릭터
+			ADNUnEnemyCharacter* self_actor = Cast<ADNUnEnemyCharacter>(self_pawn);
+
+			// 침대 포커스 해제
+			controller->ClearFocus(EAIFocusPriority::Gameplay);
+
+			// 애니메이션 실행
+			UDNCharacterAnimInstance* anim = Cast<UDNCharacterAnimInstance>(self_actor->_character_skeletal_mesh->GetAnimInstance());
+			if (nullptr != anim)
+			{
+				LOBBY_MANAGER->show_weapon(self_actor);
+				anim->play_wakeup_montage();
+				_start_wakeup = false;
+			}
+		}
+	}
+
+	
+	// 컨트롤러
+	auto controller = Cast<ADNLobbyAIController>(owner_comp_in.GetAIOwner());
+	APawn* self_pawn = controller->GetPawn();
+
+	// 캐릭터
+	ADNUnEnemyCharacter* self_actor = Cast<ADNUnEnemyCharacter>(self_pawn);
+	UDNCharacterAnimInstance* anim = Cast<UDNCharacterAnimInstance>(self_actor->_character_skeletal_mesh->GetAnimInstance());
+	if (nullptr != anim)
+	{
+		if (anim->_check_wakeup_ended)
+		{
+			_is_play_animation = false;
+			anim->_check_wakeup_ended = false;
+
+			//일어나기로 변경합니다.			
+			controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_sleep, false);
+			controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_finish_work, false);
+			controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+			controller->_finish_work = false;
+
+			// 각자 역할에 맞게 애님인스턴스 재정리
+			if (controller->_ai_type == E_LOBBY_AI_TYPE::LAT_PATROL)
+				self_actor->_character_state = E_CHARACTER_STATE::CS_PATROL;
+			else if (controller->_ai_type == E_LOBBY_AI_TYPE::LAT_GUARD)
+				self_actor->_character_state = E_CHARACTER_STATE::CS_GUARD;
+			else if (controller->_ai_type == E_LOBBY_AI_TYPE::LAT_POST)
+				self_actor->_character_state = E_CHARACTER_STATE::CS_POST;
+
+			FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);		// 끝났다면 성공 반환
+		}
+	}
 
 
 }

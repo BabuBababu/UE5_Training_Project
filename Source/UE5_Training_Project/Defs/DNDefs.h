@@ -66,6 +66,9 @@ enum class E_CHARACTER_STATE : uint8
 	CS_DEAD			UMETA(DisplayName = "Dead"),					//사망
 	CS_SLEEP		UMETA(DisplayName = "Sleep"),					//수면
 	CS_REST			UMETA(DisplayName = "Rest"),					//휴식
+	CS_POST			UMETA(DisplayName = "Post"),					//당직
+	CS_PATROL		UMETA(DisplayName = "Patrol"),					//순찰
+	CS_GUARD		UMETA(DisplayName = "Guard"),					//가드
 	CS_CREATING		UMETA(DisplayName = "Creating"),				//생산중
 
 
@@ -187,6 +190,7 @@ enum class E_MANAGER_TYPE : uint8
 	MT_WIDGET_MANAGER,
 	MT_OBJECT_MANAGER,
 	MT_SOUND_MANAGER,
+	MT_LOBBY_NPC_MANAGER,
 
 	MT_COUNT
 };

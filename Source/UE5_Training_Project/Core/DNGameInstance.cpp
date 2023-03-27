@@ -49,6 +49,14 @@ void UDNGameInstance::Init()
 		UE_LOG(LogTemp, Warning, TEXT("Sound_Manager Initialize Succeed"));
 	}
 	
+	if (nullptr == _lobby_npc_manager)
+	{
+		_lobby_npc_manager = NewObject<UDNLobbyNPCManager>(this, UDNLobbyNPCManager::StaticClass());
+		_lobby_npc_manager->initialize();
+
+		UE_LOG(LogTemp, Warning, TEXT("Lobby_NPC_Manager Initialize Succeed"));
+	}
+
 
 	_is_initialize = true;
 
@@ -78,6 +86,12 @@ void UDNGameInstance::Shutdown()
 	{
 		_sound_manager->destroy();
 		_sound_manager = nullptr;
+	}
+
+	if (_lobby_npc_manager)
+	{
+		_lobby_npc_manager->destroy();
+		_lobby_npc_manager = nullptr;
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("GameInstance Destroy Succeed"));
