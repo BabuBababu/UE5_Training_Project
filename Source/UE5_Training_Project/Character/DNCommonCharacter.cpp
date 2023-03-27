@@ -214,7 +214,7 @@ void ADNCommonCharacter::remove_event()
 }
 
 
-void ADNCommonCharacter::idle()
+void ADNCommonCharacter::idle()		//미사용 함수
 {
 	_character_state = E_CHARACTER_STATE::CS_IDLE;
 
@@ -291,9 +291,6 @@ void ADNCommonCharacter::fire()
 		return;
 
 	if (_is_sprint)				//전력질주할때 사격 안됨
-		return;
-
-	if (false == _is_armed_weapon)	//총을 들고 있지 않으면 사격 안됨
 		return;
 
 	if (_status->get_current_ammo() == 0) //총알이 0발이면 사격 안됨

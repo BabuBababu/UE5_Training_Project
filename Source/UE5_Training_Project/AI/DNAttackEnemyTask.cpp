@@ -29,7 +29,7 @@
 
 UDNAttackEnemyTask::UDNAttackEnemyTask(FObjectInitializer const& object_initializer)
 {
-	NodeName = TEXT("AttackEnemyPosTask");
+	NodeName = TEXT("AttackEnemyTask");
 	bNotifyTick = true;			// 틱 활성화
 }
 
@@ -93,10 +93,6 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 		self_actor->fire();						// 사격
 		self_actor->_is_attacking = true;
 
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Task::Fire"));
-		//if (nullptr != anim)
-		//	anim->OnAttackEnd.AddLambda([self_actor]()->void {self_actor->_is_attacking = false; });		//람다로 델리게이트 추가하는 방법
-
 		return EBTNodeResult::Succeeded;		
 }
 
@@ -104,8 +100,5 @@ void UDNAttackEnemyTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* 
 {
 	Super::TickTask(owner_comp_in, NodeMemory_in, DeltaSeconds);
 
-	//if (!_is_attacking)			//몬스터가 죽거나 뭐 어떤경우에 성공해야할지 고민해봐야함
-	//{
-	//	FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);
-	//}
+
 }

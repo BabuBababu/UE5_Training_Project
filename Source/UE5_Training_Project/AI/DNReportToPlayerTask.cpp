@@ -34,7 +34,7 @@
 
 
 //
-// 플레이어를 바라보고 대화하는 애니메이션 및 자막이 들어가야합니다.
+// 당직부관을 바라보고 대화하는 애니메이션 및 자막이 들어가야합니다.
 // 해당 몽타쥬가 끝났다면 틱에서 체크하고 성공을 반환하도록 합니다.
 //
 
@@ -62,12 +62,11 @@ EBTNodeResult::Type UDNReportToPlayerTask::ExecuteTask(UBehaviorTreeComponent& o
 		return EBTNodeResult::Failed;
 	}
 
-	auto player_controller = Cast<ADNPlayerController>(GetWorld()->GetFirstPlayerController());
-	if (nullptr != player_controller)
+	for (auto& doll : LOBBY_MANAGER->_post_doll_array)
 	{
-		APawn* player_pawn = player_controller->GetPawn();
-		controller->SetFocus(player_pawn);		// 타겟 바라보기
+		controller->SetFocus(doll.Value);		// 타겟 바라보기
 	}
+
 
 
 	// 애니메이션 실행

@@ -221,8 +221,8 @@ public:
 	int64 _target_change_limit_ammo = 10;				// 병과마다 다르게 가야할듯?
 	int64 _target_change_current_ammo = 0;
 
-
-
+	// 로비 캐릭터용 상태 변수
+	E_CHARACTER_STATE _character_origin_state = E_CHARACTER_STATE::CS_NONE;
 
 	// 델리게이트
 public:

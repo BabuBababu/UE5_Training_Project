@@ -89,6 +89,8 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 			UE_LOG(LogTemp, Warning, TEXT("bt Griffin succeeded!"));
 		}
 
+		// 아군 전투AI에서는 항상 IDLE상태
+		character->_character_origin_state = E_CHARACTER_STATE::CS_IDLE;
 
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_HELI)
@@ -101,6 +103,8 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 			UE_LOG(LogTemp, Warning, TEXT("bt Heli succeeded!"));
 		}
 
+		// 아군 전투AI에서는 항상 IDLE상태
+		character->_character_origin_state = E_CHARACTER_STATE::CS_IDLE;
 
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)

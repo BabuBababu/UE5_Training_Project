@@ -13,7 +13,7 @@
 #include "DNLobbyCharacterAnimInstance.generated.h"
 
 /**
- * 
+ *  인형은 사용X
  */
 
 

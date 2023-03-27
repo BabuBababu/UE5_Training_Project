@@ -130,13 +130,8 @@ void UDNWakeUpTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeM
 			controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 			controller->_finish_work = false;
 
-			// 각자 역할에 맞게 애님인스턴스 재정리
-			if (controller->_ai_type == E_LOBBY_AI_TYPE::LAT_PATROL)
-				self_actor->_character_state = E_CHARACTER_STATE::CS_PATROL;
-			else if (controller->_ai_type == E_LOBBY_AI_TYPE::LAT_GUARD)
-				self_actor->_character_state = E_CHARACTER_STATE::CS_GUARD;
-			else if (controller->_ai_type == E_LOBBY_AI_TYPE::LAT_POST)
-				self_actor->_character_state = E_CHARACTER_STATE::CS_POST;
+			self_actor->_character_state = self_actor->_character_origin_state;
+			self_actor->_is_armed_weapon = true;
 
 			FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);		// 끝났다면 성공 반환
 		}

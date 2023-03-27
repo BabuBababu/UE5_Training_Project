@@ -18,8 +18,8 @@ void UDNLobbyNPCManager::initialize()
 	_post_doll_array.Empty();
 	_rest_doll_array.Empty();
 
-	_working_time = 10.f; //테스트용 10초
-	_resting_time = 10.f; //테스트용 10초
+	_working_time = 60.f; //테스트용 60초
+	_resting_time = 30.f; //테스트용 30초
 
 	Super::initialize();
 }
@@ -152,10 +152,21 @@ void UDNLobbyNPCManager::set_off_post(ADNUnEnemyCharacter* doll_in)
 
 void UDNLobbyNPCManager::hide_weapon(ADNUnEnemyCharacter* doll_in)
 {
-	doll_in->change_armed_state_handler(false);
+
+	doll_in->bUseControllerRotationYaw = false;
+	doll_in->_weapon_armed->SetVisibility(false);
+	doll_in->_weapon_un_armed->SetVisibility(true);
+	doll_in->_is_armed_weapon = false;
+	doll_in->_pre_upper_character_state = doll_in->_character_state;
+	doll_in->_character_state = doll_in->_character_origin_state;
 }
 
 void UDNLobbyNPCManager::show_weapon(ADNUnEnemyCharacter* doll_in)
 {
-	doll_in->change_armed_state_handler(true);
+	doll_in->bUseControllerRotationYaw = true;
+	doll_in->_weapon_armed->SetVisibility(true);
+	doll_in->_weapon_un_armed->SetVisibility(false);
+	doll_in->_is_armed_weapon = true;
+	doll_in->_pre_upper_character_state = doll_in->_character_state;
+	doll_in->_character_state = doll_in->_character_origin_state;
 }

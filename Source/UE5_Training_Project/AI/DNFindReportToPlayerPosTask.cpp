@@ -24,10 +24,12 @@
 // BlackBaord
 #include "UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNLobbyNPCManager.h"
 
 
 //
-//	플레이어 근처 임의의 위치를 반환합니다.
+//	당직부관 근처 임의의 위치를 반환합니다.
 //
 //
 
@@ -63,8 +65,16 @@ EBTNodeResult::Type UDNFindReportToPlayerPosTask::ExecuteTask(UBehaviorTreeCompo
 
 
 
-	FVector player_location = player->GetActorLocation();
+	FVector player_location;
 	FNavLocation NextPatrol;
+
+	// 당직부관은 1명으로 할것이지만 추후에 여러명이 될수있으므로 컨테이너에 담았습니다.
+	for (auto& doll : LOBBY_MANAGER->_post_doll_array)
+	{
+		player_location = doll.Value->GetActorLocation();
+	}
+
+	
 
 	if (nullptr == self_actor)
 		return EBTNodeResult::Failed;

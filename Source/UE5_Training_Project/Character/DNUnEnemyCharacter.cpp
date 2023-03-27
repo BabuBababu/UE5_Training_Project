@@ -66,18 +66,33 @@ void ADNUnEnemyCharacter::BeginPlay()
 	// 로비에 생성된 인형이라면
 	if (_spawn_level_type == E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_LOBBY)
 	{
-		change_armed_state_handler(true);
-		
 
 		if (_lobby_ai_type == E_LOBBY_AI_TYPE::LAT_PATROL)
+		{
 			LOBBY_MANAGER->set_on_patrol(this);
+			_character_origin_state = E_CHARACTER_STATE::CS_PATROL;
+		}
 		else if (_lobby_ai_type == E_LOBBY_AI_TYPE::LAT_GUARD)
+		{
 			LOBBY_MANAGER->set_on_guard(this);
+			_character_origin_state = E_CHARACTER_STATE::CS_GUARD;
+		}
 		else if (_lobby_ai_type == E_LOBBY_AI_TYPE::LAT_POST)
+		{
 			LOBBY_MANAGER->set_on_post(this);
-		else if (_lobby_ai_type == E_LOBBY_AI_TYPE::LAT_REST)		
+			_character_origin_state = E_CHARACTER_STATE::CS_POST;
+		}
+		else if (_lobby_ai_type == E_LOBBY_AI_TYPE::LAT_REST)
+		{
 			LOBBY_MANAGER->set_on_rest(this);						// 이 함수는 이후에 사용하면 안됩니다.
+			_character_origin_state = E_CHARACTER_STATE::CS_REST;
+		}
+
+
+		_character_state = _character_origin_state;
+		_is_armed_weapon = true;
 	}
+
 
 }
 

@@ -49,6 +49,7 @@ void ADNLobbyAIController::OnPossess(APawn* pawn_in)
 					btree = BTObject;
 				UE_LOG(LogTemp, Warning, TEXT("bt guard succeeded!"));
 			}
+			
 		}
 		else if (_ai_type == E_LOBBY_AI_TYPE::LAT_PATROL)
 		{
@@ -59,6 +60,7 @@ void ADNLobbyAIController::OnPossess(APawn* pawn_in)
 					btree = BTObject;
 				UE_LOG(LogTemp, Warning, TEXT("bt patrol succeeded!"));
 			}
+			character->_character_origin_state = E_CHARACTER_STATE::CS_PATROL;
 		}
 		else if (_ai_type == E_LOBBY_AI_TYPE::LAT_REST)
 		{
@@ -69,6 +71,7 @@ void ADNLobbyAIController::OnPossess(APawn* pawn_in)
 					btree = BTObject;
 				UE_LOG(LogTemp, Warning, TEXT("bt rest succeeded!"));
 			}
+			character->_character_origin_state = E_CHARACTER_STATE::CS_REST;
 		}
 		else if (_ai_type == E_LOBBY_AI_TYPE::LAT_CITIZEN)
 		{
@@ -79,6 +82,7 @@ void ADNLobbyAIController::OnPossess(APawn* pawn_in)
 					btree = BTObject;
 				UE_LOG(LogTemp, Warning, TEXT("bt citizen succeeded!"));
 			}
+			character->_character_origin_state = E_CHARACTER_STATE::CS_IDLE;
 		}
 		else if (_ai_type == E_LOBBY_AI_TYPE::LAT_POST)
 		{
@@ -89,6 +93,7 @@ void ADNLobbyAIController::OnPossess(APawn* pawn_in)
 					btree = BTObject;
 				UE_LOG(LogTemp, Warning, TEXT("bt post succeeded!"));
 			}
+			character->_character_origin_state = E_CHARACTER_STATE::CS_POST;
 		}
 
 	}
