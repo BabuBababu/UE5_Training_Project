@@ -210,6 +210,9 @@ public:
 	E_CHARACTER_STATE _character_state = E_CHARACTER_STATE::CS_IDLE;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float _back_move_max_walk_speed = 150.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	float _cover_max_walk_speed = 175.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -218,8 +221,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	float _aiming_max_walk_speed = 270.f;
 
+
 protected:
-	float _default_max_speed = 0.f;
 	float _default_acceleration = 0.f;
 	uint8 _position_index;
 	FTimerHandle _fire_timer;
@@ -228,6 +231,8 @@ protected:
 
 
 public:
+	float _default_max_speed = 0.f;
+
 	FRotator _aiming_rotation = FRotator(0.f, 0.f, 0.f);
 	E_CHARACTER_STATE _pre_upper_character_state = E_CHARACTER_STATE::CS_NONE;
 	bool _is_attacking;

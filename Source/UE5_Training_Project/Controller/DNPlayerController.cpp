@@ -145,22 +145,27 @@ void ADNPlayerController::Move(const FInputActionValue& Value)
 	{
 		_owner->_moving_right = true;
 		_owner->_moving_left = false;
-		UE_LOG(LogTemp, Warning, TEXT(" right!!!!!!!!!!!!!!!"));
 	}
 	else if (MovementVector.X < 0)
 	{
 		_owner->_moving_right = false;
 		_owner->_moving_left = true;
 
-		UE_LOG(LogTemp, Warning, TEXT(" left!!!!!!!!!!!!!!!"));
 	}
 	else
 	{
 		_owner->_moving_right = false;
 		_owner->_moving_left = false;
-
-
-		UE_LOG(LogTemp, Warning, TEXT(" no direction!!!!!!!!!!!!!!!"));
+	}
+	
+	// 뒤로 가는 경우 속도 감소
+	if (MovementVector.Y < 0)
+	{
+		_owner->GetCharacterMovement()->MaxWalkSpeed = _owner->_back_move_max_walk_speed;
+	}
+	else
+	{
+		_owner->GetCharacterMovement()->MaxWalkSpeed = _owner->_default_max_speed;
 	}
 
 }
