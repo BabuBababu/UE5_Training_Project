@@ -476,6 +476,8 @@ void ADNCommonCharacter::cover()
 		_cover_now = true;
 		set_default_all_speed(false);
 		
+		// 카메라 줌인
+		set_camera_transform_cover();
 	}
 	else
 	{
@@ -483,6 +485,10 @@ void ADNCommonCharacter::cover()
 		_pre_upper_character_state = _character_state;
 		_cover_now = false;
 		set_default_all_speed(true);
+
+		// 카메라 원상 복구
+		set_camera_transform_origin();
+		
 	}
 }
 
@@ -661,4 +667,25 @@ void ADNCommonCharacter::set_default_all_speed(bool flag_in)
 		GetCharacterMovement()->MaxWalkSpeed = _cover_max_walk_speed;
 		GetCharacterMovement()->MaxAcceleration = _cover_max_acceleration;
 	}
+}
+
+void ADNCommonCharacter::set_camera_transform_origin()
+{
+	// 카메라 원위치 시키기
+	const FVector OriginLocation(50.f, 90.f, 25.f);
+	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
+	const FVector OriginCameraScale(1.f, 1.f, 1.f);
+	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
+	_camera_boom->SetRelativeTransform(OriginCameraTransform);
+}
+
+
+void ADNCommonCharacter::set_camera_transform_cover()
+{
+	// 커버용 카메라 줌인
+	const FVector OriginLocation(100.f, 90.f, 0.f);
+	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
+	const FVector OriginCameraScale(1.f, 1.f, 1.f);
+	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
+	_camera_boom->SetRelativeTransform(OriginCameraTransform);
 }

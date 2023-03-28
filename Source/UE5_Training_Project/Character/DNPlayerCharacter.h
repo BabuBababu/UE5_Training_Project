@@ -57,6 +57,7 @@ public:
 
 private:
 	FTransform set_camera_transform(bool flag_in);
+	FTransform set_cover_camera_transform(bool flag_in);
 
 public:
 	FOnArmDelegate on_armed;

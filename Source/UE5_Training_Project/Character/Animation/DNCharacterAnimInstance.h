@@ -178,6 +178,11 @@ private:
 	bool _input_right;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
+	bool _covered_left;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
+	bool _covered_right;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
 	FVector _actor_location;
 
 	

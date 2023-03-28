@@ -94,6 +94,8 @@ public:
 	FTransform set_camera_transform(bool flag_in);
 
 	void set_default_all_speed(bool flag_in);
+	void set_camera_transform_origin();
+	void set_camera_transform_cover();
 
 public:
 	// 메쉬
@@ -211,7 +213,7 @@ public:
 	float _cover_max_walk_speed = 175.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	float _cover_max_acceleration = 100.f;
+	float _cover_max_acceleration = 150.f;
 
 protected:
 	float _default_max_speed = 0.f;
@@ -227,6 +229,8 @@ public:
 	E_CHARACTER_STATE _pre_upper_character_state = E_CHARACTER_STATE::CS_NONE;
 	bool _is_attacking;
 	bool _cover_now = false;
+	bool _cover_left = false;
+	bool _cover_right = false;
 	bool _is_wall_jump = false;
 	bool _is_knife_overlap = false;
 

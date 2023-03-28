@@ -63,6 +63,8 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	_climbing = _owner->GetMovementComponent()->IsFlying();
 	_input_left = _owner->_moving_left;
 	_input_right = _owner->_moving_right;
+	_covered_left = _owner->_cover_left;
+	_covered_right = _owner->_cover_right;
 
 
 	// 조준할 때 상체 위아래 블렌딩

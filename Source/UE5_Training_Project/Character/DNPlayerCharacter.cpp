@@ -160,14 +160,20 @@ void ADNPlayerCharacter::aiming()
 	Super::aiming();
 
 	_line_trace->OnAiming(this);
-	_camera_boom->SetRelativeTransform(set_camera_transform(true));
+	if(_cover_now)
+		_camera_boom->SetRelativeTransform(set_cover_camera_transform(true));
+	else
+		_camera_boom->SetRelativeTransform(set_camera_transform(true));
 }
 
 void ADNPlayerCharacter::stop_aiming()
 {
 	Super::stop_aiming();
 
-	_camera_boom->SetRelativeTransform(set_camera_transform(false));
+	if (_cover_now)
+		_camera_boom->SetRelativeTransform(set_cover_camera_transform(false));
+	else
+		_camera_boom->SetRelativeTransform(set_camera_transform(false));
 }
 
 void ADNPlayerCharacter::cover()
@@ -193,6 +199,22 @@ FTransform ADNPlayerCharacter::set_camera_transform(bool flag_in)
 	return AimCameraTransform;
 }
 
+FTransform ADNPlayerCharacter::set_cover_camera_transform(bool flag_in)
+{
+	// 카메라와 뷰포트 거리 , 좌우, 높이
+	const FVector OriginLocation(100.f, 90.f, 0.f);
+	const FVector AimCameraLocation(150.f, 90.f, 0.f);
+	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
+	const FVector OriginCameraScale(1.f, 1.f, 1.f);
+
+	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
+	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
+
+	if (true != flag_in)
+		return OriginCameraTransform;
+
+	return AimCameraTransform;
+}
 
 
 
