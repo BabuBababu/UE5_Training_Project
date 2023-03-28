@@ -182,7 +182,10 @@ void ADNPlayerCharacter::stop_aiming()
 	else
 	{
 		_camera_boom->SetRelativeTransform(set_camera_transform(false));
-		GetCharacterMovement()->MaxWalkSpeed = _default_max_speed;
+		if (_is_sprint)
+			GetCharacterMovement()->MaxWalkSpeed = _sprint_max_walk_speed;
+		else
+			GetCharacterMovement()->MaxWalkSpeed = _default_max_speed;
 	}
 
 

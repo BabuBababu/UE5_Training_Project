@@ -165,7 +165,10 @@ void ADNPlayerController::Move(const FInputActionValue& Value)
 	}
 	else
 	{
-		_owner->GetCharacterMovement()->MaxWalkSpeed = _owner->_default_max_speed;
+		if (_owner->_is_sprint)
+			_owner->GetCharacterMovement()->MaxWalkSpeed = _owner->_sprint_max_walk_speed;
+		else
+			_owner->GetCharacterMovement()->MaxWalkSpeed = _owner->_default_max_speed;
 	}
 
 }

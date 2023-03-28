@@ -68,13 +68,9 @@ ADNCommonCharacter::ADNCommonCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	GetCharacterMovement()->MaxWalkSpeed = _default_max_speed;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
-
-
-	_default_max_speed = GetCharacterMovement()->MaxWalkSpeed;
-	_default_acceleration = GetCharacterMovement()->MaxAcceleration;
 
 	// Mesh
 	_back_pack = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BackPack"));
@@ -230,14 +226,14 @@ void ADNCommonCharacter::walk()
 
 void ADNCommonCharacter::sprint()
 {
+	GetCharacterMovement()->MaxWalkSpeed = _sprint_max_walk_speed;
 	_is_sprint = true;
-	GetCharacterMovement()->MaxWalkSpeed = _default_max_speed + 300.f;
 }
 
 void ADNCommonCharacter::stop_sprint()
 {
-	_is_sprint = false;
 	GetCharacterMovement()->MaxWalkSpeed = _default_max_speed;
+	_is_sprint = false;
 }
 
 
