@@ -94,6 +94,11 @@ void ADNPlayerCharacter::fire()
 		// 커버사격 유무
 		if (_cover_now)
 		{
+			// 조준할 때만 공격가능
+			if (false == _is_aiming)
+				return;
+
+
 			OnCoverFire.Broadcast();
 
 			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
@@ -160,7 +165,7 @@ void ADNPlayerCharacter::aiming()
 
 void ADNPlayerCharacter::stop_aiming()
 {
-	Super::aiming();
+	Super::stop_aiming();
 
 	_camera_boom->SetRelativeTransform(set_camera_transform(false));
 }

@@ -61,6 +61,8 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	_firing = _owner->_is_fire;
 	_cover_now = _owner->_cover_now;
 	_climbing = _owner->GetMovementComponent()->IsFlying();
+	_input_left = _owner->_moving_left;
+	_input_right = _owner->_moving_right;
 
 
 	// 조준할 때 상체 위아래 블렌딩

@@ -27,6 +27,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSquadPositionStopDelegate);
 
 class UInputMappingContext;
 class UDNInputConfigData;
+class ADNPlayerCharacter;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNPlayerController : public APlayerController
@@ -86,16 +87,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Shake")
 	TSubclassOf<UCameraShakeBase> CameraShake;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool		_moving_left;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool		_moving_right;
 
 private:
 	bool		_selected_first;
 	int32		_selected_num_first;
 	int32		_selected_num_second;
+
+	ADNPlayerCharacter* _owner;
 
 
 //////////////////////////////////////////////////////////////////////////

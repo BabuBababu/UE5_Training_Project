@@ -39,14 +39,18 @@ ADNPlayerController::ADNPlayerController(const FObjectInitializer& ObjectInitial
 	_selected_first = false;
 	_selected_num_first = -1;
 	_selected_num_second = -1;
+
+	_owner = nullptr;
 }
 
 
 void ADNPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	ADNPlayerCharacter* character = Cast<ADNPlayerCharacter>(GetCharacter());
 
+	if(nullptr != character)
+		_owner = character;
 }
 
 void ADNPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -137,20 +141,26 @@ void ADNPlayerController::Move(const FInputActionValue& Value)
 	GetCharacter()->AddMovementInput(ForwardDirection, MovementVector.Y);
 	GetCharacter()->AddMovementInput(RightDirection, MovementVector.X);
 
-	if (RightDirection.X > 0)
+	if (MovementVector.X > 0)
 	{
-		_moving_right = true;
-		_moving_left = false;
+		_owner->_moving_right = true;
+		_owner->_moving_left = false;
+		UE_LOG(LogTemp, Warning, TEXT(" right!!!!!!!!!!!!!!!"));
 	}
-	else if (RightDirection.X < 0)
+	else if (MovementVector.X < 0)
 	{
-		_moving_right = false;
-		_moving_left = true;
+		_owner->_moving_right = false;
+		_owner->_moving_left = true;
+
+		UE_LOG(LogTemp, Warning, TEXT(" left!!!!!!!!!!!!!!!"));
 	}
 	else
 	{
-		_moving_right = false;
-		_moving_left = false;
+		_owner->_moving_right = false;
+		_owner->_moving_left = false;
+
+
+		UE_LOG(LogTemp, Warning, TEXT(" no direction!!!!!!!!!!!!!!!"));
 	}
 
 }
@@ -158,30 +168,27 @@ void ADNPlayerController::Move(const FInputActionValue& Value)
 
 void ADNPlayerController::Sprint(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
+	
 
-	if (nullptr == character)
+	if (nullptr == _owner)
 		return;
 
-	character->sprint();
-	UE_LOG(LogTemp, Warning, TEXT("Sprint"));
+	_owner->sprint();
 }
 
 void ADNPlayerController::StopSprint(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (nullptr == character)
+	if (nullptr == _owner)
 		return;
 
-	character->stop_sprint();
-	UE_LOG(LogTemp, Warning, TEXT("StopSprint"));
+	_owner->stop_sprint();
+
 }
 
 void ADNPlayerController::Look(const FInputActionValue& Value)
 {
 
-	if (nullptr == GetCharacter())
+	if (nullptr == _owner)
 		return;
 
 	// input is a Vector2D
@@ -190,158 +197,135 @@ void ADNPlayerController::Look(const FInputActionValue& Value)
 	
 
 	// add yaw and pitch input to controller
-	GetCharacter()->AddControllerYawInput(LookAxisVector.X);
-	GetCharacter()->AddControllerPitchInput(LookAxisVector.Y);
+	_owner->AddControllerYawInput(LookAxisVector.X);
+	_owner->AddControllerPitchInput(LookAxisVector.Y);
 }
 
 void ADNPlayerController::Jump(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	if (character->_is_near_wall)
-		character->wall_jump();
+
+	if (_owner->_is_near_wall)
+		_owner->wall_jump();
 	else
-		character->Jump();
-	UE_LOG(LogTemp, Warning, TEXT("Jump"));
+		_owner->Jump();
+
+
 }
 
 void ADNPlayerController::StopJumping(const FInputActionValue& Value)
 {
-	if (nullptr == GetCharacter())
+	if (nullptr == _owner)
 		return;
 
-	GetCharacter()->StopJumping();
-	UE_LOG(LogTemp, Warning, TEXT("StopJumping"));
+	_owner->StopJumping();
+
+
 }
 
 void ADNPlayerController::Fire(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->start_fire();
 
-	UE_LOG(LogTemp, Warning, TEXT("Fire"));
+	_owner->start_fire();
+
 }
 
 void ADNPlayerController::Knife(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->attack_knife();
 
-	UE_LOG(LogTemp, Warning, TEXT("Knife"));
+	_owner->attack_knife();
+
 }
 
 void ADNPlayerController::Throw(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->throw_grenade();
+	_owner->throw_grenade();
 
-	UE_LOG(LogTemp, Warning, TEXT("Throw"));
 }
 
 void ADNPlayerController::StopFire(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->stop_fire();
-	UE_LOG(LogTemp, Warning, TEXT("StopFire"));
+
+	_owner->stop_fire();
+
 }
 
 
 void ADNPlayerController::Reload(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->reload();
-	UE_LOG(LogTemp, Warning, TEXT("Reload"));
+	_owner->reload();
+	
+
 }
 
 void ADNPlayerController::Armed(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->armed();
-	UE_LOG(LogTemp, Warning, TEXT("Armed"));
+	_owner->armed();
+
 }
 
 void ADNPlayerController::Crouch(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->crouch();
-	UE_LOG(LogTemp, Warning, TEXT("Crouch"));
+
+	_owner->crouch();
+
 }
 
 void ADNPlayerController::Cover(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->cover();
-	UE_LOG(LogTemp, Warning, TEXT("Cover"));
+	_owner->cover();
 }
 
 void ADNPlayerController::Aiming(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->aiming();
-	UE_LOG(LogTemp, Warning, TEXT("Aiming"));
+	_owner->aiming();
 }
 
 
 void ADNPlayerController::StopAiming(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->stop_aiming();
-	UE_LOG(LogTemp, Warning, TEXT("StopAiming"));
+	_owner->stop_aiming();
 }
 
 
 void ADNPlayerController::Interaction(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->interaction();
-	UE_LOG(LogTemp, Warning, TEXT("Interaction"));
+	_owner->interaction();
 }
 
 
@@ -349,27 +333,21 @@ void ADNPlayerController::Interaction(const FInputActionValue& Value)
 
 void ADNPlayerController::CameraRotate(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->bUseControllerRotationYaw = false;
+	_owner->bUseControllerRotationYaw = false;
 
-	UE_LOG(LogTemp, Warning, TEXT("CameraRotate"));
 }
 
 
 void ADNPlayerController::StopCameraRotate(const FInputActionValue& Value)
 {
-	ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-	if (character == nullptr)
+	if (nullptr == _owner)
 		return;
 
-	character->bUseControllerRotationYaw = true;
+	_owner->bUseControllerRotationYaw = true;
 
-	UE_LOG(LogTemp, Warning, TEXT("StopCameraRotate"));
 }
 
 template<E_INPUT_KEY Key>
@@ -504,13 +482,11 @@ void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 		if (_selected_num_first == _selected_num_second)			//숫자가 같은거면 개인 명령
 		{
 			//오더할 내용 추가
-			ADNPlayerCharacter* character = dynamic_cast<ADNPlayerCharacter*>(GetCharacter());
-
-			if (character == nullptr)
+			if (nullptr == _owner)
 				return;
 
 			// 키입력 -> 라인트레이스 실행 -> 플레이어에서 해당 명령 실행 -> 다시 인형의 AI컨트롤러에서 실행
-			character->_line_trace->OnOrder(character, OBJECT_MANAGER->_in_squad_doll_array[_selected_num_first]);
+			_owner->_line_trace->OnOrder(_owner, OBJECT_MANAGER->_in_squad_doll_array[_selected_num_first]);
 		}
 
 		UDNSquadPanel* panel = Cast<UDNSquadPanel>(WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_SQUAD));

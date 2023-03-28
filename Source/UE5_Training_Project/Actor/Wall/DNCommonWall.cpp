@@ -74,6 +74,8 @@ void ADNCommonWall::unoverlap_wall_handler(UPrimitiveComponent* OverlappedComp, 
 	character->_is_near_wall = false;
 	character->_cover_now = false;
 
+	character->set_default_all_speed(true);
+
 	if(character->_character_state == E_CHARACTER_STATE::CS_COVER)
 		character->_character_state = E_CHARACTER_STATE::CS_ARM;
 

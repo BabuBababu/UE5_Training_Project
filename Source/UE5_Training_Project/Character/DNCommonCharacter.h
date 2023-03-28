@@ -93,6 +93,8 @@ public:
 
 	FTransform set_camera_transform(bool flag_in);
 
+	void set_default_all_speed(bool flag_in);
+
 public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
@@ -196,13 +198,24 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool _is_armed_weapon;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool		_moving_left;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool		_moving_right;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	E_CHARACTER_STATE _character_state = E_CHARACTER_STATE::CS_IDLE;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float _cover_max_walk_speed = 175.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float _cover_max_acceleration = 100.f;
 
 protected:
-	float _default_max_speed = 0.0f;
+	float _default_max_speed = 0.f;
+	float _default_acceleration = 0.f;
 	uint8 _position_index;
 	FTimerHandle _fire_timer;
 	

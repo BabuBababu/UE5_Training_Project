@@ -69,9 +69,12 @@ ADNCommonCharacter::ADNCommonCharacter()
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
-	_default_max_speed = GetCharacterMovement()->MaxWalkSpeed;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+
+
+	_default_max_speed = GetCharacterMovement()->MaxWalkSpeed;
+	_default_acceleration = GetCharacterMovement()->MaxAcceleration;
 
 	// Mesh
 	_back_pack = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BackPack"));
@@ -282,6 +285,7 @@ void ADNCommonCharacter::reload()
 void ADNCommonCharacter::fire()
 {
 	// 플레이어는 해당 함수를 사용하지 않음
+	// 멋을 위해 AI들은 사격시 _is_aiming 상태, 중지시 off
 	// .075f는 데이터 테이블을 이용하여 캐릭터별로 다르게 설정할 예정
 	//UE_LOG(LogTemp, Warning, TEXT("Doll Name : %s"), *this->GetClass()->GetDefaultObjectName().ToString());
 
@@ -315,7 +319,6 @@ void ADNCommonCharacter::fire()
 	if (_is_fire)
 	{
 		_is_aiming = true;
-		
 		// 커버사격 유무
 		if (_cover_now)
 		{
@@ -359,6 +362,7 @@ void ADNCommonCharacter::fire()
 void ADNCommonCharacter::stop_fire()
 {
 	_is_fire = false;
+	_is_aiming = false;
 	StopFire.Broadcast();
 }
 
@@ -470,12 +474,15 @@ void ADNCommonCharacter::cover()
 		_character_state = E_CHARACTER_STATE::CS_COVER;
 		_pre_upper_character_state = _character_state;
 		_cover_now = true;
+		set_default_all_speed(false);
+		
 	}
 	else
 	{
 		_character_state = E_CHARACTER_STATE::CS_ARM;
 		_pre_upper_character_state = _character_state;
 		_cover_now = false;
+		set_default_all_speed(true);
 	}
 }
 
@@ -639,4 +646,19 @@ void ADNCommonCharacter::throw_grenade_handler()
 	}
 
 
+}
+
+
+void ADNCommonCharacter::set_default_all_speed(bool flag_in)
+{
+	if (flag_in)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = _default_max_speed;
+		GetCharacterMovement()->MaxAcceleration = _default_acceleration;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = _cover_max_walk_speed;
+		GetCharacterMovement()->MaxAcceleration = _cover_max_acceleration;
+	}
 }
