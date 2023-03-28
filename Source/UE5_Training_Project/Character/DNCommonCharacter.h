@@ -215,6 +215,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	float _cover_max_acceleration = 150.f;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float _aiming_max_walk_speed = 270.f;
+
 protected:
 	float _default_max_speed = 0.f;
 	float _default_acceleration = 0.f;

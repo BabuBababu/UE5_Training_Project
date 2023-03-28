@@ -89,16 +89,15 @@ void ADNPlayerCharacter::fire()
 	if (_status->get_current_ammo() == 0) //총알이 0발이면 사격 안됨
 		return;
 
+
+	if (false ==  _is_aiming) //조준하고 있지않으면 사격 안됨
+		return;
+
 	if (_is_fire)
 	{
 		// 커버사격 유무
 		if (_cover_now)
 		{
-			// 조준할 때만 공격가능
-			if (false == _is_aiming)
-				return;
-
-
 			OnCoverFire.Broadcast();
 
 			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
@@ -159,21 +158,34 @@ void ADNPlayerCharacter::aiming()
 {
 	Super::aiming();
 
+	//카메라 시점 및 속도를 변경합니다.
+
 	_line_trace->OnAiming(this);
 	if(_cover_now)
 		_camera_boom->SetRelativeTransform(set_cover_camera_transform(true));
 	else
+	{
 		_camera_boom->SetRelativeTransform(set_camera_transform(true));
+		GetCharacterMovement()->MaxWalkSpeed = _aiming_max_walk_speed;
+	}
+
+
 }
 
 void ADNPlayerCharacter::stop_aiming()
 {
 	Super::stop_aiming();
 
+	
 	if (_cover_now)
 		_camera_boom->SetRelativeTransform(set_cover_camera_transform(false));
 	else
+	{
 		_camera_boom->SetRelativeTransform(set_camera_transform(false));
+		GetCharacterMovement()->MaxWalkSpeed = _default_max_speed;
+	}
+
+
 }
 
 void ADNPlayerCharacter::cover()
@@ -186,7 +198,7 @@ FTransform ADNPlayerCharacter::set_camera_transform(bool flag_in)
 {
 	// 카메라와 뷰포트 거리 , 좌우, 높이
 	const FVector OriginLocation(50.f, 90.f, 25.f);
-	const FVector AimCameraLocation(150.f, 150.f, 50.f);
+	const FVector AimCameraLocation(200.f, 50.f, 0.f);  //150,150,50 : 변경전
 	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
 	const FVector OriginCameraScale(1.f, 1.f, 1.f);
 
@@ -203,7 +215,7 @@ FTransform ADNPlayerCharacter::set_cover_camera_transform(bool flag_in)
 {
 	// 카메라와 뷰포트 거리 , 좌우, 높이
 	const FVector OriginLocation(100.f, 90.f, 0.f);
-	const FVector AimCameraLocation(150.f, 90.f, 0.f);
+	const FVector AimCameraLocation(150.f, 30.f, -15.f);
 	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
 	const FVector OriginCameraScale(1.f, 1.f, 1.f);
 
