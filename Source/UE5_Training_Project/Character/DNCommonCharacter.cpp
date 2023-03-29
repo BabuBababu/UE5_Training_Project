@@ -316,7 +316,8 @@ void ADNCommonCharacter::fire()
 
 	if (_is_fire)
 	{
-		
+		_is_aiming = true;
+
 		// 커버사격 유무
 		if (_cover_now)
 		{
