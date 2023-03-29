@@ -224,6 +224,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> reload_montage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	TObjectPtr<UAnimMontage> reload_high_cover_left_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	TObjectPtr<UAnimMontage> reload_high_cover_right_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	TObjectPtr<UAnimMontage> reload_cover_left_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	TObjectPtr<UAnimMontage> reload_cover_right_montage;
+
 	//////////////////////// 커버 및 벽 //////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> wall_jump_montage;

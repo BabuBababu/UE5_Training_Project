@@ -10,6 +10,9 @@
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 
+// Actor
+#include "UE5_Training_Project/Actor/Wall/DNCommonWall.h"
+
 // Controller
 #include "UE5_Training_Project/Controller/DNPlayerController.h"
 
@@ -101,8 +104,18 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	// 장전 재생 체크
 	if (true == _playing_reload_montage)
 	{
-		if (false == Montage_IsPlaying(reload_montage))
-			on_reload_montage_ended();
+		if (Montage_IsPlaying(reload_montage))
+			return;
+		if (Montage_IsPlaying(reload_high_cover_left_montage))
+			return;
+		if (Montage_IsPlaying(reload_high_cover_right_montage))
+			return;
+		if (Montage_IsPlaying(reload_cover_left_montage))
+			return;
+		if (Montage_IsPlaying(reload_cover_right_montage))
+			return;
+
+		on_reload_montage_ended();
 	}
 
 
@@ -330,10 +343,58 @@ void UDNCharacterAnimInstance::calculate_speed_direction(APawn* pawn_in)
 
 void UDNCharacterAnimInstance::play_reload_montage()
 {
-	if (false == _playing_reload_montage)
+	// 일반 상태
+	if (false == _owner->_cover_now)
 	{
-		Montage_Play(reload_montage);
-		_playing_reload_montage = true;
+		if (false == _playing_reload_montage)
+		{
+			Montage_Play(reload_montage);
+			_playing_reload_montage = true;
+		}
+	}
+	else    //커버 상태
+	{
+		if (_owner->_moving_left)
+		{
+			if (_owner->_near_wall->_wall_type == E_WALL_TYPE::WT_HIGH)
+			{
+				if (false == _playing_reload_montage)
+				{
+					Montage_Play(reload_high_cover_left_montage);
+					_playing_reload_montage = true;
+				}
+			}
+			else
+			{
+				if (false == _playing_reload_montage)
+				{
+					Montage_Play(reload_cover_left_montage);
+					_playing_reload_montage = true;
+				}
+
+				
+			}
+
+		}
+		else
+		{
+			if (_owner->_near_wall->_wall_type == E_WALL_TYPE::WT_LOW)
+			{
+				if (false == _playing_reload_montage)
+				{
+					Montage_Play(reload_cover_right_montage);
+					_playing_reload_montage = true;
+				}
+			}
+			else
+			{
+				if (false == _playing_reload_montage)
+				{
+					Montage_Play(reload_high_cover_right_montage);
+					_playing_reload_montage = true;
+				}
+			}
+		}
 	}
 
 }

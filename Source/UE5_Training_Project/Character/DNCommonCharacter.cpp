@@ -479,6 +479,9 @@ void ADNCommonCharacter::cover()
 	if (false == _is_near_wall)
 		return;
 
+	if (nullptr == _near_wall)
+		return;
+
 	if (false == _cover_now)				//커버
 	{
 		if (_near_wall->_wall_type == E_WALL_TYPE::WT_LOW)
@@ -517,6 +520,9 @@ void ADNCommonCharacter::cover()
 
 void ADNCommonCharacter::set_cover()
 {
+	if (nullptr == _near_wall)
+		return; 
+
 	if (_near_wall->_wall_type == E_WALL_TYPE::WT_LOW)
 		_character_state = E_CHARACTER_STATE::CS_COVER;
 	else if (_near_wall->_wall_type == E_WALL_TYPE::WT_HIGH)
