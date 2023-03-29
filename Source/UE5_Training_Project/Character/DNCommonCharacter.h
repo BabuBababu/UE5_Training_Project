@@ -42,6 +42,7 @@ class UDNPlayerLineTrace;
 class UDNEnemyLineTrace;
 class UDNStatusComponent;
 class ADNCommonGrenade;
+class ADNCommonWall;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNCommonCharacter : public ACharacter
@@ -258,18 +259,29 @@ public:
 	// 로비 캐릭터용 상태 변수
 	E_CHARACTER_STATE _character_origin_state = E_CHARACTER_STATE::CS_NONE;
 
+
+	ADNCommonWall* _near_wall = nullptr;
+
 	// 델리게이트
 public:
 	FOnInputStartDelegate OnFire;
 	FOnInputStartDelegate StopFire;
-	FOnInputStartDelegate OnCoverAiming;	// 이건 버그 때문에 아직 사용 X
+	FOnInputStartDelegate OnReload;
+	FOnKnifeDelegate OnKnife;
+	FOnThrowDelegate OnThrow;
+
+
+	FOnWallJumpDelegate OnWallJump;
 	FOnInputStartDelegate OnIdleToCoverL;
 	FOnInputStartDelegate OnIdleToCoverR;
 	FOnInputStartDelegate OnCoverToIdleL;
 	FOnInputStartDelegate OnCoverToIdleR;
+	FOnInputStartDelegate OnHighIdleToCoverL;
+	FOnInputStartDelegate OnHighIdleToCoverR;
+	FOnInputStartDelegate OnHighCoverToIdleL;
+	FOnInputStartDelegate OnHighCoverToIdleR;
 
-	FOnInputStartDelegate OnReload;
-	FOnWallJumpDelegate OnWallJump;
+
 	FOnIteractionFinishItemDelegate OnItemPickup;
 	FOnIteractionFinishDelegate OnVehicleRiding;
 	FOnIteractionFinishDelegate OnNPCTalk;
@@ -277,8 +289,6 @@ public:
 	FOnAIAmmoDelegate OnStopShotAmmo;
 	FOnStartAIAmmoDelegate OnAtStartAmmo;
 	FOnDeadDelegate OnTargetDead;
-	FOnKnifeDelegate OnKnife;
-	FOnThrowDelegate OnThrow;
 
 	FOnDamageIndicator OnDamageIndicator;
 	FOnDamaged OnDamaged;

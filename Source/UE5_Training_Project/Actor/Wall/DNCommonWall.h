@@ -37,22 +37,27 @@ public:
 	virtual void Tick(float DeltaTime) override;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Collision, meta = (AllowPrivateAccess = "true"))
-		UBoxComponent* _left_box_collision_f;
+	UBoxComponent* _left_box_collision_f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Collision, meta = (AllowPrivateAccess = "true"))
-		UBoxComponent* _right_box_collision_f;
+	UBoxComponent* _right_box_collision_f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Collision, meta = (AllowPrivateAccess = "true"))
-		UBoxComponent* _left_box_collision_b;
+	UBoxComponent* _left_box_collision_b;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Collision, meta = (AllowPrivateAccess = "true"))
-		UBoxComponent* _right_box_collision_b;
+	UBoxComponent* _right_box_collision_b;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Collision, meta = (AllowPrivateAccess = "true"))
+	E_WALL_TYPE _wall_type = E_WALL_TYPE::WT_NONE;
 
 public:
 	FOnWallDelegate		OnOverlapWall;
 	FOnWallDelegate		OffOverlapWall;
 
 
+
+public:
 	UFUNCTION()
 	void overlap_wall_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
 			int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

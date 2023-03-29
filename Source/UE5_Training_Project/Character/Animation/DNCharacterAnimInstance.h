@@ -83,9 +83,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void play_fire_montage();
 
-	/*UFUNCTION(BlueprintCallable)
-	void play_cover_aiming_montage();*/
-
+	////////////////////////////
+	//	커버 및 벽
+	////////////////////////////
 	UFUNCTION(BlueprintCallable)
 	void play_idle_to_cover_left_montage();
 
@@ -98,6 +98,22 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void play_cover_to_idle_right_montage();
 
+
+	UFUNCTION(BlueprintCallable)
+	void play_high_idle_to_cover_left_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_high_idle_to_cover_right_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_high_cover_to_idle_left_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_high_cover_to_idle_right_montage();
+
+	////////////////////////////
+	//	전투
+	////////////////////////////
 	UFUNCTION(BlueprintCallable)
 	void play_knife_montage();
 
@@ -206,9 +222,13 @@ public:
 	TObjectPtr<UAnimMontage> throw_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	TObjectPtr<UAnimMontage> reload_montage;
+
+	//////////////////////// 커버 및 벽 //////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> wall_jump_montage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)		//아직 안씀
 	TObjectPtr<UAnimMontage> cover_aiming_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
@@ -224,8 +244,21 @@ public:
 	TObjectPtr<UAnimMontage> cover_to_idle_right_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
-	TObjectPtr<UAnimMontage> reload_montage;
+	TObjectPtr<UAnimMontage> high_idle_to_cover_left_montage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	TObjectPtr<UAnimMontage> high_idle_to_cover_right_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	TObjectPtr<UAnimMontage> high_cover_to_idle_left_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	TObjectPtr<UAnimMontage> high_cover_to_idle_right_montage;
+
+
+
+
+	////////////////////////// 로비 /////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Lobby)
 	TObjectPtr<UAnimMontage> salute_montage;
 
@@ -242,11 +275,18 @@ public:
 private:
 	bool	_playing_die_montage;
 	bool	_playing_reload_montage;
-	bool	_playing_cover_aiming_montage;
+
+
 	bool	_playing_idle_to_cover_left_montage;
 	bool	_playing_idle_to_cover_right_montage;
 	bool	_playing_cover_to_idle_left_montage;
 	bool	_playing_cover_to_idle_right_montage;
+	bool	_playing_high_idle_to_cover_left_montage;
+	bool	_playing_high_idle_to_cover_right_montage;
+	bool	_playing_high_cover_to_idle_left_montage;
+	bool	_playing_high_cover_to_idle_right_montage;
+
+
 	bool	_cover_fire_lock;
 	bool	_playing_wall_jump_montage;
 	bool	_playing_knife_montage;

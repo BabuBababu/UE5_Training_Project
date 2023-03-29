@@ -210,6 +210,59 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		}
 	}
 
+	if (true == _playing_high_idle_to_cover_left_montage)								// 서있다가 왼쪽 엄폐할 때 
+	{
+		_owner->GetMovementComponent()->Deactivate();
+
+		if (false == Montage_IsPlaying(high_idle_to_cover_left_montage))					//애니메이션 종료시
+		{
+			_owner->GetMovementComponent()->Activate();
+			_playing_high_idle_to_cover_left_montage = false;
+			_owner->set_cover();
+		}
+	}
+
+	if (true == _playing_high_idle_to_cover_right_montage)								// 서있다가 오른쪽 엄폐할 때 
+	{
+		_owner->GetMovementComponent()->Deactivate();
+
+		if (false == Montage_IsPlaying(high_idle_to_cover_right_montage))					//애니메이션 종료시
+		{
+			_owner->GetMovementComponent()->Activate();
+			_playing_high_idle_to_cover_right_montage = false;
+			_owner->set_cover();
+
+
+		}
+	}
+
+	if (true == _playing_high_cover_to_idle_left_montage)								// 오른쪽 엄폐하다가 설 때 
+	{
+		_owner->GetMovementComponent()->Deactivate();
+
+		if (false == Montage_IsPlaying(high_cover_to_idle_left_montage))					//애니메이션 종료시
+		{
+			_owner->GetMovementComponent()->Activate();
+			_playing_high_cover_to_idle_left_montage = false;
+			_owner->set_uncover();
+
+
+		}
+	}
+
+	if (true == _playing_high_cover_to_idle_right_montage)								// 왼쪽 엄폐하다가 설 때 
+	{
+		_owner->GetMovementComponent()->Deactivate();
+
+		if (false == Montage_IsPlaying(high_cover_to_idle_right_montage))					//애니메이션 종료시
+		{
+			_owner->GetMovementComponent()->Activate();
+			_playing_high_cover_to_idle_right_montage = false;
+			_owner->set_uncover();
+
+
+		}
+	}
 
 
 	if (true == _playing_wall_jump_montage)											// 벽 점프
@@ -239,6 +292,10 @@ void UDNCharacterAnimInstance::add_event()
 	_owner->OnIdleToCoverR.AddDynamic(this, &UDNCharacterAnimInstance::play_idle_to_cover_right_montage);
 	_owner->OnCoverToIdleL.AddDynamic(this, &UDNCharacterAnimInstance::play_cover_to_idle_left_montage);
 	_owner->OnCoverToIdleR.AddDynamic(this, &UDNCharacterAnimInstance::play_cover_to_idle_right_montage);
+	_owner->OnHighIdleToCoverL.AddDynamic(this, &UDNCharacterAnimInstance::play_high_idle_to_cover_left_montage);
+	_owner->OnHighIdleToCoverR.AddDynamic(this, &UDNCharacterAnimInstance::play_high_idle_to_cover_right_montage);
+	_owner->OnHighCoverToIdleL.AddDynamic(this, &UDNCharacterAnimInstance::play_high_cover_to_idle_left_montage);
+	_owner->OnHighCoverToIdleR.AddDynamic(this, &UDNCharacterAnimInstance::play_high_cover_to_idle_right_montage);
 	_owner->OnReload.AddDynamic(this, &UDNCharacterAnimInstance::play_reload_montage);
 	_owner->OnWallJump.AddDynamic(this, &UDNCharacterAnimInstance::play_wall_jump_montage);
 	_owner->OnKnife.AddDynamic(this, &UDNCharacterAnimInstance::play_knife_montage);
@@ -325,6 +382,52 @@ void UDNCharacterAnimInstance::play_cover_to_idle_right_montage()
 		_playing_cover_to_idle_right_montage = true;
 	}
 }
+
+
+
+void UDNCharacterAnimInstance::play_high_idle_to_cover_left_montage()
+{
+	if (false == _playing_high_idle_to_cover_left_montage)
+	{
+		Montage_Play(high_idle_to_cover_left_montage);
+		_playing_high_idle_to_cover_left_montage = true;
+	}
+}
+
+
+void UDNCharacterAnimInstance::play_high_idle_to_cover_right_montage()
+{
+	if (false == _playing_high_idle_to_cover_right_montage)
+	{
+		Montage_Play(high_idle_to_cover_right_montage);
+		_playing_high_idle_to_cover_right_montage = true;
+	}
+}
+
+
+
+void UDNCharacterAnimInstance::play_high_cover_to_idle_left_montage()
+{
+	if (false == _playing_high_cover_to_idle_left_montage)
+	{
+		Montage_Play(high_cover_to_idle_left_montage);
+		_playing_high_cover_to_idle_left_montage = true;
+	}
+}
+
+void UDNCharacterAnimInstance::play_high_cover_to_idle_right_montage()
+{
+	if (false == _playing_high_cover_to_idle_right_montage)
+	{
+		Montage_Play(high_cover_to_idle_right_montage);
+		_playing_high_cover_to_idle_right_montage = true;
+	}
+}
+
+
+
+
+
 
 void UDNCharacterAnimInstance::play_wall_jump_montage()
 {

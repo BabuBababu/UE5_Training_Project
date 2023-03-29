@@ -14,6 +14,9 @@
 #include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
 #include "UE5_Training_Project/Component/DNStatusComponent.h"
 
+// Actor
+#include "UE5_Training_Project/Actor/Wall/DNCommonWall.h"
+
 // Manager
 #include "UE5_Training_Project/Manager/DNSoundManager.h"
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
@@ -111,6 +114,13 @@ void ADNPlayerCharacter::fire()
 
 void ADNPlayerCharacter::wall_jump()
 {
+	// 커버중에는 불가능
+	if (_cover_now)
+		return;
+
+	if (_near_wall->_wall_type == E_WALL_TYPE::WT_HIGH)
+		return;
+
 	_is_wall_jump = true;
 	OnWallJump.Broadcast();
 }

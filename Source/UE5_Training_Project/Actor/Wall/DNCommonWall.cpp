@@ -102,6 +102,7 @@ void ADNCommonWall::overlap_wall_handler(class UPrimitiveComponent* selfComp, cl
 
 
 	character->_is_near_wall = true;
+	character->_near_wall = this;
 
 	ADNAIController* ai_controller = Cast<ADNAIController>(character->GetController());
 	if(nullptr != ai_controller)
@@ -123,12 +124,23 @@ void ADNCommonWall::unoverlap_wall_handler(UPrimitiveComponent* OverlappedComp, 
 
 	if (character->_cover_now)
 	{
-		if (character->_moving_left)
-			character->OnCoverToIdleL.Broadcast();
-		else
-			character->OnCoverToIdleR.Broadcast();
-	}
+		if (_wall_type == E_WALL_TYPE::WT_LOW)
+		{
+			if (character->_moving_left)
+				character->OnCoverToIdleL.Broadcast();
+			else
+				character->OnCoverToIdleR.Broadcast();
+		}
+		else if (_wall_type == E_WALL_TYPE::WT_HIGH)
+		{
+			if (character->_moving_left)
+				character->OnHighCoverToIdleL.Broadcast();
+			else
+				character->OnHighCoverToIdleR.Broadcast();
+		}
 
+	}
+	character->_near_wall = nullptr;
 
 	ADNAIController* ai_controller = Cast<ADNAIController>(character->GetController());
 	if (nullptr != ai_controller)

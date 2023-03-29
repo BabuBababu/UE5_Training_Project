@@ -62,7 +62,8 @@ enum class E_CHARACTER_STATE : uint8
 	CS_INTERACTION	UMETA(DisplayName = "Interaction"),				//상호작용
 	CS_AIM			UMETA(DisplayName = "Aimming"),					//조준
 	CS_ARM			UMETA(DisplayName = "Armed"),					//총을 들고 있음
-	CS_COVER		UMETA(DisplayName = "Cover"),					//커버 모드
+	CS_COVER		UMETA(DisplayName = "Cover"),					//커버 모드 (낮은 벽)
+	CS_HIGHCOVER    UMETA(DisplayName = "HighCover"),				//커버 모드 (높은 벽)
 	CS_DEAD			UMETA(DisplayName = "Dead"),					//사망
 	CS_SLEEP		UMETA(DisplayName = "Sleep"),					//수면
 	CS_REST			UMETA(DisplayName = "Rest"),					//휴식
@@ -415,6 +416,19 @@ enum class E_DAMAGE_TYPE : uint8
 
 	DT_COUNT
 };
+
+
+UENUM()
+enum class E_WALL_TYPE : uint8
+{
+	WT_NONE = 0,
+	WT_LOW,			//낮은 벽
+	WT_HIGH,		//높은 벽
+	
+	WT_COUNT
+};
+
+
 
 //////////////////////////////////////////////////////////
 //

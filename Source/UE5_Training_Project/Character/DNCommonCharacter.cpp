@@ -30,6 +30,8 @@
 #include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
 #include "UE5_Training_Project/Actor/Item/DNCommonGrenade.h"
 
+// Actor
+#include "UE5_Training_Project/Actor/Wall/DNCommonWall.h"
 
 // Character
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
@@ -467,6 +469,8 @@ void ADNCommonCharacter::interaction()
 
 }
 
+
+
 void ADNCommonCharacter::cover()
 {
 	if (false == _is_armed_weapon)
@@ -477,23 +481,47 @@ void ADNCommonCharacter::cover()
 
 	if (false == _cover_now)				//커버
 	{
-		if(_moving_left)
-			OnIdleToCoverL.Broadcast();
-		else
-			OnIdleToCoverR.Broadcast();
+		if (_near_wall->_wall_type == E_WALL_TYPE::WT_LOW)
+		{
+			if (_moving_left)
+				OnIdleToCoverL.Broadcast();
+			else
+				OnIdleToCoverR.Broadcast();
+		}
+		else if (_near_wall->_wall_type == E_WALL_TYPE::WT_HIGH)
+		{
+			if (_moving_left)
+				OnHighIdleToCoverL.Broadcast();
+			else
+				OnHighIdleToCoverR.Broadcast();
+		}
 	}
 	else                                    //언커버
 	{
-		if (_moving_left)
-			OnCoverToIdleL.Broadcast();
-		else
-			OnCoverToIdleR.Broadcast();
+		if (_near_wall->_wall_type == E_WALL_TYPE::WT_LOW)
+		{
+			if (_moving_left)
+				OnCoverToIdleL.Broadcast();
+			else
+				OnCoverToIdleR.Broadcast();
+		}
+		else if (_near_wall->_wall_type == E_WALL_TYPE::WT_HIGH)
+		{
+			if (_moving_left)
+				OnHighCoverToIdleL.Broadcast();
+			else
+				OnHighCoverToIdleR.Broadcast();
+		}
 	}
 }
 
 void ADNCommonCharacter::set_cover()
 {
-	_character_state = E_CHARACTER_STATE::CS_COVER;
+	if (_near_wall->_wall_type == E_WALL_TYPE::WT_LOW)
+		_character_state = E_CHARACTER_STATE::CS_COVER;
+	else if (_near_wall->_wall_type == E_WALL_TYPE::WT_HIGH)
+		_character_state = E_CHARACTER_STATE::CS_HIGHCOVER;
+
 	_pre_upper_character_state = _character_state;
 	_cover_now = true;
 	set_default_all_speed(false);
@@ -557,8 +585,13 @@ void ADNCommonCharacter::destroy_object_handler()
 
 void ADNCommonCharacter::return_from_knife_handler()
 {
-	if(_cover_now)
-		_character_state = E_CHARACTER_STATE::CS_COVER;
+	if (_cover_now)
+	{
+		if (_near_wall->_wall_type == E_WALL_TYPE::WT_LOW)
+			_character_state = E_CHARACTER_STATE::CS_COVER;
+		else if (_near_wall->_wall_type == E_WALL_TYPE::WT_HIGH)
+			_character_state = E_CHARACTER_STATE::CS_HIGHCOVER;
+	}
 	else
 		_character_state = E_CHARACTER_STATE::CS_ARM;
 
@@ -596,11 +629,6 @@ void ADNCommonCharacter::return_to_armed_handler()
 		_is_armed_weapon = true;
 		_pre_upper_character_state = _character_state;
 
-		/*
-		if(false == _cover_now)
-			_character_state = E_CHARACTER_STATE::CS_ARM;
-		else
-			_character_state = E_CHARACTER_STATE::CS_COVER;*/
 	}
 }
 
