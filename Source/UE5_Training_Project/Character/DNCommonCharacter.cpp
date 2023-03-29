@@ -314,11 +314,11 @@ void ADNCommonCharacter::fire()
 
 	if (_is_fire)
 	{
-		_is_aiming = true;
+		
 		// 커버사격 유무
 		if (_cover_now)
 		{
-			OnCoverFire.Broadcast();
+			OnFire.Broadcast();
 			_target_change_current_ammo += 1;
 
 			if (IsValid(_fire_soundcue))
@@ -435,7 +435,17 @@ void ADNCommonCharacter::aiming()
 	if (_is_armed_weapon == false)
 		return;
 
+
 	_is_aiming = true;
+
+	//// 엄폐중일 때 조준시 엄폐->조준 애니메이션 종료후 aiming을 true로
+	//// 엄폐가 아니라면 바로 aiming을 true로
+	//if (_cover_now)
+	//{
+	//	OnCoverAiming.Broadcast();
+	//}
+	//else
+	//	_is_aiming = true;
 }
 
 void ADNCommonCharacter::stop_aiming()
@@ -465,28 +475,45 @@ void ADNCommonCharacter::cover()
 	if (false == _is_near_wall)
 		return;
 
-	if (false == _cover_now)
+	if (false == _cover_now)				//커버
 	{
-		_character_state = E_CHARACTER_STATE::CS_COVER;
-		_pre_upper_character_state = _character_state;
-		_cover_now = true;
-		set_default_all_speed(false);
-		
-		// 카메라 줌인
-		set_camera_transform_cover();
+		if(_moving_left)
+			OnIdleToCoverL.Broadcast();
+		else
+			OnIdleToCoverR.Broadcast();
 	}
-	else
+	else                                    //언커버
 	{
-		_character_state = E_CHARACTER_STATE::CS_ARM;
-		_pre_upper_character_state = _character_state;
-		_cover_now = false;
-		set_default_all_speed(true);
-
-		// 카메라 원상 복구
-		set_camera_transform_origin();
-		
+		if (_moving_left)
+			OnCoverToIdleL.Broadcast();
+		else
+			OnCoverToIdleR.Broadcast();
 	}
 }
+
+void ADNCommonCharacter::set_cover()
+{
+	_character_state = E_CHARACTER_STATE::CS_COVER;
+	_pre_upper_character_state = _character_state;
+	_cover_now = true;
+	set_default_all_speed(false);
+
+	// 카메라 줌인
+	set_camera_transform_cover();
+}
+
+
+void ADNCommonCharacter::set_uncover()
+{
+	_character_state = E_CHARACTER_STATE::CS_ARM;
+	_pre_upper_character_state = _character_state;
+	_cover_now = false;
+	set_default_all_speed(true);
+
+	// 카메라 원상 복구
+	set_camera_transform_origin();
+}
+
 
 
 void ADNCommonCharacter::set_idle_animation()

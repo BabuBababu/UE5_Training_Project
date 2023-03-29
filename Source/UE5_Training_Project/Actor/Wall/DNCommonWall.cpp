@@ -120,13 +120,15 @@ void ADNCommonWall::unoverlap_wall_handler(UPrimitiveComponent* OverlappedComp, 
 		return;
 
 	character->_is_near_wall = false;
-	character->_cover_now = false;
 
-	character->set_default_all_speed(true);
-	character->set_camera_transform_origin();
+	if (character->_cover_now)
+	{
+		if (character->_moving_left)
+			character->OnCoverToIdleL.Broadcast();
+		else
+			character->OnCoverToIdleR.Broadcast();
+	}
 
-	if(character->_character_state == E_CHARACTER_STATE::CS_COVER)
-		character->_character_state = E_CHARACTER_STATE::CS_ARM;
 
 	ADNAIController* ai_controller = Cast<ADNAIController>(character->GetController());
 	if (nullptr != ai_controller)

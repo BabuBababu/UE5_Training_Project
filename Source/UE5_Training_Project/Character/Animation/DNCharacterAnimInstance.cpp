@@ -155,18 +155,62 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 
 	// 해당 몽타쥬 재생시 움직임 멈춤
-	if (true == _playing_cover_fire_montage)								// 커버 공격
+	
+	if (true == _playing_idle_to_cover_left_montage)								// 서있다가 왼쪽 엄폐할 때 
 	{
 		_owner->GetMovementComponent()->Deactivate();
 
-		if (false == Montage_IsPlaying(cover_fire_right_montage) &&			//애니메이션 종료시
-			false == Montage_IsPlaying(cover_fire_left_montage))
+		if (false == Montage_IsPlaying(idle_to_cover_left_montage))					//애니메이션 종료시
 		{
 			_owner->GetMovementComponent()->Activate();
-			_playing_cover_fire_montage = false;
-			_cover_fire_lock = true;										//정상 종료됐으므로 락을 걸어줍니다
+			_playing_idle_to_cover_left_montage = false;
+			_owner->set_cover();
 		}
 	}
+
+	if (true == _playing_idle_to_cover_right_montage)								// 서있다가 오른쪽 엄폐할 때 
+	{
+		_owner->GetMovementComponent()->Deactivate();
+
+		if (false == Montage_IsPlaying(idle_to_cover_right_montage))					//애니메이션 종료시
+		{
+			_owner->GetMovementComponent()->Activate();
+			_playing_idle_to_cover_right_montage = false;
+			_owner->set_cover();
+
+
+		}
+	}
+
+	if (true == _playing_cover_to_idle_left_montage)								// 오른쪽 엄폐하다가 설 때 
+	{
+		_owner->GetMovementComponent()->Deactivate();
+
+		if (false == Montage_IsPlaying(cover_to_idle_left_montage))					//애니메이션 종료시
+		{
+			_owner->GetMovementComponent()->Activate();
+			_playing_cover_to_idle_left_montage = false;
+			_owner->set_uncover();
+
+
+		}
+	}
+
+	if (true == _playing_cover_to_idle_right_montage)								// 왼쪽 엄폐하다가 설 때 
+	{
+		_owner->GetMovementComponent()->Deactivate();
+
+		if (false == Montage_IsPlaying(cover_to_idle_right_montage))					//애니메이션 종료시
+		{
+			_owner->GetMovementComponent()->Activate();
+			_playing_cover_to_idle_right_montage = false;
+			_owner->set_uncover();
+
+
+		}
+	}
+
+
 
 	if (true == _playing_wall_jump_montage)											// 벽 점프
 	{
@@ -185,29 +229,16 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		}
 	}
 
-
-
-	// 이건 일단 아직 적용안함
-	if (true == _playing_cover_turn_montage)								// 커버 방향전환
-	{
-		_owner->GetMovementComponent()->Deactivate();
-
-		if (false == Montage_IsPlaying(cover_turn_right_montage) &&			//애니메이션 종료시
-			false == Montage_IsPlaying(cover_turn_left_montage))
-		{
-			_owner->GetMovementComponent()->Activate();
-			_playing_cover_turn_montage = false;
-		}
-	}
-
-
 }
 
 void UDNCharacterAnimInstance::add_event()
 {
 	_owner->OnFire.AddDynamic(this , &UDNCharacterAnimInstance::play_fire_montage);
 	_owner->StopFire.AddDynamic(this, &UDNCharacterAnimInstance::unlock_cover_animation);
-	_owner->OnCoverFire.AddDynamic(this, &UDNCharacterAnimInstance::play_cover_fire_montage);
+	_owner->OnIdleToCoverL.AddDynamic(this, &UDNCharacterAnimInstance::play_idle_to_cover_left_montage);
+	_owner->OnIdleToCoverR.AddDynamic(this, &UDNCharacterAnimInstance::play_idle_to_cover_right_montage);
+	_owner->OnCoverToIdleL.AddDynamic(this, &UDNCharacterAnimInstance::play_cover_to_idle_left_montage);
+	_owner->OnCoverToIdleR.AddDynamic(this, &UDNCharacterAnimInstance::play_cover_to_idle_right_montage);
 	_owner->OnReload.AddDynamic(this, &UDNCharacterAnimInstance::play_reload_montage);
 	_owner->OnWallJump.AddDynamic(this, &UDNCharacterAnimInstance::play_wall_jump_montage);
 	_owner->OnKnife.AddDynamic(this, &UDNCharacterAnimInstance::play_knife_montage);
@@ -252,69 +283,46 @@ void UDNCharacterAnimInstance::play_reload_montage()
 
 void UDNCharacterAnimInstance::play_fire_montage()
 {
-	if (false == _cover_now)
-	{
-		Montage_Play(fire_montage);
-	}
-
+	Montage_Play(fire_montage);
 }
 
 
-void UDNCharacterAnimInstance::play_cover_fire_montage()
+void UDNCharacterAnimInstance::play_idle_to_cover_left_montage()
 {
-
-	if (_cover_now)
+	if (false == _playing_idle_to_cover_left_montage)
 	{
-		if (_cover_fire_lock)
-		{
-			Montage_Play(fire_montage);
-
-			// 하.. 여기선 애니메이션만 처리해야하는데 
-			// 귀찮네...
-
-			_owner->get_status_component()->_current_ammo -= 1;
-			_owner->_line_trace->OnFire(_owner);
-			ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(_owner->GetController());
-			UGameplayStatics::PlaySoundAtLocation(this, _owner->_fire_soundcue, _owner->GetActorLocation());
-			if (controller->get_camera_shake() != nullptr)
-				controller->ClientStartCameraShake(controller->get_camera_shake());
-
-
-			return;
-		}
-
-		if (false == _playing_cover_fire_montage)
-		{
-			Montage_Play(cover_fire_right_montage);
-			_playing_cover_fire_montage = true;
-		}
-	}
-	
-
-	// 일단 하나만 해보자
-	/*if (false == cover_fire_left_montage)
-	{
-		Montage_Play(cover_fire_left_montage);
-		_playing_cover_fire_montage = true;
-	}*/
-}
-
-
-void UDNCharacterAnimInstance::play_cover_turn_left_montage()
-{
-	if (nullptr != cover_turn_left_montage)
-	{
-		Montage_Play(cover_turn_left_montage);
-		_playing_cover_turn_montage = true;
+		Montage_Play(idle_to_cover_left_montage);
+		_playing_idle_to_cover_left_montage = true;
 	}
 }
 
-void UDNCharacterAnimInstance::play_cover_turn_right_montage()
+
+void UDNCharacterAnimInstance::play_idle_to_cover_right_montage()
 {
-	if (nullptr != cover_turn_right_montage)
+	if (false == _playing_idle_to_cover_right_montage)
 	{
-		Montage_Play(cover_turn_right_montage);
-		_playing_cover_turn_montage = true;
+		Montage_Play(idle_to_cover_right_montage);
+		_playing_idle_to_cover_right_montage = true;
+	}
+}
+
+
+
+void UDNCharacterAnimInstance::play_cover_to_idle_left_montage()
+{
+	if (false == _playing_cover_to_idle_left_montage)
+	{
+		Montage_Play(cover_to_idle_left_montage);
+		_playing_cover_to_idle_left_montage = true;
+	}
+}
+
+void UDNCharacterAnimInstance::play_cover_to_idle_right_montage()
+{
+	if (false == _playing_cover_to_idle_right_montage)
+	{
+		Montage_Play(cover_to_idle_right_montage);
+		_playing_cover_to_idle_right_montage = true;
 	}
 }
 

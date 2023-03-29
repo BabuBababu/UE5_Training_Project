@@ -95,25 +95,15 @@ void ADNPlayerCharacter::fire()
 
 	if (_is_fire)
 	{
-		// 커버사격 유무
-		if (_cover_now)
-		{
-			OnCoverFire.Broadcast();
+		_line_trace->OnFire(this);
+		OnFire.Broadcast();
+		ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
+		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
+		if (controller->get_camera_shake() != nullptr)
+			controller->ClientStartCameraShake(controller->get_camera_shake());
 
-			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
-		}
-		else
-		{
-			_line_trace->OnFire(this);
-			OnFire.Broadcast();
-			ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
-			UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
-			if (controller->get_camera_shake() != nullptr)
-				controller->ClientStartCameraShake(controller->get_camera_shake());
-
-			GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Fire"));
-		}
+		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Fire"));
 
 	}
 

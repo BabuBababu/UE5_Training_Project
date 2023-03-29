@@ -83,8 +83,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void play_fire_montage();
 
+	/*UFUNCTION(BlueprintCallable)
+	void play_cover_aiming_montage();*/
+
 	UFUNCTION(BlueprintCallable)
-	void play_cover_fire_montage();
+	void play_idle_to_cover_left_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_idle_to_cover_right_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_cover_to_idle_left_montage();
+
+	UFUNCTION(BlueprintCallable)
+	void play_cover_to_idle_right_montage();
 
 	UFUNCTION(BlueprintCallable)
 	void play_knife_montage();
@@ -110,13 +122,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void play_wakeup_montage();
 	
-
-	// 밑의 2개는 아직 사용 X
-	UFUNCTION(BlueprintCallable)
-	void play_cover_turn_left_montage();
-
-	UFUNCTION(BlueprintCallable)
-	void play_cover_turn_right_montage();
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = MyInstance, meta = (AllowPrivateAccess = "true"))
@@ -204,16 +209,19 @@ public:
 	TObjectPtr<UAnimMontage> wall_jump_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
-	TObjectPtr<UAnimMontage> cover_fire_left_montage;
+	TObjectPtr<UAnimMontage> cover_aiming_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
-	TObjectPtr<UAnimMontage> cover_fire_right_montage;
+	TObjectPtr<UAnimMontage> idle_to_cover_left_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
-	TObjectPtr<UAnimMontage> cover_turn_left_montage;
+	TObjectPtr<UAnimMontage> idle_to_cover_right_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
-	TObjectPtr<UAnimMontage> cover_turn_right_montage;
+	TObjectPtr<UAnimMontage> cover_to_idle_left_montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
+	TObjectPtr<UAnimMontage> cover_to_idle_right_montage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Battle)
 	TObjectPtr<UAnimMontage> reload_montage;
@@ -234,9 +242,12 @@ public:
 private:
 	bool	_playing_die_montage;
 	bool	_playing_reload_montage;
-	bool	_playing_cover_fire_montage;
+	bool	_playing_cover_aiming_montage;
+	bool	_playing_idle_to_cover_left_montage;
+	bool	_playing_idle_to_cover_right_montage;
+	bool	_playing_cover_to_idle_left_montage;
+	bool	_playing_cover_to_idle_right_montage;
 	bool	_cover_fire_lock;
-	bool	_playing_cover_turn_montage;
 	bool	_playing_wall_jump_montage;
 	bool	_playing_knife_montage;
 	bool	_playing_throw_montage;

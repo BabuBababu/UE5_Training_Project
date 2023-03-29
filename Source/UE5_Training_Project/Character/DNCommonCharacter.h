@@ -97,6 +97,9 @@ public:
 	void set_camera_transform_origin();
 	void set_camera_transform_cover();
 
+	void set_cover();
+	void set_uncover();
+
 public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
@@ -259,7 +262,12 @@ public:
 public:
 	FOnInputStartDelegate OnFire;
 	FOnInputStartDelegate StopFire;
-	FOnInputStartDelegate OnCoverFire;
+	FOnInputStartDelegate OnCoverAiming;	// 이건 버그 때문에 아직 사용 X
+	FOnInputStartDelegate OnIdleToCoverL;
+	FOnInputStartDelegate OnIdleToCoverR;
+	FOnInputStartDelegate OnCoverToIdleL;
+	FOnInputStartDelegate OnCoverToIdleR;
+
 	FOnInputStartDelegate OnReload;
 	FOnWallJumpDelegate OnWallJump;
 	FOnIteractionFinishItemDelegate OnItemPickup;
