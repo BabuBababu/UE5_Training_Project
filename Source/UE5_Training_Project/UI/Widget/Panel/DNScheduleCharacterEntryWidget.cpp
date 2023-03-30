@@ -19,7 +19,7 @@
 void UDNScheduleCharacterEntryWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	UDNStatusComponent* status = Cast<UDNStatusComponent>(ListItemObject);
-	if (nullptr == status)
+	if (nullptr != status)
 	{
 
 		if (IsValid(umg_character_button))
