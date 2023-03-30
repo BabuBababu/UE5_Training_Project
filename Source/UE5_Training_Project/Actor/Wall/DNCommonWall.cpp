@@ -6,6 +6,7 @@
 // Engine
 #include <Components/BoxComponent.h>
 #include <BehaviorTree/BlackboardComponent.h>
+#include <Components/CapsuleComponent.h>
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
@@ -102,7 +103,8 @@ void ADNCommonWall::overlap_wall_handler(class UPrimitiveComponent* selfComp, cl
 
 
 	character->_is_near_wall = true;
-	character->_near_wall = this;
+	if(nullptr == character->_near_wall)			// 엄폐한 벽이 없다면 넣어주고 이미 벽이 있는데 옆 벽이랑 겹친것이라면 그냥 그대로 둡니다.
+		character->_near_wall = this;
 
 	ADNAIController* ai_controller = Cast<ADNAIController>(character->GetController());
 	if(nullptr != ai_controller)
@@ -155,22 +157,51 @@ void ADNCommonWall::overlap_left_collision_handler(class UPrimitiveComponent* se
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(otherActor);
+	UCapsuleComponent* capsule = Cast<UCapsuleComponent>(otherComp);
 
 	if (nullptr == character)
 		return;
 
-	character->_cover_left = true;
+	if (nullptr == capsule)
+		return;
+
+
+	if (nullptr != character->GetCapsuleComponent())
+	{
+		if (capsule == character->GetCapsuleComponent())
+		{
+			if (character->_near_wall == this)			// 캐릭터에 초기화된 벽과 이 벽이 같다면 적용합니다. 다른 벽에 의해 오버라이드되는것을 막습니다.
+			{
+				character->_cover_left = true;
+			}
+		}
+	}
+
 }
 
 
 void ADNCommonWall::unoverlap_left_collision_handler(UPrimitiveComponent* OverlappedComp, AActor* otherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(otherActor);
+	UCapsuleComponent* capsule = Cast<UCapsuleComponent>(OtherComp);
 
 	if (nullptr == character)
 		return;
 
-	character->_cover_left = false;
+	if (nullptr == capsule)
+		return;
+
+
+	if (nullptr != character->GetCapsuleComponent())
+	{
+		if (capsule == character->GetCapsuleComponent())
+		{
+			if (character->_near_wall == this)			// 캐릭터에 초기화된 벽과 이 벽이 같다면 적용합니다. 다른 벽에 의해 오버라이드되는것을 막습니다.
+			{
+				character->_cover_left = false;
+			}
+		}
+	}
 }
 
 
@@ -178,20 +209,49 @@ void ADNCommonWall::overlap_right_collision_handler(class UPrimitiveComponent* s
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(otherActor);
+	UCapsuleComponent* capsule = Cast<UCapsuleComponent>(otherComp);
 
 	if (nullptr == character)
 		return;
 
-	character->_cover_right = true;
+	if (nullptr == capsule)
+		return;
+
+
+	if (nullptr != character->GetCapsuleComponent())
+	{
+		if (capsule == character->GetCapsuleComponent())
+		{
+			if (character->_near_wall == this)			// 캐릭터에 초기화된 벽과 이 벽이 같다면 적용합니다. 다른 벽에 의해 오버라이드되는것을 막습니다.
+			{
+				character->_cover_right = true;
+			}
+		}
+	}
 }
 
 
 void ADNCommonWall::unoverlap_right_collision_handler(UPrimitiveComponent* OverlappedComp, AActor* otherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(otherActor);
+	UCapsuleComponent* capsule = Cast<UCapsuleComponent>(OtherComp);
 
 	if (nullptr == character)
 		return;
 
-	character->_cover_right = false;
+	if (nullptr == capsule)
+		return;
+
+
+	if (nullptr != character->GetCapsuleComponent())
+	{
+		if (capsule == character->GetCapsuleComponent())
+		{
+			if (character->_near_wall == this)			// 캐릭터에 초기화된 벽과 이 벽이 같다면 적용합니다. 다른 벽에 의해 오버라이드되는것을 막습니다.
+			{
+				character->_cover_right = false;
+			}
+		}
+	}
+	
 }

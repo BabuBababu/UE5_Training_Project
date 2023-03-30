@@ -92,9 +92,17 @@ void ADNPlayerCharacter::fire()
 	if (_status->get_current_ammo() == 0) //총알이 0발이면 사격 안됨
 		return;
 
-
 	if (false ==  _is_aiming) //조준하고 있지않으면 사격 안됨
 		return;
+
+	if (nullptr != _near_wall)
+	{
+		if (_near_wall->_wall_type == E_WALL_TYPE::WT_HIGH)	//높은벽에 엄폐할 때 좌우가 아니면 사격 안됨
+		{
+			if (false == _cover_left && false == _cover_right)
+				return;
+		}
+	}
 
 	if (_is_fire)
 	{
@@ -161,8 +169,12 @@ void ADNPlayerCharacter::aiming()
 	//카메라 시점 및 속도를 변경합니다.
 
 	_line_trace->OnAiming(this);
-	if(_cover_now)
+	if (_cover_now)
+	{
+		
 		_camera_boom->SetRelativeTransform(set_cover_camera_transform(true));
+
+	}
 	else
 	{
 		_camera_boom->SetRelativeTransform(set_camera_transform(true));
