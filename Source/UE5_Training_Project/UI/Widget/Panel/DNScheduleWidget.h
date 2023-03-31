@@ -6,7 +6,7 @@
 #include <CoreMinimal.h>
 
 // Base
-#include "UE5_Training_Project/UI/Base/DNBaseWidget.h"
+#include "UE5_Training_Project/UI/Base/DNBaseContent.h"
 
 // Generated
 #include "DNScheduleWidget.generated.h"
@@ -21,7 +21,7 @@ class UEditableTextBox;
 class UButton;
 
 UCLASS()
-class UE5_TRAINING_PROJECT_API UDNScheduleWidget : public UDNBaseWidget
+class UE5_TRAINING_PROJECT_API UDNScheduleWidget : public UDNBaseContent
 {
 	GENERATED_BODY()
 
@@ -30,6 +30,10 @@ protected:
 	void NativeDestruct() override;
 	void add_event() override;
 	void remove_event() override;
+
+
+public:
+	TObjectPtr<UDNScheduleList> get_schedule_list() const { return umg_schedule_list; };
 
 private:
 	UPROPERTY()

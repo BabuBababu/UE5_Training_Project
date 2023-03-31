@@ -6,8 +6,12 @@
 // Button
 #include "UE5_Training_Project/UI/Component/Button/DNCharacterButton.h"
 
+// Content
+#include "UE5_Training_Project/UI/Widget/Panel/DNScheduleWidget.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNScheduleList.h"
+
 // Manager
-#include "UE5_Training_Project/Manager/DNObjectManager.h"
+#include "UE5_Training_Project/UI/Manager/DNWidgetManager.h"
 
 // Character
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
@@ -51,6 +55,23 @@ void UDNScheduleCharacterEntryWidget::NativeOnListItemObjectSet(UObject* ListIte
 			FString rate = FString::FromInt(status->_chartacter_data->character_mental_data.positiveness);
 			umg_positiveness_text->SetText(FText::FromString(rate));
 		}
+
+
+
+
+		// 버튼 델리게이트 추가해줍니다.
+		UDNBaseContent * content  = WIDGET_MANAGER->get_content(E_UI_CONTENT_TYPE::UCT_WORK);
+		if (IsValid(content))
+		{
+			UDNScheduleWidget* widget = Cast<UDNScheduleWidget>(content);
+
+			if (nullptr != widget)
+			{
+				if(widget->get_schedule_list())
+					umg_character_button->OnClickCharacterDataButton.AddDynamic(widget->get_schedule_list(), &UDNScheduleList::store_data_handler);
+			}
+		}
+
 	}
 
 }

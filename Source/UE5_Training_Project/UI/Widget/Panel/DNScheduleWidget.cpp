@@ -3,11 +3,9 @@
 
 #include "UE5_Training_Project/UI/Widget/Panel/DNScheduleWidget.h"
 
-// Engine
-//#include <Components/ListView.h>
-
 // Character
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
+#include "UE5_Training_Project/Character/DNCommonCharacter.h"
 
 // Component
 #include "UE5_Training_Project/Component/DNStatusComponent.h"
@@ -15,6 +13,11 @@
 // Panel
 #include "UE5_Training_Project/UI/Widget/Panel/DNScheduleList.h"
 #include "UE5_Training_Project/UI/Widget/Panel/DNScheduleCharacterEntryWidget.h"
+
+// Button
+#include "UE5_Training_Project/UI/Component/Button/DNScheduleCharacterButton.h"
+#include "UE5_Training_Project/UI/Component/Button/DNCharacterButton.h"
+
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
@@ -29,17 +32,31 @@
 
 void UDNScheduleWidget::NativeConstruct()
 {
-	Super::NativeConstruct();
+
+	set_content_type(E_UI_CONTENT_TYPE::UCT_WORK);
 
 	if (IsValid(umg_character_list_view))
 	{
 
-		for (auto& doll : OBJECT_MANAGER->_in_squad_doll_array)
+		for (auto& actor : OBJECT_MANAGER->_griffin_player_array)
 		{
-			if(nullptr != doll.Value)
-				umg_character_list_view->AddItem(doll.Value->_status);
+			ADNCommonCharacter* character = Cast<ADNCommonCharacter>(actor);
+			if (nullptr != character)
+			{
+				if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)			//인형들만 다 집어넣습니다.
+				{
+					umg_character_list_view->AddItem(character->_status);
+				}
+			}
+			
 		}
 	}
+
+
+	Super::NativeConstruct();
+
+	
+
 }
 
 void UDNScheduleWidget::NativeDestruct()
@@ -50,6 +67,7 @@ void UDNScheduleWidget::NativeDestruct()
 void UDNScheduleWidget::add_event()
 {
 	Super::add_event();
+
 }
 
 void UDNScheduleWidget::remove_event()

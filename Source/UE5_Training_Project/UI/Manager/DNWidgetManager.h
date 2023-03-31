@@ -20,6 +20,7 @@
 
 
 class UDNBasePanel;
+class UDNBaseContent;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNWidgetManager : public UDNBaseManager
@@ -59,6 +60,24 @@ public:
 
 
 	// 컨텐츠
+
+private:
+	UPROPERTY()
+		TMap<E_UI_CONTENT_TYPE, UDNBaseContent*> _content_array;
+
+private:
+	void clear_content_data();
+
+public:
+	void add_content(UDNBaseContent* content_in);
+
+	void remove_content(UDNBaseContent* content_in);
+	void remove_content(E_UI_CONTENT_TYPE content_type_in);
+
+	void open_content(E_UI_CONTENT_TYPE content_type_in);
+	void close_content(E_UI_CONTENT_TYPE content_type_in);
+
+	UDNBaseContent* get_content(E_UI_CONTENT_TYPE content_type_in) const;
 
 	// 팝업
 

@@ -71,6 +71,18 @@ void UDNLobbyNPCManager::set_on_guard(ADNUnEnemyCharacter* doll_in)
 		if (doll.Value == doll_in)
 			_rest_doll_array.Remove(doll.Key);
 	}
+	// 당직 근무에서 제거
+	for (auto& doll : _post_doll_array)
+	{
+		if (doll.Value == doll_in)
+			_post_doll_array.Remove(doll.Key);
+	}
+	// 순찰 근무에서 제거
+	for (auto& doll : _patrol_doll_array)
+	{
+		if (doll.Value == doll_in)
+			_patrol_doll_array.Remove(doll.Key);
+	}
 }
 
 void UDNLobbyNPCManager::set_on_patrol(ADNUnEnemyCharacter* doll_in)
@@ -87,6 +99,19 @@ void UDNLobbyNPCManager::set_on_patrol(ADNUnEnemyCharacter* doll_in)
 		if (doll.Value == doll_in)
 			_rest_doll_array.Remove(doll.Key);
 	}
+
+	// 당직 근무에서 제거
+	for (auto& doll : _post_doll_array)
+	{
+		if (doll.Value == doll_in)
+			_post_doll_array.Remove(doll.Key);
+	}
+	// 입초 근무에서 제거
+	for (auto& doll : _guard_doll_array)
+	{
+		if (doll.Value == doll_in)
+			_guard_doll_array.Remove(doll.Key);
+	}
 }
 
 void UDNLobbyNPCManager::set_on_post(ADNUnEnemyCharacter* doll_in)
@@ -102,6 +127,18 @@ void UDNLobbyNPCManager::set_on_post(ADNUnEnemyCharacter* doll_in)
 	{
 		if (doll.Value == doll_in)
 			_rest_doll_array.Remove(doll.Key);
+	}
+	// 순찰 근무에서 제거
+	for (auto& doll : _patrol_doll_array)
+	{
+		if (doll.Value == doll_in)
+			_patrol_doll_array.Remove(doll.Key);
+	}
+	// 입초 근무에서 제거
+	for (auto& doll : _guard_doll_array)
+	{
+		if (doll.Value == doll_in)
+			_guard_doll_array.Remove(doll.Key);
 	}
 }
 

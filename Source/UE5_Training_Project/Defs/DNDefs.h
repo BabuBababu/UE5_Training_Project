@@ -300,6 +300,15 @@ enum class E_UI_PANEL_TYPE
 
 
 UENUM()
+enum class E_UI_CONTENT_TYPE
+{
+	UCT_NONE,
+
+	UCT_WORK,					// 근무
+};
+
+
+UENUM()
 enum class E_UI_WIDGET_TYPE
 {
 	UWT_NONE

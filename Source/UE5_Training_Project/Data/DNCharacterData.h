@@ -81,7 +81,21 @@ public:
 		return *this;
 	}
 
-
+	void reset()
+	{
+		hp = 0;
+		damage = 0;
+		armor = 0;
+		max_ammo = 0;
+		reload_speed = 0;
+		fire_speed = 0;
+		mos = E_CHARACTER_MOS::CM_NONE;
+		recommend_position = E_CHARACTER_POSITION::CP_NONE;
+		grade = E_CHARACTER_GRADE::CG_NONE;
+		hp_up = 0;
+		damage_up = 0;
+		armor_up = 0;
+	}
 };
 
 
@@ -112,6 +126,14 @@ public:
 		friendship = data.friendship;
 
 		return *this;
+	}
+
+	void reset()
+	{
+		composure = 0;
+		positiveness = 0;
+		morality = 0;
+		friendship = 0;
 	}
 };
 
@@ -238,7 +260,7 @@ struct FDNCharacterData : public FTableRowBase
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	int64							character_id = 0;												// 캐릭터 ID
+	int64							character_id = -1;												// 캐릭터 ID
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
 	FString							character_name = TEXT("");										// 캐릭터 이름
@@ -274,6 +296,18 @@ public:
 
 
 		return *this;
+	}
+
+	void reset()
+	{
+		character_id = -1;
+		character_name = TEXT("");
+		character_status_data.reset();
+		character_mental_data.reset();
+		character_main_image_path = TEXT("");
+		character_dead_image_path = TEXT("");
+		character_portrait_image_path = TEXT("/Game/Assets/Image/GirlsFrontLineImage/default.default");
+
 	}
 };
 

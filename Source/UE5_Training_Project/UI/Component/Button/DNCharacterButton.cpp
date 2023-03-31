@@ -19,16 +19,23 @@ void UDNCharacterButton::NativeDestruct()
 void UDNCharacterButton::add_event()
 {
 	Super::add_event();
+
+	if (IsValid(umg_button))
+		umg_button->OnClicked.AddDynamic(this, &UDNCharacterButton::click_button_handler);
 }
 
 void UDNCharacterButton::remove_event()
 {
+
+	if (IsValid(umg_button))
+		umg_button->OnClicked.RemoveDynamic(this, &UDNCharacterButton::click_button_handler);
+
 	Super::remove_event();
 }
 
 void UDNCharacterButton::init()
 {
-	if (nullptr == _character_data)
+	if (_character_data->character_id == -1)
 		return;
 
 	set_character_texture();
@@ -57,4 +64,11 @@ void UDNCharacterButton::set_character_text()
 	{
 		umg_character_text->SetText(FText::FromString(_character_data->character_name));
 	}
+}
+
+
+void UDNCharacterButton::click_button_handler()
+{
+	OnClickCharacterDataButton.Broadcast(*_character_data);
+	OnClickCharacterButton.Broadcast();
 }

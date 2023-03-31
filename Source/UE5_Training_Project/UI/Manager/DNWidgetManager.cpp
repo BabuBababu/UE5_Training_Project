@@ -6,6 +6,8 @@
 // Panel
 #include "UE5_Training_Project/UI/Base/DNBasePanel.h"
 
+// Content
+#include "UE5_Training_Project/UI/Base/DNBaseContent.h"
 
 
 void UDNWidgetManager::initialize()
@@ -87,5 +89,72 @@ void UDNWidgetManager::close_panel(E_UI_PANEL_TYPE panel_type_in)
 	if (nullptr != panel)
 	{
 		panel->SetVisibility(ESlateVisibility::Collapsed);
+	}
+}
+
+
+///////////////////////////////////////////////////////
+// 컨텐츠
+///////////////////////////////////////////////////////
+
+void UDNWidgetManager::clear_content_data()
+{
+	_content_array.Empty();
+}
+
+void UDNWidgetManager::add_content(UDNBaseContent* content_in)
+{
+	UDNBaseContent* content = get_content(content_in->get_content_type());
+	if (nullptr == content)
+	{
+		if (content_in->get_content_type() != E_UI_CONTENT_TYPE::UCT_NONE)
+		{
+			_content_array.Emplace(content_in->get_content_type(), content_in);
+		}
+	}
+}
+
+void UDNWidgetManager::remove_content(UDNBaseContent* content_type_in)
+{
+	UDNBaseContent* content = get_content(content_type_in->get_content_type());
+	if (nullptr != content)
+	{
+		_content_array.Remove(content_type_in->get_content_type());
+	}
+}
+
+void UDNWidgetManager::remove_content(E_UI_CONTENT_TYPE content_type_in)
+{
+	UDNBaseContent* panel = get_content(content_type_in);
+	if (nullptr != panel)
+	{
+		_content_array.Remove(content_type_in);
+	}
+}
+
+UDNBaseContent* UDNWidgetManager::get_content(E_UI_CONTENT_TYPE content_type_in) const
+{
+	if (_content_array.IsEmpty())
+		return nullptr;
+
+	UDNBaseContent* return_content = _content_array.FindRef(content_type_in);
+	return return_content;
+}
+
+void UDNWidgetManager::open_content(E_UI_CONTENT_TYPE content_type_in)
+{
+	UDNBaseContent* content = get_content(content_type_in);
+	if (nullptr != content)
+	{
+		content->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	}
+}
+
+void UDNWidgetManager::close_content(E_UI_CONTENT_TYPE content_type_in)
+{
+	UDNBaseContent* content = get_content(content_type_in);
+	if (nullptr != content)
+	{
+		content->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }

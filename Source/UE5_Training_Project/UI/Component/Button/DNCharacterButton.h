@@ -20,6 +20,15 @@
 /**
  * 
  */
+
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterDataEvent, FDNCharacterData, character_data);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterClickEvent);
+
+
+
+
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNCharacterButton : public UDNBaseWidget
 {
@@ -52,4 +61,12 @@ private:
 
 private:
 	FDNCharacterData* _character_data;
+
+public:
+	FOnCharacterDataEvent OnClickCharacterDataButton;
+	FOnCharacterClickEvent OnClickCharacterButton;
+
+public:
+	UFUNCTION()
+	void click_button_handler();
 };
