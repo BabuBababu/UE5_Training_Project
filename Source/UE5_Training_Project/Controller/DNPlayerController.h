@@ -59,6 +59,8 @@ public:
 	 void StopCameraRotate(const FInputActionValue& Value);
 	
 
+	 void OpenWorkSchedule(const FInputActionValue& Value);
+
 	template<E_INPUT_KEY Key>
 	void SelectCharacter(const FInputActionValue& Value);
 
@@ -93,6 +95,7 @@ private:
 	bool		_selected_first;
 	int32		_selected_num_first;
 	int32		_selected_num_second;
+	bool		_open_widget;
 
 	ADNPlayerCharacter* _owner;
 

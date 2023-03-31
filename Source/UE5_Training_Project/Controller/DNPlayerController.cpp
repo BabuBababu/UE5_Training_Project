@@ -39,6 +39,7 @@ ADNPlayerController::ADNPlayerController(const FObjectInitializer& ObjectInitial
 	_selected_first = false;
 	_selected_num_first = -1;
 	_selected_num_second = -1;
+	_open_widget = false;
 
 	_owner = nullptr;
 }
@@ -115,6 +116,12 @@ void ADNPlayerController::SetupInputComponent()
 	PEI->BindAction(InputActions->IA_Num_8, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_8>);
 	PEI->BindAction(InputActions->IA_Num_9, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_9>);
 	PEI->BindAction(InputActions->IA_Q, ETriggerEvent::Completed, this, &ADNPlayerController::SelectCharacter<E_INPUT_KEY::IK_Q>);
+
+
+	// 로비
+
+	PEI->BindAction(InputActions->IA_P, ETriggerEvent::Completed, this, &ADNPlayerController::OpenWorkSchedule);
+	
 }
 
 
@@ -358,6 +365,10 @@ void ADNPlayerController::StopCameraRotate(const FInputActionValue& Value)
 
 }
 
+
+
+
+
 template<E_INPUT_KEY Key>
 void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 {
@@ -534,5 +545,25 @@ void ADNPlayerController::ActiveSkill(const FInputActionValue& Value)
 	else if (Key == E_INPUT_KEY::IK_H)
 	{
 
+	}
+}
+
+
+
+
+/////////////////////////// 로비 ////////////////////////////////
+void ADNPlayerController::OpenWorkSchedule(const FInputActionValue& Value)
+{
+	if (false == _open_widget)
+	{
+		bShowMouseCursor = true;
+		WIDGET_MANAGER->open_content(E_UI_CONTENT_TYPE::UCT_WORK);
+		_open_widget = true;
+	}
+	else
+	{
+		bShowMouseCursor = false;
+		WIDGET_MANAGER->close_content(E_UI_CONTENT_TYPE::UCT_WORK);
+		_open_widget = false;
 	}
 }
