@@ -3,6 +3,10 @@
 
 #include "UE5_Training_Project/UI/Widget/Panel/DNScheduleWidget.h"
 
+
+// Controller
+#include "UE5_Training_Project/Controller/DNPlayerController.h"
+
 // Character
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
@@ -68,9 +72,31 @@ void UDNScheduleWidget::add_event()
 {
 	Super::add_event();
 
+	if (IsValid(umg_confirm_button))
+		umg_confirm_button->OnClicked.AddDynamic(this, &UDNScheduleWidget::close_widget_handler);
+
 }
 
 void UDNScheduleWidget::remove_event()
 {
 	Super::remove_event();
+
+	if (IsValid(umg_confirm_button))
+		umg_confirm_button->OnClicked.RemoveDynamic(this, &UDNScheduleWidget::close_widget_handler);
+}
+
+
+void UDNScheduleWidget::close_widget_handler()
+{
+	SetVisibility(ESlateVisibility::Collapsed);
+
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	ADNPlayerController* controller = Cast<ADNPlayerController>(PlayerController);
+	if (nullptr != controller)
+	{
+		controller->bShowMouseCursor = false;
+		controller->_open_widget = false;
+	}
+
 }

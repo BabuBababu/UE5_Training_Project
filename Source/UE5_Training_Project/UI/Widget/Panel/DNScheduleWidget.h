@@ -50,4 +50,8 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UButton> umg_confirm_button;
+
+public:
+	UFUNCTION()
+	void close_widget_handler();
 };
