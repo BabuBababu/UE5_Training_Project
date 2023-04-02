@@ -61,6 +61,9 @@ void ADNUnEnemyCharacter::BeginPlay()
 
 	}
 
+	if (_is_gained)
+		OBJECT_MANAGER->_all_gained_doll_array.Add(this);
+
 	OBJECT_MANAGER->_griffin_player_array.Add(this);
 
 	// 로비에 생성된 인형이라면
@@ -162,6 +165,7 @@ void ADNUnEnemyCharacter::init_base()
 	_squad_index = -1;			//초기 인덱스는 -1로
 	_is_in_squad = true;		//원래는 false로 하고 ui에서 스쿼드 배치가 되면 true바꿔줘야함! 일단은 테스트를 위해 true로!
 	_is_ordered = false;
+	_is_gained = true;			//일단 전부 습득한걸로 합니다.
 
 	_knife_weapon->SetVisibility(false);
 	_knife_collision->SetGenerateOverlapEvents(false);

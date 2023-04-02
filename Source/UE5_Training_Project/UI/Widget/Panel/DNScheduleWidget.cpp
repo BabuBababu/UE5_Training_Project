@@ -42,17 +42,9 @@ void UDNScheduleWidget::NativeConstruct()
 	if (IsValid(umg_character_list_view))
 	{
 
-		for (auto& actor : OBJECT_MANAGER->_griffin_player_array)
+		for (auto& character : OBJECT_MANAGER->_all_gained_doll_array)
 		{
-			ADNCommonCharacter* character = Cast<ADNCommonCharacter>(actor);
-			if (nullptr != character)
-			{
-				if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)			//인형들만 다 집어넣습니다.
-				{
-					umg_character_list_view->AddItem(character->_status);
-				}
-			}
-			
+			umg_character_list_view->AddItem(character->_status);
 		}
 	}
 

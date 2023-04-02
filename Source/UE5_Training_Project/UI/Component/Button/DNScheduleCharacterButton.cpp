@@ -100,46 +100,34 @@ void UDNScheduleCharacterButton::change_manager_working_array_handler()
 	//로비NPC 매니저의 근무 배열에 추가
 	if (_work_type == E_LOBBY_AI_TYPE::LAT_PATROL)
 	{
-		for ( auto & actor : OBJECT_MANAGER->_griffin_player_array)
+		for ( auto & character : OBJECT_MANAGER->_all_gained_doll_array)
 		{
-			ADNCommonCharacter* character = Cast<ADNCommonCharacter>(actor);
-			if (nullptr != character)
+			if (character->_character_id == _character_data.character_id)
 			{
-				if (character->_character_id == _character_data.character_id)
-				{
-					ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
-					LOBBY_MANAGER->set_on_patrol(doll);
-				}
+				ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
+				LOBBY_MANAGER->set_on_patrol(doll);
 			}
 		}
 	}
 	else if (_work_type == E_LOBBY_AI_TYPE::LAT_GUARD)
 	{
-		for (auto& actor : OBJECT_MANAGER->_griffin_player_array)
+		for (auto& character : OBJECT_MANAGER->_all_gained_doll_array)
 		{
-			ADNCommonCharacter* character = Cast<ADNCommonCharacter>(actor);
-			if (nullptr != character)
+			if (character->_character_id == _character_data.character_id)
 			{
-				if (character->_character_id == _character_data.character_id)
-				{
-					ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
-					LOBBY_MANAGER->set_on_guard(doll);
-				}
+				ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
+				LOBBY_MANAGER->set_on_guard(doll);
 			}
 		}
 	}
 	else if (_work_type == E_LOBBY_AI_TYPE::LAT_POST)
 	{
-		for (auto& actor : OBJECT_MANAGER->_griffin_player_array)
+		for (auto& character : OBJECT_MANAGER->_all_gained_doll_array)
 		{
-			ADNCommonCharacter* character = Cast<ADNCommonCharacter>(actor);
-			if (nullptr != character)
+			if (character->_character_id == _character_data.character_id)
 			{
-				if (character->_character_id == _character_data.character_id)
-				{
-					ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
-					LOBBY_MANAGER->set_on_post(doll);
-				}
+				ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
+				LOBBY_MANAGER->set_on_post(doll);
 			}
 		}
 	}
