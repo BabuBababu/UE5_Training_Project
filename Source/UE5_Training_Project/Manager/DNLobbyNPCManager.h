@@ -20,6 +20,7 @@
 
 class ADNUnEnemyCharacter;
 class ADNPlayerCharacter;
+class ADNLobbyAIController;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNLobbyNPCManager : public UDNBaseManager
@@ -42,6 +43,9 @@ public:
 	void hide_weapon(ADNUnEnemyCharacter* doll_in);
 	void show_weapon(ADNUnEnemyCharacter* doll_in);
 
+
+	void apply_work();
+
 public:
 	static TObjectPtr<UDNLobbyNPCManager> get_lobby_manager();
 
@@ -52,6 +56,11 @@ public:
 	TMap<int64, ADNUnEnemyCharacter*> _patrol_doll_array;			//순찰근무
 	TMap<int64, ADNUnEnemyCharacter*> _post_doll_array;				//당직근무
 	TMap<int64, ADNUnEnemyCharacter*> _rest_doll_array;				//미배정(휴식)
+
+
+	TMap<int64,TObjectPtr<ADNLobbyAIController>>	_guard_ai_controller_array;			//2명 (임시)
+	TMap <int64,TObjectPtr<ADNLobbyAIController>>	_patrol_ai_controller_array;		//2명 (임시)
+	TMap <int64,TObjectPtr<ADNLobbyAIController>>	_post_ai_controller_array;			//1명 (임시)
 
 
 	// 근무 시간

@@ -66,7 +66,7 @@ void ADNUnEnemyCharacter::BeginPlay()
 
 	OBJECT_MANAGER->_griffin_player_array.Add(this);
 
-	// 로비에 생성된 인형이라면
+	// 로비에 생성된 인형이라면 (사실상 소유한 인형들을 제외한 나머지 잉여 NPC들만 사용하게 될 듯합니다.)
 	if (_spawn_level_type == E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_LOBBY)
 	{
 

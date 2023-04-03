@@ -26,6 +26,10 @@ class UE5_TRAINING_PROJECT_API ADNLobbyAIController : public ADNAIController
 	GENERATED_BODY()
 
 public:
+	ADNLobbyAIController(FObjectInitializer const& object_initializer);
+
+
+public:
 	virtual void OnPossess(APawn* pawn_in) override;
 	virtual void OnUnPossess() override;
 	virtual void Tick(float DeltaSeconds) override;

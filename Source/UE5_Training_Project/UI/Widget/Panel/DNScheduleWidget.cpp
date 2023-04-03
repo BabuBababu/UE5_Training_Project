@@ -95,6 +95,10 @@ void UDNScheduleWidget::remove_event()
 
 void UDNScheduleWidget::close_widget_handler()
 {
+	// 변경사항을 저장합니다.
+	LOBBY_MANAGER->apply_work();
+
+
 	SetVisibility(ESlateVisibility::Collapsed);
 
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);

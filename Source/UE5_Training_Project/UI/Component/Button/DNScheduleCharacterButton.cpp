@@ -97,6 +97,10 @@ void UDNScheduleCharacterButton::reset_data()
 void UDNScheduleCharacterButton::change_manager_working_array_handler()
 {
 
+	// 적용이 끝났다면 끝났다는 델리게이트를 다시 스케쥴 리스트에게 보냅니다. 이 버튼에 데이터를 적용하기 위해
+	OnStopAnimation.Broadcast(this);
+
+
 	//로비NPC 매니저의 근무 배열에 추가
 	if (_work_type == E_LOBBY_AI_TYPE::LAT_PATROL)
 	{
@@ -133,7 +137,5 @@ void UDNScheduleCharacterButton::change_manager_working_array_handler()
 	}
 
 
-	// 적용이 끝났다면 끝났다는 델리게이트를 다시 스케쥴 리스트에게 보냅니다. 이 버튼에 데이터를 적용하기 위해
-	OnStopAnimation.Broadcast(this);
 
 }

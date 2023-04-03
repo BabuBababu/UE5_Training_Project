@@ -29,6 +29,7 @@ class ADNUnEnemyCharacter;
 class ADNPlayerCharacter;
 class ADNCommonBed;
 class ADNPatrolPointActor;
+class ADNGuardPointActor;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNObjectManager : public UDNBaseManager
@@ -47,8 +48,11 @@ public:
 
 
 public:
-	TMap<int64,ADNTargetPointActor*> _target_location_actor_array;			//타겟포인트액터 모음 맵
-	TMap<int64, ADNPatrolPointActor*> _patrol_location_actor_array;			//타겟포인트액터 모음 맵
+	TMap<int64,ADNTargetPointActor*> _target_location_actor_array;			//타겟 포인트액터 모음 맵
+	TMap<int64, ADNPatrolPointActor*> _patrol_location_actor_array;			//순찰 포인트액터 모음 맵
+	TMap<int64, ADNGuardPointActor*> _guard_location_actor_array;			//입초 포인트액터 모음 맵
+
+
 	TMap<int64,ADNUnEnemyCharacter*> _in_squad_doll_array;					//캐릭터의 스쿼드 ID, 캐릭터를 담은 배열
 	TObjectPtr<ADNPlayerCharacter>	 _player;
 

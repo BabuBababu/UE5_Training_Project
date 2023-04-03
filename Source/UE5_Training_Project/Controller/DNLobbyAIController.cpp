@@ -33,6 +33,12 @@
 
 
 
+ADNLobbyAIController::ADNLobbyAIController(FObjectInitializer const& object_initializer) : Super(object_initializer)
+{
+}
+
+
+
 void ADNLobbyAIController::OnPossess(APawn* pawn_in)
 {
 
@@ -98,7 +104,6 @@ void ADNLobbyAIController::OnPossess(APawn* pawn_in)
 
 	}
 
-
 	Super::OnPossess(pawn_in);
 
 
@@ -115,6 +120,9 @@ void ADNLobbyAIController::OnUnPossess()
 void ADNLobbyAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
+	if (nullptr == _owner)
+		return;
 
 	if (false == _finish_work)
 	{
