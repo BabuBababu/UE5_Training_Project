@@ -3,7 +3,6 @@
 
 #include "UE5_Training_Project/UI/Widget/Panel/DNScheduleWidget.h"
 
-
 // Controller
 #include "UE5_Training_Project/Controller/DNPlayerController.h"
 
@@ -25,6 +24,7 @@
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
+#include "UE5_Training_Project/Manager/DNLobbyNPCManager.h"
 
 
 /////////////   리스트 뷰 작동 원리   /////////////////
@@ -60,6 +60,7 @@ void UDNScheduleWidget::NativeDestruct()
 	Super::NativeDestruct();
 }
 
+
 void UDNScheduleWidget::add_event()
 {
 	Super::add_event();
@@ -67,14 +68,28 @@ void UDNScheduleWidget::add_event()
 	if (IsValid(umg_confirm_button))
 		umg_confirm_button->OnClicked.AddDynamic(this, &UDNScheduleWidget::close_widget_handler);
 
+	if (IsValid(umg_work_time_edit_text))
+		umg_work_time_edit_text->OnTextCommitted.AddDynamic(this, &UDNScheduleWidget::set_work_time_handler);
+
+	if (IsValid(umg_rest_time_edit_text))
+		umg_rest_time_edit_text->OnTextCommitted.AddDynamic(this, &UDNScheduleWidget::set_rest_time_handler);
+
 }
 
 void UDNScheduleWidget::remove_event()
 {
-	Super::remove_event();
 
 	if (IsValid(umg_confirm_button))
 		umg_confirm_button->OnClicked.RemoveDynamic(this, &UDNScheduleWidget::close_widget_handler);
+
+	if (IsValid(umg_work_time_edit_text))
+		umg_work_time_edit_text->OnTextCommitted.RemoveDynamic(this, &UDNScheduleWidget::set_work_time_handler);
+
+	if (IsValid(umg_rest_time_edit_text))
+		umg_rest_time_edit_text->OnTextCommitted.RemoveDynamic(this, &UDNScheduleWidget::set_rest_time_handler);
+
+	Super::remove_event();
+
 }
 
 
@@ -90,5 +105,35 @@ void UDNScheduleWidget::close_widget_handler()
 		controller->bShowMouseCursor = false;
 		controller->_open_widget = false;
 	}
+
+}
+
+void UDNScheduleWidget::set_work_time_handler(const FText& text_in, ETextCommit::Type type_in)
+{
+	if (type_in == ETextCommit::OnEnter)
+	{
+		if (text_in.IsNumeric())
+		{
+			FString temp = text_in.ToString();
+			LOBBY_MANAGER->_working_time = FCString::Atof(*temp);
+		}
+	}
+
+
+	
+}
+
+void UDNScheduleWidget::set_rest_time_handler(const FText& text_in, ETextCommit::Type type_in)
+{
+
+	if (type_in == ETextCommit::OnEnter)
+	{
+		if (text_in.IsNumeric())
+		{
+			FString temp = text_in.ToString();
+			LOBBY_MANAGER->_resting_time = FCString::Atof(*temp);
+		}
+	}
+
 
 }

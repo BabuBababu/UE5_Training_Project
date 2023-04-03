@@ -54,4 +54,10 @@ private:
 public:
 	UFUNCTION()
 	void close_widget_handler();
+
+	UFUNCTION()
+	void set_work_time_handler(const FText& text_in, ETextCommit::Type type_in);
+
+	UFUNCTION()
+	void set_rest_time_handler(const FText& text_in, ETextCommit::Type type_in);
 };
