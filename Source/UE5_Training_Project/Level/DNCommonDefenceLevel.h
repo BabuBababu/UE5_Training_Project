@@ -30,25 +30,25 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-		TSubclassOf<ADNEnemyCharacter> _gun_enemy;
+		TSubclassOf<ADNEnemyCharacter> target_1_enemy;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-		TSubclassOf<ADNDogEnemyCharacter> _dog_enemy;
+		TSubclassOf<ADNEnemyCharacter> target_2_enemy;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-		TSubclassOf<ADNShieldEnemyCharacter> _shield_enemy;
+		TSubclassOf<ADNEnemyCharacter> target_3_enemy;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-	int64	_gun_enemy_count = 15;
+	int64	_target_1_count = 15;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-	int64	_dog_enemy_count = 15;
+	int64	_target_2_count = 15;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enemy)
-	int64	_shield_enemy_count = 20;
+	int64	_target_3_count = 20;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Boss)
 	TSubclassOf<ADNCommonBossCharacter> _boss_enemy;
