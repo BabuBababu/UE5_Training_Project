@@ -90,6 +90,19 @@ EBTNodeResult::Type UDNMeleeAttackTask::ExecuteTask(UBehaviorTreeComponent& owne
 	self_actor->_is_attacking = true;
 
 
+	// 만약 공격받은 대상의 target actor가 nullptr일 경우 
+	// 공격한 캐릭터를 넣어줍니다.
+	ADNAIController* ai_controller = Cast<ADNAIController>(target_character->GetController());
+	if (nullptr != ai_controller)
+	{
+		if (nullptr == ai_controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor))
+		{
+			ai_controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, self_actor);
+		}
+	}
+
+
+
 	return EBTNodeResult::Succeeded;		//프로그레스로해야하는데 일단 성공으로 놓고 테스트
 }
 
