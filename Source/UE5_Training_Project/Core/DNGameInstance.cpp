@@ -57,6 +57,14 @@ void UDNGameInstance::Init()
 		UE_LOG(LogTemp, Warning, TEXT("Lobby_NPC_Manager Initialize Succeed"));
 	}
 
+	if (nullptr == _quest_manager)
+	{
+		_quest_manager = NewObject<UDNQuestManager>(this, UDNQuestManager::StaticClass());
+		_quest_manager->initialize();
+
+		UE_LOG(LogTemp, Warning, TEXT("QuestManager Initialize Succeed"));
+	}
+
 
 	_is_initialize = true;
 
@@ -92,6 +100,12 @@ void UDNGameInstance::Shutdown()
 	{
 		_lobby_npc_manager->destroy();
 		_lobby_npc_manager = nullptr;
+	}
+
+	if (_quest_manager)
+	{
+		_quest_manager->destroy();
+		_quest_manager = nullptr;
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("GameInstance Destroy Succeed"));
