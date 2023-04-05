@@ -381,6 +381,7 @@ enum class E_ITEM_TYPE : uint8
 	IT_WEAPON_ADD_ON_1		UMETA(DisplayName = "add1"),		//무기 부착물 1
 	IT_WEAPON_ADD_ON_2		UMETA(DisplayName = "add2"),		//무기 부착물 2
 	IT_WEAPON_ADD_ON_3		UMETA(DisplayName = "add3"),		//무기 부착물 3
+	IT_QUEST				UMETA(DisplayName = "Quest"),		//퀘스트 아이템
 	
 	IT_COUNT
 };
