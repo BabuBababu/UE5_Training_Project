@@ -580,6 +580,12 @@ void ADNCommonCharacter::destroy_object_handler()
 		}
 	}
 
+	if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)
+	{
+		DNItemSpawnSystem::spawn_item_with_random(this, this->GetActorLocation(), this->GetActorRotation());
+	}
+
+
 	SetActorLocation(_my_spawn_location);
 	_status->reset();
 	GetMovementComponent()->Activate();

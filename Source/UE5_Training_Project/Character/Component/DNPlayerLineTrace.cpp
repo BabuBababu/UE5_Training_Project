@@ -117,13 +117,13 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 			else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE)
 			{
 				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//댕댕이
-				DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
+				DNDamageOperation::gun_damage( damage, hit_result.BoneName, _enemy, player_in);
 				OnTargetHit.Broadcast();
 			}
 			else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE_SHIELD)
 			{
 				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//쉴더
-				DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
+				DNDamageOperation::gun_damage( damage, hit_result.BoneName, _enemy, player_in);
 				OnTargetHit.Broadcast();
 			}
 			else

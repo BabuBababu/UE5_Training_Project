@@ -28,6 +28,7 @@
 #include "UE5_Training_Project/Manager/DNUIManager.h"
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
 #include "UE5_Training_Project/UI/Manager/DNWidgetManager.h"
+#include "UE5_Training_Project/Manager/DNQuestManager.h"
 
 // UI
 #include "UE5_Training_Project/UI/Widget/Panel/DNSquadPanel.h"
@@ -52,6 +53,7 @@ void ADNPlayerController::BeginPlay()
 
 	if(nullptr != character)
 		_owner = character;
+
 }
 
 void ADNPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)

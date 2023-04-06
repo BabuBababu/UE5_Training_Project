@@ -3,7 +3,15 @@
 
 #include "UE5_Training_Project/Manager/DNQuestManager.h"
 
+// Item
+#include "UE5_Training_Project/Actor/Item/DNQuestItem.h"
 
+
+UDNQuestManager::UDNQuestManager()
+{
+	static ConstructorHelpers::FClassFinder<ADNQuestItem> ActorClassFinder(TEXT("/Game/Blueprint/Item/DNQuestItem_1.DNQuestItem_1_C"));
+	rally_point_level_quest_item_class = ActorClassFinder.Class;
+}
 
 
 

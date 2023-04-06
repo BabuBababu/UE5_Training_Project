@@ -23,7 +23,8 @@
 #include "UE5_Training_Project/UI/Widget/Panel/DNCommentPanel.h"
 
 
-
+// Util
+#include "UE5_Training_Project/Util/DNItemSpawnSystem.h"
 
 // Component
 #include <UE5_Training_Project/Component/DNStatusComponent.h>
@@ -131,8 +132,15 @@ public:
 
 		if (after_hp <= 0)
 		{
-			die_from_damage(damaged_character_in, player_in);
-			
+			if (damaged_character_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER ||
+				damaged_character_in->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)
+			{
+				die_from_damage(damaged_character_in, player_in);
+			}
+			else
+			{
+				die_from_damage(damaged_character_in, player_in);
+			}
 		}
 	}
 
@@ -252,6 +260,7 @@ public:
 		}
 	}
 
+	// 아군만 사용하는 메서드
 	static void melee_damage_from_knife(float damage_in, ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* player_in)
 	{
 		float after_hp = damaged_character_in->get_status_component().Get()->get_current_hp() - damage_in;
