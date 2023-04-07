@@ -5,6 +5,8 @@
 
 // Engine
 #include <Components/BoxComponent.h>
+#include <NiagaraComponent.h>
+#include <NiagaraSystem.h>
 
 // Character
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
@@ -19,6 +21,11 @@ ADNCommonItem::ADNCommonItem()
 		UE_LOG(LogTemp, Warning, TEXT("DataTable Succeed!"));
 		_item_datatable = ItemDataObject.Object;
 	}
+
+	_item_niagara_particle = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Niagara Particle"));
+	_item_niagara_particle->SetupAttachment(RootComponent);
+
+
 }
 
 void ADNCommonItem::BeginPlay()
@@ -65,6 +72,16 @@ void ADNCommonItem::item_init()
 		{
 			_item_data = data;
 		}
+	}
+
+	if (IsValid(_spawn_particle))
+	{
+		if (IsValid(_item_niagara_particle))
+		{
+			_item_niagara_particle->SetAsset(_spawn_particle);
+			_item_niagara_particle->Activate();
+		}
+
 	}
 
 }

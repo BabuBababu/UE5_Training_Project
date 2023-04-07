@@ -4,6 +4,8 @@
 
 // Engine
 #include <CoreMinimal.h>
+#include <NiagaraSystem.h>
+#include <NiagaraFunctionLibrary.h>
 
 // Actor
 #include "UE5_Training_Project/Actor/DNCommonActor.h"
@@ -20,6 +22,7 @@
  * 
  */
 
+class UNiagaraComponent;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNCommonItem : public ADNCommonActor
@@ -39,6 +42,15 @@ public:
 
 public:
 	virtual void item_init();
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	TObjectPtr<UNiagaraComponent> _item_niagara_particle;
+
+
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//아이템 파티클
+	UNiagaraSystem* _spawn_particle;
+
 
 public:
 	//데이터

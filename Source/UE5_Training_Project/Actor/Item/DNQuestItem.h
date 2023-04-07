@@ -5,8 +5,6 @@
 
 // Engine
 #include <CoreMinimal.h>
-#include <NiagaraSystem.h>
-#include <NiagaraFunctionLibrary.h>
 
 // Item
 #include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
@@ -36,7 +34,4 @@ public:
 public:
 	void item_init() override;
 
-public:
-	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//아이템 파티클
-	UNiagaraSystem* _spawn_particle;
 };
