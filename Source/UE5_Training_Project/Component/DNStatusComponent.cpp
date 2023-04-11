@@ -176,7 +176,7 @@ void UDNStatusComponent::add_exp(int64 exp_in)
 void UDNStatusComponent::remove_ammo_handler()
 {
 	_current_ammo -= 1;
-	UE_LOG(LogTemp, Warning, TEXT("My current ammo is %d"), _current_ammo);
+	//UE_LOG(LogTemp, Warning, TEXT("My current ammo is %d"), _current_ammo);
 }
 
 void UDNStatusComponent::reload_ammo_handler()

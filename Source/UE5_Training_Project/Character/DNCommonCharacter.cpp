@@ -28,6 +28,7 @@
 
 // Item
 #include "UE5_Training_Project/Actor/Item/DNCommonItem.h"
+#include "UE5_Training_Project/Actor/Item/DNQuestItem.h"
 #include "UE5_Training_Project/Actor/Item/DNCommonGrenade.h"
 
 // Actor
@@ -465,6 +466,15 @@ void ADNCommonCharacter::interaction()
 	if (_line_trace->_item->_item_data->type == E_ITEM_TYPE::IT_AMMO)
 	{
 		_status->_has_ammo += _line_trace->_item->_item_data->count;
+		OnItemPickup.Broadcast(_line_trace->_item);
+	}
+	else if (_line_trace->_item->_item_data->type == E_ITEM_TYPE::IT_QUEST)
+	{
+		ADNQuestItem* quest_item = Cast<ADNQuestItem>(_line_trace->_item);
+		if (nullptr == quest_item)
+			return;
+
+		QUEST_MANAGER->_quest_item_array.Emplace(quest_item);
 		OnItemPickup.Broadcast(_line_trace->_item);
 	}
 

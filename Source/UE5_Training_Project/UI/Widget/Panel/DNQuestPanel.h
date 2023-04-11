@@ -43,6 +43,9 @@ private:
 	UPROPERTY()
 	TObjectPtr<UTextBlock> umg_sub_quest_title_text;
 
+	UPROPERTY()
+	TObjectPtr<UImage> umg_quest_complete_icon;
+
 public:
 	E_UI_QUEST_TYPE quest_type = E_UI_QUEST_TYPE::UQT_NONE;
 

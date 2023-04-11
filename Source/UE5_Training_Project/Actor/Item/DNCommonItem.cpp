@@ -23,7 +23,7 @@ ADNCommonItem::ADNCommonItem()
 	}
 
 	_item_niagara_particle = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Niagara Particle"));
-	_item_niagara_particle->SetupAttachment(RootComponent);
+	_item_niagara_particle->SetupAttachment(_actor_static_mesh);
 
 
 }
