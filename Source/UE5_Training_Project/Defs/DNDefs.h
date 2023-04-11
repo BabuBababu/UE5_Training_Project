@@ -347,6 +347,22 @@ enum class E_UI_BUTTON_STATE : uint8
 };
 
 
+
+UENUM()
+enum class E_UI_QUEST_TYPE : uint8
+{
+	UQT_NONE = 0,
+	UQT_COLLECT,		// 아이템 수집
+	UQT_KILL,			// 목표 제거
+	UQT_DEFENCE,		// 거점 방어
+	UQT_OCCUPATION,		// 거점 점령
+
+	UQT_COUNT
+
+};
+
+
+
 //////////////////////////////////////////////////////////
 //
 //  Actor
