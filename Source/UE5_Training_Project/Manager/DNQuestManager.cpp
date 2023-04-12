@@ -74,6 +74,7 @@ void UDNQuestManager::start_quest(int64 quest_uid_in)
 	if (_quest_data->quest_type == E_UI_QUEST_TYPE::UQT_COLLECT)				// 아이템 수집
 	{
 		_quest_item_class = _quest_data->quest_item;
+		_request_item_count = _quest_data->quest_need_item_count;
 	}
 	else if (_quest_data->quest_type == E_UI_QUEST_TYPE::UQT_KILL)				// 목표 사살
 	{
