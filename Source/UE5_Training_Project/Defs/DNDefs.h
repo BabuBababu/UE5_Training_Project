@@ -356,6 +356,7 @@ enum class E_UI_QUEST_TYPE : uint8
 	UQT_KILL,			// 목표 제거
 	UQT_DEFENCE,		// 거점 방어
 	UQT_OCCUPATION,		// 거점 점령
+	UQT_GO,				// 지점 이동
 
 	UQT_COUNT
 
