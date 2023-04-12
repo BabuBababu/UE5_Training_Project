@@ -470,11 +470,6 @@ void ADNCommonCharacter::interaction()
 	}
 	else if (_line_trace->_item->_item_data->type == E_ITEM_TYPE::IT_QUEST)
 	{
-		ADNQuestItem* quest_item = Cast<ADNQuestItem>(_line_trace->_item);
-		if (nullptr == quest_item)
-			return;
-
-		QUEST_MANAGER->_quest_item_array.Emplace(quest_item);
 		OnItemPickup.Broadcast(_line_trace->_item);
 	}
 

@@ -8,6 +8,9 @@
 // Base
 #include "UE5_Training_Project/UI/Base/DNBaseManager.h"
 
+// Data
+#include "UE5_Training_Project/Data/DNQuestData.h"
+
 // Generated
 #include "DNQuestManager.generated.h"
 
@@ -38,14 +41,26 @@ public:
 public:
 	static TObjectPtr<UDNQuestManager> get_quest_manager();
 
-public:
-	UPROPERTY(EditAnywhere, Category = "Quest Item")
-	TSubclassOf<ADNQuestItem> rally_point_level_quest_item_class;
+	void start_quest(int64 quest_uid_in);			// 이걸 게임모드에다 박을지 어디다가 박을지
+	void init_data(int64 quest_uid_in);
 
 public:
 	TObjectPtr<ADNPlayerCharacter>	 _player;
+	UDataTable*						 _quest_datatable;
+	FDNQuestData*					 _quest_data;
 
-	TArray<ADNQuestItem*>	_quest_item_array;
+
+	// 아이템 수집
+	TSubclassOf<ADNQuestItem>		 _quest_item_class;
+	int64							 _current_item_count;
+	int64							 _request_item_count;
+
+	// 목표 지점
+	TSubclassOf<ADNCommonActor>		 _target_location;
+
+	// 목표 액터
+	TSubclassOf<ADNCommonCharacter>  _target_actor;
+
 
 
 

@@ -40,8 +40,8 @@ public:
 
 	static void spawn_quest_item(ADNCommonCharacter* character_in, const FVector & location_in, const FRotator & rotation_in)
 	{
-		if(nullptr != QUEST_MANAGER->rally_point_level_quest_item_class)
-			ADNQuestItem* quest_item = character_in->GetWorld()->SpawnActor<ADNQuestItem>(QUEST_MANAGER->rally_point_level_quest_item_class, location_in, rotation_in);
+		if(nullptr != QUEST_MANAGER->_quest_item_class)
+			ADNQuestItem* quest_item = character_in->GetWorld()->SpawnActor<ADNQuestItem>(QUEST_MANAGER->_quest_item_class, location_in, rotation_in);
 		
 	}
 };
