@@ -60,6 +60,9 @@ private:
 	TObjectPtr<UTextBlock> umg_max_item_count_text;
 
 	UPROPERTY()
+	TObjectPtr<UTextBlock> umg_slash;
+
+	UPROPERTY()
 	TObjectPtr<UImage> umg_quest_complete_icon;
 
 public:

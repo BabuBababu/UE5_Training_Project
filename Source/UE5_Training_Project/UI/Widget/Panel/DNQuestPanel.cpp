@@ -89,18 +89,20 @@ void UDNQuestPanel::set_quest_complete_icon(bool flag_in)
 
 void UDNQuestPanel::set_visible_item_count(bool flag_in)
 {
-	if (false == IsValid(umg_current_item_count_text) || false == IsValid(umg_max_item_count_text))
+	if (false == IsValid(umg_current_item_count_text) || false == IsValid(umg_max_item_count_text) || false == IsValid(umg_slash))
 		return;
 
 	if (flag_in)
 	{
 		umg_current_item_count_text->SetVisibility(ESlateVisibility::HitTestInvisible);
 		umg_max_item_count_text->SetVisibility(ESlateVisibility::HitTestInvisible);
+		umg_slash->SetVisibility(ESlateVisibility::HitTestInvisible);
 	}
 	else
 	{
 		umg_current_item_count_text->SetVisibility(ESlateVisibility::Collapsed);
 		umg_max_item_count_text->SetVisibility(ESlateVisibility::Collapsed);
+		umg_slash->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }
 
