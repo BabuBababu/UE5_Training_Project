@@ -42,7 +42,14 @@ public:
 	static TObjectPtr<UDNQuestManager> get_quest_manager();
 
 	void start_quest(int64 quest_uid_in);			// 이걸 게임모드에다 박을지 어디다가 박을지
+	void stop_quest();
+	
 	void init_data(int64 quest_uid_in);
+
+	void set_ui();
+	void hide_ui();
+
+	void add_item_count();
 
 public:
 	TObjectPtr<ADNPlayerCharacter>	 _player;

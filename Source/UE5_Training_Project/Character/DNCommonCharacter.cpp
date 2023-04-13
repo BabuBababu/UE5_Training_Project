@@ -470,6 +470,7 @@ void ADNCommonCharacter::interaction()
 	}
 	else if (_line_trace->_item->_item_data->type == E_ITEM_TYPE::IT_QUEST)
 	{
+		QUEST_MANAGER->add_item_count();
 		OnItemPickup.Broadcast(_line_trace->_item);
 	}
 

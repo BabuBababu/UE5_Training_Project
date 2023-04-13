@@ -6,6 +6,12 @@
 // Item
 #include "UE5_Training_Project/Actor/Item/DNQuestItem.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNUIManager.h"
+#include "UE5_Training_Project/UI/Manager/DNWidgetManager.h"
+
+// UI
+#include "UE5_Training_Project/UI/Widget/Panel/DNQuestPanel.h"
 
 
 //
@@ -67,10 +73,11 @@ TObjectPtr<UDNQuestManager> UDNQuestManager::get_quest_manager()
 
 void UDNQuestManager::start_quest(int64 quest_uid_in)
 {
+	stop_quest();
 	// 먼저 퀘스트 uid를 받아와 해당 퀘스트 데이터를 저장합니다.
 	init_data(quest_uid_in);
 
-	// 저장된 퀘스트 데이터를 매니저에 적용 및 UI와 게임 스테이트에 뿌립니다.
+	// 저장된 퀘스트 데이터를 매니저에 적용 및 UI에 뿌립니다.
 	if (_quest_data->quest_type == E_UI_QUEST_TYPE::UQT_COLLECT)				// 아이템 수집
 	{
 		_quest_item_class = _quest_data->quest_item;
@@ -95,6 +102,14 @@ void UDNQuestManager::start_quest(int64 quest_uid_in)
 
 }
 
+void UDNQuestManager::stop_quest()
+{
+	// 일단 ui만 숨깁니다.
+	hide_ui();
+
+}
+
+
 void UDNQuestManager::init_data(int64 quest_uid_in)
 {
 	TArray<FDNQuestData*> data_array;
@@ -106,5 +121,62 @@ void UDNQuestManager::init_data(int64 quest_uid_in)
 		{
 			_quest_data = data;
 		}
+	}
+}
+
+void UDNQuestManager::set_ui()
+{
+	auto * widget = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_QUEST);
+	UDNQuestPanel* panel = Cast<UDNQuestPanel>(widget);
+	if (nullptr != panel)
+	{
+		// 화면에 보이기
+		panel->SetVisibility(ESlateVisibility::HitTestInvisible);
+		// 퀘스트 메인 이름
+		panel->set_quest_main_title(FText::FromString(_quest_data->quest_main_name));
+		// 퀘스트 서브 이름
+		panel->set_quest_sub_title(FText::FromString(_quest_data->quest_sub_name));
+		// 퀘스트 아이콘
+		panel->set_quest_icon(_quest_data->quest_sub_icon_path);
+		// 퀘스트 완료 아이콘 초기화
+		panel->set_quest_complete_icon(false);
+
+		// 수집형 퀘스트
+		if (_quest_data->quest_type == E_UI_QUEST_TYPE::UQT_COLLECT)
+		{
+			panel->set_visible_item_count(true);
+			panel->set_quest_current_item_count(0);
+			panel->set_quest_need_item_count(_quest_data->quest_need_item_count);
+		}
+		else
+		{
+			panel->set_visible_item_count(false);
+			panel->set_quest_current_item_count(-1);
+			panel->set_quest_need_item_count(0);
+		}
+	}
+
+}
+
+void UDNQuestManager::hide_ui()
+{
+	auto* widget = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_QUEST);
+	UDNQuestPanel* panel = Cast<UDNQuestPanel>(widget);
+	if (nullptr != panel)
+	{
+		// 숨기기
+		panel->SetVisibility(ESlateVisibility::Collapsed);
+	}
+}
+
+void UDNQuestManager::add_item_count()
+{
+	_current_item_count += 1;
+
+	auto* widget = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_QUEST);
+	UDNQuestPanel* panel = Cast<UDNQuestPanel>(widget);
+	if (nullptr != panel)
+	{
+		panel->set_quest_current_item_count(_current_item_count);
 	}
 }
