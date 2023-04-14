@@ -34,32 +34,6 @@ void UDNLobbyNPCManager::initialize()
 	_working_time = 60.f; //테스트용 60초
 	_resting_time = 30.f; //테스트용 30초
 
-	for (int64 key = 0; key < 2; ++key)
-	{
-		ADNLobbyAIController* _guard_ai_controller = GetWorld()->SpawnActor<ADNLobbyAIController>(ADNLobbyAIController::StaticClass());
-
-		if (nullptr != _guard_ai_controller)
-			_guard_ai_controller->_ai_type = E_LOBBY_AI_TYPE::LAT_GUARD;
-
-		_guard_ai_controller_array.Add(key, _guard_ai_controller);
-	}
-
-	for (int64 key = 0; key < 2; ++key)
-	{
-		ADNLobbyAIController* _patrol_ai_controller = GetWorld()->SpawnActor<ADNLobbyAIController>(ADNLobbyAIController::StaticClass());
-
-		if (nullptr != _patrol_ai_controller)
-			_patrol_ai_controller->_ai_type = E_LOBBY_AI_TYPE::LAT_PATROL;
-
-		_patrol_ai_controller_array.Add(key, _patrol_ai_controller);
-	}
-
-	ADNLobbyAIController* _post_ai_controller = GetWorld()->SpawnActor<ADNLobbyAIController>(ADNLobbyAIController::StaticClass());
-
-	if (nullptr != _post_ai_controller)
-		_post_ai_controller->_ai_type = E_LOBBY_AI_TYPE::LAT_POST;
-	_post_ai_controller_array.Add(0, _post_ai_controller);
-
 
 
 	Super::initialize();
@@ -87,6 +61,40 @@ TObjectPtr<UDNLobbyNPCManager> UDNLobbyNPCManager::get_lobby_manager()
 
 	return nullptr;
 }
+
+void UDNLobbyNPCManager::initialize_ai_controller()
+{
+	_guard_ai_controller_array.Empty();
+	_patrol_ai_controller_array.Empty();
+	_post_ai_controller_array.Empty();
+
+	for (int64 key = 0; key < 2; ++key)
+	{
+		ADNLobbyAIController* _guard_ai_controller = GetWorld()->SpawnActor<ADNLobbyAIController>(ADNLobbyAIController::StaticClass());
+
+		if (nullptr != _guard_ai_controller)
+			_guard_ai_controller->_ai_type = E_LOBBY_AI_TYPE::LAT_GUARD;
+
+		_guard_ai_controller_array.Add(key, _guard_ai_controller);
+	}
+
+	for (int64 key = 0; key < 2; ++key)
+	{
+		ADNLobbyAIController* _patrol_ai_controller = GetWorld()->SpawnActor<ADNLobbyAIController>(ADNLobbyAIController::StaticClass());
+
+		if (nullptr != _patrol_ai_controller)
+			_patrol_ai_controller->_ai_type = E_LOBBY_AI_TYPE::LAT_PATROL;
+
+		_patrol_ai_controller_array.Add(key, _patrol_ai_controller);
+	}
+
+	ADNLobbyAIController* _post_ai_controller = GetWorld()->SpawnActor<ADNLobbyAIController>(ADNLobbyAIController::StaticClass());
+
+	if (nullptr != _post_ai_controller)
+		_post_ai_controller->_ai_type = E_LOBBY_AI_TYPE::LAT_POST;
+	_post_ai_controller_array.Add(0, _post_ai_controller);
+}
+
 
 
 // 반드시 처음 초기화할 때만 사용합니다.
@@ -277,6 +285,8 @@ void UDNLobbyNPCManager::apply_work()
 	}
 
 
+	// 새롭게 장착할 컨트롤러를 생성합니다.
+	initialize_ai_controller();
 
 	// 입초
 	for (auto& doll : _guard_doll_array)

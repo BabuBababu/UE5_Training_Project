@@ -31,6 +31,8 @@ public:
 	void initialize() override;
 	void destroy() override;
 
+	void initialize_ai_controller();
+
 	void set_on_guard(ADNUnEnemyCharacter* doll_in);
 	void set_on_patrol(ADNUnEnemyCharacter* doll_in);
 	void set_on_post(ADNUnEnemyCharacter* doll_in);
