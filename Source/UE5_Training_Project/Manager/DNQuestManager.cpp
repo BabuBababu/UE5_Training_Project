@@ -126,6 +126,12 @@ void UDNQuestManager::init_data(int64 quest_uid_in)
 
 void UDNQuestManager::set_ui()
 {
+	if (nullptr == _quest_data)
+	{
+		hide_ui();
+		return;
+	}
+
 	auto * widget = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_QUEST);
 	UDNQuestPanel* panel = Cast<UDNQuestPanel>(widget);
 	if (nullptr != panel)
