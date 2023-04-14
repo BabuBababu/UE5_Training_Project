@@ -357,4 +357,5 @@ void ADNAIController::reset_target_handler()
 {
 	get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
 	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+
 }

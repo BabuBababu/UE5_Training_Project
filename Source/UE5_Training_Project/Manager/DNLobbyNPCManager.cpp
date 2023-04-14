@@ -309,6 +309,11 @@ void UDNLobbyNPCManager::apply_work()
 				
 			}
 		}
+		// 무장 및 역할에 맞는 애니메이션 상태로 전환합니다.
+
+		doll.Value->_is_armed_weapon = false;
+		doll.Value->armed();
+		doll.Value->_character_state = E_CHARACTER_STATE::CS_GUARD;
 	}
 
 	// 순찰
@@ -321,6 +326,10 @@ void UDNLobbyNPCManager::apply_work()
 				controller.Value->Possess(doll.Value);
 			}
 		}
+
+		doll.Value->_is_armed_weapon = false;
+		doll.Value->armed();
+		doll.Value->_character_state = E_CHARACTER_STATE::CS_PATROL;
 	}
 
 	// 당직
@@ -333,6 +342,10 @@ void UDNLobbyNPCManager::apply_work()
 				controller.Value->Possess(doll.Value);
 			}
 		}
+
+		doll.Value->_is_armed_weapon = false;
+		doll.Value->armed();
+		doll.Value->_character_state = E_CHARACTER_STATE::CS_POST;
 	}
 
 

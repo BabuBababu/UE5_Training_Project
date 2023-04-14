@@ -311,6 +311,7 @@ void ADNCommonCharacter::fire()
 	{
 		_target_change_current_ammo = 0;
 		OnStopShotAmmo.Broadcast();
+		set_idle_animation();
 		return;
 	}
 
@@ -595,6 +596,11 @@ void ADNCommonCharacter::destroy_object_handler()
 	SetActorLocation(_my_spawn_location);
 	_status->reset();
 	GetMovementComponent()->Activate();
+
+	// AI 적 또는 아군일 경우 타겟을 리셋시킵니다.
+	ADNAIController* controller = Cast<ADNAIController>(GetController());
+	if (nullptr != controller)
+		controller->reset_target_handler();
 
 	//SetActorHiddenInGame(true);
 	//SetActorEnableCollision(false);
