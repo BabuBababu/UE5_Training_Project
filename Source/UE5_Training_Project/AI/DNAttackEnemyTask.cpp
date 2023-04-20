@@ -30,7 +30,7 @@
 UDNAttackEnemyTask::UDNAttackEnemyTask(FObjectInitializer const& object_initializer)
 {
 	NodeName = TEXT("AttackEnemyTask");
-	bNotifyTick = true;			// 틱 활성화
+	bNotifyTick = false;			// 틱 비활성화
 }
 
 EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in)
