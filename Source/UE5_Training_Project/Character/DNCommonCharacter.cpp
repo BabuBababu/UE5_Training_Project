@@ -466,6 +466,9 @@ void ADNCommonCharacter::interaction()
 	if (false == _line_trace->_is_targeted)
 		return;
 	
+	if (nullptr == _line_trace->_item)
+		return;
+
 	if (_line_trace->_item->_item_data->type == E_ITEM_TYPE::IT_AMMO)
 	{
 		_status->_has_ammo += _line_trace->_item->_item_data->count;

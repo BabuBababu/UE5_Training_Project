@@ -241,7 +241,7 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 			_is_targeted = true;
 
 			OnInteractionLinetrace.Broadcast(E_UI_INTERACTION_TYPE::UIT_ITEM);
-			auto* item = dynamic_cast<ADNCommonItem*>(actor);
+			ADNCommonItem* item = Cast<ADNCommonItem>(actor);
 			if (nullptr == item)
 				return;
 
