@@ -3,6 +3,9 @@
 
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
 
+// Engine
+#include <BehaviorTree/BlackboardComponent.h>
+
 // Character
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 
@@ -23,6 +26,9 @@
 
 // UI
 #include "UE5_Training_Project/UI/Widget/Panel/DNCommentPanel.h"
+
+// AI
+#include <UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h>
 
 
 #define MAX_SUQAD_POSITION_NUMBER 10
@@ -132,6 +138,8 @@ void ADNUnEnemyCharacter::add_event()
 
 	player->OnOrderMove.AddDynamic(this, &ADNUnEnemyCharacter::order_move_handler);
 	player->OnOrderAttack.AddDynamic(this, &ADNUnEnemyCharacter::order_attack_handler);
+
+	OnDamagedFromTarget.AddDynamic(this, &ADNUnEnemyCharacter::set_target_attacked_me_handler);
 }
 
 void ADNUnEnemyCharacter::remove_event()
@@ -147,6 +155,9 @@ void ADNUnEnemyCharacter::remove_event()
 	//player->on_sprint.RemoveDynamic(this, &ADNUnEnemyCharacter::change_sprint_state_handler);
 	//player->OnOrderMove.RemoveDynamic(this, &ADNUnEnemyCharacter::order_move_handler);
 	//player->OnOrderAttack.RemoveDynamic(this, &ADNUnEnemyCharacter::order_attack_handler);
+
+
+	OnDamagedFromTarget.RemoveDynamic(this, &ADNUnEnemyCharacter::set_target_attacked_me_handler);
 }
 
 
@@ -229,6 +240,7 @@ void ADNUnEnemyCharacter::order_move_handler(FVector destination_in, ADNUnEnemyC
 	{
 		controller->ordered_move(destination_in, doll_in);
 		_is_ordered = true;
+		
 		// 여기에 캐릭터 코멘트 UI 호출
 		//WIDGET_MANAGER->
 	}
@@ -244,6 +256,7 @@ void ADNUnEnemyCharacter::order_attack_handler(ADNEnemyCharacter* enemy_in, ADNU
 	{
 		controller->ordered_attack(enemy_in, doll_in);
 		_is_ordered = true;
+		
 	}
 }
 
@@ -256,5 +269,22 @@ void ADNUnEnemyCharacter::order_stop_handler()
 	{
 		controller->order_stop();
 		_is_ordered = false;
+		OnOrdered.Broadcast(false);
 	}
+}
+
+void ADNUnEnemyCharacter::set_target_attacked_me_handler(ADNCommonCharacter* enemy_in)
+{
+	// 만약 공격받은 대상의 target actor가 nullptr일 경우 
+		// 공격한 캐릭터를 넣어줍니다.
+	ADNAIController* ai_controller = Cast<ADNAIController>(GetController());
+	if (nullptr != ai_controller)
+	{
+		if (nullptr == ai_controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor))
+		{
+			ai_controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, enemy_in);
+		}
+	}
+
+
 }

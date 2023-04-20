@@ -56,6 +56,9 @@ void UDNGunSpiderBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	_yaw = result.Yaw;
 	_firing = _owner->_is_fire;
 
+	//UE_LOG(LogTemp, Warning, TEXT(" Spider pitch is %f"), _pitch);
+	//UE_LOG(LogTemp, Warning, TEXT(" Spider yaw is %f"), _yaw);
+
 	// Legs
 	calculate_speed_direction(TryGetPawnOwner());
 	_bIsInAir = TryGetPawnOwner()->GetMovementComponent()->IsFalling();

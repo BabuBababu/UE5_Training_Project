@@ -98,6 +98,15 @@ public:
 	void update_get_ammo_handler(int64 count_in);
 
 	UFUNCTION()
+	void update_armed_handler(bool flag_in);
+
+	UFUNCTION()
+	void update_ordered_handler(bool flag_in);
+
+	UFUNCTION()
 	void reset_target_handler();
+
+	UFUNCTION()
+	void check_need_move_handler();		//타겟이 죽었을 때 플레이어와 멀리 있다면 따라오게끔 하기 위함 또한 벽끼고 싸웠을 때 추가 전투시 해당위치에 고정시키기 위함도 있음
 
 };

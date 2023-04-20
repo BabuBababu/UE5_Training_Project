@@ -10,6 +10,9 @@
 // Controller
 #include "UE5_Training_Project/Controller/DNPlayerController.h"
 
+// Character
+#include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
+
 // Component
 #include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
 #include "UE5_Training_Project/Component/DNStatusComponent.h"
@@ -249,18 +252,33 @@ FTransform ADNPlayerCharacter::set_cover_camera_transform(bool flag_in)
 void ADNPlayerCharacter::order_move(FVector destination_in, ADNUnEnemyCharacter* doll_in)
 {
 	OnOrderMove.Broadcast(destination_in, doll_in);
+	for (auto& doll : OBJECT_MANAGER->_in_squad_doll_array)
+	{
+		if (doll.Value == doll_in)
+			doll.Value->OnOrdered.Broadcast(true);
+	}
 }
 
 
 void ADNPlayerCharacter::order_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in)
 {
 	OnOrderAttack.Broadcast(enemy_in, doll_in);
+	for (auto& doll : OBJECT_MANAGER->_in_squad_doll_array)
+	{
+		if (doll.Value == doll_in)
+			doll.Value->OnOrdered.Broadcast(true);
+	}
 }
 
 
 void ADNPlayerCharacter::player_arm_event(bool armed_in)
 {
 	on_armed.Broadcast(armed_in);
+	for (auto& doll : OBJECT_MANAGER->_in_squad_doll_array)
+	{
+		if(nullptr != doll.Value)
+			doll.Value->OnArmed.Broadcast(armed_in);
+	}
 }
 
 void ADNPlayerCharacter::player_crouch_event(bool crouch_in)

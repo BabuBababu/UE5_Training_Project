@@ -23,6 +23,7 @@ namespace all_ai_bb_keys
 	TCHAR const* const is_finish_work = TEXT("IsFinishWork");
 	TCHAR const* const house_bed = TEXT("HouseBed");
 	TCHAR const* const is_sleep = TEXT("IsSleep");
+	TCHAR const* const need_move = TEXT("NeedMove");
 	
 
 }

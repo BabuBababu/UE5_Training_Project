@@ -193,7 +193,9 @@ void ADNCommonCharacter::add_event()
 	anim_instance->OnReloadEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
 	anim_instance->OnKnifeEnd.AddDynamic(this, &ADNCommonCharacter::return_from_knife_handler);
 	anim_instance->OnThrowEnd.AddDynamic(this, &ADNCommonCharacter::throw_grenade_handler);
-	OnTargetDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
+	OnDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
+	
+
 
 	if (IsValid(_knife_collision))
 		_knife_collision->OnComponentBeginOverlap.AddDynamic(this, &ADNCommonCharacter::overlap_knife_handler);
@@ -667,12 +669,9 @@ void ADNCommonCharacter::remove_ui_event()
 	
 }
 
-void ADNCommonCharacter::reset_fire_state_handler(ADNCommonCharacter* chracter_in)
+void ADNCommonCharacter::reset_fire_state_handler()
 {
-	if (this == chracter_in)
-	{
-		set_idle_animation();
-	}
+	set_idle_animation();
 }
 
 

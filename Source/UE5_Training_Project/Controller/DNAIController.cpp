@@ -46,29 +46,7 @@ void ADNAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
-	if (nullptr != character)
-	{
-		
-		if (character->_status->_dead)
-		{
-			_blackboard->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-			_blackboard->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-
-			return;
-		}
-
-
-		ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
-		if (nullptr != doll)
-		{
-			_blackboard->SetValueAsBool(all_ai_bb_keys::is_armed, doll->_is_armed_weapon);
-			_blackboard->SetValueAsBool(all_ai_bb_keys::is_ordered, doll->_is_ordered);
-		}
-
-	}
-
-
+	
 
 }
 
@@ -206,34 +184,27 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 	// 본인
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
 	// 타겟
-	ADNCommonCharacter* insight_me_character = dynamic_cast<ADNCommonCharacter*>(actor);
+	ADNCommonCharacter* insight_me_character = Cast<ADNCommonCharacter>(actor);
 
-	if (nullptr == actor)
-	{
-		get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr); 
-
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I lost sight")));
-
-	}
-
-	if (nullptr == insight_me_character)
-	{
-		get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
-		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-		return;
-	}
 
 	if (nullptr == character)
 		return;
 
+	if (nullptr == insight_me_character)
+		return;
+
 	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN || 
-		character->get_character_type() == E_CHARACTER_TYPE::CT_HELI)
+		character->get_character_type() == E_CHARACTER_TYPE::CT_HELI)       // 인형
 	{
-		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)		//적일 경우
+		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)		
 		{
-			get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
 			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+
+			// 타겟이 저장될 때 벽근처에 있는지 아니라면 벽으로 이동할 필요가 있는지 체크
+			if ( false == character->_is_near_wall)
+				get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, true);
+			else
+				get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, false);
 
 			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
 			if (Stimulus.WasSuccessfullySensed())
@@ -241,16 +212,15 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 			}
 
 		}
-		else                                                                               //적이 아닐 경우
+		else                                                                               
 		{
 		}
 	}
-	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY) // 적
 	{
 		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN ||
 			insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
 		{
-			get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
 			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
 
 			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
@@ -261,11 +231,14 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 
 		
 		}
-		else                                                                               //적이 아닐 경우
+		else                                                                              
 		{
 		}
 	}
 
+	// 인지했을 때 죽었다면 nullptr로 둡니다.
+	if(insight_me_character->_status->_dead)
+		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 	
 }
 
@@ -275,6 +248,19 @@ void ADNAIController::add_event(ADNCommonCharacter* character_in)
 	character_in->OnAtStartAmmo.AddDynamic(this, &ADNAIController::update_beginplay_ammo_handler);
 	character_in->OnStopShotAmmo.AddDynamic(this, &ADNAIController::reset_target_handler);
 
+	character_in->OnDead.AddDynamic(this, &ADNAIController::reset_target_handler);
+
+	// 인형이라면
+	if (character_in->_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+	{
+		ADNUnEnemyCharacter* character = Cast<ADNUnEnemyCharacter>(character_in);
+		if (nullptr != character)
+		{
+			character->OnOrdered.AddDynamic(this, &ADNAIController::update_ordered_handler);
+			character->OnArmed.AddDynamic(this, &ADNAIController::update_armed_handler);
+		}
+		character_in->OnTargetDead.AddDynamic(this, &ADNAIController::check_need_move_handler);
+	}
 }
 
 
@@ -283,6 +269,20 @@ void ADNAIController::remove_event(ADNCommonCharacter* character_in)
 	character_in->OnEmptyAmmo.RemoveDynamic(this, &ADNAIController::update_empty_ammo_handler);
 	character_in->OnAtStartAmmo.RemoveDynamic(this, &ADNAIController::update_beginplay_ammo_handler);
 	character_in->OnStopShotAmmo.RemoveDynamic(this, &ADNAIController::reset_target_handler);
+
+
+	// 인형이라면
+	if (character_in->_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+	{
+		ADNUnEnemyCharacter* character = Cast<ADNUnEnemyCharacter>(character_in);
+		if (nullptr != character)
+		{
+			character->OnOrdered.RemoveDynamic(this, &ADNAIController::update_ordered_handler);
+			character->OnArmed.RemoveDynamic(this, &ADNAIController::update_armed_handler);
+		}
+		character_in->OnTargetDead.RemoveDynamic(this, &ADNAIController::check_need_move_handler);
+
+	}
 }
 
 void ADNAIController::SetPerceptionSystem()
@@ -326,7 +326,7 @@ void ADNAIController::ordered_move(FVector destination_in, ADNUnEnemyCharacter* 
 void ADNAIController::ordered_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in)
 {
 	_blackboard->SetValueAsEnum(all_ai_bb_keys::order_type, static_cast<uint8>(E_ORDER_TYPE::OT_ATTACK));
-	_blackboard->SetValueAsObject(all_ai_bb_keys::target_actor, enemy_in);		//can_see_enemy는 그대로이므로 볼수있을때 사격
+	_blackboard->SetValueAsObject(all_ai_bb_keys::target_actor, enemy_in);	
 }
 
 void ADNAIController::order_stop()
@@ -355,7 +355,62 @@ void ADNAIController::update_beginplay_ammo_handler(int64 count_in)
 
 void ADNAIController::reset_target_handler()
 {
-	get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
 	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 
+}
+
+
+
+void ADNAIController::check_need_move_handler()	//사용안하는중
+{
+	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
+
+	if (false == character->_is_near_wall)	// 벽근처가 아니라면 움직임 가능하게 하고 리턴합니다.
+	{
+		get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, true);
+		return;
+	}
+
+	auto* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
+	if (nullptr != player && nullptr != character)
+	{
+		if (GetPawn()->GetDistanceTo(player) >= character->_need_move_distance)		// 벽근처에서 싸운 이후 플레이어와 멀어져있다면 움직임 가능하게합니다.
+		{
+			get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, true);
+		}
+		else
+			get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, false);
+	}
+}
+
+void ADNAIController::update_armed_handler(bool flag_in)
+{
+	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
+	if (nullptr != character)
+	{
+		ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
+		if (nullptr != doll)
+		{
+			_blackboard->SetValueAsBool(all_ai_bb_keys::is_armed, doll->_is_armed_weapon);
+		}
+	}
+	if (false == flag_in)
+	{
+		character->_character_state = E_CHARACTER_STATE::CS_IDLE;
+		character->_pre_upper_character_state = E_CHARACTER_STATE::CS_IDLE;
+	}
+}
+
+void ADNAIController::update_ordered_handler(bool flag_in)
+{
+	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
+	if (nullptr != character)
+	{
+		ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
+		if (nullptr != doll)
+		{
+			_blackboard->SetValueAsBool(all_ai_bb_keys::is_ordered, doll->_is_ordered);
+		}
+	}
 }

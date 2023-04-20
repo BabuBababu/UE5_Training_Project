@@ -14,6 +14,12 @@
 /**
  *	 플레이어 및 그리폰 인형의 캐릭터 클래스입니다.
  */
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUnEnemyOrdered, bool, flag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUnEnemyArmed, bool, flag);
+
+
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNUnEnemyCharacter : public ADNCommonCharacter
 {
@@ -53,7 +59,16 @@ public:
 	UFUNCTION()
 	void order_attack_handler(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in);
 
+	UFUNCTION()
+	void set_target_attacked_me_handler(ADNCommonCharacter* enemy_in);
+
 	void order_stop_handler();					// 이거는 델리게이트 사용하지않음
+
+	// 델리게이트
+public:
+	FOnUnEnemyOrdered OnOrdered;
+	FOnUnEnemyArmed OnArmed;
+
 
 public:
 	bool	_is_in_squad;

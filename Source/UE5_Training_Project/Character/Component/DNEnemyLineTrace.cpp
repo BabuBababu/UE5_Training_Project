@@ -89,7 +89,8 @@ void UDNEnemyLineTrace::OnFire(ADNCommonCharacter* player_in)
 
 				DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 				DNDamageOperation::DamagedSquadUI(damage, _enemy, E_DAMAGE_TYPE::DT_NORMAL);	//헤드일 경우 약점 대미지로 판단, ReceiveDamage에서 약점부위를 판단하고 넣어야할듯.. 순서가.. 일단은 노멀로 통일
-			
+				_enemy->OnDamagedFromTarget.Broadcast(player_in);								//공격당한 인형들에게 타겟이 없었다면 이 몬스터를 타겟으로 설정합니다.
+
 				OnTargetHit.Broadcast();
 			
 			}

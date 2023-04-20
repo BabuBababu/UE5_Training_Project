@@ -172,7 +172,7 @@ void ADNLobbyAIController::OnTargetDetected(AActor* actor, FAIStimulus const Sti
 
 	if (nullptr == actor)
 	{
-		get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+		//get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
 		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I lost sight")));
@@ -181,7 +181,7 @@ void ADNLobbyAIController::OnTargetDetected(AActor* actor, FAIStimulus const Sti
 
 	if (nullptr == insight_me_character)
 	{
-		get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
+		//get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, false);
 		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 		return;
 	}
@@ -193,7 +193,7 @@ void ADNLobbyAIController::OnTargetDetected(AActor* actor, FAIStimulus const Sti
 	{
 		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)		//적일 경우
 		{
-			get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
+			//get_blackboard()->SetValueAsBool(all_ai_bb_keys::can_see_enemy, true);
 			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
 
 			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.

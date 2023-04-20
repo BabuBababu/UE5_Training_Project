@@ -21,17 +21,19 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDamageIndicator, float, damage, E_DAMAGE_TYPE, type_in);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamaged,int64, squad_index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamagedFrom, ADNCommonCharacter*, character);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputStartDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnIteractionFinishDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAIAmmoDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWallJumpDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnKnifeDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnThrowDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnKillDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeadDelegate);
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStartAIAmmoDelegate,int64,ammo_count);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnIteractionFinishItemDelegate,ADNCommonItem*, item );
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadDelegate, ADNCommonCharacter*, character);
 
 
 class USpringArmComponent;
@@ -234,6 +236,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _default_acceleration = 1000.f;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = AI)
+	float _need_move_distance = 1500.f;
+
 protected:
 	uint8 _position_index;
 	FTimerHandle _fire_timer;
@@ -251,6 +256,7 @@ public:
 	bool _cover_right = false;
 	bool _is_wall_jump = false;
 	bool _is_knife_overlap = false;
+	bool _need_move = true;
 
 	FVector  _my_spawn_location = FVector(0.f, 0.f, 0.f);
 	int64 _target_change_limit_ammo = 10;				// 병과마다 다르게 가야할듯?
@@ -288,10 +294,12 @@ public:
 	FOnAIAmmoDelegate OnEmptyAmmo;
 	FOnAIAmmoDelegate OnStopShotAmmo;
 	FOnStartAIAmmoDelegate OnAtStartAmmo;
-	FOnDeadDelegate OnTargetDead;
+	FOnKillDelegate OnTargetDead;
+	FOnDeadDelegate OnDead;
 
 	FOnDamageIndicator OnDamageIndicator;
 	FOnDamaged OnDamaged;
+	FOnDamagedFrom OnDamagedFromTarget;
 
 public:
 	UFUNCTION()
@@ -301,7 +309,7 @@ public:
 	void return_to_armed_handler();
 
 	UFUNCTION()
-	void reset_fire_state_handler(ADNCommonCharacter* chracter_in);
+	void reset_fire_state_handler();
 
 	UFUNCTION()
 	void ammo_hit_handler();

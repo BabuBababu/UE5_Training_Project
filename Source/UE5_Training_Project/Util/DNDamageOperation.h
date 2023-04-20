@@ -44,7 +44,7 @@ class UE5_TRAINING_PROJECT_API DNDamageOperation
 public:
 
 	// 캐릭터 사망시 행동할 함수
-	static void die_from_damage(ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* player_in)
+	static void die_from_damage(ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* attack_character_in)
 	{
 
 		if (false == damaged_character_in->get_status_component().Get()->_dead)
@@ -82,7 +82,8 @@ public:
 
 		damaged_character_in->get_status_component().Get()->_dead = true;
 		damaged_character_in->GetMovementComponent()->Deactivate();
-		damaged_character_in->OnTargetDead.Broadcast(player_in);
+		damaged_character_in->OnDead.Broadcast();
+		attack_character_in->OnTargetDead.Broadcast();
 
 		
 	}

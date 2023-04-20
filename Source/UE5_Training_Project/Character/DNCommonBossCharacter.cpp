@@ -39,7 +39,7 @@ void ADNCommonBossCharacter::add_event()
 	anim_instance->OnDieEnd.AddDynamic(this, &ADNCommonCharacter::destroy_object_handler);
 	anim_instance->OnReloadEnd.AddDynamic(this, &ADNCommonCharacter::return_to_armed_handler);
 
-	OnTargetDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
+	OnDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
 	_enemy_line_trace->OnTargetHit.AddDynamic(this, &ADNCommonCharacter::ammo_hit_handler);
 
 
