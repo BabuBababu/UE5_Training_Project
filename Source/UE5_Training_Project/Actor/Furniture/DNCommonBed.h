@@ -6,7 +6,7 @@
 #include <CoreMinimal.h>
 
 // Actor
-#include "UE5_Training_Project/Actor/DNCommonActor.h"
+#include "UE5_Training_Project/Actor/Furniture/DNCommonFurniture.h"
 
 // Generated
 #include "DNCommonBed.generated.h"
@@ -15,7 +15,7 @@
  * 
  */
 UCLASS()
-class UE5_TRAINING_PROJECT_API ADNCommonBed : public ADNCommonActor
+class UE5_TRAINING_PROJECT_API ADNCommonBed : public ADNCommonFurniture
 {
 	GENERATED_BODY()
 
@@ -31,7 +31,5 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-public:
-	E_FURNITURE_TYPE _furniture_type = E_FURNITURE_TYPE::FT_NONE;		//인터렉션 구분용
 
 };

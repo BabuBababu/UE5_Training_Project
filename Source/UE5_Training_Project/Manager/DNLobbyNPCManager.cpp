@@ -5,9 +5,13 @@
 
 // Engine
 #include <BehaviorTree/BlackboardComponent.h>
+#include <Components/ArrowComponent.h>
 
 // Actor
 #include "UE5_Training_Project/Actor/DNGuardPointActor.h"
+
+// Furniture
+#include "UE5_Training_Project/Actor/Furniture/DNPostChair.h"
 
 // Characeter
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
@@ -346,6 +350,12 @@ void UDNLobbyNPCManager::apply_work()
 		doll.Value->_is_armed_weapon = false;
 		doll.Value->armed();
 		doll.Value->_character_state = E_CHARACTER_STATE::CS_POST;
+
+		if (nullptr != OBJECT_MANAGER->_post_chair)
+		{
+			doll.Value->SetActorLocation(OBJECT_MANAGER->_post_chair->_interaction_point->GetComponentLocation());
+			doll.Value->SetActorRotation(OBJECT_MANAGER->_post_chair->_interaction_point->GetComponentRotation());
+		}
 	}
 
 

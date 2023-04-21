@@ -13,6 +13,9 @@ void UDNObjectManager::initialize()
 	_manager_type = E_MANAGER_TYPE::MT_OBJECT_MANAGER;
 	_target_location_actor_array.Empty();
 	_patrol_location_actor_array.Empty();
+	_lobby_bed_array.Empty();
+	_lobby_furniture_array.Empty();
+	_post_chair = nullptr;
 
 
 	for (int32 Key = 1; Key <= 9; ++Key)

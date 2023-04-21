@@ -365,6 +365,9 @@ void ADNAIController::check_need_move_handler()	//사용안하는중
 {
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
 
+	if (nullptr == character)
+		return;
+
 	if (false == character->_is_near_wall)	// 벽근처가 아니라면 움직임 가능하게 하고 리턴합니다.
 	{
 		get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, true);
@@ -387,13 +390,15 @@ void ADNAIController::check_need_move_handler()	//사용안하는중
 void ADNAIController::update_armed_handler(bool flag_in)
 {
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
-	if (nullptr != character)
+
+	if (nullptr == character)
+		return;
+
+	ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
+
+	if (nullptr != doll)
 	{
-		ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
-		if (nullptr != doll)
-		{
-			_blackboard->SetValueAsBool(all_ai_bb_keys::is_armed, doll->_is_armed_weapon);
-		}
+		_blackboard->SetValueAsBool(all_ai_bb_keys::is_armed, doll->_is_armed_weapon);
 	}
 	if (false == flag_in)
 	{
@@ -405,12 +410,12 @@ void ADNAIController::update_armed_handler(bool flag_in)
 void ADNAIController::update_ordered_handler(bool flag_in)
 {
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
-	if (nullptr != character)
+	if (nullptr == character)
+		return;
+
+	ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
+	if (nullptr != doll)
 	{
-		ADNUnEnemyCharacter* doll = Cast<ADNUnEnemyCharacter>(character);
-		if (nullptr != doll)
-		{
-			_blackboard->SetValueAsBool(all_ai_bb_keys::is_ordered, doll->_is_ordered);
-		}
+		_blackboard->SetValueAsBool(all_ai_bb_keys::is_ordered, doll->_is_ordered);
 	}
 }

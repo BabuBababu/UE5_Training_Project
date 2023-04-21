@@ -6,6 +6,7 @@
 
 // Engine
 #include <Components/BoxComponent.h>
+#include <Components/ArrowComponent.h>
 #include <BehaviorTree/BlackboardComponent.h>
 
 // Character
@@ -21,7 +22,6 @@
 
 ADNCommonBed::ADNCommonBed()
 {
-	_actor_type = E_ACTOR_TYPE::AT_FURNITURE;
 	_furniture_type = E_FURNITURE_TYPE::FT_BED;
 }
 

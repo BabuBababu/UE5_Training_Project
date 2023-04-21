@@ -27,7 +27,9 @@
 class ADNTargetPointActor;
 class ADNUnEnemyCharacter;
 class ADNPlayerCharacter;
+class ADNCommonFurniture;
 class ADNCommonBed;
+class ADNPostChair;
 class ADNPatrolPointActor;
 class ADNGuardPointActor;
 
@@ -59,5 +61,8 @@ public:
 	TArray<ADNUnEnemyCharacter*>	_all_gained_doll_array;					//습득한 모든 아군 배열
 	TArray<AActor*> _griffin_player_array;									//아군,플레이어 담은 배열
 	TMap<int64, ADNCommonBed*> _lobby_bed_array;							//로비에 있는 침대를 담은 배열
+	TMap<int64, ADNCommonFurniture*> _lobby_furniture_array;				//침대, 당직용 의자 제외
+
+	ADNPostChair* _post_chair;
 
 };
