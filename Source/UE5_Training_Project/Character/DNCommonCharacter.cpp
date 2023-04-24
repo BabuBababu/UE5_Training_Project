@@ -719,8 +719,6 @@ void ADNCommonCharacter::throw_grenade_handler()
 
 
 		FVector forward_vector = _follow_camera->GetForwardVector();
-		FRotator character_rotation = GetActorRotation();
-		FVector sival_vector = character_rotation.Vector();
 		FVector destination_vector =  forward_vector * 1000.f;
 
 			

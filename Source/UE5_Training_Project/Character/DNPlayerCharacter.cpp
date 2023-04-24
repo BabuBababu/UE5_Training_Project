@@ -174,8 +174,12 @@ void ADNPlayerCharacter::aiming()
 	_line_trace->OnAiming(this);
 	if (_cover_now)
 	{
-		
-		_camera_boom->SetRelativeTransform(set_cover_camera_transform(true));
+		if(_cover_left)
+			_camera_boom->SetRelativeTransform(set_left_cover_camera_transform(true));
+		else if (_cover_right)
+			_camera_boom->SetRelativeTransform(set_right_cover_camera_transform(true));
+		else if (false == _cover_left && false == _cover_right)
+			_camera_boom->SetRelativeTransform(set_center_cover_camera_transform(true));
 
 	}
 	else
@@ -193,7 +197,14 @@ void ADNPlayerCharacter::stop_aiming()
 
 	
 	if (_cover_now)
-		_camera_boom->SetRelativeTransform(set_cover_camera_transform(false));
+	{
+		if (_cover_left)
+			_camera_boom->SetRelativeTransform(set_left_cover_camera_transform(false));
+		else if (_cover_right)
+			_camera_boom->SetRelativeTransform(set_right_cover_camera_transform(false));
+		else if (false == _cover_left && false == _cover_right)
+			_camera_boom->SetRelativeTransform(set_center_cover_camera_transform(false));
+	}
 	else
 	{
 		_camera_boom->SetRelativeTransform(set_camera_transform(false));
@@ -216,9 +227,16 @@ FTransform ADNPlayerCharacter::set_camera_transform(bool flag_in)
 {
 	// 카메라와 뷰포트 거리 , 좌우, 높이
 	const FVector OriginLocation(50.f, 90.f, 25.f);
-	const FVector AimCameraLocation(200.f, 50.f, 0.f);  //150,150,50 : 변경전
 	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
 	const FVector OriginCameraScale(1.f, 1.f, 1.f);
+
+	// 카메라가 바라보는 방향 기준
+	FRotator rotate = _follow_camera->GetComponentRotation();
+	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
+
+	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, 0.f, 0.f);
+
+
 
 	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
 	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
@@ -229,13 +247,74 @@ FTransform ADNPlayerCharacter::set_camera_transform(bool flag_in)
 	return AimCameraTransform;
 }
 
-FTransform ADNPlayerCharacter::set_cover_camera_transform(bool flag_in)
+FTransform ADNPlayerCharacter::set_center_cover_camera_transform(bool flag_in)
 {
+	
 	// 카메라와 뷰포트 거리 , 좌우, 높이
 	const FVector OriginLocation(100.f, 90.f, 0.f);
-	const FVector AimCameraLocation(150.f, 30.f, -15.f);
 	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
 	const FVector OriginCameraScale(1.f, 1.f, 1.f);
+
+	// 카메라가 바라보는 방향 기준
+	FRotator rotate = _follow_camera->GetComponentRotation();
+	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
+	//200 30 -15
+	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -45.f, 0.f);
+
+
+
+	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
+	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
+
+	if (true != flag_in)
+		return OriginCameraTransform;
+
+	return AimCameraTransform;
+}
+
+
+FTransform ADNPlayerCharacter::set_left_cover_camera_transform(bool flag_in)
+{
+
+	// 카메라와 뷰포트 거리 , 좌우, 높이
+	const FVector OriginLocation(100.f, 90.f, 0.f);
+	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
+	const FVector OriginCameraScale(1.f, 1.f, 1.f);
+
+	// 카메라가 바라보는 방향 기준
+	FRotator rotate = _follow_camera->GetComponentRotation();
+	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
+
+	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -135.f, -55.f);
+
+
+
+	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
+	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
+
+	if (true != flag_in)
+		return OriginCameraTransform;
+
+	return AimCameraTransform;
+}
+
+
+
+FTransform ADNPlayerCharacter::set_right_cover_camera_transform(bool flag_in)
+{
+
+	// 카메라와 뷰포트 거리 , 좌우, 높이
+	const FVector OriginLocation(100.f, 90.f, 0.f);
+	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
+	const FVector OriginCameraScale(1.f, 1.f, 1.f);
+
+	// 카메라가 바라보는 방향 기준
+	FRotator rotate = _follow_camera->GetComponentRotation();
+	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
+	//200 30 -15
+	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -45.f, -55.f);
+
+
 
 	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
 	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);

@@ -173,6 +173,7 @@ void ADNCommonWall::overlap_left_collision_handler(class UPrimitiveComponent* se
 			if (character->_near_wall == this)			// 캐릭터에 초기화된 벽과 이 벽이 같다면 적용합니다. 다른 벽에 의해 오버라이드되는것을 막습니다.
 			{
 				character->_cover_left = true;
+				character->_cover_right = false;
 			}
 		}
 	}
@@ -225,6 +226,7 @@ void ADNCommonWall::overlap_right_collision_handler(class UPrimitiveComponent* s
 			if (character->_near_wall == this)			// 캐릭터에 초기화된 벽과 이 벽이 같다면 적용합니다. 다른 벽에 의해 오버라이드되는것을 막습니다.
 			{
 				character->_cover_right = true;
+				character->_cover_left = false;
 			}
 		}
 	}
