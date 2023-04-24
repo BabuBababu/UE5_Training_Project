@@ -32,8 +32,8 @@ public:
 	void set_quest_sub_title(FText text_in);
 	void set_quest_icon(FString path_in);
 	void set_quest_complete_icon(bool flag_in);
-	void set_quest_current_item_count(int64 count_in);
-	void set_quest_need_item_count(int64 count_in);
+	void set_quest_current_count(int64 count_in);
+	void set_quest_need_count(int64 count_in);
 
 	void set_visible_item_count(bool flag_in);
 

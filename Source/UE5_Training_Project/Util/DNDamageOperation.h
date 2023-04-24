@@ -84,7 +84,6 @@ public:
 		damaged_character_in->GetMovementComponent()->Deactivate();
 		damaged_character_in->OnDead.Broadcast();
 		attack_character_in->OnTargetDead.Broadcast();
-
 		
 	}
 

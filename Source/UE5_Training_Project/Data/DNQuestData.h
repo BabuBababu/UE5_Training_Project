@@ -57,6 +57,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest Request Data")
 	int64								quest_need_item_count = 0;
 
+	// 목표 제거 퀘스트일 경우 사용할 변수
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest Request Data")
+	int64								quest_need_target_kill_count = 0;
+
+
 	//  아이템 수집 퀘스트일 경우 사용할 변수
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest Request Data")
 	TSubclassOf<ADNQuestItem>			quest_item;
@@ -89,6 +94,7 @@ public:
 		quest_location = data.quest_location;
 		quest_eliminate_character = data.quest_eliminate_character;
 		quest_sub_icon_path = data.quest_sub_icon_path;
+		quest_need_target_kill_count = data.quest_need_target_kill_count;
 
 		return *this;
 	}
@@ -101,6 +107,7 @@ public:
 		quest_sub_name = TEXT("");
 		quest_description = TEXT("");
 		quest_need_item_count = 0;
+		quest_need_target_kill_count = 0;
 		quest_item = nullptr;
 		quest_location = nullptr;
 		quest_eliminate_character = nullptr;

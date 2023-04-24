@@ -50,6 +50,9 @@ public:
 	void hide_ui();
 
 	void add_item_count();
+	void add_kill_count();
+
+	void check_quest_target(ADNCommonCharacter* target_in);
 
 public:
 	TObjectPtr<ADNPlayerCharacter>	 _player;
@@ -62,11 +65,15 @@ public:
 	int64							 _current_item_count;
 	int64							 _request_item_count;
 
-	// 목표 지점
-	TSubclassOf<ADNCommonActor>		 _target_location;
+	// 목표 제거
+	int64							 _current_target_count;
+	int64							 _request_target_count;
 
 	// 목표 액터
 	TSubclassOf<ADNCommonCharacter>  _target_actor;
+
+	// 목표 지점
+	TSubclassOf<ADNCommonActor>		 _target_location;
 
 
 

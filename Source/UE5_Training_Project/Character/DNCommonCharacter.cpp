@@ -574,7 +574,7 @@ void ADNCommonCharacter::set_idle_animation()
 
 void ADNCommonCharacter::destroy_object_handler()
 {
-
+	// 퀘스트 매니저와 관련이 있음
 
 	if (_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
 	{
@@ -590,11 +590,14 @@ void ADNCommonCharacter::destroy_object_handler()
 				widget->play_comment_isac(5);
 			}
 		}
+
+		// VIP 보호 같은 퀘스트 넣어도 재미있을 듯
 	}
 
 	if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)
 	{
 		DNItemSpawnSystem::spawn_item_with_random(this, this->GetActorLocation(), this->GetActorRotation());
+		QUEST_MANAGER->check_quest_target(this);
 	}
 
 

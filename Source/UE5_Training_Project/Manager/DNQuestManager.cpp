@@ -86,6 +86,7 @@ void UDNQuestManager::start_quest(int64 quest_uid_in)
 	else if (_quest_data->quest_type == E_UI_QUEST_TYPE::UQT_KILL)				// 목표 사살
 	{
 		_target_actor = _quest_data->quest_eliminate_character;
+		_request_target_count = _quest_data->quest_need_target_kill_count;
 	}
 	else if (_quest_data->quest_type == E_UI_QUEST_TYPE::UQT_DEFENCE)			// 거점 방어
 	{
@@ -147,18 +148,24 @@ void UDNQuestManager::set_ui()
 		// 퀘스트 완료 아이콘 초기화
 		panel->set_quest_complete_icon(false);
 
-		// 수집형 퀘스트
-		if (_quest_data->quest_type == E_UI_QUEST_TYPE::UQT_COLLECT)
+		
+		if (_quest_data->quest_type == E_UI_QUEST_TYPE::UQT_COLLECT)					// 수집형 퀘스트
 		{
 			panel->set_visible_item_count(true);
-			panel->set_quest_current_item_count(0);
-			panel->set_quest_need_item_count(_quest_data->quest_need_item_count);
+			panel->set_quest_current_count(0);
+			panel->set_quest_need_count(_quest_data->quest_need_item_count);
 		}
-		else
+		else if (_quest_data->quest_type == E_UI_QUEST_TYPE::UQT_KILL)					// 처치형 퀘스트
+		{
+			panel->set_visible_item_count(true);
+			panel->set_quest_current_count(0);
+			panel->set_quest_need_count(_quest_data->quest_need_target_kill_count);
+		}
+		else                                                                            // 나머지 퀘스트
 		{
 			panel->set_visible_item_count(false);
-			panel->set_quest_current_item_count(-1);
-			panel->set_quest_need_item_count(0);
+			panel->set_quest_current_count(-1);
+			panel->set_quest_need_count(0);
 		}
 	}
 
@@ -183,6 +190,37 @@ void UDNQuestManager::add_item_count()
 	UDNQuestPanel* panel = Cast<UDNQuestPanel>(widget);
 	if (nullptr != panel)
 	{
-		panel->set_quest_current_item_count(_current_item_count);
+		panel->set_quest_current_count(_current_item_count);
+	}
+
+	if (_current_item_count >= _request_item_count)
+	{
+		panel->set_quest_complete_icon(true);
+	}
+}
+
+
+void UDNQuestManager::add_kill_count()
+{
+	_current_target_count += 1;
+
+	auto* widget = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_QUEST);
+	UDNQuestPanel* panel = Cast<UDNQuestPanel>(widget);
+	if (nullptr != panel)
+	{
+		panel->set_quest_current_count(_current_target_count);
+	}
+
+	if (_current_target_count >= _request_target_count)
+	{
+		panel->set_quest_complete_icon(true);
+	}
+}
+
+void UDNQuestManager::check_quest_target(ADNCommonCharacter* target_in)
+{
+	if (target_in->IsA(_target_actor))
+	{
+		add_kill_count();
 	}
 }

@@ -106,7 +106,7 @@ void UDNQuestPanel::set_visible_item_count(bool flag_in)
 	}
 }
 
-void UDNQuestPanel::set_quest_current_item_count(int64 count_in)
+void UDNQuestPanel::set_quest_current_count(int64 count_in)
 {
 	if (IsValid(umg_current_item_count_text))
 	{
@@ -116,7 +116,7 @@ void UDNQuestPanel::set_quest_current_item_count(int64 count_in)
 }
 
 
-void UDNQuestPanel::set_quest_need_item_count(int64 count_in)
+void UDNQuestPanel::set_quest_need_count(int64 count_in)
 {
 	if (IsValid(umg_max_item_count_text))
 	{
