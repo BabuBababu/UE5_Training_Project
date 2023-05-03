@@ -28,9 +28,9 @@ class UE5_TRAINING_PROJECT_API DNItemSpawnSystem
 public:
 	static void spawn_item_with_random(ADNCommonCharacter* character_in, const FVector& location_in, const FRotator& rotation_in)
 	{
-		int result = FMath::FRandRange(1, 100);
+		int result = FMath::FRandRange(1.0, 100.0);
 
-		if (result == 1)		//일단 확률 1%로 설정
+		if (result == 1.0)		//일단 확률 1%로 설정
 		{
 			spawn_quest_item(character_in, location_in, rotation_in);
 		}
