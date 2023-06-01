@@ -104,6 +104,8 @@ ADNCommonCharacter::ADNCommonCharacter()
 	_follow_camera->SetupAttachment(_camera_boom); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	_follow_camera->bUsePawnControlRotation = true; // Camera does not rotate relative to arm
 
+	
+
 
 
 

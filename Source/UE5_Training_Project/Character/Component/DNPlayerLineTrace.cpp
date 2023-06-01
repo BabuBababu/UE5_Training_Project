@@ -335,7 +335,7 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 		if (nullptr == _enemy->_character_skeletal_mesh)				//바로 아래 주석을 이유로 메쉬 널체크
 			return;
 
-		_enemy->_character_skeletal_mesh->SetRenderCustomDepth(true);
+		//_enemy->_character_skeletal_mesh->SetRenderCustomDepth(true);					SRS 머티리얼 적용으로 해당 코드는 주석 처리함 23.6.1
 		//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 
 
@@ -353,7 +353,7 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 					return;
 				//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Yellow, false, 2.f);
 
-				_temp_character->_character_skeletal_mesh->SetRenderCustomDepth(false);
+				//_temp_character->_character_skeletal_mesh->SetRenderCustomDepth(false);  SRS 머티리얼 적용으로 해당 코드는 주석 처리함  23.6.1
 				_temp_character = _enemy;	// 현재 적중된 캐릭터를 다시 바꿔준다.
 			}
 		}

@@ -31,12 +31,16 @@
 void ADNPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	//SOUND_MANAGER->play_meta_sound(E_SOUND_TYPE::ST_BGM, 1, 0.f);								//게임 시작시 평화 BGM
+
 	OBJECT_MANAGER->_player = this;
 	OBJECT_MANAGER->_griffin_player_array.Add(this);
 
 	if (_spawn_level_type == E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_LOBBY)
 		SOUND_MANAGER->_can_play = false;
+
+
+
+
 }
 
 void ADNPlayerCharacter::Tick(float DeltaTime)
@@ -115,6 +119,9 @@ void ADNPlayerCharacter::fire()
 		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
 		if (controller->get_camera_shake() != nullptr)
 			controller->ClientStartCameraShake(controller->get_camera_shake());
+
+
+
 
 		GetWorld()->GetTimerManager().SetTimer(_fire_timer, this, &ADNCommonCharacter::fire, _status->_chartacter_data->character_status_data.fire_speed, true);
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Character::Fire"));
