@@ -42,7 +42,7 @@ public:
 
 	void destroy_object_handler() override;
 
-	void init_base();
+	virtual void init_base();
 
 	void rotate_head(float delta_time_in,ADNCommonCharacter* target_in);
 public:

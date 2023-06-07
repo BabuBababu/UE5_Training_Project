@@ -94,5 +94,6 @@ public:
 
 public:
 	UFUNCTION()
-	virtual	void overlap_actor_handler(const FHitResult& HitResult);
+	virtual	void overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);		//virtual	void overlap_actor_handler(const FHitResult& HitResult);
 };

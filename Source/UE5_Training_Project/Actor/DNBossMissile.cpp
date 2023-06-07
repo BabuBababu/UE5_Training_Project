@@ -67,20 +67,18 @@ void ADNBossMissile::destroy_object()
 }
 
 
-void ADNBossMissile::overlap_actor_handler(const FHitResult& HitResult)
+void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (nullptr == HitResult.GetActor())												// 바닥에 꽂혔을 때
-	{
-		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
-		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
-			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 
-		}
-	}
 
-	if (_owner != HitResult.GetActor())													// 자신과 충돌 체크
+	ADNCommonCharacter* actor = Cast<ADNCommonCharacter>(otherActor);
+	ADNBossMissile* missle = Cast<ADNBossMissile>(otherActor);
+
+	
+	if (nullptr == actor)
 	{
+		// 나머지
 		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
 			if (_fire_type == E_FIRE_TYPE::FT_SUB)
@@ -88,19 +86,57 @@ void ADNBossMissile::overlap_actor_handler(const FHitResult& HitResult)
 				DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		// fire 2
 				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
 				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
+
+				non_active_bullet();
+				_ready_destroy = true;
 			}
 			else if (_fire_type == E_FIRE_TYPE::FT_MAIN)
 			{
 				DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// fire 1
-				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(400.f, 0.f, 300.f));
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(100.f, 0.f, 100.f));
 				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
-			}
-			
 
+				non_active_bullet();
+				_ready_destroy = true;
+			}
+			else if (_fire_type == E_FIRE_TYPE::FT_NONE)
+			{
+				DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		// fire 1 고정 하지만 딜은 약하게
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(100.f, 0.f, 100.f));
+				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
+
+				non_active_bullet();
+				_ready_destroy = true;
+			}
+		}
+
+		
+	}
+	else
+	{
+		if (E_CHARACTER_TYPE::CT_ENEMY != actor->_character_type)					// 자신,아군 충돌 체크
+		{
+			if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
+			{
+				if (_fire_type == E_FIRE_TYPE::FT_SUB)
+				{
+					DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		// fire 2
+					UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
+					UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
+
+					non_active_bullet();
+					_ready_destroy = true;
+				}
+				else if (_fire_type == E_FIRE_TYPE::FT_MAIN)
+				{
+					DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// fire 1
+					UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(100.f, 0.f, 100.f));
+					UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
+
+					non_active_bullet();
+					_ready_destroy = true;
+				}
+			}
 		}
 	}
-
-
-	non_active_bullet();
-	_ready_destroy = true;
 }

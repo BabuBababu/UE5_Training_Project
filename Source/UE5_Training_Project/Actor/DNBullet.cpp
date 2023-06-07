@@ -50,6 +50,7 @@ ADNBullet::ADNBullet()
 		_projectile_movement_component->ProjectileGravityScale = 0.0f;
 							// 순수 루트컴포넌트로 해두면 아래에 미사일 위치 초기화가 안되서 그냥 이렇게함. 
 		_projectile_movement_component->SetUpdatedComponent(RootComponent);	
+
 	}
 
 	_ready_destroy = false;
@@ -60,6 +61,10 @@ ADNBullet::ADNBullet()
 void ADNBullet::BeginPlay()
 {
 	Super::BeginPlay();
+	if (IsValid(_box_collision))
+	{
+		_box_collision->IgnoreActorWhenMoving(_owner, true);
+	}
 
 	add_event();
 }
@@ -75,19 +80,27 @@ void ADNBullet::Tick(float DeltaTime)
 			Destroy();
 	}
 
+
 }
 
 
 void ADNBullet::add_event()
 {
-	if(IsValid(_projectile_movement_component))
-		_projectile_movement_component->OnProjectileStop.AddDynamic(this, &ADNBullet::overlap_actor_handler);
+	if (IsValid(_box_collision))
+		_box_collision->OnComponentBeginOverlap.AddDynamic(this, &ADNBullet::overlap_actor_handler);
+
+
+	//if(IsValid(_projectile_movement_component))
+	//	_projectile_movement_component->OnProjectileStop.AddDynamic(this, &ADNBullet::overlap_actor_handler);
 }
 
 void ADNBullet::remove_event()
 {
-	if (IsValid(_projectile_movement_component))
-		_projectile_movement_component->OnProjectileStop.RemoveDynamic(this, &ADNBullet::overlap_actor_handler);
+	//if (IsValid(_projectile_movement_component))
+	//	_projectile_movement_component->OnProjectileStop.RemoveDynamic(this, &ADNBullet::overlap_actor_handler);
+
+	if (IsValid(_box_collision))
+		_box_collision->OnComponentBeginOverlap.RemoveDynamic(this, &ADNBullet::overlap_actor_handler);
 }
 
 
@@ -142,9 +155,10 @@ void ADNBullet::fire(ADNCommonCharacter* target_in,FVector location_in)
 
 
 
-void ADNBullet::overlap_actor_handler(const FHitResult& HitResult)
+void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (nullptr == HitResult.GetActor())												// 바닥에 꽂혔을 때
+	if (nullptr == otherActor)												// 바닥에 꽂혔을 때
 	{
 		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
@@ -154,7 +168,7 @@ void ADNBullet::overlap_actor_handler(const FHitResult& HitResult)
 		}
 	}
 
-	if (_owner != HitResult.GetActor())													// 헬기 자신과 충돌 체크
+	if (_owner != otherActor)													// 헬기 자신과 충돌 체크
 	{
 		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{

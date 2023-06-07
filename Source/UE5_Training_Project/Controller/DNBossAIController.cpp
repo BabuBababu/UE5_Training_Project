@@ -36,6 +36,7 @@ void ADNBossAIController::OnPossess(APawn* pawn_in)
 		if (nullptr != BTObject)
 		{
 			btree = BTObject;
+			_sight_config->SightRadius = 200000.f;
 			UE_LOG(LogTemp, Warning, TEXT("bt Boss succeeded!"));
 		}
 

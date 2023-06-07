@@ -116,8 +116,9 @@ void ADNCommonBossCharacter::fire_1(ADNCommonCharacter* target_in)
 	
 	FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName("FirePoint"));
 		ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_1_class, socket_location, GetActorRotation()); // 미사일 생성
-		bullet->SetActorLocation(socket_location);
+
 		bullet->_fire_type = E_FIRE_TYPE::FT_MAIN;
+		bullet->SetActorLocation(socket_location);
 		bullet->init();
 
 		bullet->_owner = this;
@@ -143,8 +144,9 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 
 		FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName(socket_string));
 		ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_2_class, socket_location, GetActorRotation()); // 미사일 생성
-		bullet->SetActorLocation(socket_location);
+		
 		bullet->_fire_type = E_FIRE_TYPE::FT_SUB;
+		bullet->SetActorLocation(socket_location);
 		bullet->init();
 
 		bullet->_owner = this;

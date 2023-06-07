@@ -59,5 +59,7 @@ public:
 	E_FIRE_TYPE _fire_type = E_FIRE_TYPE::FT_NONE;
 
 public:
-	void overlap_actor_handler(const FHitResult& HitResult) override;
+	void overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;		//void overlap_actor_handler(const FHitResult& HitResult) override;
+
 };
