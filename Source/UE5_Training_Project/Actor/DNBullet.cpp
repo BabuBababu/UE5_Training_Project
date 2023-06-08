@@ -172,13 +172,13 @@ void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class
 	{
 		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
-			
-			if (_owner->get_character_type() != E_CHARACTER_TYPE::CT_ENEMY)				// 아군이 쏜 것이라면
-			{
-				DNDamageOperation::radial_damage_to_enemy(GetWorld(), 500.f, GetActorLocation(), 1500.f, _owner);
-				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 200.f));
-				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
-			}
+			DNDamageOperation::radial_damage_to_enemy(GetWorld(), 500.f, GetActorLocation(), 1500.f, _owner);
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 200.f));
+			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
+			//if (_owner->get_character_type() != E_CHARACTER_TYPE::CT_ENEMY)				// 아군이 쏜 것이라면
+			//{
+			//	
+			//}
 		}
 	}
 	
