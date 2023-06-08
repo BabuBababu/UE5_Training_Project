@@ -93,7 +93,7 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 			else if (_fire_type == E_FIRE_TYPE::FT_MAIN)
 			{
 				DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// fire 1
-				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(100.f, 0.f, 100.f));
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 0.f));
 				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 
 				non_active_bullet();
@@ -102,7 +102,7 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 			else if (_fire_type == E_FIRE_TYPE::FT_NONE)
 			{
 				DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		// fire 1 고정 하지만 딜은 약하게
-				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(100.f, 0.f, 100.f));
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 0.f));
 				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 
 				non_active_bullet();
@@ -130,7 +130,7 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 				else if (_fire_type == E_FIRE_TYPE::FT_MAIN)
 				{
 					DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// fire 1
-					UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(100.f, 0.f, 100.f));
+					UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 0.f));
 					UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 
 					non_active_bullet();

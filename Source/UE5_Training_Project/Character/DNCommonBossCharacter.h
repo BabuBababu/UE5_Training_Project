@@ -33,6 +33,10 @@ protected:
 	virtual void BeginPlay() override;
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void init_base();
+	virtual void rotate_head(float delta_time_in, ADNCommonCharacter* target_in);
+
 	virtual void fire_1(ADNCommonCharacter* target_in);
 	virtual void fire_2(ADNCommonCharacter* target_in);
 	virtual void melee_1(ADNCommonCharacter* target_in);
@@ -42,9 +46,6 @@ public:
 
 	void destroy_object_handler() override;
 
-	virtual void init_base();
-
-	void rotate_head(float delta_time_in,ADNCommonCharacter* target_in);
 public:
 	// 메쉬
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)

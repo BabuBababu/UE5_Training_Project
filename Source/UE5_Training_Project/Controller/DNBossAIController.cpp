@@ -25,12 +25,18 @@
 #include "UE5_Training_Project/Character/DNCommonBossCharacter.h"
 
 
+//
+//	이거 안쓰고 일단 AIController에서 전부 다 진행합니다.
+//
+
 
 void ADNBossAIController::OnPossess(APawn* pawn_in)
 {
+	Super::OnPossess(pawn_in);
+
 	ADNCommonBossCharacter* character = Cast<ADNCommonBossCharacter>(pawn_in);
 
-	if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+	if (character->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
 	{
 		UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Boss.BT_Combat_Boss"), NULL, LOAD_None, NULL);
 		if (nullptr != BTObject)

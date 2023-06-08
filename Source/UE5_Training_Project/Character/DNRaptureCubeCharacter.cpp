@@ -43,3 +43,22 @@ void ADNRaptureCubeCharacter::init_base()
 	}
 
 }
+
+
+void ADNRaptureCubeCharacter::rotate_head(float deleta_time_in, ADNCommonCharacter* target_in)
+{
+	// 타겟 바라보기
+	if (nullptr == target_in)
+		return;
+
+	FVector target_location = target_in->GetActorLocation();
+	FVector self_actor_location = _character_sub_skeletal_mesh->GetComponentLocation();
+	FRotator FocusRotation = UKismetMathLibrary::FindLookAtRotation(self_actor_location, target_location);
+
+	FRotator current_rotation = _character_sub_skeletal_mesh->GetComponentRotation();
+
+	FRotator NewRotation = FMath::RInterpTo(current_rotation, FocusRotation, deleta_time_in, 4.f);
+
+	_character_sub_skeletal_mesh->SetWorldRotation(NewRotation);
+
+}

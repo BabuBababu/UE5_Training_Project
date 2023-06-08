@@ -22,4 +22,5 @@ protected:
 
 public:
 	void init_base() override;
+	void rotate_head(float deleta_time_in, ADNCommonCharacter* target_in) override;
 };

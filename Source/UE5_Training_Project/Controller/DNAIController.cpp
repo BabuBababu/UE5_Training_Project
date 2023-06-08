@@ -102,12 +102,12 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 				{
 					if (nullptr == btree)
 						btree = BTObject;
-					UE_LOG(LogTemp, Warning, TEXT("bt Enemy succeeded!"));
+					UE_LOG(LogTemp, Warning, TEXT("bt Melee succeeded!"));
 				}
 			}
 			else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)		//보스
 			{
-				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Rapture_Cube.BT_Combat_Rapture_Cube"), NULL, LOAD_None, NULL);
+				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Boss.BT_Combat_Boss"), NULL, LOAD_None, NULL);
 				if (nullptr != BTObject)
 				{
 					if (nullptr == btree)
@@ -124,7 +124,7 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 					if (nullptr == btree)
 						btree = BTObject;
 					_sight_config->SightRadius = 200000.f;
-					UE_LOG(LogTemp, Warning, TEXT("bt Boss succeeded!"));
+					UE_LOG(LogTemp, Warning, TEXT("bt Rapture_LC succeeded!"));
 				}
 			}
 			else   //일단은 이런식으로 적군 타입에 따라 BT를 다르게 초기화합니다.
