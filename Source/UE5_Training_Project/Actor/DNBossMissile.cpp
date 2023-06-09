@@ -74,6 +74,11 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 
 	ADNCommonCharacter* actor = Cast<ADNCommonCharacter>(otherActor);
 	ADNBossMissile* missle = Cast<ADNBossMissile>(otherActor);
+	ADNEnemyCharacter* enemy = nullptr;
+
+	if (nullptr != missle)
+		enemy = Cast<ADNEnemyCharacter>(missle->_owner);
+	
 
 	
 	if (nullptr == actor)
@@ -81,6 +86,10 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 		// 나머지
 		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
+
+			if (nullptr == enemy)
+				return;
+
 			if (_fire_type == E_FIRE_TYPE::FT_SUB)
 			{
 				DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		// fire 2
@@ -90,9 +99,15 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 				non_active_bullet();
 				_ready_destroy = true;
 			}
-			else if (_fire_type == E_FIRE_TYPE::FT_MAIN)
+			else if (_fire_type == E_FIRE_TYPE::FT_MAIN)															// fire 1
 			{
-				DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// fire 1
+				if (enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
+					DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// 보스
+				else
+					DNDamageOperation::radial_damage_to_all(GetWorld(), 20.f, GetActorLocation(), 200.f, _owner);		// 랩쳐 큐브 
+				
+				
+
 				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 0.f));
 				UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 
