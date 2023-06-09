@@ -85,9 +85,6 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
 
-			if (nullptr == enemy)
-				return;
-
 			if (_fire_type == E_FIRE_TYPE::FT_SUB)
 			{
 				DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		// fire 2
