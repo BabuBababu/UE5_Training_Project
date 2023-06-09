@@ -292,7 +292,7 @@ FTransform ADNPlayerCharacter::set_left_cover_camera_transform(bool flag_in)
 	FRotator rotate = _follow_camera->GetComponentRotation();
 	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
 
-	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -135.f, -55.f);
+	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -135.f, 0.f); //z값 -55.f였음
 
 
 
@@ -319,7 +319,7 @@ FTransform ADNPlayerCharacter::set_right_cover_camera_transform(bool flag_in)
 	FRotator rotate = _follow_camera->GetComponentRotation();
 	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
 	//200 30 -15
-	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -45.f, -55.f);
+	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -45.f, 0.f);
 
 
 
