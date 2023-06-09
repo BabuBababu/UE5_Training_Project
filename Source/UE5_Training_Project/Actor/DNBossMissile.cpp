@@ -74,11 +74,9 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 
 	ADNCommonCharacter* actor = Cast<ADNCommonCharacter>(otherActor);
 	ADNBossMissile* missle = Cast<ADNBossMissile>(otherActor);
-	ADNEnemyCharacter* enemy = nullptr;
 
-	if (nullptr != missle)
-		enemy = Cast<ADNEnemyCharacter>(missle->_owner);
-	
+	ADNEnemyCharacter* enemy = Cast<ADNEnemyCharacter>(_owner);
+
 
 	
 	if (nullptr == actor)
