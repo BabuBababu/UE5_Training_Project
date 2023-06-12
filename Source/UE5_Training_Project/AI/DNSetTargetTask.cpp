@@ -52,7 +52,7 @@ EBTNodeResult::Type UDNSetTargetTask::ExecuteTask(UBehaviorTreeComponent& owner_
 	{
 		controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, false);
 		controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("find target is false!"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("find target is false!"));
 		return EBTNodeResult::Failed;
 	}
 	else
@@ -62,14 +62,14 @@ EBTNodeResult::Type UDNSetTargetTask::ExecuteTask(UBehaviorTreeComponent& owner_
 		for (auto& target : controller->_target_array) //가드라면 여기서 미사일 우선순위로
 		{
 			controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, target);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("find target is true!"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("find target is true!"));
 			return EBTNodeResult::Succeeded;
 		}
 	}
 
 	
 
-	return EBTNodeResult::Failed;
+	return EBTNodeResult::Succeeded;
 }
 
 

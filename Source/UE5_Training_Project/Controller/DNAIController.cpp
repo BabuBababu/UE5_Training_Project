@@ -226,7 +226,7 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 							insight_me_character->OnDeadForTarget.AddDynamic(this, &ADNAIController::remove_target_from_array_handler);
 
 						_target_array.Add(insight_me_character);
-						GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("target name : %s"), *insight_me_character->GetName()));
+						//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("target name : %s"), *insight_me_character->GetName()));
 					}
 					
 				}
@@ -248,7 +248,7 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 				if (false == _target_array.Contains(missile))
 				{
 					_target_array.Add(missile);
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("target name : %s"), *missile->GetName()));
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("target name : %s"), *missile->GetName()));
 				}
 			}
 		}
