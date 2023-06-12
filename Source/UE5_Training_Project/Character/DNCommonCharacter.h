@@ -22,6 +22,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDamageIndicator, float, damage, E_DAMAGE_TYPE, type_in);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamaged,int64, squad_index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamagedFrom, ADNCommonCharacter*, character);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadForTargetDelegate, AActor*,actor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInputStartDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnIteractionFinishDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAIAmmoDelegate);
@@ -296,6 +297,7 @@ public:
 	FOnStartAIAmmoDelegate OnAtStartAmmo;
 	FOnKillDelegate OnTargetDead;
 	FOnDeadDelegate OnDead;
+	FOnDeadForTargetDelegate OnDeadForTarget;
 
 	FOnDamageIndicator OnDamageIndicator;
 	FOnDamaged OnDamaged;

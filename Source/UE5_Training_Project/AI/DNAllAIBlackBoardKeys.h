@@ -24,6 +24,6 @@ namespace all_ai_bb_keys
 	TCHAR const* const house_bed = TEXT("HouseBed");
 	TCHAR const* const is_sleep = TEXT("IsSleep");
 	TCHAR const* const need_move = TEXT("NeedMove");
-	
+	TCHAR const* const is_find_target = TEXT("IsFindTarget");
 
 }

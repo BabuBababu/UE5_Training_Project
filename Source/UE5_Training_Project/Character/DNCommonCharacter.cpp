@@ -600,6 +600,7 @@ void ADNCommonCharacter::destroy_object_handler()
 	{
 		DNItemSpawnSystem::spawn_item_with_random(this, this->GetActorLocation(), this->GetActorRotation());
 		QUEST_MANAGER->check_quest_target(this);
+		OnDeadForTarget.Broadcast(this);
 	}
 
 

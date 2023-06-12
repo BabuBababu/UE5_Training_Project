@@ -92,6 +92,8 @@ public:
 	bool					_ready_destroy;
 
 
+
+
 public:
 	UFUNCTION()
 	virtual	void overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,

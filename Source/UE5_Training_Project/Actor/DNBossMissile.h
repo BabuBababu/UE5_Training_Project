@@ -15,8 +15,14 @@
 #include "DNBossMissile.generated.h"
 
 /**
- * 
+ *  bossmissile이 아니라 그냥 enemymissile로 바꿀거임
  */
+
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDestroyForTargetDelegate, AActor*, missile);
+
+
 
 class USplineComponent;
 
@@ -50,13 +56,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Move)
 	TObjectPtr<USplineComponent> _spline_component;
 
-
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
 	float _max_hp;
+
 public:
 	float _current_hp;
 	E_FIRE_TYPE _fire_type = E_FIRE_TYPE::FT_NONE;
+
+
+public:
+	FOnDestroyForTargetDelegate OnDestroyMissile;
 
 public:
 	void overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,

@@ -42,7 +42,7 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 	APawn* self_pawn = controller->GetPawn();
 	
 	// 캐릭터
-	ADNCommonCharacter* self_actor = dynamic_cast<ADNCommonCharacter*>(self_pawn);
+	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self_pawn);
 
 	
 	if (self_actor->get_status_component().Get()->_dead)

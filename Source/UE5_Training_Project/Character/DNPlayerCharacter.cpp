@@ -178,9 +178,12 @@ void ADNPlayerCharacter::aiming()
 
 	//카메라 시점 및 속도를 변경합니다.
 
-	_line_trace->OnAiming(this);
+	
 	if (_cover_now)
 	{
+		if (GetVelocity().Length() > 0.f)		//엄폐 + 이동중이면 조준 불가
+			_is_aiming = false;
+
 		if(_cover_left)
 			_camera_boom->SetRelativeTransform(set_left_cover_camera_transform(true));
 		else if (_cover_right)
@@ -195,6 +198,7 @@ void ADNPlayerCharacter::aiming()
 		GetCharacterMovement()->MaxWalkSpeed = _aiming_max_walk_speed;
 	}
 
+	_line_trace->OnAiming(this);
 
 }
 

@@ -282,7 +282,8 @@ void ADNUnEnemyCharacter::set_target_attacked_me_handler(ADNCommonCharacter* ene
 	{
 		if (nullptr == ai_controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor))
 		{
-			ai_controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, enemy_in);
+			if(false == ai_controller->_target_array.Contains(enemy_in))
+				ai_controller->_target_array.Add(enemy_in);
 		}
 	}
 

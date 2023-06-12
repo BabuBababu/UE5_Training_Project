@@ -22,6 +22,9 @@
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 
+// Actor
+#include "UE5_Training_Project/Actor/DNBossMissile.h"
+
 // Component
 #include "UE5_Training_Project/Component/DNStatusComponent.h"
 #include "UE5_Training_Project/Character/Component/DNPlayerLineTrace.h"
@@ -36,6 +39,7 @@ ADNAIController::ADNAIController(FObjectInitializer const& object_initializer)
 
 	behavior_tree_component = object_initializer.CreateDefaultSubobject<UBehaviorTreeComponent>(this, TEXT("BehaviorComp"));
 	_blackboard = object_initializer.CreateDefaultSubobject<UBlackboardComponent>(this, TEXT("BlackboardComp"));
+	_target_array.Empty();
 
 	//Perception초기화
 	SetPerceptionSystem();
@@ -187,48 +191,86 @@ void ADNAIController::OnUnPossess()
 
 void ADNAIController::OnUpdated(TArray<AActor*> const& updated_actors)
 {
-
 }
 
 void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus)
 {
 	// 본인
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(GetPawn());
-	// 타겟
+	// 캐릭터
 	ADNCommonCharacter* insight_me_character = Cast<ADNCommonCharacter>(actor);
+	// 미사일
+	ADNBossMissile* missile = Cast<ADNBossMissile>(actor);
 
 
 	if (nullptr == character)
 		return;
 
-	if (nullptr == insight_me_character)
-		return;
+	
 
 	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN || 
 		character->get_character_type() == E_CHARACTER_TYPE::CT_HELI)       // 인형
 	{
-		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)		
+		
+		
+		if (nullptr != insight_me_character)								// 캐릭터
 		{
-			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
-
-			// 타겟이 저장될 때 벽근처에 있는지 아니라면 벽으로 이동할 필요가 있는지 체크
-			if ( false == character->_is_near_wall)
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, true);
-			else
-				get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, false);
-
-			//성공적으로 감지하면 블랙보드에 true값을 넣고 타겟 액터도 넣어준다.
-			if (Stimulus.WasSuccessfullySensed())
+			if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 			{
-			}
+				
+				if (false == _target_array.Contains(insight_me_character))
+				{
+					if (false == insight_me_character->get_status_component()->_dead)
+					{
+						if (false == insight_me_character->OnDeadForTarget.IsBound())
+							insight_me_character->OnDeadForTarget.AddDynamic(this, &ADNAIController::remove_target_from_array_handler);
 
+						_target_array.Add(insight_me_character);
+						GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("target name : %s"), *insight_me_character->GetName()));
+					}
+					
+				}
+					
+			}
 		}
-		else                                                                               
+		else if(nullptr != missile)											// 미사일
 		{
+			ADNCommonCharacter* missile_owner = Cast<ADNCommonCharacter>(missile->Owner);
+			if (nullptr == missile_owner)
+				return;
+
+			// 적 미사일인 경우
+			if (missile_owner->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+			{
+				if (false == missile->OnDestroyMissile.IsBound())
+					missile->OnDestroyMissile.AddDynamic(this, &ADNAIController::remove_target_from_array_handler);
+
+				if (false == _target_array.Contains(missile))
+				{
+					_target_array.Add(missile);
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("target name : %s"), *missile->GetName()));
+				}
+			}
 		}
+
+
+
+
+
+
+		// 타겟이 저장될 때 벽근처에 있는지 아니라면 벽으로 이동할 필요가 있는지 체크
+		if (false == character->_is_near_wall)
+			get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, true);
+		else
+			get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, false);
+		
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY) // 적
 	{
+
+		if (nullptr == insight_me_character)
+			return;
+
 		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN ||
 			insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
 		{
@@ -248,7 +290,9 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 	}
 
 	// 인지했을 때 죽었다면 nullptr로 둡니다.
-	if(insight_me_character->_status->_dead)
+	if(nullptr == insight_me_character)
+		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+	else if(insight_me_character->_status->_dead)
 		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 	
 }
@@ -366,7 +410,8 @@ void ADNAIController::update_beginplay_ammo_handler(int64 count_in)
 
 void ADNAIController::reset_target_handler()
 {
-	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+	//_target_array.Empty();
+	//get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 
 }
 
@@ -429,4 +474,21 @@ void ADNAIController::update_ordered_handler(bool flag_in)
 	{
 		_blackboard->SetValueAsBool(all_ai_bb_keys::is_ordered, doll->_is_ordered);
 	}
+}
+
+void ADNAIController::remove_target_from_array_handler(AActor* actor_in)
+{
+
+	for (int32 Index = 0; Index < _target_array.Num(); ++Index)
+	{
+		if (_target_array[Index] == actor_in)
+		{
+			_target_array.RemoveAt(Index);
+			break; 
+		}
+	}
+
+	_owner->set_idle_animation();
+	//get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+	GetAIPerceptionComponent()->UpdatePerceptionWhitelist(_sight_config->GetSenseID(), true);
 }

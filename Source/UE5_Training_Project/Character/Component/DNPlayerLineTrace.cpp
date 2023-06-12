@@ -377,6 +377,9 @@ void UDNPlayerLineTrace::OnOrder(ADNCommonCharacter* player_in, ADNUnEnemyCharac
 	if (player_in->_character_type != E_CHARACTER_TYPE::CT_PLAYER)	//플레이어가 아니라면 리턴
 		return;
 
+	if (nullptr == doll_in)											//스쿼드에 없는 니케라면 리턴
+		return;
+
 
 	FQuat rotate = FQuat(player_in->GetControlRotation());		// 임시로 -15.f 로 카메라 각도만큼 해놧는데 확인예정
 
