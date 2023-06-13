@@ -210,8 +210,7 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 
 	
 
-	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN || 
-		character->get_character_type() == E_CHARACTER_TYPE::CT_HELI)       // 인형
+	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)       // 인형
 	{
 		
 		
@@ -244,6 +243,16 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 		else
 			get_blackboard()->SetValueAsBool(all_ai_bb_keys::need_move, false);
 		
+	}
+	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_HELI)
+	{
+		if (nullptr == insight_me_character)
+			return;
+
+		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+		{
+			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+		}
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY) // 적
 	{
