@@ -106,12 +106,11 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 						DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// 보스
 					else
 						DNDamageOperation::radial_damage_to_all(GetWorld(), 20.f, GetActorLocation(), 200.f, _owner);		// 랩쳐 큐브 
+
+
+					destroy_object();
 				}
 				
-				
-				
-
-				destroy_object();
 			}
 			else if (_fire_type == E_FIRE_TYPE::FT_NONE)
 			{
@@ -141,4 +140,6 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 			}
 		}
 	}
+
+	destroy_object();
 }
