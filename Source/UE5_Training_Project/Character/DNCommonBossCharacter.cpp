@@ -163,18 +163,17 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 	if (nullptr == _fire_2_class)
 		return;
 
-	FString socket_string = "Rocket_Muzzle_";
-	FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName(socket_string));
+	
 
 	if (OBJECT_MANAGER->_enemy_missile_array.Num() < 500)				//500발까지는 그냥 생성, 501발째부터는 생성안하고 기존의 500발중 언액티브된 미사일 발사
 	{
 		for (int i = 0; i < 10; ++i)
 		{
-			
+			FString socket_string = "Rocket_Muzzle_";
 			FString num = FString::FromInt(i);
 			socket_string.Append(num);
+			FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName(socket_string));
 
-			
 			ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_2_class, socket_location, GetActorRotation()); // 미사일 생성
 
 			bullet->_fire_type = E_FIRE_TYPE::FT_SUB;
@@ -195,8 +194,10 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 		for (int i = 0; i < 10; ++i)
 		{
 
+			FString socket_string = "Rocket_Muzzle_";
 			FString num = FString::FromInt(i);
 			socket_string.Append(num);
+			FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName(socket_string));
 
 			for (auto& un_active_missile : OBJECT_MANAGER->_enemy_missile_array)
 			{
