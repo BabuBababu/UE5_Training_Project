@@ -25,6 +25,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDestroyForTargetDelegate, AActor*
 
 
 class USplineComponent;
+class UAIPerceptionStimuliSourceComponent;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNBossMissile : public ADNBullet
@@ -53,8 +54,12 @@ public:
 
 public:
 	// 메쉬
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Move)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<USplineComponent> _spline_component;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	TObjectPtr<UAIPerceptionStimuliSourceComponent> _perception_stimuli_source;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
 	float _max_hp;

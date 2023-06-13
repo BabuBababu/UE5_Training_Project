@@ -16,6 +16,10 @@
 // Actor
 #include "UE5_Training_Project/Actor/DNBossMissile.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNObjectManager.h"
+
+
 ADNCommonBossCharacter::ADNCommonBossCharacter()
 {
 
@@ -113,21 +117,44 @@ void ADNCommonBossCharacter::fire_1(ADNCommonCharacter* target_in)
 	if (nullptr == _fire_1_class)
 		return;
 
-	
 	FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName("FirePoint"));
+
+	if (OBJECT_MANAGER->_enemy_missile_array.Num() < 500)				//500발까지는 그냥 생성, 501발째부터는 생성안하고 기존의 500발중 언액티브된 미사일 발사
+	{
+		
 		ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_1_class, socket_location, GetActorRotation()); // 미사일 생성
+
 
 		bullet->_fire_type = E_FIRE_TYPE::FT_MAIN;
 		bullet->SetActorLocation(socket_location);
-		bullet->init();
-
+		bullet->init(); 
+		bullet->active_bullet();
 		bullet->_owner = this;
 		bullet->fire(target_in, socket_location);
 
 		_fire_1_missile = bullet;
 
+		OBJECT_MANAGER->_enemy_missile_array.Add(bullet);
 
-	_fire_1_cool_time_start = true;
+		_fire_1_cool_time_start = true;
+	}
+	else
+	{
+		for (auto& un_active_missile : OBJECT_MANAGER->_enemy_missile_array)
+		{
+			if (false == un_active_missile->_is_active && un_active_missile->_fire_type == E_FIRE_TYPE::FT_MAIN)
+			{
+				un_active_missile->init();
+				un_active_missile->_owner = this;
+				un_active_missile->active_bullet();
+				un_active_missile->fire(target_in, socket_location);
+				_fire_1_missile = un_active_missile;
+				_fire_1_cool_time_start = true;
+				break;
+			}
+		}
+	}
+	
 
 }
 
@@ -136,27 +163,59 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 	if (nullptr == _fire_2_class)
 		return;
 
-	for (int i = 0; i < 10; ++i)
+	FString socket_string = "Rocket_Muzzle_";
+	FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName(socket_string));
+
+	if (OBJECT_MANAGER->_enemy_missile_array.Num() < 500)				//500발까지는 그냥 생성, 501발째부터는 생성안하고 기존의 500발중 언액티브된 미사일 발사
 	{
-		FString socket_string = "Rocket_Muzzle_";
-		FString num = FString::FromInt(i);
-		socket_string.Append(num);
+		for (int i = 0; i < 10; ++i)
+		{
+			
+			FString num = FString::FromInt(i);
+			socket_string.Append(num);
 
-		FVector socket_location = _character_sub_skeletal_mesh->GetSocketLocation(FName(socket_string));
-		ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_2_class, socket_location, GetActorRotation()); // 미사일 생성
-		
-		bullet->_fire_type = E_FIRE_TYPE::FT_SUB;
-		bullet->SetActorLocation(socket_location);
-		bullet->init();
+			
+			ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_2_class, socket_location, GetActorRotation()); // 미사일 생성
 
-		bullet->_owner = this;
-		bullet->fire(target_in, socket_location);
+			bullet->_fire_type = E_FIRE_TYPE::FT_SUB;
+			bullet->SetActorLocation(socket_location);
+			bullet->init();
+			bullet->active_bullet();
+			bullet->_owner = this;
+			bullet->fire(target_in, socket_location);
 
-		_missile_array.Add(bullet);
+			_missile_array.Add(bullet);
 
+		}
+
+		_fire_2_cool_time_start = true;
 	}
+	else
+	{
+		for (int i = 0; i < 10; ++i)
+		{
 
-	_fire_2_cool_time_start = true;
+			FString num = FString::FromInt(i);
+			socket_string.Append(num);
+
+			for (auto& un_active_missile : OBJECT_MANAGER->_enemy_missile_array)
+			{
+				if (false == un_active_missile->_is_active && un_active_missile->_fire_type == E_FIRE_TYPE::FT_SUB)
+				{
+					un_active_missile->init();
+					un_active_missile->_owner = this;
+					un_active_missile->active_bullet();
+					un_active_missile->fire(target_in, socket_location);
+					_fire_1_missile = un_active_missile;
+					_fire_1_cool_time_start = true;
+					break;
+				}
+			}
+
+		}
+		
+	}
+	
 
 }
 

@@ -89,7 +89,8 @@ public:
 
 	ADNCommonCharacter*		_owner;
 	float					_limit_time;
-	bool					_ready_destroy;
+
+	bool					_is_active;
 
 
 

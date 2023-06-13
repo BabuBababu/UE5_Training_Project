@@ -8,6 +8,7 @@
 
 // Character
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
+#include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 
 // AnimInstance
 #include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
@@ -282,8 +283,27 @@ void ADNUnEnemyCharacter::set_target_attacked_me_handler(ADNCommonCharacter* ene
 	{
 		if (nullptr == ai_controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor))
 		{
-			if(false == ai_controller->_target_array.Contains(enemy_in))
-				ai_controller->_target_array.Add(enemy_in);
+			if (false == ai_controller->_target_array.Contains(enemy_in))
+			{
+
+				if (IsValid(enemy_in))								// 유효성 체크
+				{
+					ai_controller->_target_array.Add(enemy_in);
+
+					ADNEnemyCharacter* enemy = Cast<ADNEnemyCharacter>(enemy_in);
+					ADNAIController* controller = Cast<ADNAIController>(GetController());
+
+					if (nullptr == enemy)
+						return;
+
+					if (nullptr == controller)
+						return;
+
+					if (false == enemy->OnDeadForTarget.IsBound())
+						enemy->OnDeadForTarget.AddDynamic(controller, &ADNAIController::remove_target_from_array_handler);
+				}
+					
+			}
 		}
 	}
 

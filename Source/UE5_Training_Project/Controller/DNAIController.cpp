@@ -32,6 +32,9 @@
 // BlackBoard
 #include "UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNObjectManager.h"
+
 
 
 ADNAIController::ADNAIController(FObjectInitializer const& object_initializer)
@@ -51,7 +54,6 @@ void ADNAIController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	
-
 }
 
 
@@ -217,45 +219,23 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 		{
 			if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 			{
-				
-				if (false == _target_array.Contains(insight_me_character))
+				if (IsValid(insight_me_character))		//유효성 체크
 				{
-					if (false == insight_me_character->get_status_component()->_dead)
+					if (false == _target_array.Contains(insight_me_character))
 					{
 						if (false == insight_me_character->OnDeadForTarget.IsBound())
 							insight_me_character->OnDeadForTarget.AddDynamic(this, &ADNAIController::remove_target_from_array_handler);
 
 						_target_array.Add(insight_me_character);
+
 						//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("target name : %s"), *insight_me_character->GetName()));
+
 					}
-					
 				}
+				
 					
 			}
 		}
-		else if(nullptr != missile)											// 미사일
-		{
-			ADNCommonCharacter* missile_owner = Cast<ADNCommonCharacter>(missile->Owner);
-			if (nullptr == missile_owner)
-				return;
-
-			// 적 미사일인 경우
-			if (missile_owner->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
-			{
-				if (false == missile->OnDestroyMissile.IsBound())
-					missile->OnDestroyMissile.AddDynamic(this, &ADNAIController::remove_target_from_array_handler);
-
-				if (false == _target_array.Contains(missile))
-				{
-					_target_array.Add(missile);
-					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("target name : %s"), *missile->GetName()));
-				}
-			}
-		}
-
-
-
-
 
 
 		// 타겟이 저장될 때 벽근처에 있는지 아니라면 벽으로 이동할 필요가 있는지 체크
@@ -289,12 +269,6 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 		}
 	}
 
-	// 인지했을 때 죽었다면 nullptr로 둡니다.
-	if(nullptr == insight_me_character)
-		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-	else if(insight_me_character->_status->_dead)
-		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
-	
 }
 
 void ADNAIController::add_event(ADNCommonCharacter* character_in)
@@ -380,8 +354,20 @@ void ADNAIController::ordered_move(FVector destination_in, ADNUnEnemyCharacter* 
 
 void ADNAIController::ordered_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in)
 {
-	_blackboard->SetValueAsEnum(all_ai_bb_keys::order_type, static_cast<uint8>(E_ORDER_TYPE::OT_ATTACK));
-	_blackboard->SetValueAsObject(all_ai_bb_keys::target_actor, enemy_in);	
+	if (IsValid(enemy_in))
+	{
+		if (false == _target_array.Contains(enemy_in))
+		{
+			if (false == enemy_in->OnDeadForTarget.IsBound())
+				enemy_in->OnDeadForTarget.AddDynamic(this, &ADNAIController::remove_target_from_array_handler);
+
+			_target_array.Add(enemy_in);
+		}
+
+		_blackboard->SetValueAsEnum(all_ai_bb_keys::order_type, static_cast<uint8>(E_ORDER_TYPE::OT_ATTACK));
+		_blackboard->SetValueAsObject(all_ai_bb_keys::target_actor, enemy_in);
+	}
+	
 }
 
 void ADNAIController::order_stop()
@@ -410,8 +396,9 @@ void ADNAIController::update_beginplay_ammo_handler(int64 count_in)
 
 void ADNAIController::reset_target_handler()
 {
-	//_target_array.Empty();
-	//get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+	_target_array.Empty();
+	get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, false);
+	get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 
 }
 
@@ -479,16 +466,49 @@ void ADNAIController::update_ordered_handler(bool flag_in)
 void ADNAIController::remove_target_from_array_handler(AActor* actor_in)
 {
 
-	for (int32 Index = 0; Index < _target_array.Num(); ++Index)
+	// 파괴되는 액터가 원래 타겟이었다면 nullptr로 초기화
+	if (actor_in == get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor))
 	{
-		if (_target_array[Index] == actor_in)
+		get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, false);
+		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("remove_target_from_array_handler!!!!!"));
+	}
+
+
+	TArray<AActor*> temp_array;
+	temp_array.Empty();
+
+
+	// 임시 배열에 유효한 타겟을 저장.
+	for (auto& target : _target_array)
+	{
+		if (IsValid(target))
 		{
-			_target_array.RemoveAt(Index);
-			break; 
+			temp_array.Add(target);
 		}
 	}
 
-	_owner->set_idle_animation();
-	//get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
+	// 임시 배열에서 파괴된 액터 삭제
+	for (int index = 0; index < temp_array.Num(); ++index)
+	{
+		if (temp_array[index] == actor_in)
+		{
+			temp_array.RemoveAt(index);
+			break;
+		}
+	}
+
+	// 원래 타겟 배열에 계산해놓은 임시 배열로 초기화
+	_target_array = temp_array;
+
+
+
+
+	// 타겟이 캐릭터였을 경우만 애니메이션 초기화
+	ADNCommonCharacter* target = Cast<ADNCommonCharacter>(actor_in);
+	if(nullptr != target)
+		_owner->set_idle_animation();
+
+	
 	GetAIPerceptionComponent()->UpdatePerceptionWhitelist(_sight_config->GetSenseID(), true);
 }

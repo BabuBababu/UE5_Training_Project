@@ -4,6 +4,7 @@
 #include "UE5_Training_Project/GameMode/DNStageGameMode.h"
 
 
+
 ADNStageGameMode::ADNStageGameMode()
 {
 
@@ -14,6 +15,7 @@ ADNStageGameMode::ADNStageGameMode()
 void ADNStageGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 void ADNStageGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)

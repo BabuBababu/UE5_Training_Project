@@ -18,7 +18,8 @@
 #include "UE5_Training_Project/Util/DNDamageOperation.h"
 
 //
-//	여기도 언젠가는 헬기 데이터에 따라 미사일의 대미지 사거리 이동속도 메시를 정할수있도록 구현해야합니다.
+//	여기도 언젠가는 헬기 데이터에 따라 미사일의 대미지 사거리 이동속도 메쉬를 정할수있도록 구현해야합니다.
+//  이름도 bullet이 아니라 커먼미사일로 해야할듯
 //
 
 
@@ -53,8 +54,8 @@ ADNBullet::ADNBullet()
 
 	}
 
-	_ready_destroy = false;
 	_limit_time = 0.f;
+	_is_active = false;
 
 }
 
@@ -72,14 +73,6 @@ void ADNBullet::BeginPlay()
 void ADNBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (_ready_destroy)
-	{
-		_limit_time += DeltaTime;
-		if (_limit_time > 2.f)
-			Destroy();
-	}
-
 
 }
 
@@ -111,10 +104,10 @@ void ADNBullet::init()
 
 void ADNBullet::active_bullet()
 {
-
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	_projectile_movement_component->Activate();
+	_is_active = true;
 }
 
 
@@ -124,12 +117,13 @@ void ADNBullet::non_active_bullet()
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
 	_projectile_movement_component->Deactivate();
+	_is_active = false;
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Is Active? : %s"), _is_active ? TEXT("true") : TEXT("false")));
 }
 
 
 void ADNBullet::fire(ADNCommonCharacter* target_in,FVector location_in)
 {
-	//active_bullet();
 
 	if (nullptr == _owner)
 		return;
@@ -184,6 +178,5 @@ void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class
 	
 	
 	non_active_bullet();
-	_ready_destroy = true;
 }
 

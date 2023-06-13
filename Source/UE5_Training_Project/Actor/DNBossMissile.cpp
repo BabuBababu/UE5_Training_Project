@@ -6,6 +6,7 @@
 // Engine
 #include <Components/SplineComponent.h>
 #include <Engine/Classes/Kismet/GameplayStatics.h>
+#include <Perception/AIPerceptionStimuliSourceComponent.h>
 
 
 // Util
@@ -20,6 +21,10 @@ ADNBossMissile::ADNBossMissile()
 
 	_spline_component = CreateDefaultSubobject<USplineComponent>(TEXT("SplineForMove"));
 
+	_perception_stimuli_source = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("PerceptionStimuliSource"));
+	// 감각 등록 및 실행은 BP에서 합니다
+
+	_is_active = false;
 	
 }
 
@@ -52,7 +57,6 @@ void ADNBossMissile::remove_event()
 void ADNBossMissile::init()
 {
 	_current_hp = _max_hp;
-
 }
 
 void ADNBossMissile::play_damaged_sound()
@@ -66,8 +70,7 @@ void ADNBossMissile::destroy_object()
 	UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 
 	non_active_bullet();
-	_ready_destroy = true;
-
+	
 	OnDestroyMissile.Broadcast(this);
 }
 

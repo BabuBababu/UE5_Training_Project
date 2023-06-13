@@ -12,6 +12,9 @@
 // Controller
 #include "UE5_Training_Project/Controller/DNAIController.h"
 
+// Actor
+#include "UE5_Training_Project/Actor/DNBossMissile.h"
+
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 
@@ -50,36 +53,53 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 		return EBTNodeResult::Failed;
 	}
 
+	if (false == self_actor->_is_armed_weapon)						// 무기를 들고 있지않으면 실패
+	{
+		controller->ClearFocus(EAIFocusPriority::Gameplay);
+		self_actor->set_idle_animation();
+		return EBTNodeResult::Failed;
+	}
 
 
-		// 타겟 캐릭터
-		auto target = controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor);
+	// 사격하려고 봤더니 타겟 액터가 미사일인데 비활성화 된 녀석이다? 그럼 nullptr로 다시 변경
+	auto* target = controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor);
 
-		ADNCommonCharacter* target_character = dynamic_cast<ADNCommonCharacter*>(target);
-
-		UDNCharacterAnimInstance* anim = dynamic_cast<UDNCharacterAnimInstance*>(self_actor->_character_skeletal_mesh->GetAnimInstance());
-
-
-		if (nullptr == target)											//타겟 없으면 실패
+	ADNBossMissile* missile_check = Cast<ADNBossMissile>(target);
+	if (nullptr != missile_check)
+	{
+		if (false == missile_check->_is_active)
 		{
-			self_actor->set_idle_animation();
-
-
+			controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, false);
+			controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 			return EBTNodeResult::Failed;
 		}
+		
+	}
 
 
+
+	// 타겟 캐릭터
+	ADNCommonCharacter* target_character = Cast<ADNCommonCharacter>(target);
+	// 미사일
+	ADNBossMissile* missile = Cast<ADNBossMissile>(target);
+
+	if (nullptr == target)											//타겟 없으면 실패
+	{
+		self_actor->set_idle_animation();
+
+
+		return EBTNodeResult::Failed;
+	}
+
+	if(nullptr == missile && nullptr == target_character)			// 미사일도 캐릭터도 아니라면 실패
+		return EBTNodeResult::Failed;
+
+	if (nullptr != target_character)								// 캐릭터라면
+	{
 		if (true == target_character->_status->_dead)					//타겟이 죽어있으면 실패
 		{
-			controller->ClearFocus(EAIFocusPriority::Gameplay);
-			self_actor->set_idle_animation();
-			return EBTNodeResult::Failed;
-		}
-
-		
-
-		if (false == self_actor->_is_armed_weapon)						// 무기를 들고 있지않으면 실패
-		{
+			controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, false);
+			controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 			controller->ClearFocus(EAIFocusPriority::Gameplay);
 			self_actor->set_idle_animation();
 			return EBTNodeResult::Failed;
@@ -88,14 +108,22 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 
 		controller->SetFocus(target_character);		// 타겟 바라보기
 
-		self_actor->_is_fire = true;			// 사격 조건 On
-		self_actor->fire();						// 사격
-		self_actor->_is_attacking = true;
+	}
+
+	if (nullptr != missile)											// 미사일이라면
+	{
+		controller->SetFocus(missile);		// 타겟 바라보기
+	}
+	
+
+	self_actor->_is_fire = true;			// 사격 조건 On
+	self_actor->fire();						// 사격
+	self_actor->_is_attacking = true;
 
 
 		
 
-		return EBTNodeResult::Succeeded;		
+	return EBTNodeResult::Succeeded;		
 }
 
 void UDNAttackEnemyTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in, float DeltaSeconds)
