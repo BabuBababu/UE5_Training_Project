@@ -104,7 +104,7 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 				{
 					if (enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
 						DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// 보스
-					else
+					else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC)
 						DNDamageOperation::radial_damage_to_all(GetWorld(), 20.f, GetActorLocation(), 200.f, _owner);		// 랩쳐 큐브 
 
 
