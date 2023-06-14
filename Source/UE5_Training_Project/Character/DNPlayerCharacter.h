@@ -16,6 +16,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnArmDelegate, bool, armed);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCrouchDelegate, bool, crouch);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSprintDelegate, bool, sprint);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnShotDelegate, ADNPlayerCharacter*, player);
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnOrderMoveDelegate, FVector, destination, ADNUnEnemyCharacter*, doll);
@@ -55,13 +56,9 @@ public:
 	void order_move(FVector destination_in, ADNUnEnemyCharacter* doll_in);
 	void order_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in);
 
-private:
-	FTransform set_camera_transform(bool flag_in);
-	FTransform set_center_cover_camera_transform(bool flag_in);
-	FTransform set_left_cover_camera_transform(bool flag_in);
-	FTransform set_right_cover_camera_transform(bool flag_in);
 
 public:
+	FOnShotDelegate on_attack;
 	FOnArmDelegate on_armed;
 	FOnCrouchDelegate on_crouch;
 	FOnSprintDelegate on_sprint;

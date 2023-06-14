@@ -23,9 +23,13 @@
 // Manager
 #include "UE5_Training_Project/Manager/DNSoundManager.h"
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
+
 // UI
 #include "UE5_Training_Project/UI/Widget/Panel/DNInteractionPanel.h"
 #include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
+
+// Util
+#include "UE5_Training_Project/Util/DNCameraMovingOperation.h"
 
 
 void ADNPlayerCharacter::BeginPlay()
@@ -115,6 +119,7 @@ void ADNPlayerCharacter::fire()
 	{
 		_line_trace->OnFire(this);
 		OnFire.Broadcast();
+		on_attack.Broadcast(this);
 		ADNPlayerController* controller = dynamic_cast<ADNPlayerController*>(GetController());
 		UGameplayStatics::PlaySoundAtLocation(this, _fire_soundcue, GetActorLocation());
 		if (controller->get_camera_shake() != nullptr)
@@ -185,16 +190,16 @@ void ADNPlayerCharacter::aiming()
 			_is_aiming = false;
 
 		if(_cover_left)
-			_camera_boom->SetRelativeTransform(set_left_cover_camera_transform(true));
+			_camera_boom->SetRelativeTransform(DNCameraMovingOperation::set_player_camera_left_cover_transform(_camera_boom,true));
 		else if (_cover_right)
-			_camera_boom->SetRelativeTransform(set_right_cover_camera_transform(true));
+			_camera_boom->SetRelativeTransform(DNCameraMovingOperation::set_player_camera_right_cover_transform(_camera_boom, true));
 		else if (false == _cover_left && false == _cover_right)
-			_camera_boom->SetRelativeTransform(set_center_cover_camera_transform(true));
+			_camera_boom->SetRelativeTransform(DNCameraMovingOperation::set_player_camera_center_cover_transform(_camera_boom, true));
 
 	}
 	else
 	{
-		_camera_boom->SetRelativeTransform(set_camera_transform(true));
+		_camera_boom->SetRelativeTransform(DNCameraMovingOperation::set_player_camera_transform(_camera_boom, true));
 		GetCharacterMovement()->MaxWalkSpeed = _aiming_max_walk_speed;
 	}
 
@@ -210,15 +215,15 @@ void ADNPlayerCharacter::stop_aiming()
 	if (_cover_now)
 	{
 		if (_cover_left)
-			_camera_boom->SetRelativeTransform(set_left_cover_camera_transform(false));
+			_camera_boom->SetRelativeTransform(DNCameraMovingOperation::set_player_camera_left_cover_transform(_camera_boom, false));
 		else if (_cover_right)
-			_camera_boom->SetRelativeTransform(set_right_cover_camera_transform(false));
+			_camera_boom->SetRelativeTransform(DNCameraMovingOperation::set_player_camera_right_cover_transform(_camera_boom, false));
 		else if (false == _cover_left && false == _cover_right)
-			_camera_boom->SetRelativeTransform(set_center_cover_camera_transform(false));
+			_camera_boom->SetRelativeTransform(DNCameraMovingOperation::set_player_camera_center_cover_transform(_camera_boom, false));
 	}
 	else
 	{
-		_camera_boom->SetRelativeTransform(set_camera_transform(false));
+		_camera_boom->SetRelativeTransform(DNCameraMovingOperation::set_player_camera_transform(_camera_boom, false));
 		if (_is_sprint)
 			GetCharacterMovement()->MaxWalkSpeed = _sprint_max_walk_speed;
 		else
@@ -232,110 +237,6 @@ void ADNPlayerCharacter::cover()
 {
 	Super::cover();
 }
-
-
-FTransform ADNPlayerCharacter::set_camera_transform(bool flag_in)
-{
-	// 카메라와 뷰포트 거리 , 좌우, 높이
-	const FVector OriginLocation(50.f, 90.f, 25.f);
-	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
-	const FVector OriginCameraScale(1.f, 1.f, 1.f);
-
-	// 카메라가 바라보는 방향 기준
-	FRotator rotate = _follow_camera->GetComponentRotation();
-	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
-
-	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, 0.f, 0.f);
-
-
-
-	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
-	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
-
-	if (true != flag_in)
-		return OriginCameraTransform;
-
-	return AimCameraTransform;
-}
-
-FTransform ADNPlayerCharacter::set_center_cover_camera_transform(bool flag_in)
-{
-	
-	// 카메라와 뷰포트 거리 , 좌우, 높이
-	const FVector OriginLocation(100.f, 90.f, 0.f);
-	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
-	const FVector OriginCameraScale(1.f, 1.f, 1.f);
-
-	// 카메라가 바라보는 방향 기준
-	FRotator rotate = _follow_camera->GetComponentRotation();
-	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
-	//200 30 -15
-	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -45.f, 0.f);
-
-
-
-	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
-	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
-
-	if (true != flag_in)
-		return OriginCameraTransform;
-
-	return AimCameraTransform;
-}
-
-
-FTransform ADNPlayerCharacter::set_left_cover_camera_transform(bool flag_in)
-{
-
-	// 카메라와 뷰포트 거리 , 좌우, 높이
-	const FVector OriginLocation(100.f, 90.f, 0.f);
-	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
-	const FVector OriginCameraScale(1.f, 1.f, 1.f);
-
-	// 카메라가 바라보는 방향 기준
-	FRotator rotate = _follow_camera->GetComponentRotation();
-	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
-
-	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -135.f, 0.f); //z값 -55.f였음
-
-
-
-	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
-	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
-
-	if (true != flag_in)
-		return OriginCameraTransform;
-
-	return AimCameraTransform;
-}
-
-
-
-FTransform ADNPlayerCharacter::set_right_cover_camera_transform(bool flag_in)
-{
-
-	// 카메라와 뷰포트 거리 , 좌우, 높이
-	const FVector OriginLocation(100.f, 90.f, 0.f);
-	const FRotator OriginCameraRotation(0.f, 0.f, 0.f);
-	const FVector OriginCameraScale(1.f, 1.f, 1.f);
-
-	// 카메라가 바라보는 방향 기준
-	FRotator rotate = _follow_camera->GetComponentRotation();
-	FVector roatate_vector = FRotator(rotate.Pitch, 0.f, 0.f).Vector();
-	//200 30 -15
-	FVector AimCameraLocation = OriginLocation + roatate_vector * 100.f + FVector(0.f, -45.f, 0.f);
-
-
-
-	const FTransform AimCameraTransform(OriginCameraRotation, AimCameraLocation, OriginCameraScale);
-	const FTransform OriginCameraTransform(OriginCameraRotation, OriginLocation, OriginCameraScale);
-
-	if (true != flag_in)
-		return OriginCameraTransform;
-
-	return AimCameraTransform;
-}
-
 
 
 

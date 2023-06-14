@@ -8,6 +8,7 @@
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
+#include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 
 // Component
 #include "UE5_Training_Project/Component/DNStatusComponent.h"
@@ -38,13 +39,19 @@ void UDNPlayerCombatPanel::NativeTick(const FGeometry& MyGeometry, float InDelta
 
 void UDNPlayerCombatPanel::add_event()
 {
-	//핸들러 추가예정
-	Super::add_event();
+	ADNPlayerCharacter* player = Cast<ADNPlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	if (nullptr != player)
+		player->on_attack.AddDynamic(this, &UDNPlayerCombatPanel::play_shot_animation_handler);
+
+	
 }
 
 void UDNPlayerCombatPanel::remove_event()
 {
-	Super::remove_event();
+
+	ADNPlayerCharacter* player = Cast<ADNPlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	if (nullptr != player)
+		player->on_attack.RemoveDynamic(this, &UDNPlayerCombatPanel::play_shot_animation_handler);
 }
 
 
@@ -95,4 +102,31 @@ void UDNPlayerCombatPanel::set_hp(float current_hp_in, float max_hp_in)
 void UDNPlayerCombatPanel::set_player_character()
 {
 
+}
+
+void UDNPlayerCombatPanel::play_empty_animation()
+{
+	if (nullptr != umg_empty_animation)
+	{
+		PlayAnimation(umg_empty_animation);
+	}
+}
+
+void UDNPlayerCombatPanel::play_shot_animation()
+{
+	if (nullptr != umg_shot_animation)
+	{
+		PlayAnimation(umg_shot_animation);
+	}
+}
+
+
+
+
+void UDNPlayerCombatPanel::play_shot_animation_handler(ADNPlayerCharacter* player_in)
+{
+	if (player_in->get_status_component()->get_current_ammo() > 0)
+		play_shot_animation();
+	else
+		play_empty_animation();
 }

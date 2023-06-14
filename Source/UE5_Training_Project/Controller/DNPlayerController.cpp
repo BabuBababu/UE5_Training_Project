@@ -33,6 +33,9 @@
 // UI
 #include "UE5_Training_Project/UI/Widget/Panel/DNSquadPanel.h"
 
+// Util
+#include "UE5_Training_Project/Util/DNCameraMovingOperation.h"
+
 
 ADNPlayerController::ADNPlayerController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -216,6 +219,7 @@ void ADNPlayerController::Look(const FInputActionValue& Value)
 	// add yaw and pitch input to controller
 	_owner->AddControllerYawInput(LookAxisVector.X);
 	_owner->AddControllerPitchInput(LookAxisVector.Y);
+
 }
 
 void ADNPlayerController::Jump(const FInputActionValue& Value)
