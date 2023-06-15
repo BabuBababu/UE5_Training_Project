@@ -24,7 +24,7 @@ ADNCommonBossCharacter::ADNCommonBossCharacter()
 {
 
 	_character_sub_skeletal_mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SubBodySkeletalMesh"));
-	_character_sub_skeletal_mesh->SetupAttachment(_character_skeletal_mesh);
+	_character_sub_skeletal_mesh->SetupAttachment(_character_skeletal_mesh, TEXT("hips_leg"));
 
 
 	_niagara_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
