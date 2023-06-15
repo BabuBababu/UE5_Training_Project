@@ -567,7 +567,7 @@ void ADNCommonCharacter::set_uncover()
 
 
 
-void ADNCommonCharacter::spawn_bullet_light(AActor* target_in)
+void ADNCommonCharacter::spawn_bullet_light(FVector hit_location_in)
 {
 	if (false == IsValid(_gun_bullet_light_class))
 		return;
@@ -575,7 +575,7 @@ void ADNCommonCharacter::spawn_bullet_light(AActor* target_in)
 	FVector socket_location = _weapon_armed->GetSocketLocation(FName("Muzzle"));
 	ADNBulletLight* bullet_light = GetWorld()->SpawnActor<ADNBulletLight>(_gun_bullet_light_class, socket_location, GetActorRotation()); // 미사일 생성
 	bullet_light->SetActorLocation(socket_location);
-	bullet_light->_target = target_in;
+	bullet_light->_hit_location = hit_location_in;
 	bullet_light->fire(socket_location);
 }
 

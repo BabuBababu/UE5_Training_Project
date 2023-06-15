@@ -179,11 +179,11 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 		}
 
 		// 총알 궤적 스폰
-		int result = FMath::FRandRange(1.0, 10.0);
+		int result = FMath::FRandRange(1.0, 5.0);
 
-		if (result == 1.0)		//일단 확률 10%로 설정
+		if (result == 1.0)		//일단 확률 20%로 설정
 		{
-			player_in->spawn_bullet_light(hit_result.GetActor());
+			player_in->spawn_bullet_light(hit_location);
 		}
 	}
 

@@ -105,7 +105,7 @@ public:
 	void set_cover();
 	void set_uncover();
 
-	void spawn_bullet_light(AActor* target_in);
+	void spawn_bullet_light(FVector hit_location_in);
 
 public:
 	// 메쉬

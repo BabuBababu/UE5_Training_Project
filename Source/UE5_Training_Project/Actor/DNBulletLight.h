@@ -35,8 +35,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Life time")
 	float _life_time;
 
+	FVector _hit_location;
+
 private:
 	float _life_current_time;
+
 
 
 };

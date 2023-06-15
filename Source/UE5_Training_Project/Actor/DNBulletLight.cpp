@@ -16,7 +16,7 @@
 
 ADNBulletLight::ADNBulletLight()
 {
-	_life_time = 0.3f;
+	_life_time = 0.6f;
 	_life_current_time = 0.f;
 }
 
@@ -44,7 +44,7 @@ void ADNBulletLight::Tick(float DeltaTime)
 void ADNBulletLight::fire(FVector location_in)
 {
 
-	FVector direction_vector = _target->GetActorLocation() - location_in;
+	FVector direction_vector = _hit_location - location_in;
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Direction Vector :%s"), *direction_vector.ToString()));
 
 	_projectile_movement_component->Velocity = direction_vector * _projectile_movement_component->InitialSpeed;

@@ -105,10 +105,14 @@ void ADNBullet::init()
 
 void ADNBullet::active_bullet()
 {
+	_actor_static_mesh->SetRelativeLocation(GetActorLocation());
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	_projectile_movement_component->Activate();
 	_is_active = true;
+
+	if(IsValid(_niagara_component))
+		_niagara_component->Deactivate();
 }
 
 
@@ -118,8 +122,12 @@ void ADNBullet::non_active_bullet()
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
 	_projectile_movement_component->Deactivate();
-	_niagara_component->Deactivate();
 	_is_active = false;
+	_target = nullptr;
+	_owner = nullptr;
+
+	if (IsValid(_niagara_component))
+		_niagara_component->Deactivate();
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Is Active? : %s"), _is_active ? TEXT("true") : TEXT("false")));
 }
 
