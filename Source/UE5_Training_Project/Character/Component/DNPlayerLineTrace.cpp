@@ -96,7 +96,7 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 
 
 	//라인 트레이스 시작
-	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_Camera, params);
+	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_Visibility, params);
 	//DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
 
 	if (hit_result.GetActor() != nullptr)
@@ -202,7 +202,7 @@ void UDNPlayerLineTrace::OnInteraction(ADNCommonCharacter* player_in)
 	params.AddIgnoredActor(player_in);
 
 	//라인 트레이스 시작
-	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_Camera, params);
+	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_Visibility, params);
 	//DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
 
 
@@ -316,7 +316,7 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 	params.AddIgnoredActor(player_in);
 
 	//라인 트레이스 시작
-	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_Camera, params);
+	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_Visibility, params);
 	//DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
 
 	if (nullptr == hit_result.GetActor())

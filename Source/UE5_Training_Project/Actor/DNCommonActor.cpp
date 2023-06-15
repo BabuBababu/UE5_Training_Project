@@ -50,6 +50,7 @@ void ADNCommonActor::init()
 	_box_collision->SetupAttachment(RootComponent);
 
 	_actor_id = -1;
+	_actor_static_mesh->SetRenderCustomDepth(true);
 }
 
 
