@@ -25,6 +25,9 @@ ADNBossMissile::ADNBossMissile()
 	// 감각 등록 및 실행은 BP에서 합니다
 
 	_is_active = false;
+	_boost_time = 10.f;
+	_boost_current_time = 0.f;
+	_is_boost = false;
 	
 }
 
@@ -37,6 +40,19 @@ void ADNBossMissile::BeginPlay()
 void ADNBossMissile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (false == _is_boost)
+	{
+		_boost_current_time = _boost_current_time + DeltaTime;
+		if (_boost_current_time > _boost_time)
+		{
+			_projectile_movement_component->MaxSpeed = 2000.f;
+			fire(GetActorLocation());
+			_boost_current_time = 0.f;
+			_is_boost = true;
+		}
+
+	}
 
 
 }
@@ -57,6 +73,11 @@ void ADNBossMissile::remove_event()
 void ADNBossMissile::init()
 {
 	_current_hp = _max_hp;
+
+	if (_fire_type == E_FIRE_TYPE::FT_SUB)
+	{
+		_projectile_movement_component->MaxSpeed = 10.0f;
+	}
 }
 
 void ADNBossMissile::play_damaged_sound()
@@ -70,6 +91,12 @@ void ADNBossMissile::destroy_object()
 	UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 
 	non_active_bullet();
+
+	if (_fire_type == E_FIRE_TYPE::FT_SUB)
+	{
+		_projectile_movement_component->MaxSpeed = 10.0f;
+		_is_boost = false;
+	}
 	
 	OnDestroyMissile.Broadcast(this);
 }

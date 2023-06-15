@@ -468,8 +468,11 @@ UENUM()
 enum class E_FIRE_TYPE : uint8
 {
 	FT_NONE = 0,
-	FT_MAIN,		//메인 공격
-	FT_SUB,		//서브 공격
+	FT_MAIN,			//메인 공격
+	FT_SUB,				//서브 공격
+	FT_NIKKE_AR,		//니케 AR 공격
+	FT_NIKKE_SR,		//니케 SR 공격
+	FT_NIKKE_SMG,		//니케 SMG 공격
 
 	FT_COUNT
 };

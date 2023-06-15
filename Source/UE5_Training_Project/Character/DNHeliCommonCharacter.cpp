@@ -130,8 +130,8 @@ void ADNHeliCommonCharacter::fire_missile(ADNCommonCharacter* target_in)
 		bullet->SetActorLocation(socket_location);
 		bullet->SetActorRotation(GetActorRotation());
 		bullet->_owner = this;
-
-		bullet->fire(target_in, socket_location);
+		bullet->_target = target_in;
+		bullet->fire(socket_location);
 		_missile_cool_time_start = true;
 
 		_missile = bullet;

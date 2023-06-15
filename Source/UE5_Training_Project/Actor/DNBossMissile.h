@@ -66,7 +66,9 @@ public:
 
 public:
 	float _current_hp;
-	E_FIRE_TYPE _fire_type = E_FIRE_TYPE::FT_NONE;
+	float _boost_time;
+	float _boost_current_time;
+	bool _is_boost;
 
 
 public:
@@ -74,6 +76,6 @@ public:
 
 public:
 	void overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
-		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;		//void overlap_actor_handler(const FHitResult& HitResult) override;
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 };

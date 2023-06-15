@@ -33,6 +33,8 @@
 
 // Actor
 #include "UE5_Training_Project/Actor/Wall/DNCommonWall.h"
+#include "UE5_Training_Project/Actor/DNBulletLight.h"
+
 
 // Character
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
@@ -563,6 +565,19 @@ void ADNCommonCharacter::set_uncover()
 	set_camera_transform_origin();
 }
 
+
+
+void ADNCommonCharacter::spawn_bullet_light(AActor* target_in)
+{
+	if (false == IsValid(_gun_bullet_light_class))
+		return;
+
+	FVector socket_location = _weapon_armed->GetSocketLocation(FName("Muzzle"));
+	ADNBulletLight* bullet_light = GetWorld()->SpawnActor<ADNBulletLight>(_gun_bullet_light_class, socket_location, GetActorRotation()); // 미사일 생성
+	bullet_light->SetActorLocation(socket_location);
+	bullet_light->_target = target_in;
+	bullet_light->fire(socket_location);
+}
 
 
 void ADNCommonCharacter::set_idle_animation()

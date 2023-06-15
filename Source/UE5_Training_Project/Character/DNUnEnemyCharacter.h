@@ -70,6 +70,7 @@ public:
 	FOnUnEnemyArmed OnArmed;
 
 
+
 public:
 	bool	_is_in_squad;
 	bool	_is_ordered;

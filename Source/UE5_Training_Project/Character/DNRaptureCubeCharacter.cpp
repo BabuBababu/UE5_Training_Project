@@ -34,8 +34,6 @@ void ADNRaptureCubeCharacter::init_base()
 	_fire_1_cool_time_start = false;
 	_fire_2_cool_time_start = false;
 
-	_missile_array.Empty();
-
 	if (IsValid(_danger_particle))
 	{
 		_niagara_component->SetAsset(_danger_particle);

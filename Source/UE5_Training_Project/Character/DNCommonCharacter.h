@@ -46,6 +46,7 @@ class UDNEnemyLineTrace;
 class UDNStatusComponent;
 class ADNCommonGrenade;
 class ADNCommonWall;
+class ADNBulletLight;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNCommonCharacter : public ACharacter
@@ -103,6 +104,8 @@ public:
 
 	void set_cover();
 	void set_uncover();
+
+	void spawn_bullet_light(AActor* target_in);
 
 public:
 	// 메쉬
@@ -179,6 +182,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//스킬쓸 때
 	TObjectPtr<USoundBase> _skill_dialog_soundcue;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
+	TSubclassOf<ADNBulletLight> _gun_bullet_light_class; //직접적인 영향X, 예광탄 느낌. 이쪽으로 발사중
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool _is_sprint;

@@ -101,8 +101,6 @@ void ADNCommonBossCharacter::init_base()
 	_fire_1_cool_time_start = false;
 	_fire_2_cool_time_start = false;
 
-	_missile_array.Empty();
-
 	if (IsValid(_danger_particle))
 	{
 		_niagara_component->SetAsset(_danger_particle);
@@ -130,9 +128,9 @@ void ADNCommonBossCharacter::fire_1(ADNCommonCharacter* target_in)
 		bullet->init(); 
 		bullet->active_bullet();
 		bullet->_owner = this;
-		bullet->fire(target_in, socket_location);
+		bullet->_target = target_in;
+		bullet->fire(socket_location);
 
-		_fire_1_missile = bullet;
 
 		OBJECT_MANAGER->_enemy_missile_array.Add(bullet);
 
@@ -147,8 +145,9 @@ void ADNCommonBossCharacter::fire_1(ADNCommonCharacter* target_in)
 				un_active_missile->init();
 				un_active_missile->_owner = this;
 				un_active_missile->active_bullet();
-				un_active_missile->fire(target_in, socket_location);
-				_fire_1_missile = un_active_missile;
+				un_active_missile->_target = target_in;
+				un_active_missile->fire(socket_location);
+				
 				_fire_1_cool_time_start = true;
 				break;
 			}
@@ -167,7 +166,7 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 
 	if (OBJECT_MANAGER->_enemy_missile_array.Num() < 500)				//500발까지는 그냥 생성, 501발째부터는 생성안하고 기존의 500발중 언액티브된 미사일 발사
 	{
-		for (int i = 0; i < 10; ++i)
+		for (int i = 0; i < 30; ++i)
 		{
 			FString socket_string = "Rocket_Muzzle_";
 			FString num = FString::FromInt(i);
@@ -181,9 +180,10 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 			bullet->init();
 			bullet->active_bullet();
 			bullet->_owner = this;
-			bullet->fire(target_in, socket_location);
+			bullet->_target = target_in;
+			bullet->fire(socket_location);
+			
 
-			_missile_array.Add(bullet);
 
 		}
 
@@ -191,7 +191,7 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 	}
 	else
 	{
-		for (int i = 0; i < 10; ++i)
+		for (int i = 0; i < 30; ++i)
 		{
 
 			FString socket_string = "Rocket_Muzzle_";
@@ -206,9 +206,9 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 					un_active_missile->init();
 					un_active_missile->_owner = this;
 					un_active_missile->active_bullet();
-					un_active_missile->fire(target_in, socket_location);
-					_fire_1_missile = un_active_missile;
-					_fire_1_cool_time_start = true;
+					un_active_missile->_target = target_in;
+					un_active_missile->fire(socket_location);
+					_fire_2_cool_time_start = true;
 					break;
 				}
 			}

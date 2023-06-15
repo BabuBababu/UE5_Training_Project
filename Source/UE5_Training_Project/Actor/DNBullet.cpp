@@ -27,6 +27,7 @@ ADNBullet::ADNBullet()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	_owner = nullptr;
+	_target = nullptr;
 
 	RootComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Root"));
 
@@ -117,12 +118,13 @@ void ADNBullet::non_active_bullet()
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
 	_projectile_movement_component->Deactivate();
+	_niagara_component->Deactivate();
 	_is_active = false;
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Is Active? : %s"), _is_active ? TEXT("true") : TEXT("false")));
 }
 
 
-void ADNBullet::fire(ADNCommonCharacter* target_in,FVector location_in)
+void ADNBullet::fire(FVector location_in)
 {
 
 	if (nullptr == _owner)
@@ -138,7 +140,7 @@ void ADNBullet::fire(ADNCommonCharacter* target_in,FVector location_in)
 	float random_position_x = FMath::FRandRange(-500.f, 500.f);
 	float random_position_y = FMath::FRandRange(-500.f, 500.f);
 
-	FVector direction_vector = (target_in->GetActorLocation() + FVector(random_position_x, random_position_y, 0.f )) - location_in;
+	FVector direction_vector = (_target->GetActorLocation() + FVector(random_position_x, random_position_y, 0.f )) - location_in;
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Direction Vector :%s"), *direction_vector.ToString()));
 
 	_projectile_movement_component->Velocity = direction_vector * _projectile_movement_component->InitialSpeed;

@@ -48,10 +48,10 @@ public:
 
 
 public:
-	void fire(ADNCommonCharacter* target_in,  FVector location_in);
+	virtual void fire(FVector location_in);
 	virtual void init();
-	void active_bullet();
-	void non_active_bullet();
+	virtual void active_bullet();
+	virtual void non_active_bullet();
 	void delay_destroy();
 
 
@@ -85,13 +85,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//직격 소리
 	TObjectPtr<USoundBase> _bomb_soundcue;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	E_FIRE_TYPE _fire_type = E_FIRE_TYPE::FT_NONE;
 
-
+	AActor*					_target;
 	ADNCommonCharacter*		_owner;
 	float					_limit_time;
 
 	bool					_is_active;
 
+	
 
 
 
