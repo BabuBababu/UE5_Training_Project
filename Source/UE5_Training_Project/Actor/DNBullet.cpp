@@ -76,6 +76,8 @@ void ADNBullet::BeginPlay()
 void ADNBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (false == _is_active)
+		return;
 
 	if (_limit_time_start)
 	{
@@ -164,6 +166,7 @@ void ADNBullet::non_active_bullet()
 	if (IsValid(_niagara_component))
 		_niagara_component->Deactivate();
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Is Active? : %s"), _is_active ? TEXT("true") : TEXT("false")));
+
 }
 
 
@@ -250,6 +253,6 @@ void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class
 	}
 	
 	
-	
+	non_active_bullet();
 }
 

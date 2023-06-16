@@ -135,6 +135,9 @@ void ADNCommonBossCharacter::fire_1(ADNCommonCharacter* target_in)
 		OBJECT_MANAGER->_enemy_missile_array.Add(bullet);
 
 		_fire_1_cool_time_start = true;
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Now Missile Array Count : %d"), OBJECT_MANAGER->_enemy_missile_array.Num()));
+
 	}
 	else
 	{
@@ -144,17 +147,22 @@ void ADNCommonBossCharacter::fire_1(ADNCommonCharacter* target_in)
 			{
 				un_active_missile->init();
 				un_active_missile->_owner = this;
+				un_active_missile->SetActorLocation(socket_location);
 				un_active_missile->active_bullet();
 				un_active_missile->_target = target_in;
 				un_active_missile->fire(socket_location);
 				
+
+
+				/*un_active_missile->_actor_static_mesh->SetComponentLocation(socket_location);
+				un_active_missile->_box_collision->SetComponentLocation(socket_location);*/
 				_fire_1_cool_time_start = true;
 				break;
 			}
 		}
 	}
 	
-
+	
 }
 
 void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
@@ -184,6 +192,7 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 			bullet->fire(socket_location);
 			
 
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Now Missile Array Count : %d"), OBJECT_MANAGER->_enemy_missile_array.Num()));
 
 		}
 
@@ -205,6 +214,7 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 				{
 					un_active_missile->init();
 					un_active_missile->_owner = this;
+					un_active_missile->SetActorLocation(socket_location);
 					un_active_missile->active_bullet();
 					un_active_missile->_target = target_in;
 					un_active_missile->fire(socket_location);
@@ -217,7 +227,7 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 		
 	}
 	
-
+	
 }
 
 void ADNCommonBossCharacter::melee_1(ADNCommonCharacter* target_in)

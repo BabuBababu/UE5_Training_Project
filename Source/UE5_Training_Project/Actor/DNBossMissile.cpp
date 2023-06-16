@@ -39,22 +39,28 @@ void ADNBossMissile::BeginPlay()
 
 void ADNBossMissile::Tick(float DeltaTime)
 {
+	if (false == _is_active)
+		return;
+
 	if(_fire_type == E_FIRE_TYPE::FT_MAIN)
 		Super::Tick(DeltaTime);
 
-
-	if (false == _is_boost)
+	if (_fire_type == E_FIRE_TYPE::FT_SUB)
 	{
-		_boost_current_time = _boost_current_time + DeltaTime;
-		if (_boost_current_time > _boost_time)
+		if (false == _is_boost)
 		{
-			_projectile_movement_component->MaxSpeed = 2000.f;
-			fire(GetActorLocation());
-			_boost_current_time = 0.f;
-			_is_boost = true;
-		}
+			_boost_current_time = _boost_current_time + DeltaTime;
+			if (_boost_current_time > _boost_time)
+			{
+				_projectile_movement_component->MaxSpeed = 2000.f;
+				fire(GetActorLocation());
+				_boost_current_time = 0.f;
+				_is_boost = true;
+			}
 
+		}
 	}
+	
 
 
 }
@@ -124,7 +130,7 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 
 			if (_fire_type == E_FIRE_TYPE::FT_SUB)
 			{
-				DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		// fire 2
+				DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 100.f, _owner);		// fire 2
 				destroy_object();
 			}
 			else if (_fire_type == E_FIRE_TYPE::FT_MAIN)															// fire 1
@@ -132,9 +138,9 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 				if (nullptr != enemy)
 				{
 					if (enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
-						DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// 보스
+						DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 500.f, _owner);		// 보스
 					else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC)
-						DNDamageOperation::radial_damage_to_all(GetWorld(), 20.f, GetActorLocation(), 200.f, _owner);		// 랩쳐 큐브 
+						DNDamageOperation::radial_damage_to_all(GetWorld(), 20.f, GetActorLocation(), 100.f, _owner);		// 랩쳐 큐브 
 
 
 					destroy_object();
@@ -158,13 +164,20 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 			{
 				if (_fire_type == E_FIRE_TYPE::FT_SUB)
 				{
-					DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		// fire 2
+					DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 100.f, _owner);		// fire 2
 					destroy_object();
 				}
 				else if (_fire_type == E_FIRE_TYPE::FT_MAIN)
 				{
-					DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 800.f, _owner);		// fire 1
-					destroy_object();
+					if (nullptr != enemy)
+					{
+						if (enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
+							DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 500.f, _owner);		// 보스
+						else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC)
+							DNDamageOperation::radial_damage_to_all(GetWorld(), 20.f, GetActorLocation(), 100.f, _owner);		// 랩쳐 큐브 
+
+						destroy_object();
+					}
 				}
 			}
 		}
