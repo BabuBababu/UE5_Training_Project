@@ -65,6 +65,8 @@ public:
 	float				_current_hp;
 	int64				_current_ammo;
 	int64				_has_ammo;
+
+	E_CHARACTER_MOS		_character_mos;
 	
 	UDataTable*			_character_datatable;
 	UDataTable*			_exp_datatable;

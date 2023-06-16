@@ -39,7 +39,9 @@ void ADNBossMissile::BeginPlay()
 
 void ADNBossMissile::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+	if(_fire_type == E_FIRE_TYPE::FT_MAIN)
+		Super::Tick(DeltaTime);
+
 
 	if (false == _is_boost)
 	{

@@ -99,94 +99,113 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 	player_in->GetWorld()->LineTraceSingleByChannel(hit_result, start_location, end_location, ECollisionChannel::ECC_Visibility, params);
 	//DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
 
-	if (hit_result.GetActor() != nullptr)
-	{
-		FVector hit_location = hit_result.ImpactNormal * 20.f + hit_result.ImpactPoint;
-		auto _enemy = Cast<ADNEnemyCharacter>(hit_result.GetActor());
-		// 스킬로 쐈는지 확인할 경우 해당 bool값을 체크하는걸로 추가한다.
-		if (_enemy)
-		{
-			// 무기 데이터 테이블을 이용해서 대미지 적용하는 방식을 쓸 예정이므로 아래 코드는 결국 수정할 것.
-			//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
-			if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
-			{
-				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);			//보스
-				DNDamageOperation::gun_damage_to_gun_spider_boss(damage, hit_result.BoneName, _enemy, player_in);
-				OnTargetHit.Broadcast();
-			}
-			else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE)
-			{
-				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//댕댕이
-				DNDamageOperation::gun_damage( damage, hit_result.BoneName, _enemy, player_in);
-				OnTargetHit.Broadcast();
-			}
-			else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC || _enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_AR)
-			{
-				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//랩쳐AR,LC
-				DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
-				OnTargetHit.Broadcast();
-			}
-			else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE_SHIELD)
-			{
-				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//쉴더
-				DNDamageOperation::gun_damage( damage, hit_result.BoneName, _enemy, player_in);
-				OnTargetHit.Broadcast();
-			}
-			else
-			{
-				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//나머지 적
-				DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
-				OnTargetHit.Broadcast();
-			}
-			
-		}
-		else   
-		{
-			// _enemy가 nullptr이라면 쉴드를 가격했는지 확인
-			auto _shield = Cast<ADNCommonShield>(hit_result.GetActor());
-			if (nullptr != _shield)
-			{
-				// 대미지 적용
-				DNDamageOperation::gun_damage_to_shield(damage, _shield, player_in);
-				_shield->play_damaged_sound();
-				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
 
-			}
-			else
+
+		
+		if (hit_result.GetActor() != nullptr)
+		{	
+			FVector hit_location = hit_result.ImpactNormal * 20.f + hit_result.ImpactPoint;
+			auto _enemy = Cast<ADNEnemyCharacter>(hit_result.GetActor());
+
+				 // 런처 병과
+			if (player_in->get_status_component()->_character_mos == E_CHARACTER_MOS::CM_LC)
 			{
-				//_shield가 nullptr이라면 미사일을 가격했는지 확인
-				auto _missile = Cast<ADNBossMissile>(hit_result.GetActor());
-				if (nullptr != _missile)
+				player_in->fire_missile(hit_location, _enemy);
+			}
+			else // 나머지 병과
+			{
+				// 스킬로 쐈는지 확인할 경우 해당 bool값을 체크하는걸로 추가한다.
+				if (_enemy)
 				{
-					// 대미지 적용
-					DNDamageOperation::gun_damage_to_missile(damage, _missile, player_in);
-					_missile->play_damaged_sound();
-					UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+					// 무기 데이터 테이블을 이용해서 대미지 적용하는 방식을 쓸 예정이므로 아래 코드는 결국 수정할 것.
+					//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
+					if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);			//보스
+						DNDamageOperation::gun_damage_to_gun_spider_boss(damage, hit_result.BoneName, _enemy, player_in);
+						OnTargetHit.Broadcast();
+					}
+					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//댕댕이
+						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
+						OnTargetHit.Broadcast();
+					}
+					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC || _enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_AR)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//랩쳐AR,LC
+						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
+						OnTargetHit.Broadcast();
+					}
+					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE_SHIELD)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//쉴더
+						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
+						OnTargetHit.Broadcast();
+					}
+					else
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//나머지 적
+						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
+						OnTargetHit.Broadcast();
+					}
+
 				}
 				else
 				{
-					// 어떤 액터도 아니라면
-					UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+					// _enemy가 nullptr이라면 쉴드를 가격했는지 확인
+					auto _shield = Cast<ADNCommonShield>(hit_result.GetActor());
+					if (nullptr != _shield)
+					{
+						// 대미지 적용
+						DNDamageOperation::gun_damage_to_shield(damage, _shield, player_in);
+						_shield->play_damaged_sound();
+						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+
+					}
+					else
+					{
+						//_shield가 nullptr이라면 미사일을 가격했는지 확인
+						auto _missile = Cast<ADNBossMissile>(hit_result.GetActor());
+						if (nullptr != _missile)
+						{
+							// 대미지 적용
+							DNDamageOperation::gun_damage_to_missile(damage, _missile, player_in);
+							_missile->play_damaged_sound();
+							UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+						}
+						else
+						{
+							// 어떤 액터도 아니라면
+							UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+						}
+
+					}
+
+					//UE_LOG(LogTemp, Warning, TEXT("FailedCast"));
+					//GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("LOCATION: %s"),*HitLoc.ToString()));
+					//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Purple, false, 2.f);
+
+
 				}
 
+				// 총알 궤적 스폰
+				int result = FMath::FRandRange(1.0, 5.0);
+
+				if (result == 1.0)		//일단 확률 20%로 설정
+				{
+					player_in->spawn_bullet_light(hit_location);
+				}
 			}
-
-			//UE_LOG(LogTemp, Warning, TEXT("FailedCast"));
-			//GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("LOCATION: %s"),*HitLoc.ToString()));
-			//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Purple, false, 2.f);
-		
-		
-		}
-
-		// 총알 궤적 스폰
-		int result = FMath::FRandRange(1.0, 5.0);
-
-		if (result == 1.0)		//일단 확률 20%로 설정
+		}		
+		else
 		{
-			player_in->spawn_bullet_light(hit_location);
-		}
-	}
-
+			// 런처 병과
+			if (player_in->get_status_component()->_character_mos == E_CHARACTER_MOS::CM_LC)
+			{
+				player_in->fire_missile(end_location,nullptr);
+			}
+		}										
 }
 
 

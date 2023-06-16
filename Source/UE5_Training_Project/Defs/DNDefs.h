@@ -116,6 +116,7 @@ enum class E_CHARACTER_MOS : uint8
 	CM_AR			UMETA(DisplayName = "AR"),		//돌격소총
 	CM_SR			UMETA(DisplayName = "SR"),		//저격소총
 	CM_SG			UMETA(DisplayName = "SG"),		//샷건
+	CM_LC			UMETA(DisplayName = "LC"),		//런처
 
 
 	CM_COUNT
@@ -457,15 +458,8 @@ enum class E_WALL_TYPE : uint8
 };
 
 
-
-//////////////////////////////////////////////////////////
-//
-//  Sound
-//
-//////////////////////////////////////////////////////////
-
 UENUM()
-enum class E_FIRE_TYPE : uint8
+enum class E_FIRE_TYPE : uint8		//미사일 타입
 {
 	FT_NONE = 0,
 	FT_MAIN,			//메인 공격
@@ -473,9 +467,18 @@ enum class E_FIRE_TYPE : uint8
 	FT_NIKKE_AR,		//니케 AR 공격
 	FT_NIKKE_SR,		//니케 SR 공격
 	FT_NIKKE_SMG,		//니케 SMG 공격
+	FT_NIKKE_LC,		//니케 LC 공격
 
 	FT_COUNT
 };
+
+//////////////////////////////////////////////////////////
+//
+//  Sound
+//
+//////////////////////////////////////////////////////////
+
+
 
 
 

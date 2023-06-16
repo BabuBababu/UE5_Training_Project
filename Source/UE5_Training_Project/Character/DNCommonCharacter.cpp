@@ -33,6 +33,7 @@
 
 // Actor
 #include "UE5_Training_Project/Actor/Wall/DNCommonWall.h"
+#include "UE5_Training_Project/Actor/DNBullet.h"
 #include "UE5_Training_Project/Actor/DNBulletLight.h"
 
 
@@ -366,6 +367,23 @@ void ADNCommonCharacter::fire()
 
 }
 
+void ADNCommonCharacter::fire_missile(FVector hit_location_in,AActor* target_in)
+{
+	if (false == IsValid(_gun_missile_class))
+		return;
+
+	FVector socket_location = _weapon_armed->GetSocketLocation(FName("Muzzle"));
+	ADNBullet* missile = GetWorld()->SpawnActor<ADNBullet>(_gun_missile_class, socket_location, GetActorRotation()); // 미사일 생성
+	missile->_fire_type = E_FIRE_TYPE::FT_NIKKE_LC;
+	missile->SetActorLocation(socket_location);
+	missile->SetActorRotation(GetActorRotation());
+	missile->_owner = this;
+	missile->_target = target_in;
+	missile->_hit_location = hit_location_in;
+	missile->active_bullet();
+	missile->nikke_fire(socket_location);
+}
+
 void ADNCommonCharacter::stop_fire()
 {
 	_is_fire = false;
@@ -578,6 +596,8 @@ void ADNCommonCharacter::spawn_bullet_light(FVector hit_location_in)
 	bullet_light->_hit_location = hit_location_in;
 	bullet_light->fire(socket_location);
 }
+
+
 
 
 void ADNCommonCharacter::set_idle_animation()

@@ -49,6 +49,7 @@ public:
 
 public:
 	virtual void fire(FVector location_in);
+	virtual void nikke_fire(FVector location_in);
 	virtual void init();
 	virtual void active_bullet();
 	virtual void non_active_bullet();
@@ -90,10 +91,16 @@ public:
 
 	AActor*					_target;
 	ADNCommonCharacter*		_owner;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float					_limit_time;
 
-	bool					_is_active;
+	float					_current_limit_time;
 
+	bool					_is_active;
+	bool					_limit_time_start;
+
+	FVector					_hit_location;
 	
 
 

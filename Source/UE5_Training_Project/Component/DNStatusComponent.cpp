@@ -118,6 +118,7 @@ void UDNStatusComponent::set_begin_status()
 	_current_ammo = _chartacter_data->character_status_data.max_ammo;
 	_current_hp = _chartacter_data->character_status_data.hp;
 	_has_ammo = 5000;
+	_character_mos = _chartacter_data->character_status_data.mos;
 }
 
 

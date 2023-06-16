@@ -28,6 +28,8 @@ ADNBullet::ADNBullet()
 	PrimaryActorTick.bCanEverTick = true;
 	_owner = nullptr;
 	_target = nullptr;
+	_limit_time_start = false;
+	_current_limit_time = 0.f;
 
 	RootComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Root"));
 
@@ -55,7 +57,7 @@ ADNBullet::ADNBullet()
 
 	}
 
-	_limit_time = 0.f;
+	_limit_time = 10.f;
 	_is_active = false;
 
 }
@@ -75,6 +77,37 @@ void ADNBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (_limit_time_start)
+	{
+		// 타겟이 없다면
+		if (nullptr == _target)
+			return;
+
+		// 타겟의 위치로 미사일을 이동시킴
+		FVector TargetLocation = _target->GetActorLocation();
+		FVector MissileLocation = GetActorLocation();
+		FVector DirectionToTarget = (TargetLocation - MissileLocation).GetSafeNormal();
+
+		// 호밍 기능을 구현하기 위해 미사일의 방향을 타겟 방향으로 조정
+		FVector NewVelocity = DirectionToTarget * _projectile_movement_component->MaxSpeed;
+		_projectile_movement_component->Velocity = FMath::VInterpTo(_projectile_movement_component->Velocity, NewVelocity, DeltaTime, 5.f);
+
+
+
+		if (_fire_type == E_FIRE_TYPE::FT_NIKKE_LC)
+		{
+			_current_limit_time += DeltaTime;
+			if (_current_limit_time > _limit_time)
+			{
+				Destroy();
+			}
+
+		}
+		
+		
+		
+		
+	}
 }
 
 
@@ -110,9 +143,10 @@ void ADNBullet::active_bullet()
 	SetActorEnableCollision(true);
 	_projectile_movement_component->Activate();
 	_is_active = true;
+	_limit_time_start = true;
 
 	if(IsValid(_niagara_component))
-		_niagara_component->Deactivate();
+		_niagara_component->Activate();
 }
 
 
@@ -125,6 +159,7 @@ void ADNBullet::non_active_bullet()
 	_is_active = false;
 	_target = nullptr;
 	_owner = nullptr;
+	_limit_time_start = false;
 
 	if (IsValid(_niagara_component))
 		_niagara_component->Deactivate();
@@ -153,32 +188,60 @@ void ADNBullet::fire(FVector location_in)
 
 	_projectile_movement_component->Velocity = direction_vector * _projectile_movement_component->InitialSpeed;
 	//DrawDebugLine(GetWorld(), location_in, target_in->GetActorLocation(), FColor::Cyan, true, -1, 0, 10);
+
+	
 	
 
 }
 
 
 
+void ADNBullet::nikke_fire(FVector location_in)
+{
+	if (nullptr == _owner)
+		return;
+
+	if (IsValid(_niagara_component) && IsValid(_tail_particle))
+		_niagara_component->Activate();
+
+	if (IsValid(_missile_fire_soundcue))
+		UGameplayStatics::PlaySoundAtLocation(this, _missile_fire_soundcue, GetActorLocation());
+
+	FVector direction_vector = _hit_location - location_in;
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Direction Vector :%s"), *direction_vector.ToString()));
+
+	_projectile_movement_component->Velocity = direction_vector * _projectile_movement_component->InitialSpeed;
+	//DrawDebugLine(GetWorld(), location_in, target_in->GetActorLocation(), FColor::Cyan, true, -1, 0, 10);
+
+}
+
+
+
+
 void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (nullptr == _owner)
+		return;
+
 	if (nullptr == otherActor)												// 바닥에 꽂혔을 때
 	{
 		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
 			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
-
+			non_active_bullet();
 		}
 	}
 
-	if (_owner != otherActor)													// 헬기 자신과 충돌 체크
+	if (_owner != otherActor)													// 자신과 충돌 체크
 	{
 		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
-			DNDamageOperation::radial_damage_to_enemy(GetWorld(), 500.f, GetActorLocation(), 1500.f, _owner);
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation() - FVector(0.f, 0.f, 200.f));
+			DNDamageOperation::radial_damage_to_enemy(GetWorld(), _owner->get_status_component()->_chartacter_data->character_status_data.damage, GetActorLocation(), 1500.f, _owner);
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());  //- FVector(0.f, 0.f, 200.f)
 			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
+			non_active_bullet();
 			//if (_owner->get_character_type() != E_CHARACTER_TYPE::CT_ENEMY)				// 아군이 쏜 것이라면
 			//{
 			//	
@@ -187,6 +250,6 @@ void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class
 	}
 	
 	
-	non_active_bullet();
+	
 }
 

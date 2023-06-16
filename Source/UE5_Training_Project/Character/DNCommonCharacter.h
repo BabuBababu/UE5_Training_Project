@@ -47,6 +47,7 @@ class UDNStatusComponent;
 class ADNCommonGrenade;
 class ADNCommonWall;
 class ADNBulletLight;
+class ADNBullet;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNCommonCharacter : public ACharacter
@@ -73,6 +74,7 @@ public:
 	virtual void idle();
 	virtual void reload();
 	virtual void fire();
+	virtual void fire_missile(FVector hit_location_in, AActor* target_in);
 	virtual void stop_fire();
 	virtual void armed();
 	virtual void crouch();
@@ -94,9 +96,6 @@ public:
 
 	void set_position_index(const uint8 num_in) { _position_index = num_in; };
 	void set_idle_animation();
-
-
-	FTransform set_camera_transform(bool flag_in);
 
 	void set_default_all_speed(bool flag_in);
 	void set_camera_transform_origin();
@@ -184,6 +183,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
 	TSubclassOf<ADNBulletLight> _gun_bullet_light_class; //직접적인 영향X, 예광탄 느낌. 이쪽으로 발사중
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
+	TSubclassOf<ADNBullet> _gun_missile_class;		 //런처 병과 사용
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool _is_sprint;

@@ -123,7 +123,7 @@ void ADNHeliCommonCharacter::init_missile()
 
 void ADNHeliCommonCharacter::fire_missile(ADNCommonCharacter* target_in)
 {
-	if (nullptr != _missile_class)
+	if (IsValid(_missile_class))
 	{
 		FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("Rocket_Muzzle_L"));
 		ADNBullet* bullet = GetWorld()->SpawnActor<ADNBullet>(_missile_class, socket_location, GetActorRotation()); // 미사일 생성
