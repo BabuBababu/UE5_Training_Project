@@ -16,7 +16,7 @@
 #include "DNPlayerGaugeBar.generated.h"
 
 /**
- * 
+ *  이름은 플레이어게이지바라고 되어있지만 적,보스의 HP바로도 사용하고 있습니다.
  */
 
 class UImage;
