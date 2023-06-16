@@ -155,6 +155,9 @@ void ADNBullet::active_bullet()
 void ADNBullet::non_active_bullet()
 {
 
+	if (nullptr != _owner)
+		SetActorLocation(_owner->GetActorLocation());
+
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
 	_projectile_movement_component->Deactivate();
