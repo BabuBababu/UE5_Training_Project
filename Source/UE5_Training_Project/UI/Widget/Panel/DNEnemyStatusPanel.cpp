@@ -4,7 +4,7 @@
 #include "UE5_Training_Project/UI/Widget/Panel/DNEnemyStatusPanel.h"
 
 // Panel
-#include "UE5_Training_Project/UI/Widget/Panel/DNPlayerGaugeBar.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNEnemyGaugeBar.h"
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"

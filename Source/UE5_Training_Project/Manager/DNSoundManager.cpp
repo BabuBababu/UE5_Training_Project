@@ -327,8 +327,8 @@ void UDNSoundManager::start_combat_sound()
 		}
 
 
-		GetWorld()->GetTimerManager().SetTimer(_periodhandle_timer, this, &UDNSoundManager::play_combat_meta_sound, 15.f, true);	//15초마다 검사
-		GetWorld()->GetTimerManager().SetTimer(_initialhandle_timer, this, &UDNSoundManager::set_combat_off, 14.f, true);			//14초마다 컴뱃오프
+		GetWorld()->GetTimerManager().SetTimer(_periodhandle_timer, this, &UDNSoundManager::play_combat_meta_sound, 30.f, true);	//15초마다 검사
+		//GetWorld()->GetTimerManager().SetTimer(_initialhandle_timer, this, &UDNSoundManager::set_combat_off, 28.f, true);			//14초마다 컴뱃오프
 	}
 	
 	_is_combat = true; 

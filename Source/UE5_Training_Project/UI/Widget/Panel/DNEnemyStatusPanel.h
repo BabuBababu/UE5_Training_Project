@@ -21,7 +21,7 @@
  * 
  */
 
-class UDNPlayerGaugeBar;
+class UDNEnemyGaugeBar;
 class ADNPlayerCharacter;
 
 
@@ -67,7 +67,7 @@ private:
 	TObjectPtr<UTextBlock> umg_max_hp_text;
 
 	UPROPERTY()
-	TObjectPtr<UDNPlayerGaugeBar> umg_main_hp_bar;
+	TObjectPtr<UDNEnemyGaugeBar> umg_main_hp_bar;
 
 
 	UPROPERTY(Meta = (BindWidgetAnim), Transient)

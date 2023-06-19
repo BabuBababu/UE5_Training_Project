@@ -13,31 +13,29 @@
 #include "UE5_Training_Project/Defs/DNDefs.h"
 
 // Generated
-#include "DNPlayerGaugeBar.generated.h"
+#include "DNEnemyGaugeBar.generated.h"
 
 /**
- *  
+ * 
  */
 
 class UImage;
 class UProgressBar;
 
 UCLASS()
-class UE5_TRAINING_PROJECT_API UDNPlayerGaugeBar : public UUserWidget
+class UE5_TRAINING_PROJECT_API UDNEnemyGaugeBar : public UUserWidget
 {
 	GENERATED_BODY()
-
-
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 
 private:
 	UPROPERTY()
-	TObjectPtr<UImage> umg_image_background;
+		TObjectPtr<UImage> umg_image_background;
 
 	UPROPERTY()
-	TObjectPtr<UProgressBar> umg_main_progress;
+		TObjectPtr<UProgressBar> umg_main_progress;
 
 private:
 	E_UI_GAUGE_TYPE	_gauge_type = E_UI_GAUGE_TYPE::UGT_NONE;
