@@ -176,6 +176,11 @@ float ADNCommonCharacter::TakeDamage(float DamageAmount, struct FDamageEvent con
 	// 범위 대미지는 현재 500이므로 이렇게 일단 적용. 추후에 데이터 테이블로 관리해야할 듯.
 	// 현재 총알로  받는 대미지는 이 함수를 통해 적용하고 있지 않습니다.
 
+
+	// 스쿼드의 니케라면 UI표시
+	if(_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
+		DNDamageOperation::DamagedSquadUI(DamageAmount, this, E_DAMAGE_TYPE::DT_NORMAL);
+
 	_status->set_current_hp(_status->get_current_hp() - DamageAmount);
 
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%s"), *this->GetName()));
