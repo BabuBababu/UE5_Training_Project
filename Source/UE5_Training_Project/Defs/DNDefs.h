@@ -149,6 +149,7 @@ enum class E_ENEMY_TYPE : uint8
 	ET_MELEE_SHIELD		UMETA(DisplayName = "Melee Shield"),		//근접 방패 몬스터
 	ET_RANGER_AR		UMETA(DisplayName = "Ranger AR"),			//AR 사격 몬스터
 	ET_RANGER_LC		UMETA(DisplayName = "Ranger LC"),			//LC 사격 몬스터
+	ET_AIR_LC			UMETA(DisplayName = "Air LC"),				//LC 사격 공중 몬스터
 	ET_BOSS				UMETA(DisplayName = "Boss"),				//보스
 
 
