@@ -9,6 +9,9 @@
 // Controller
 #include "UE5_Training_Project/Controller/DNAIController.h"
 
+// Manager
+#include "UE5_Training_Project/Manager/DNObjectManager.h"
+
 
 
 ADNEnemyCharacter::ADNEnemyCharacter()
@@ -24,6 +27,8 @@ void ADNEnemyCharacter::BeginPlay()
 	_is_attacking = false;
 	_is_armed_weapon = true;
 	_character_state = E_CHARACTER_STATE::CS_ARM;			//우선은 테스트를 위해 무기를 들었다고 설정
+
+	OBJECT_MANAGER->_all_spawned_enemy_array.Add(this);
 }
 
 

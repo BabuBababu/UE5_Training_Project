@@ -16,6 +16,7 @@ void UDNObjectManager::initialize()
 	_lobby_bed_array.Empty();
 	_lobby_furniture_array.Empty();
 	_enemy_missile_array.Empty();
+	_all_spawned_enemy_array.Empty();
 	_post_chair = nullptr;
 
 

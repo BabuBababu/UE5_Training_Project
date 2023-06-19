@@ -18,6 +18,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractionLineDelegate, E_UI_INTERACTION_TYPE, type);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAimingDelegate, ADNEnemyCharacter*, target);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTargetLimitAmmoDelegate);
 
 
@@ -53,6 +54,7 @@ public:
 public:
 	FOnInteractionLineDelegate OnInteractionLinetrace;
 	FOnTargetLimitAmmoDelegate OnTargetHit;
+	FOnAimingDelegate		   OnTargetAiming;
 
 public:
 	ADNCommonItem* _item;

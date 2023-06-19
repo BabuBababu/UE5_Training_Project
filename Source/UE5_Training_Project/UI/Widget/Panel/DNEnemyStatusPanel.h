@@ -22,6 +22,7 @@
  */
 
 class UDNPlayerGaugeBar;
+class ADNPlayerCharacter;
 
 
 
@@ -41,10 +42,13 @@ protected:
 
 public:
 	void init_data(FDNCharacterData* data_in);
-	void sync_gauge();
+	void sync_status();
 	void set_hp(float current_hp_in, float max_hp_in);
 
-	void play_damaged_animation();
+	void add_function_handler(ADNPlayerCharacter* player_in);
+	void remove_function_handler(ADNPlayerCharacter* player_in);
+
+	void play_damaged_animation(ADNCommonCharacter* damaged_character_in);
 
 private:
 	UPROPERTY()
@@ -57,10 +61,26 @@ private:
 	TObjectPtr<UTextBlock> umg_name_text;
 
 	UPROPERTY()
+	TObjectPtr<UTextBlock> umg_current_hp_text;
+	
+	UPROPERTY()
+	TObjectPtr<UTextBlock> umg_max_hp_text;
+
+	UPROPERTY()
 	TObjectPtr<UDNPlayerGaugeBar> umg_main_hp_bar;
 
 
 	UPROPERTY(Meta = (BindWidgetAnim), Transient)
 	class UWidgetAnimation* umg_damaged_animation;
+
+private:
+	TObjectPtr<ADNEnemyCharacter>  _enemy = nullptr;
+
+	float _current_hp = 0.f;
+	float _max_hp = 0.f;
+
+public:
+	UFUNCTION()
+	void init_status_data_handler(ADNEnemyCharacter* enemy_in);
 
 };

@@ -27,6 +27,7 @@
 // UI
 #include "UE5_Training_Project/UI/Widget/Panel/DNInteractionPanel.h"
 #include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNEnemyStatusPanel.h"
 
 // Util
 #include "UE5_Training_Project/Util/DNCameraMovingOperation.h"
@@ -286,32 +287,54 @@ void ADNPlayerCharacter::player_sprint_event(bool sprint_in)
 void ADNPlayerCharacter::init_ui_event()
 {
 
-	 //인터렉션 위젯 
-	UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
-	if (nullptr == base_panel)
+	 //인터렉션 패널 
+	UDNBasePanel* interaction_base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
+	if (nullptr == interaction_base_panel)
 		return;
 
-	UDNInteractionPanel* panel = dynamic_cast<UDNInteractionPanel*>(base_panel);
-	if (nullptr == panel)
+	UDNInteractionPanel* interaction_panel = dynamic_cast<UDNInteractionPanel*>(interaction_base_panel);
+	if (nullptr == interaction_panel)
 		return;
 
-	panel->add_function_handler(this->_line_trace);
+	interaction_panel->add_function_handler(this->_line_trace);
 
+	//적 스테이터스 패널
+	UDNBasePanel* status_base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_ENEMY_STATUS);
+	if (nullptr == status_base_panel)
+		return;
+
+	UDNEnemyStatusPanel* status_panel = dynamic_cast<UDNEnemyStatusPanel*>(status_base_panel);
+	if (nullptr == status_panel)
+		return;
+
+	status_panel->add_function_handler(this);
 
 }
 
 void ADNPlayerCharacter::remove_ui_event()
 {
 	//인터렉션 위젯 
-	UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
-	if (nullptr == base_panel)
+	UDNBasePanel* interaction_base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_INTERACTION);
+	if (nullptr == interaction_base_panel)
 		return;
 
-	UDNInteractionPanel* panel = dynamic_cast<UDNInteractionPanel*>(base_panel);
-	if (nullptr == panel)
+	UDNInteractionPanel* interaction_panel = dynamic_cast<UDNInteractionPanel*>(interaction_base_panel);
+	if (nullptr == interaction_panel)
 		return;
 
-	panel->remove_function_handler(this->_line_trace);
+	interaction_panel->remove_function_handler(this->_line_trace);
+
+
+	//적 스테이터스 패널
+	UDNBasePanel* status_base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_ENEMY_STATUS);
+	if (nullptr == status_base_panel)
+		return;
+
+	UDNEnemyStatusPanel* status_panel = dynamic_cast<UDNEnemyStatusPanel*>(status_base_panel);
+	if (nullptr == status_panel)
+		return;
+
+	status_panel->remove_function_handler(this);
 
 	Super::remove_ui_event();
 }

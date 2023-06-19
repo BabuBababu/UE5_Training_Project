@@ -21,6 +21,7 @@
 #include "UE5_Training_Project/UI/Widget/Panel/DNPortraitPanel.h"
 #include "UE5_Training_Project/UI/Widget/Panel/DNCrosshairPanel.h"
 #include "UE5_Training_Project/UI/Widget/Panel/DNCommentPanel.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNEnemyStatusPanel.h"
 
 
 // Util
@@ -90,6 +91,20 @@ public:
 	// 원거리 사격
 	static void gun_damage(float damage_in, FName bone_name_in, ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* player_in)
 	{
+
+		// 스테이터스 위젯 애니메이션 재생
+		UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_ENEMY_STATUS);
+		if (nullptr == base_panel)
+			return;
+
+		UDNEnemyStatusPanel* panel = dynamic_cast<UDNEnemyStatusPanel*>(base_panel);
+		if (nullptr == panel)
+			return;
+
+		panel->play_damaged_animation(damaged_character_in);
+
+
+
 		float after_hp = 0.f;
 
 		// 헤드샷 적용 유무
@@ -187,6 +202,19 @@ public:
 	// 원거리 사격 to 보스
 	static void gun_damage_to_gun_spider_boss(float damage_in, FName bone_name_in, ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* player_in)
 	{
+
+		// 스테이터스 위젯 애니메이션 재생
+		UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_ENEMY_STATUS);
+		if (nullptr == base_panel)
+			return;
+
+		UDNEnemyStatusPanel* panel = dynamic_cast<UDNEnemyStatusPanel*>(base_panel);
+		if (nullptr == panel)
+			return;
+
+		panel->play_damaged_animation(damaged_character_in);
+
+
 		float after_hp = 0.f;
 
 		// 헤드샷 적용 유무

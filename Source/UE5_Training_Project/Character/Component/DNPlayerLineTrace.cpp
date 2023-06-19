@@ -391,7 +391,7 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 			}
 		}
 
-
+		OnTargetAiming.Broadcast(_enemy);
 	}
 }
 

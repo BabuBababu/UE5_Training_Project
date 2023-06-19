@@ -34,14 +34,14 @@ void UDNInteractionPanel::add_function_handler(UDNPlayerLineTrace* trace_in)
 {
 
 	trace_in->OnInteractionLinetrace.AddDynamic(this, &UDNInteractionPanel::interaction_type_handler);
-	UE_LOG(LogTemp, Warning, TEXT("interaction add event!!!!"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Add Event 22222222222222222222222")));
 
 }
 
 void UDNInteractionPanel::remove_function_handler(UDNPlayerLineTrace* trace_in)
 {
 	trace_in->OnInteractionLinetrace.RemoveDynamic(this, &UDNInteractionPanel::interaction_type_handler);
-	UE_LOG(LogTemp, Warning, TEXT("interaction remove event!!!!"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Remove Event 22222222222222222222222")));
 }
 
 void UDNInteractionPanel::change_interaction_type(E_UI_INTERACTION_TYPE type_in)
