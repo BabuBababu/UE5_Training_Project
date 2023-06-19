@@ -12,9 +12,16 @@
 #include <GameFramework/SpringArmComponent.h>
 #include <Engine/Classes/Kismet/GameplayStatics.h>
 #include <Engine/Classes/Kismet/KismetMathLibrary.h>
+#include <BehaviorTree/BlackboardComponent.h>
 
 // Component
 #include "UE5_Training_Project/Component/DNStatusComponent.h"
+
+// Controller
+#include "UE5_Training_Project/Controller/DNAIController.h"
+
+// BlackBoard
+#include "UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h"
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
@@ -100,7 +107,20 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 	//DrawDebugLine(player_in->GetWorld(), start_location, end_location, FColor::Red, false, 5.f, 0, 5.f);
 
 
+	// 런처 병과
+	if (player_in->get_status_component()->_character_mos == E_CHARACTER_MOS::CM_LC)
+	{
 
+		ADNAIController* controller = Cast<ADNAIController>(player_in->GetController());
+		if (nullptr == controller)
+			return;
+
+		auto* object = controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor);
+		AActor* target = Cast<AActor>(object);
+		player_in->fire_missile(end_location, target);
+
+		return;
+	}
 		
 		if (hit_result.GetActor() != nullptr)
 		{	
@@ -110,7 +130,7 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 				 // 런처 병과
 			if (player_in->get_status_component()->_character_mos == E_CHARACTER_MOS::CM_LC)
 			{
-				player_in->fire_missile(hit_location, _enemy);
+				
 			}
 			else // 나머지 병과
 			{
@@ -197,15 +217,7 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 					player_in->spawn_bullet_light(hit_location);
 				}
 			}
-		}		
-		else
-		{
-			// 런처 병과
-			if (player_in->get_status_component()->_character_mos == E_CHARACTER_MOS::CM_LC)
-			{
-				player_in->fire_missile(end_location,nullptr);
-			}
-		}										
+		}											
 }
 
 

@@ -374,6 +374,9 @@ void ADNCommonCharacter::fire()
 
 void ADNCommonCharacter::fire_missile(FVector hit_location_in,AActor* target_in)
 {
+	if (nullptr == target_in)
+		return;
+
 	if (false == IsValid(_gun_missile_class))
 		return;
 

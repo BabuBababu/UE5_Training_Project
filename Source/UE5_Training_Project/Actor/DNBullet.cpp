@@ -83,7 +83,11 @@ void ADNBullet::Tick(float DeltaTime)
 	{
 		// 타겟이 없다면
 		if (nullptr == _target)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Anis Now Missile Homing Failed : %s"),*_target->GetName()));
+
 			return;
+		}
 
 		// 타겟의 위치로 미사일을 이동시킴
 		FVector TargetLocation = _target->GetActorLocation();
@@ -94,10 +98,11 @@ void ADNBullet::Tick(float DeltaTime)
 		FVector NewVelocity = DirectionToTarget * _projectile_movement_component->MaxSpeed;
 		_projectile_movement_component->Velocity = FMath::VInterpTo(_projectile_movement_component->Velocity, NewVelocity, DeltaTime, 5.f);
 
-
+		
 
 		if (_fire_type == E_FIRE_TYPE::FT_NIKKE_LC)
 		{
+			
 			_current_limit_time += DeltaTime;
 			if (_current_limit_time > _limit_time)
 			{
