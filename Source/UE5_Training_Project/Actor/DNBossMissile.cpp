@@ -42,10 +42,10 @@ void ADNBossMissile::Tick(float DeltaTime)
 	if (false == _is_active)
 		return;
 
-	if(_fire_type == E_FIRE_TYPE::FT_MAIN)
+	if(_fire_type == E_FIRE_TYPE::FT_MAIN || _fire_type == E_FIRE_TYPE::FT_DISCUS)				// 호밍 미사일
 		Super::Tick(DeltaTime);
 
-	if (_fire_type == E_FIRE_TYPE::FT_SUB || _fire_type == E_FIRE_TYPE::FT_DISCUS)
+	if (_fire_type == E_FIRE_TYPE::FT_SUB || _fire_type == E_FIRE_TYPE::FT_DISCUS)		// 잠시 대기 후 도탄 미사일, 만약 호밍 미사일과 함께 넣는다면 두개 다 적용 init,destroy_object도 넣어줘야함
 	{
 		if (false == _is_boost)
 		{
@@ -152,7 +152,7 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 				if (nullptr != enemy)
 				{
 					if (enemy->_enemy_type == E_ENEMY_TYPE::ET_AIR_LC)
-						DNDamageOperation::radial_damage_to_all(GetWorld(), 2.f, GetActorLocation(), 20.f, _owner);		// 랩쳐 디스커스 
+						DNDamageOperation::radial_damage_to_all(GetWorld(), 2.f, GetActorLocation(), 50.f, _owner);		// 랩쳐 디스커스 
 
 					destroy_object();
 				}
@@ -187,7 +187,7 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 						else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC)
 							DNDamageOperation::radial_damage_to_all(GetWorld(), 20.f, GetActorLocation(), 100.f, _owner);		// 랩쳐 큐브 
 						else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_AIR_LC)
-							DNDamageOperation::radial_damage_to_all(GetWorld(), 2.f, GetActorLocation(), 20.f, _owner);		// 랩쳐 디스커스 
+							DNDamageOperation::radial_damage_to_all(GetWorld(), 2.f, GetActorLocation(), 50.f, _owner);		// 랩쳐 디스커스 
 
 						destroy_object();
 					}
