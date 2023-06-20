@@ -76,6 +76,20 @@ void ADNBullet::BeginPlay()
 void ADNBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	// 미사일의 액티브 체크전 니케가 쏜 것이라면 Destroy 설정
+	if (_fire_type == E_FIRE_TYPE::FT_NIKKE_LC)
+	{
+
+		_current_limit_time += DeltaTime;
+		if (_current_limit_time > _limit_time)
+		{
+			Destroy();
+		}
+
+	}
+
+
 	if (false == _is_active)
 		return;
 
@@ -101,16 +115,7 @@ void ADNBullet::Tick(float DeltaTime)
 		
 	}
 
-	if (_fire_type == E_FIRE_TYPE::FT_NIKKE_LC)
-	{
-
-		_current_limit_time += DeltaTime;
-		if (_current_limit_time > _limit_time)
-		{
-			Destroy();
-		}
-
-	}
+	
 }
 
 
