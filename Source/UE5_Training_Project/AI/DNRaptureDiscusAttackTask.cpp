@@ -63,7 +63,7 @@ EBTNodeResult::Type UDNRaptureDiscusAttackTask::ExecuteTask(UBehaviorTreeCompone
 		return EBTNodeResult::Failed;
 	}
 
-	if (self_actor->_fire_1_current_time <= 1.f)
+	if (self_actor->_fire_1_current_time <= 0.1f)
 	{
 		controller->SetFocus(target_character);
 		self_actor->fire_1(target_character);			// 미사일 발사

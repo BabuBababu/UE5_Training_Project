@@ -24,6 +24,8 @@ void ADNCommonDefenceLevel::BeginPlay()
 	FVector target_point_1_location;
 	FVector target_point_2_location;
 	FVector target_point_3_location;
+	FVector target_point_4_location;
+	FVector target_point_5_location;
 
 	TArray<AActor*> target_point_array;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), target_point_array);
@@ -41,6 +43,10 @@ void ADNCommonDefenceLevel::BeginPlay()
 			target_point_2_location = point->GetActorLocation();
 		else if (point->GetActorLabel() == "TargetPoint3")
 			target_point_3_location = point->GetActorLocation();
+		else if (point->GetActorLabel() == "TargetPoint4")
+			target_point_4_location = point->GetActorLocation();
+		else if (point->GetActorLabel() == "TargetPoint5")
+			target_point_5_location = point->GetActorLocation();
 	}
 
 
@@ -63,6 +69,17 @@ void ADNCommonDefenceLevel::BeginPlay()
 		ADNEnemyCharacter* target3 = GetWorld()->SpawnActor<ADNEnemyCharacter>(target_3_enemy, target_point_3_location+ temp_location, FRotator::ZeroRotator);
 	}
 
+	for (int count = 0; count < _target_4_count; ++count)
+	{
+		FVector temp_location = FVector(count * 100.f, 0.f, 500.f);
+		ADNEnemyCharacter* target4 = GetWorld()->SpawnActor<ADNEnemyCharacter>(target_4_enemy, target_point_4_location + temp_location, FRotator::ZeroRotator);
+	}
+
+	for (int count = 0; count < _target_5_count; ++count)
+	{
+		FVector temp_location = FVector(count * 100.f, 0.f, 500.f);
+		ADNEnemyCharacter* target5 = GetWorld()->SpawnActor<ADNEnemyCharacter>(target_5_enemy, target_point_5_location + temp_location, FRotator::ZeroRotator);
+	}
 }
 
 void ADNCommonDefenceLevel::Tick(float DeltaTime)
