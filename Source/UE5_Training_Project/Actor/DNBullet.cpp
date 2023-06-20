@@ -203,7 +203,7 @@ void ADNBullet::fire(FVector location_in)
 	_projectile_movement_component->Velocity = direction_vector * _projectile_movement_component->InitialSpeed;
 	//DrawDebugLine(GetWorld(), location_in, target_in->GetActorLocation(), FColor::Cyan, true, -1, 0, 10);
 
-	
+	_is_active = true;
 	
 
 }
@@ -235,6 +235,7 @@ void ADNBullet::nikke_fire(FVector location_in)
 void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+
 	if (false == _is_active)
 		return;
 
