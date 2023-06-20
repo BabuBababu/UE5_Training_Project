@@ -183,5 +183,4 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 		}
 	}
 
-	destroy_object();
 }

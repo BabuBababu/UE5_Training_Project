@@ -97,23 +97,19 @@ void ADNBullet::Tick(float DeltaTime)
 		// 호밍 기능을 구현하기 위해 미사일의 방향을 타겟 방향으로 조정
 		FVector NewVelocity = DirectionToTarget * _projectile_movement_component->MaxSpeed;
 		_projectile_movement_component->Velocity = FMath::VInterpTo(_projectile_movement_component->Velocity, NewVelocity, DeltaTime, 5.f);
-
 		
+		
+	}
 
-		if (_fire_type == E_FIRE_TYPE::FT_NIKKE_LC)
+	if (_fire_type == E_FIRE_TYPE::FT_NIKKE_LC)
+	{
+
+		_current_limit_time += DeltaTime;
+		if (_current_limit_time > _limit_time)
 		{
-			
-			_current_limit_time += DeltaTime;
-			if (_current_limit_time > _limit_time)
-			{
-				Destroy();
-			}
-
+			Destroy();
 		}
-		
-		
-		
-		
+
 	}
 }
 
@@ -159,6 +155,7 @@ void ADNBullet::active_bullet()
 
 void ADNBullet::non_active_bullet()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("0000000000000")));
 
 	if (nullptr != _owner)
 		SetActorLocation(_owner->GetActorLocation());
@@ -174,6 +171,7 @@ void ADNBullet::non_active_bullet()
 	if (IsValid(_niagara_component))
 		_niagara_component->Deactivate();
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Is Active? : %s"), _is_active ? TEXT("true") : TEXT("false")));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("11111111111111111")));
 
 }
 
@@ -232,7 +230,15 @@ void ADNBullet::nikke_fire(FVector location_in)
 void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (false == _is_active)
+		return;
+
 	if (nullptr == _owner)
+		return;
+
+	ADNCommonCharacter* nikke = Cast<ADNCommonCharacter>(otherActor);
+
+	if (nikke == _owner)
 		return;
 
 	if (nullptr == otherActor)												// 바닥에 꽂혔을 때
@@ -242,6 +248,10 @@ void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
 			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 			non_active_bullet();
+
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Anis Missile Bomb first")));
+
+			return;
 		}
 	}
 
@@ -253,14 +263,15 @@ void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());  //- FVector(0.f, 0.f, 200.f)
 			UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
 			non_active_bullet();
-			//if (_owner->get_character_type() != E_CHARACTER_TYPE::CT_ENEMY)				// 아군이 쏜 것이라면
-			//{
-			//	
-			//}
+
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Anis Missile Bomb second")));
+
+			return;
 		}
 	}
 	
-	
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Anis Missile Bomb Final")));
+
 	non_active_bullet();
 }
 
