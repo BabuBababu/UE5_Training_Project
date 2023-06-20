@@ -27,17 +27,21 @@
 UDNAirRaptrueCheckMoveToTask::UDNAirRaptrueCheckMoveToTask(FObjectInitializer const& object_initializer)
 {
 	NodeName = TEXT("AirRaptureCheckMoveToTask");
+	self_actor = nullptr;
+	controller = nullptr;
 }
 
 EBTNodeResult::Type UDNAirRaptrueCheckMoveToTask::ExecuteTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in)
 {
 	Super::ExecuteTask(owner_comp_in, NodeMemory_in);
 
-	auto Controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
-	auto self = Controller->GetPawn();
+	bNotifyTick = true; //틱 태스크 활성화
+
+	controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
+	auto self = controller->GetPawn();
 	self_actor = Cast<ADNAirRaptureCharacter>(self);
 
-	FVector location =Controller->get_blackboard()->GetValueAsVector(all_ai_bb_keys::target_location);		
+	FVector location = controller->get_blackboard()->GetValueAsVector(all_ai_bb_keys::target_location);
 	target_location = FVector(location.X, location.Y, 0.f);
 
 	return EBTNodeResult::InProgress;
