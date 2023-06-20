@@ -122,7 +122,7 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 					UE_LOG(LogTemp, Warning, TEXT("bt Boss succeeded!"));
 				}
 			}
-			else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC)		//큐브 랩쳐
+			else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC)		//랩쳐 큐브 
 			{
 				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Rapture_Cube.BT_Combat_Rapture_Cube"), NULL, LOAD_None, NULL);
 				if (nullptr != BTObject)
@@ -131,6 +131,17 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 						btree = BTObject;
 					_sight_config->SightRadius = 200000.f;
 					UE_LOG(LogTemp, Warning, TEXT("bt Rapture_LC succeeded!"));
+				}
+			}
+			else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_AIR_LC)		//랩쳐 디스커스
+			{
+				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Rapture_Discus.BT_Combat_Rapture_Discus"), NULL, LOAD_None, NULL);
+				if (nullptr != BTObject)
+				{
+					if (nullptr == btree)
+						btree = BTObject;
+					_sight_config->SightRadius = 200000.f;
+					UE_LOG(LogTemp, Warning, TEXT("bt AIR_LC succeeded!"));
 				}
 			}
 			else   //일단은 이런식으로 적군 타입에 따라 BT를 다르게 초기화합니다.

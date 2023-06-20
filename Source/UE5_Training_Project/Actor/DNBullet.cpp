@@ -160,7 +160,7 @@ void ADNBullet::active_bullet()
 
 void ADNBullet::non_active_bullet()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("0000000000000")));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("0000000000000")));
 
 	if (nullptr != _owner)
 		SetActorLocation(_owner->GetActorLocation());
@@ -176,7 +176,7 @@ void ADNBullet::non_active_bullet()
 	if (IsValid(_niagara_component))
 		_niagara_component->Deactivate();
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Is Active? : %s"), _is_active ? TEXT("true") : TEXT("false")));
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("11111111111111111")));
+	
 
 }
 
@@ -275,7 +275,7 @@ void ADNBullet::overlap_actor_handler(class UPrimitiveComponent* selfComp, class
 		}
 	}
 	
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Anis Missile Bomb Final")));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Anis Missile Bomb Final")));
 
 	non_active_bullet();
 }

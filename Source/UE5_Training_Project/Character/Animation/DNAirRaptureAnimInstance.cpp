@@ -9,6 +9,8 @@
 #include <GameFramework/PawnMovementComponent.h>
 #include <Kismet/KismetMathLibrary.h>
 #include <KismetAnimationLibrary.h>
+#include <GameFramework/CharacterMovementComponent.h>
+
 
 // Character
 #include "UE5_Training_Project/Character/DNAirRaptureCharacter.h"
@@ -47,21 +49,8 @@ void UDNAirRaptureAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (nullptr == _owner)
 		return;
 
-	// Gun
-	FRotator rotate = FRotator(_pitch, _yaw, 0.f);
-	FRotator target = UKismetMathLibrary::NormalizedDeltaRotator(_owner->GetControlRotation(), _owner->GetActorRotation());
-
-
-	FRotator result = UKismetMathLibrary::RInterpTo(rotate, target, DeltaSeconds, 15.f);
-
-	_pitch = UKismetMathLibrary::ClampAngle(result.Pitch, _pitch_min, _pitch_max);
-	_yaw = result.Yaw;
 	_firing = _owner->_is_fire;
 
-	//UE_LOG(LogTemp, Warning, TEXT(" Spider pitch is %f"), _pitch);
-	//UE_LOG(LogTemp, Warning, TEXT(" Spider yaw is %f"), _yaw);
-
-	// Legs
 	calculate_speed_direction(TryGetPawnOwner());
 	_bIsInAir = TryGetPawnOwner()->GetMovementComponent()->IsFalling();
 
@@ -75,6 +64,12 @@ void UDNAirRaptureAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			{
 				Montage_Play(die_montage);
 				_playing_die_montage = true;
+
+
+				// 사망 몽타쥬 재생시 떨어트리기 위해 적용
+				_owner->_character_skeletal_mesh->SetEnableGravity(true);
+				_owner->GetCharacterMovement()->GravityScale = 1.f;
+
 			}
 
 			if (false == Montage_IsPlaying(die_montage))

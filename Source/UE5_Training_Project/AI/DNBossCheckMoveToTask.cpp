@@ -34,7 +34,7 @@ EBTNodeResult::Type UDNBossCheckMoveToTask::ExecuteTask(UBehaviorTreeComponent& 
 
 	auto Controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
 	auto self = Controller->GetPawn();
-	ADNCommonCharacter* self_actor = dynamic_cast<ADNCommonCharacter*>(self);
+	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self);
 
 
 	if (nullptr != Controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor))			//타겟 액터가 존재한다면 실패

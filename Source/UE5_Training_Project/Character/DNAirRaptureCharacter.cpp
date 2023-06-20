@@ -8,11 +8,15 @@
 #include <GameFramework/FloatingPawnMovement.h>
 #include <Engine/Classes/Kismet/GameplayStatics.h>
 #include <Components/AudioComponent.h>
+#include <GameFramework/CharacterMovementComponent.h>
 #include <NiagaraComponent.h>
 #include <Kismet/KismetMathLibrary.h>
 
 // Actor
 #include "UE5_Training_Project/Actor/DNBossMissile.h"
+
+// Animation
+#include "UE5_Training_Project/Character/Animation/DNAirRaptureAnimInstance.h"
 
 // Component
 #include "UE5_Training_Project/Character/Component/DNEnemyLineTrace.h"
@@ -63,8 +67,19 @@ void ADNAirRaptureCharacter::Tick(float DeltaTime)
 
 }
 
+
+
 void ADNAirRaptureCharacter::add_event()
 {
+	UDNAirRaptureAnimInstance* anim_instance = Cast<UDNAirRaptureAnimInstance>(_character_skeletal_mesh->GetAnimInstance());
+	if (nullptr == anim_instance)
+		return;
+
+	anim_instance->OnDieEnd.AddDynamic(this, &ADNCommonCharacter::destroy_object_handler);
+	
+	OnDead.AddDynamic(this, &ADNCommonCharacter::reset_fire_state_handler);
+	_enemy_line_trace->OnTargetHit.AddDynamic(this, &ADNCommonCharacter::ammo_hit_handler);
+
 
 }
 
@@ -79,7 +94,7 @@ void ADNAirRaptureCharacter::init_base()
 	_enemy_type = E_ENEMY_TYPE::ET_AIR_LC;
 
 	_fire_1_current_time = 0.f;
-	_fire_1_cool_time = 6.f;	//이것도 다 데이터테이블로 옮길예정
+	_fire_1_cool_time = 10.f;	//이것도 다 데이터테이블로 옮길예정
 	_fire_1_cool_time_start = false;
 
 	if (IsValid(_danger_particle))
@@ -127,7 +142,7 @@ void ADNAirRaptureCharacter::fire_1(ADNCommonCharacter* target_in)
 		ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_1_class, socket_location, GetActorRotation()); // 미사일 생성
 
 
-		bullet->_fire_type = E_FIRE_TYPE::FT_MAIN;
+		bullet->_fire_type = E_FIRE_TYPE::FT_DISCUS;
 		bullet->SetActorLocation(socket_location);
 		bullet->init();
 		bullet->active_bullet();
@@ -147,7 +162,7 @@ void ADNAirRaptureCharacter::fire_1(ADNCommonCharacter* target_in)
 	{
 		for (auto& un_active_missile : OBJECT_MANAGER->_enemy_missile_array)
 		{
-			if (false == un_active_missile->_is_active && un_active_missile->_fire_type == E_FIRE_TYPE::FT_MAIN)
+			if (false == un_active_missile->_is_active && un_active_missile->_fire_type == E_FIRE_TYPE::FT_DISCUS)
 			{
 				un_active_missile->init();
 				un_active_missile->_owner = this;
@@ -166,7 +181,7 @@ void ADNAirRaptureCharacter::fire_1(ADNCommonCharacter* target_in)
 		}
 	}
 
-
+	OnFire.Broadcast();
 }
 
 
@@ -197,5 +212,8 @@ void ADNAirRaptureCharacter::hide_smoke()
 
 void ADNAirRaptureCharacter::destroy_object_handler()
 {
+	_character_skeletal_mesh->SetEnableGravity(false);
+	GetCharacterMovement()->GravityScale = 0.f;
+
 	Super::destroy_object_handler();
 }

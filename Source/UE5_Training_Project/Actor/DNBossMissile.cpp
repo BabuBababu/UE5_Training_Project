@@ -45,7 +45,7 @@ void ADNBossMissile::Tick(float DeltaTime)
 	if(_fire_type == E_FIRE_TYPE::FT_MAIN)
 		Super::Tick(DeltaTime);
 
-	if (_fire_type == E_FIRE_TYPE::FT_SUB)
+	if (_fire_type == E_FIRE_TYPE::FT_SUB || _fire_type == E_FIRE_TYPE::FT_DISCUS)
 	{
 		if (false == _is_boost)
 		{
@@ -82,7 +82,7 @@ void ADNBossMissile::init()
 {
 	_current_hp = _max_hp;
 
-	if (_fire_type == E_FIRE_TYPE::FT_SUB)
+	if (_fire_type == E_FIRE_TYPE::FT_SUB || _fire_type == E_FIRE_TYPE::FT_DISCUS)
 	{
 		_projectile_movement_component->MaxSpeed = 10.0f;
 	}
@@ -100,7 +100,7 @@ void ADNBossMissile::destroy_object()
 
 	non_active_bullet();
 
-	if (_fire_type == E_FIRE_TYPE::FT_SUB)
+	if (_fire_type == E_FIRE_TYPE::FT_SUB || _fire_type == E_FIRE_TYPE::FT_DISCUS)
 	{
 		_projectile_movement_component->MaxSpeed = 10.0f;
 		_is_boost = false;
@@ -141,11 +141,22 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 						DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 500.f, _owner);		// 보스
 					else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC)
 						DNDamageOperation::radial_damage_to_all(GetWorld(), 20.f, GetActorLocation(), 100.f, _owner);		// 랩쳐 큐브 
-
+					
 
 					destroy_object();
 				}
 				
+			}
+			else if (_fire_type == E_FIRE_TYPE::FT_DISCUS)															// fire 1
+			{
+				if (nullptr != enemy)
+				{
+					if (enemy->_enemy_type == E_ENEMY_TYPE::ET_AIR_LC)
+						DNDamageOperation::radial_damage_to_all(GetWorld(), 2.f, GetActorLocation(), 20.f, _owner);		// 랩쳐 디스커스 
+
+					destroy_object();
+				}
+
 			}
 			else if (_fire_type == E_FIRE_TYPE::FT_NONE)
 			{
@@ -175,9 +186,22 @@ void ADNBossMissile::overlap_actor_handler(class UPrimitiveComponent* selfComp, 
 							DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 500.f, _owner);		// 보스
 						else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC)
 							DNDamageOperation::radial_damage_to_all(GetWorld(), 20.f, GetActorLocation(), 100.f, _owner);		// 랩쳐 큐브 
+						else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_AIR_LC)
+							DNDamageOperation::radial_damage_to_all(GetWorld(), 2.f, GetActorLocation(), 20.f, _owner);		// 랩쳐 디스커스 
 
 						destroy_object();
 					}
+				}
+				else if (_fire_type == E_FIRE_TYPE::FT_DISCUS)															// fire 1
+				{
+					if (nullptr != enemy)
+					{
+						if (enemy->_enemy_type == E_ENEMY_TYPE::ET_AIR_LC)
+							DNDamageOperation::radial_damage_to_all(GetWorld(), 2.f, GetActorLocation(), 20.f, _owner);		// 랩쳐 디스커스 
+
+						destroy_object();
+					}
+
 				}
 			}
 		}
