@@ -63,7 +63,7 @@ public:
 	TObjectPtr<UAnimMontage>        montage;
 	// 스킬 카메라 시퀀서 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill Data")
-	TObjectPtr<UCameraAnimationSequence> camera;
+	FString							camera_path = TEXT("");
 
 
 	FDNCharacterSkillData& operator=(const FDNCharacterSkillData& data)
@@ -80,7 +80,7 @@ public:
 		type = data.type;
 		icon_path = data.icon_path;
 		montage = data.montage;
-		camera = data.camera;
+		camera_path = data.camera_path;
 
 		return *this;
 	}
@@ -99,6 +99,6 @@ public:
 		type = E_SKILL_TYPE::ST_NONE;
 		icon_path = TEXT("");
 		montage = nullptr;
-		camera = nullptr;
+		camera_path = TEXT("");
 	}
 };

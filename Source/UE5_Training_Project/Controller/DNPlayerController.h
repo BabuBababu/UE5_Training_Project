@@ -29,6 +29,7 @@ class UInputMappingContext;
 class UDNInputConfigData;
 class ADNPlayerCharacter;
 class UAnimMontage;
+class UCameraAnimationSequence;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNPlayerController : public APlayerController
@@ -102,6 +103,7 @@ private:
 public:
 	bool					 _open_widget;
 	TObjectPtr<UAnimMontage> _now_skill_animation;
+	TObjectPtr<UCameraAnimationSequence> _now_camera_animation;
 //////////////////////////////////////////////////////////////////////////
 // delegate
 //////////////////////////////////////////////////////////////////////////

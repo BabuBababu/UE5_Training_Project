@@ -5,6 +5,8 @@
 // Engine
 #include <Kismet/GameplayStatics.h>
 #include <GameFramework/CharacterMovementComponent.h>
+#include <CameraAnimationSequence.h>
+#include <CameraAnimationCameraModifier.h>
 
 // GameMode
 #include "UE5_Training_Project/GameMode/DNGameModeBase.h"
@@ -35,6 +37,7 @@
 
 // Util
 #include "UE5_Training_Project/Util/DNCameraMovingOperation.h"
+#include "UE5_Training_Project/Util/DNSkillSystem.h"
 
 
 ADNPlayerController::ADNPlayerController(const FObjectInitializer& ObjectInitializer)
@@ -292,6 +295,16 @@ void ADNPlayerController::Reload(const FInputActionValue& Value)
 		return;
 
 	_owner->reload();
+	for (auto& nikke : OBJECT_MANAGER->_all_gained_doll_array)
+	{
+		if (nikke->_character_id == 2)
+		{
+			DNSkillSystem::active_skill_burst(_owner, nikke, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].montage, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].camera_path);
+		}
+			
+	}
+
+	
 	
 
 }
@@ -583,5 +596,16 @@ void ADNPlayerController::reset_camera_handler(UAnimMontage* Montage, bool bInte
 		return;
 
 	if (_now_skill_animation == Montage)
+	{
+		// 카메라 애니메이션 종료
+		auto* camera_manager = Cast<UCameraAnimationCameraModifier>(PlayerCameraManager->FindCameraModifierByClass(UCameraAnimationCameraModifier::StaticClass()));
+
+		if (nullptr != camera_manager)
+		{
+			FCameraAnimationHandle handle;
+			camera_manager->StopAllCameraAnimations(true);
+		}
+
 		SetViewTargetWithBlend(_owner);
+	}
 }

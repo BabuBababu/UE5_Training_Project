@@ -13,6 +13,7 @@
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
+#include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 
 // Controller
 #include "UE5_Training_Project/Controller/DNPlayerController.h"
@@ -34,16 +35,18 @@ public:
 	{
 
 	}
-	static void active_skill_burst(ADNCommonCharacter* player_in,ADNCommonCharacter* owner_in,UAnimMontage* animation_in, UCameraAnimationSequence* camera_animation_in)
+	static void active_skill_burst(ADNPlayerCharacter* player_in,ADNCommonCharacter* owner_in,UAnimMontage* animation_in, FString camera_path)
 	{
-		play_skill_animation(player_in,owner_in, animation_in);
-		play_camera_sequence(player_in,owner_in, camera_animation_in);
+		UCameraAnimationSequence* CameraSequenceBPClass = LoadObject<UCameraAnimationSequence>(NULL, *camera_path);
 
-		//몽타주 재생이 끝나면 
-
+		if (CameraSequenceBPClass)
+		{
+			play_skill_animation(player_in, owner_in, animation_in);
+			play_camera_sequence(player_in, owner_in, CameraSequenceBPClass);
+		}
 	}
 
-	static void play_skill_animation(ADNCommonCharacter* player_in,ADNCommonCharacter* owner_in, UAnimMontage* animation_in)
+	static void play_skill_animation(ADNPlayerCharacter* player_in,ADNCommonCharacter* owner_in, UAnimMontage* animation_in)
 	{
 		auto* anim = owner_in->_character_skeletal_mesh->GetAnimInstance();
 		
@@ -64,7 +67,7 @@ public:
 		}
 
 	}
-	static void play_camera_sequence(ADNCommonCharacter* player_in,ADNCommonCharacter* owner_in, UCameraAnimationSequence* camera_animation_in)
+	static void play_camera_sequence(ADNPlayerCharacter* player_in,ADNCommonCharacter* owner_in, UCameraAnimationSequence* camera_animation_in)
 	{
 		
 		ADNPlayerController* controller = Cast<ADNPlayerController>(player_in->GetController());
