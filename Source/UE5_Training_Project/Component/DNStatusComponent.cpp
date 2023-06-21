@@ -1,7 +1,7 @@
 ﻿
 
 
-#include <UE5_Training_Project/Component/DNStatusComponent.h>
+#include "UE5_Training_Project/Component/DNStatusComponent.h"
 
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
@@ -95,11 +95,15 @@ void UDNStatusComponent::init()
 
 
 	// 잘 적용되었는지 디버깅
-	if (_chartacter_data->character_id == 1)
+	if (_chartacter_data->character_id == 2)
 	{
-
 		UE_LOG(LogTemp, Warning, TEXT("My Name is %s"), *_chartacter_data->character_name);
 		UE_LOG(LogTemp, Warning, TEXT("My Max Ammo is %d"), _chartacter_data->character_status_data.max_ammo);
+
+
+		if (false == _chartacter_data->character_status_data.skill_data_array.IsEmpty())
+			UE_LOG(LogTemp, Warning, TEXT("My Burst Skill name is %s"), *_chartacter_data->character_status_data.skill_data_array[2].name)
+
 	}
 
 

@@ -5,6 +5,9 @@
 #include <CoreMinimal.h>
 #include <Engine/DataTable.h>
 
+// Data
+#include "UE5_Training_Project/Data/DNCharacterSkillData.h"
+
 // Defs
 #include "UE5_Training_Project/Defs/DNDefs.h"
 
@@ -43,6 +46,10 @@ public:
 	float							fire_speed = 0.f;
 
 
+	// 캐릭터 스킬 데이터
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
+	TArray<FDNCharacterSkillData>	skill_data_array;											
+
 	// 병과
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
 	E_CHARACTER_MOS					mos = E_CHARACTER_MOS::CM_NONE;
@@ -71,6 +78,7 @@ public:
 		max_ammo = data.max_ammo;
 		reload_speed = data.reload_speed;
 		fire_speed = data.fire_speed;
+		skill_data_array = data.skill_data_array;
 		mos = data.mos;
 		recommend_position = data.recommend_position;
 		grade = data.grade;
@@ -89,6 +97,7 @@ public:
 		max_ammo = 0;
 		reload_speed = 0;
 		fire_speed = 0;
+		skill_data_array.Empty();
 		mos = E_CHARACTER_MOS::CM_NONE;
 		recommend_position = E_CHARACTER_POSITION::CP_NONE;
 		grade = E_CHARACTER_GRADE::CG_NONE;
@@ -174,12 +183,6 @@ public:
 		FString							un_ordered = TEXT("");									// 캐릭터 명령 취소
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
-		FString							skill_1 = TEXT("");										// 캐릭터 스킬 1
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
-		FString							skill_2 = TEXT("");										// 캐릭터 스킬 2
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
 		FString							worry = TEXT("");										// 지휘관 걱정
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialog Data")
@@ -211,8 +214,6 @@ public:
 		reload = data.reload;
 		ordered = data.ordered;
 		un_ordered = data.un_ordered;
-		skill_1 = data.skill_1;
-		skill_2 = data.skill_2;
 		worry = data.worry;
 		dead = data.dead;
 		lobby_1 = data.lobby_1;

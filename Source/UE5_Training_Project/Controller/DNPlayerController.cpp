@@ -573,3 +573,15 @@ void ADNPlayerController::OpenWorkSchedule(const FInputActionValue& Value)
 		_open_widget = false;
 	}
 }
+
+
+
+/// 카메라
+void ADNPlayerController::reset_camera_handler(UAnimMontage* Montage, bool bInterrupted)
+{
+	if (nullptr == _owner)
+		return;
+
+	if (_now_skill_animation == Montage)
+		SetViewTargetWithBlend(_owner);
+}

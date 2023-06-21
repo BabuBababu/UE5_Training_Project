@@ -28,6 +28,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSquadPositionStopDelegate);
 class UInputMappingContext;
 class UDNInputConfigData;
 class ADNPlayerCharacter;
+class UAnimMontage;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNPlayerController : public APlayerController
@@ -99,7 +100,8 @@ private:
 	ADNPlayerCharacter* _owner;
 
 public:
-	bool		_open_widget;
+	bool					 _open_widget;
+	TObjectPtr<UAnimMontage> _now_skill_animation;
 //////////////////////////////////////////////////////////////////////////
 // delegate
 //////////////////////////////////////////////////////////////////////////
@@ -109,4 +111,9 @@ public:
 
 
 
+
+
+public:
+	UFUNCTION()
+	void reset_camera_handler(UAnimMontage* Montage, bool bInterrupted);
 };

@@ -153,11 +153,22 @@ enum class E_ENEMY_TYPE : uint8
 	ET_BOSS				UMETA(DisplayName = "Boss"),				//보스
 
 
-	CG_COUNT
+	ET_COUNT
 };
 
 
 
+
+
+UENUM(BlueprintType)
+enum class E_SKILL_TYPE : uint8
+{
+	ST_NONE = 0			UMETA(DisplayName = "None"),				// 비어있음
+	ST_SKILL_FIRST		UMETA(DisplayName = "Skill1"),				// 스킬 1
+	ST_SKILL_SECOND		UMETA(DisplayName = "Skill2"),				// 스킬 2
+	ST_SKILL_BURST		UMETA(DisplayName = "Burst"),				// 버스트
+	ST_COUNT
+};
 
 
 
@@ -198,6 +209,7 @@ enum class E_MANAGER_TYPE : uint8
 
 	MT_COUNT
 };
+
 
 
 
