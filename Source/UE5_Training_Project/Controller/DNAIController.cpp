@@ -524,10 +524,10 @@ void ADNAIController::remove_target_from_array_handler(AActor* actor_in)
 
 
 
-	// 타겟이 캐릭터였을 경우만 애니메이션 초기화
-	ADNCommonCharacter* target = Cast<ADNCommonCharacter>(actor_in);
-	if(nullptr != target)
-		_owner->set_idle_animation();
+	//// 타겟이 캐릭터였을 경우만 애니메이션 초기화
+	//ADNCommonCharacter* target = Cast<ADNCommonCharacter>(actor_in);
+	//if(nullptr != target)
+	//	_owner->set_idle_animation();
 
 	
 	GetAIPerceptionComponent()->UpdatePerceptionWhitelist(_sight_config->GetSenseID(), true);

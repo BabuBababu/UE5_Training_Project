@@ -56,6 +56,17 @@ EBTNodeResult::Type UDNSetTargetTask::ExecuteTask(UBehaviorTreeComponent& owner_
 	if(nullptr == controller)
 		return EBTNodeResult::Failed;
 	
+	// 타겟 자체가 배열에 없다면 실패 반환
+	if (OBJECT_MANAGER->_enemy_missile_array.IsEmpty())
+	{
+		controller->ClearFocus(EAIFocusPriority::Gameplay);
+		self_actor->set_idle_animation();
+		return EBTNodeResult::Failed;
+	}
+
+	// 이미 타겟이 있다면 성공 반환
+	if(controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor))
+		return EBTNodeResult::Succeeded;
 
 	
 	if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_GUARD)		// 가드일 경우

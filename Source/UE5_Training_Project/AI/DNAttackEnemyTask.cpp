@@ -85,9 +85,6 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 
 	if (nullptr == target)											//타겟 없으면 실패
 	{
-		self_actor->set_idle_animation();
-
-
 		return EBTNodeResult::Failed;
 	}
 
@@ -101,7 +98,6 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 			controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, false);
 			controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 			controller->ClearFocus(EAIFocusPriority::Gameplay);
-			self_actor->set_idle_animation();
 			return EBTNodeResult::Failed;
 		}
 
