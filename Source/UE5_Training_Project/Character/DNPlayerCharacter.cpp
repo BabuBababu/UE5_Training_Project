@@ -28,6 +28,7 @@
 #include "UE5_Training_Project/UI/Widget/Panel/DNInteractionPanel.h"
 #include "UE5_Training_Project/UI/Widget/DNDamageIndicator.h"
 #include "UE5_Training_Project/UI/Widget/Panel/DNEnemyStatusPanel.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNBurstPanel.h"
 
 // Util
 #include "UE5_Training_Project/Util/DNCameraMovingOperation.h"
@@ -55,6 +56,55 @@ void ADNPlayerCharacter::Tick(float DeltaTime)
 
 
 	
+}
+
+void ADNPlayerCharacter::set_burst_gauge(float value_in)
+{
+	// 더할 때
+	if (value_in > 0.f)
+	{
+		float temp = _burst_current_gauge + value_in;
+		if (temp > 1000.f)
+		{
+			// 풀 게이지 애니메이션
+			UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_BURST_INFORMATION);
+			if (IsValid(panel))
+			{
+				UDNBurstPanel* widget = Cast<UDNBurstPanel>(panel);
+
+				if (IsValid(widget))
+				{
+					widget->play_full_animation();
+				}
+			}
+
+			_burst_current_gauge = 1000.f;
+		}
+		else
+			_burst_current_gauge = _burst_current_gauge + value_in;
+	}
+	// 뺄 때
+	else
+	{
+		float temp = _burst_current_gauge + value_in;
+		if (temp < 0.f)
+			_burst_current_gauge = 0.f;
+		else
+			_burst_current_gauge = _burst_current_gauge + value_in;
+
+		// 애니메이션 중지
+		UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_COMMENT);
+		if (IsValid(panel))
+		{
+			UDNBurstPanel* widget = Cast<UDNBurstPanel>(panel);
+
+			if (IsValid(widget))
+			{
+				widget->StopAllAnimations();
+			}
+		}
+
+	}
 }
 
 

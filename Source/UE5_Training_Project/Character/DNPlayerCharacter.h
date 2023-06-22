@@ -49,6 +49,7 @@ public:
 
 public:
 	void start_fire();
+	void set_burst_gauge(float value_in);
 
 	void init_ui_event() override;
 	void remove_ui_event() override;
@@ -70,6 +71,10 @@ public:
 public: 
 	bool _is_selected = false;
 	bool _lobby_finished = false;
+
+	// 버스트 게이지는 세이브 요소가 아니므로 status에 두지 않았음.
+	float _burst_current_gauge = 0.f;
+	float _burst_max_gauge = 1000.f;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)

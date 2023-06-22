@@ -1,7 +1,7 @@
 ﻿
 
 
-#include "UE5_Training_Project/UI/Widget/Panel/DNSquadGaugeBar.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNBurstGaugeBar.h"
 
 
 // Engine
@@ -9,21 +9,24 @@
 
 // Manager
 #include "UE5_Training_Project/Manager/DNSoundManager.h"
+#include "UE5_Training_Project/Manager/DNUIManager.h"
 
 
 
 
-void UDNSquadGaugeBar::NativeConstruct()
+void UDNBurstGaugeBar::NativeConstruct()
 {
+	_gauge_type = E_UI_GAUGE_TYPE::UGT_BURST;
 	Super::NativeConstruct();
+
 }
 
-void UDNSquadGaugeBar::NativeDestruct()
+void UDNBurstGaugeBar::NativeDestruct()
 {
 	Super::NativeDestruct();
 }
 
-void UDNSquadGaugeBar::check_gauge()
+void UDNBurstGaugeBar::check_gauge()
 {
 	E_UI_GAUGE_STATE type_state = E_UI_GAUGE_STATE::UGS_NONE; // 안보임 0, 보이지만 비활성 1, 보이고 활성 2,
 
@@ -33,12 +36,6 @@ void UDNSquadGaugeBar::check_gauge()
 		break;
 
 	case E_UI_GAUGE_TYPE::UGT_HP:
-		/*if (_my_character->get_combat_posture())
-			type_state = E_NUI_GAUGE_STATE::NGS_OPEN_SHOW;
-		else
-		{
-		}*/
-
 		if (_percent_value < 1.0f)
 			type_state = E_UI_GAUGE_STATE::UGS_CLOSE_SHOW;
 		else
@@ -48,12 +45,6 @@ void UDNSquadGaugeBar::check_gauge()
 			else
 				type_state = E_UI_GAUGE_STATE::UGS_HIDE;
 		}
-		break;
-	case E_UI_GAUGE_TYPE::UGT_BURST:
-		if (_percent_value >= 1.0f)
-			type_state = E_UI_GAUGE_STATE::UGS_OPEN_SHOW;
-		else
-			type_state = E_UI_GAUGE_STATE::UGS_HIDE;
 		break;
 	default:
 		break;
@@ -80,7 +71,7 @@ void UDNSquadGaugeBar::check_gauge()
 	}
 }
 
-void UDNSquadGaugeBar::set_gauge(float current_value_in, float max_value_in)
+void UDNBurstGaugeBar::set_gauge(float current_value_in, float max_value_in)
 {
 	_current_value = current_value_in;
 	_max_value = max_value_in;
@@ -93,10 +84,9 @@ void UDNSquadGaugeBar::set_gauge(float current_value_in, float max_value_in)
 		umg_main_progress->SetPercent(_percent_value);
 	}
 
-
 }
 
-void UDNSquadGaugeBar::set_gauge_enable(bool is_enable_in)
+void UDNBurstGaugeBar::set_gauge_enable(bool is_enable_in)
 {
 	_is_enable = is_enable_in;
 	if (_is_enable)
@@ -106,7 +96,7 @@ void UDNSquadGaugeBar::set_gauge_enable(bool is_enable_in)
 
 }
 
-void UDNSquadGaugeBar::set_gauge_visibility(bool is_visibility_in)
+void UDNBurstGaugeBar::set_gauge_visibility(bool is_visibility_in)
 {
 	_is_visible = is_visibility_in;
 

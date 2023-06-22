@@ -265,6 +265,7 @@ public:
 	bool _is_wall_jump = false;
 	bool _is_knife_overlap = false;
 	bool _need_move = true;
+	bool _on_burst_skill = false;
 
 	FVector  _my_spawn_location = FVector(0.f, 0.f, 0.f);
 	int64 _target_change_limit_ammo = 10;				// 병과마다 다르게 가야할듯?
@@ -333,4 +334,6 @@ public:
 	void overlap_knife_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION()
+	void set_movement_for_bust_handler(UAnimMontage* Montage, bool bInterrupted);
 };

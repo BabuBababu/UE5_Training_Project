@@ -137,16 +137,21 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 				// 스킬로 쐈는지 확인할 경우 해당 bool값을 체크하는걸로 추가한다.
 				if (_enemy)
 				{
+					// 기본 누적 버스트 게이지 1.f
+					OBJECT_MANAGER->_player->set_burst_gauge(1.f);
+
 					// 무기 데이터 테이블을 이용해서 대미지 적용하는 방식을 쓸 예정이므로 아래 코드는 결국 수정할 것.
 					//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 					if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
 					{
+						OBJECT_MANAGER->_player->set_burst_gauge(0.5f);
 						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);			//보스
 						DNDamageOperation::gun_damage_to_gun_spider_boss(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
 					}
 					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE)
 					{
+						OBJECT_MANAGER->_player->set_burst_gauge(2.f);
 						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//댕댕이
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();

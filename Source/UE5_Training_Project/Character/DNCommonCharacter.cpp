@@ -176,6 +176,9 @@ float ADNCommonCharacter::TakeDamage(float DamageAmount, struct FDamageEvent con
 	// 범위 대미지는 현재 500이므로 이렇게 일단 적용. 추후에 데이터 테이블로 관리해야할 듯.
 	// 현재 총알로  받는 대미지는 이 함수를 통해 적용하고 있지 않습니다.
 
+	// 적이 대미지를 받았다면
+	if (_character_type == E_CHARACTER_TYPE::CT_ENEMY)
+		OBJECT_MANAGER->_player->set_burst_gauge(2.f);
 
 	// 스쿼드의 니케라면 UI표시
 	if(_character_type == E_CHARACTER_TYPE::CT_GRIFFIN)
@@ -778,6 +781,14 @@ void ADNCommonCharacter::throw_grenade_handler()
 
 
 }
+
+
+void ADNCommonCharacter::set_movement_for_bust_handler(UAnimMontage* Montage, bool bInterrupted)
+{
+	GetMovementComponent()->SetActive(true);
+	_on_burst_skill = false;
+}
+
 
 
 void ADNCommonCharacter::set_default_all_speed(bool flag_in)

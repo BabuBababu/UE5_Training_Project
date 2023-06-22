@@ -46,7 +46,6 @@ EBTNodeResult::Type UDNAttackEnemyTask::ExecuteTask(UBehaviorTreeComponent& owne
 	
 	// 캐릭터
 	ADNCommonCharacter* self_actor = Cast<ADNCommonCharacter>(self_pawn);
-
 	
 	if (self_actor->get_status_component().Get()->_dead)
 	{

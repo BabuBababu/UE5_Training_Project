@@ -50,7 +50,7 @@ void UDNPlayerGaugeBar::check_gauge()
 				type_state = E_UI_GAUGE_STATE::UGS_HIDE;
 		}
 		break;
-	case E_UI_GAUGE_TYPE::UGT_SP:
+	case E_UI_GAUGE_TYPE::UGT_BURST:
 		if (_percent_value >= 1.0f)
 			type_state = E_UI_GAUGE_STATE::UGS_OPEN_SHOW;
 		else

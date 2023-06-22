@@ -12,6 +12,7 @@
 #include "UE5_Training_Project/UI/Widget/Panel/DNPlayerCombatPanel.h"
 #include "UE5_Training_Project/UI/Widget/Panel/DNInteractionPanel.h"
 #include "UE5_Training_Project/UI/Widget/Panel/DNEnemyStatusPanel.h"
+#include "UE5_Training_Project/UI/Widget/Panel/DNBurstPanel.h"
 
 
 
@@ -27,6 +28,7 @@ class UDNPlayerCombatPanel;
 class UDNInteractionPanel;
 class UDNDamageIndicator;
 class UDNEnemyStatusPanel;
+class UDNBurstPanel;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNPanelLayer : public UDNBaseLayer
@@ -53,4 +55,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UDNEnemyStatusPanel> umg_enemy_status_panel;
+
+	UPROPERTY()
+	TObjectPtr<UDNBurstPanel> umg_burst_panel;
 };

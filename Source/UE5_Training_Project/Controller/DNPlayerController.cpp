@@ -299,7 +299,8 @@ void ADNPlayerController::Reload(const FInputActionValue& Value)
 	{
 		if (nikke->_character_id == 2)
 		{
-			DNSkillSystem::active_skill_burst(_owner, nikke, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].montage, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].camera_path);
+			if (OBJECT_MANAGER->_player->_burst_current_gauge >= 300.f)
+				DNSkillSystem::active_skill_burst(_owner, nikke, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].montage, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].camera_path);
 		}
 			
 	}

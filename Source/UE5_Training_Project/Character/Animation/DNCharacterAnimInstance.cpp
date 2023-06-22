@@ -53,8 +53,6 @@ void UDNCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (nullptr == _owner)
 		return;
 
-	
-
 
 	_character_state = _owner->_character_state;
 	_aiming = _owner->_is_aiming;

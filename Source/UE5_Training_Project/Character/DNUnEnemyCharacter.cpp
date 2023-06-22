@@ -187,7 +187,18 @@ void ADNUnEnemyCharacter::init_base()
 void ADNUnEnemyCharacter::fire()
 {
 	// 여기엔 다른 효과나 기능들을 넣으면 될듯
+	if (_on_burst_skill)
+		return;
+
 	Super::fire();
+}
+
+void ADNUnEnemyCharacter::reload()
+{
+	// 여기엔 다른 효과나 기능들을 넣으면 될듯
+	if (_on_burst_skill)
+		return;
+	Super::reload();
 }
 
 void ADNUnEnemyCharacter::set_attack_finish()
