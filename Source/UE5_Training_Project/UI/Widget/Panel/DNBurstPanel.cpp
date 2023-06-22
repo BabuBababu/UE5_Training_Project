@@ -94,6 +94,6 @@ void UDNBurstPanel::play_full_animation()
 {
 	if (nullptr != umg_full_animation)
 	{
-		PlayAnimation(umg_full_animation,0.f,0, EUMGSequencePlayMode::Forward, 1.0f, true);
+		PlayAnimation(umg_full_animation,0.f,0, EUMGSequencePlayMode::Forward, 2.f, true);
 	}
 }

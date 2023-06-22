@@ -93,7 +93,7 @@ void ADNPlayerCharacter::set_burst_gauge(float value_in)
 			_burst_current_gauge = _burst_current_gauge + value_in;
 
 		// 애니메이션 중지
-		UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_COMMENT);
+		UDNBasePanel* panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_BURST_INFORMATION);
 		if (IsValid(panel))
 		{
 			UDNBurstPanel* widget = Cast<UDNBurstPanel>(panel);
