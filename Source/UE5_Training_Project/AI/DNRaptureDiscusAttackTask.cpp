@@ -52,7 +52,7 @@ EBTNodeResult::Type UDNRaptureDiscusAttackTask::ExecuteTask(UBehaviorTreeCompone
 		self_actor->set_idle_animation();
 		controller->ClearFocus(EAIFocusPriority::Gameplay);
 
-		return EBTNodeResult::Failed;
+		//return EBTNodeResult::Failed;
 	}
 
 	if (true == target_character->_status->_dead)					//타겟이 죽어있으면 실패
@@ -60,7 +60,7 @@ EBTNodeResult::Type UDNRaptureDiscusAttackTask::ExecuteTask(UBehaviorTreeCompone
 		controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 		controller->ClearFocus(EAIFocusPriority::Gameplay);
 		self_actor->set_idle_animation();
-		return EBTNodeResult::Failed;
+		//return EBTNodeResult::Failed;
 	}
 
 	if (self_actor->_fire_1_current_time <= 0.1f)

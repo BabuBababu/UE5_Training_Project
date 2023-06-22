@@ -30,6 +30,5 @@ public:
 
 public:
 	FVector target_location;
-	ADNAirRaptureCharacter* self_actor;
-	ADNAIController* controller;
+	
 };

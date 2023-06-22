@@ -27,8 +27,6 @@
 UDNAirRaptrueCheckMoveToTask::UDNAirRaptrueCheckMoveToTask(FObjectInitializer const& object_initializer)
 {
 	NodeName = TEXT("AirRaptureCheckMoveToTask");
-	self_actor = nullptr;
-	controller = nullptr;
 }
 
 EBTNodeResult::Type UDNAirRaptrueCheckMoveToTask::ExecuteTask(UBehaviorTreeComponent& owner_comp_in, uint8* NodeMemory_in)
@@ -37,9 +35,11 @@ EBTNodeResult::Type UDNAirRaptrueCheckMoveToTask::ExecuteTask(UBehaviorTreeCompo
 
 	bNotifyTick = true; //틱 태스크 활성화
 
-	controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
+	auto* controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
 	auto self = controller->GetPawn();
-	self_actor = Cast<ADNAirRaptureCharacter>(self);
+	auto* self_actor = Cast<ADNAirRaptureCharacter>(self);
+
+
 
 	FVector location = controller->get_blackboard()->GetValueAsVector(all_ai_bb_keys::target_location);
 	target_location = FVector(location.X, location.Y, 0.f);
@@ -68,8 +68,12 @@ void UDNAirRaptrueCheckMoveToTask::TickTask(UBehaviorTreeComponent& owner_comp_i
 
 
 
+	auto* controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
 
 	auto self = controller->GetPawn();
+	auto* self_actor = Cast<ADNAirRaptureCharacter>(self);
+
+	
 	FVector origin = self->GetActorLocation();
 	FVector origin_location = FVector(origin.X, origin.Y, 0.f);
 
@@ -79,6 +83,7 @@ void UDNAirRaptrueCheckMoveToTask::TickTask(UBehaviorTreeComponent& owner_comp_i
 
 bool UDNAirRaptrueCheckMoveToTask::is_moving_complete(UBehaviorTreeComponent& owner_comp_in)
 {
+	auto* controller = Cast<ADNAIController>(owner_comp_in.GetAIOwner());
 
 	auto self = controller->GetPawn();
 	FVector origin = self->GetActorLocation();

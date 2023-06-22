@@ -44,13 +44,20 @@ EBTNodeResult::Type UDNCheckMoveToTask::ExecuteTask(UBehaviorTreeComponent& owne
 
 	if (nullptr != Controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor))			//타겟 액터가 존재한다면 실패
 	{
-		FinishLatentTask(owner_comp_in, EBTNodeResult::Failed);
-		return EBTNodeResult::Failed;
+		int result = FMath::FRandRange(1.0, 4.0);
+
+		if (result == 1.0)		//일단 확률 25%로 설정
+		{
+			
+		}
+		else
+		{
+			FinishLatentTask(owner_comp_in, EBTNodeResult::Failed);
+			return EBTNodeResult::Failed;
+		}
 	}
 
-
 	Controller->MoveToLocation(Controller->get_blackboard()->GetValueAsVector(all_ai_bb_keys::target_location), 10.f, true, true, true);		// 10.f은 오차허용 범위, 타겟 지역으로 이동
-
 
 	return EBTNodeResult::Succeeded;
 }
