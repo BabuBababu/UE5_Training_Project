@@ -11,6 +11,7 @@
 #include <GameFramework/CharacterMovementComponent.h>
 #include <NiagaraComponent.h>
 #include <Kismet/KismetMathLibrary.h>
+#include <Components/CapsuleComponent.h>
 
 // Actor
 #include "UE5_Training_Project/Actor/DNBossMissile.h"
@@ -20,6 +21,7 @@
 
 // Component
 #include "UE5_Training_Project/Character/Component/DNEnemyLineTrace.h"
+#include "UE5_Training_Project/Component/DNStatusComponent.h"
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
@@ -108,6 +110,11 @@ void ADNAirRaptureCharacter::init_base()
 
 void ADNAirRaptureCharacter::set_flying_move(float DeltaTime)
 {
+	if (_status->_dead)
+	{
+		return;
+	}
+
 	// 공중에 떠있는 것
 	FVector NewLocation = GetActorLocation();
 
@@ -212,8 +219,9 @@ void ADNAirRaptureCharacter::hide_smoke()
 
 void ADNAirRaptureCharacter::destroy_object_handler()
 {
-	_character_skeletal_mesh->SetEnableGravity(false);
+	GetCapsuleComponent()->SetEnableGravity(true);
 	GetCharacterMovement()->GravityScale = 0.f;
+	_floting_movement->SetActive(true);
 
 	Super::destroy_object_handler();
 }

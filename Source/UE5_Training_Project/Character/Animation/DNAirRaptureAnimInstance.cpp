@@ -7,9 +7,11 @@
 // Engine
 #include <Camera/CameraComponent.h>
 #include <GameFramework/PawnMovementComponent.h>
+#include <Components/CapsuleComponent.h>
 #include <Kismet/KismetMathLibrary.h>
 #include <KismetAnimationLibrary.h>
 #include <GameFramework/CharacterMovementComponent.h>
+#include <GameFramework/FloatingPawnMovement.h>
 
 
 // Character
@@ -60,15 +62,19 @@ void UDNAirRaptureAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		if (_owner->get_status_component()->_dead)
 		{
+
+
+
 			if (false == _playing_die_montage)
 			{
 				Montage_Play(die_montage);
 				_playing_die_montage = true;
 
-
 				// 사망 몽타쥬 재생시 떨어트리기 위해 적용
-				_owner->_character_skeletal_mesh->SetEnableGravity(true);
+				_owner->GetCapsuleComponent()->SetEnableGravity(true);
 				_owner->GetCharacterMovement()->GravityScale = 1.f;
+				_owner->_floting_movement->SetActive(false);
+
 
 			}
 

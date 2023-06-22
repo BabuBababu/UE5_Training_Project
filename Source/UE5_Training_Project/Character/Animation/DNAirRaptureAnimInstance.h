@@ -21,6 +21,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAirRaptureMontageEndDelegate);
 
 class UAnimMontage;
 class ADNCommonCharacter;
+class ADNAirRaptureCharacter;
 
 
 UCLASS()
@@ -94,7 +95,7 @@ public:
 
 private:
 	bool	_playing_die_montage;
-	ADNCommonCharacter* _owner = nullptr;
+	ADNAirRaptureCharacter* _owner = nullptr;
 
 
 };
