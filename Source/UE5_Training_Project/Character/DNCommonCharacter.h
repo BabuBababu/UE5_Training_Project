@@ -181,11 +181,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//스킬쓸 때
 	TObjectPtr<USoundBase> _skill_dialog_soundcue;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = All)
 	TSubclassOf<ADNBulletLight> _gun_bullet_light_class; //직접적인 영향X, 예광탄 느낌. 이쪽으로 발사중
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = All)
 	TSubclassOf<ADNBullet> _gun_missile_class;		 //런처 병과 사용
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Nikke)
+	TSubclassOf<ADNBullet> _burst_missile_class;		 //버스트용 미사일
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool _is_sprint;
@@ -336,4 +340,7 @@ public:
 
 	UFUNCTION()
 	void set_movement_for_bust_handler(UAnimMontage* Montage, bool bInterrupted);
+
+	UFUNCTION()
+	void play_burst_skill_handler(UAnimMontage* Montage, bool bInterrupted);
 };

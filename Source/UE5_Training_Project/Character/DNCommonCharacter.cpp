@@ -53,6 +53,7 @@
 
 // Util
 #include "UE5_Training_Project/Util/DNDamageOperation.h"
+#include "UE5_Training_Project/Util/DNSkillSystem.h"
 
 
 
@@ -384,15 +385,37 @@ void ADNCommonCharacter::fire_missile(FVector hit_location_in,AActor* target_in)
 		return;
 
 	FVector socket_location = _weapon_armed->GetSocketLocation(FName("Muzzle"));
-	ADNBullet* missile = GetWorld()->SpawnActor<ADNBullet>(_gun_missile_class, socket_location, GetActorRotation()); // 미사일 생성
-	missile->_fire_type = E_FIRE_TYPE::FT_NIKKE_LC;
-	missile->SetActorLocation(socket_location);
-	missile->SetActorRotation(GetActorRotation());
-	missile->_owner = this;
-	missile->_target = target_in;
-	missile->_hit_location = hit_location_in;
-	missile->active_bullet();
-	missile->nikke_fire(socket_location);
+
+	if (_on_burst_skill)
+	{
+		if (IsValid(_burst_missile_class))
+		{
+			ADNBullet* missile = GetWorld()->SpawnActor<ADNBullet>(_burst_missile_class, socket_location, GetActorRotation()); // 버스트 미사일 생성
+			missile->_fire_type = E_FIRE_TYPE::FT_NIKKE_LC;
+			missile->SetActorLocation(socket_location);
+			missile->SetActorRotation(GetActorRotation());
+			missile->_owner = this;
+			missile->_target = target_in;
+			missile->_hit_location = hit_location_in;
+			missile->active_bullet();
+			missile->nikke_fire(socket_location);
+		}
+	}
+	else
+	{
+			ADNBullet* missile = GetWorld()->SpawnActor<ADNBullet>(_gun_missile_class, socket_location, GetActorRotation());		// 미사일 생성
+			missile->_fire_type = E_FIRE_TYPE::FT_NIKKE_LC;
+			missile->SetActorLocation(socket_location);
+			missile->SetActorRotation(GetActorRotation());
+			missile->_owner = this;
+			missile->_target = target_in;
+			missile->_hit_location = hit_location_in;
+			missile->active_bullet();
+			missile->nikke_fire(socket_location);
+	}		
+
+
+	
 }
 
 void ADNCommonCharacter::stop_fire()
@@ -785,8 +808,26 @@ void ADNCommonCharacter::throw_grenade_handler()
 
 void ADNCommonCharacter::set_movement_for_bust_handler(UAnimMontage* Montage, bool bInterrupted)
 {
+	
+}
+
+void ADNCommonCharacter::play_burst_skill_handler(UAnimMontage* Montage, bool bInterrupted)
+{
+	if (false == _on_burst_skill)
+		return;
+
+	if (_character_id == 1)			// 라피
+	{
+	}
+	else if (_character_id == 2)		// 아니스
+	{
+		DNSkillSystem::anis_burst_skill(this);
+	}
+
+
+
 	GetMovementComponent()->SetActive(true);
-	_on_burst_skill = false;
+	_on_burst_skill = false;					// 스킬 발동이 끝났다면 false
 }
 
 

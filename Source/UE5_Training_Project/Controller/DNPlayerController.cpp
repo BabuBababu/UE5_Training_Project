@@ -608,5 +608,8 @@ void ADNPlayerController::reset_camera_handler(UAnimMontage* Montage, bool bInte
 		}
 
 		SetViewTargetWithBlend(_owner);
+
+		auto* anim = _owner->_character_skeletal_mesh->GetAnimInstance();
+
 	}
 }
