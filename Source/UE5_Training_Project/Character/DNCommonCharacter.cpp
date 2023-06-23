@@ -813,6 +813,11 @@ void ADNCommonCharacter::set_movement_for_bust_handler(UAnimMontage* Montage, bo
 
 void ADNCommonCharacter::play_burst_skill_handler(UAnimMontage* Montage, bool bInterrupted)
 {
+
+	// 다른 몽타주라면 리턴
+	if (Montage != _status->_chartacter_data->character_status_data.skill_data_array[2].montage)
+		return;
+
 	if (false == _on_burst_skill)
 		return;
 

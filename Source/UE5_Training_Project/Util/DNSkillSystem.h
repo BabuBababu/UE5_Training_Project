@@ -62,6 +62,11 @@ public:
 		{
 			anim->Montage_Play(animation_in);
 			ADNPlayerController* controller = Cast<ADNPlayerController>(player_in->GetController());
+			ADNAIController* ai_controller = Cast<ADNAIController>(owner_in->GetController());
+
+			if(nullptr != ai_controller)
+				ai_controller->ClearFocus(EAIFocusPriority::Gameplay);
+
 			owner_in->set_idle_animation();
 			owner_in->_on_burst_skill = true;
 			if (nullptr != controller)
@@ -125,7 +130,7 @@ public:
 				current_count += 1;
 			}
 
-			if (current_count == 10)						//최대 10발까지 발사합니다.
+			if (current_count == 20)						//최대 20발까지 발사합니다.
 				return;
 		}
 
