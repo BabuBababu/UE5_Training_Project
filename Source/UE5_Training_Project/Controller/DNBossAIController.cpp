@@ -23,6 +23,7 @@
 // Character
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNCommonBossCharacter.h"
+#include "UE5_Training_Project/Character/DNRaptureResVolitansCharacter.h"
 
 
 //
@@ -34,20 +35,36 @@ void ADNBossAIController::OnPossess(APawn* pawn_in)
 {
 	Super::OnPossess(pawn_in);
 
-	ADNCommonBossCharacter* character = Cast<ADNCommonBossCharacter>(pawn_in);
-
-	if (character->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
+	ADNCommonBossCharacter* spread = Cast<ADNCommonBossCharacter>(pawn_in);
+	if (nullptr != spread)
 	{
-		UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Boss.BT_Combat_Boss"), NULL, LOAD_None, NULL);
-		if (nullptr != BTObject)
+		if (spread->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
 		{
-			btree = BTObject;
-			_sight_config->SightRadius = 200000.f;
-			UE_LOG(LogTemp, Warning, TEXT("bt Boss succeeded!"));
+			UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Boss.BT_Combat_Boss"), NULL, LOAD_None, NULL);
+			if (nullptr != BTObject)
+			{
+				btree = BTObject;
+				_sight_config->SightRadius = 200000.f;
+				UE_LOG(LogTemp, Warning, TEXT("bt Spread Boss succeeded!"));
+			}
 		}
-
-
 	}
+
+	ADNRaptureResVolitansCharacter* resvolitan = Cast<ADNRaptureResVolitansCharacter>(pawn_in);
+	if (nullptr != resvolitan)
+	{
+		if (resvolitan->_enemy_type == E_ENEMY_TYPE::ET_BOSS_RESVOLITAN)
+		{
+			UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_ResVolitans.BT_Combat_ResVolitans"), NULL, LOAD_None, NULL);
+			if (nullptr != BTObject)
+			{
+				btree = BTObject;
+				_sight_config->SightRadius = 200000.f;
+				UE_LOG(LogTemp, Warning, TEXT("bt ResVolitan Boss succeeded!"));
+			}
+		}
+	}
+	
 
 	if (_blackboard)
 	{
@@ -68,10 +85,8 @@ void ADNBossAIController::OnPossess(APawn* pawn_in)
 
 void ADNBossAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus)
 {
-	// 본인
-	ADNCommonBossCharacter* character = Cast<ADNCommonBossCharacter>(GetPawn());
 	// 타겟
-	ADNCommonCharacter* insight_me_character = dynamic_cast<ADNCommonCharacter*>(actor);
+	ADNCommonCharacter* insight_me_character = Cast<ADNCommonCharacter>(actor);
 
 	if (nullptr == actor)
 	{
@@ -88,9 +103,6 @@ void ADNBossAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stim
 		get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, nullptr);
 		return;
 	}
-
-	if (nullptr == character)
-		return;
 
 	if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN
 		|| insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)		//그리핀,플레이어일 경우

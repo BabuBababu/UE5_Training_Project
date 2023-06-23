@@ -43,7 +43,7 @@ protected:
 
 public:
 	void set_flying_move(float DeltaTime);
-	void init_base();
+	virtual void init_base() override;
 	void init_missile();
 
 	virtual void fire_1(ADNCommonCharacter* target_in);

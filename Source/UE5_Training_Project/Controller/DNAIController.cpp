@@ -111,7 +111,7 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 					UE_LOG(LogTemp, Warning, TEXT("bt Melee succeeded!"));
 				}
 			}
-			else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)		//보스
+			else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)			//랩쳐 스프레드
 			{
 				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Boss.BT_Combat_Boss"), NULL, LOAD_None, NULL);
 				if (nullptr != BTObject)
@@ -119,7 +119,18 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 					if (nullptr == btree)
 						btree = BTObject;
 					_sight_config->SightRadius = 200000.f;
-					UE_LOG(LogTemp, Warning, TEXT("bt Boss succeeded!"));
+					UE_LOG(LogTemp, Warning, TEXT("bt Boss Spread succeeded!"));
+				}
+			}
+			else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS_RESVOLITAN)			//랩쳐 레스볼리탄
+			{
+				UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_Rapture_ResVolitans.BT_Combat_Rapture_ResVolitans"), NULL, LOAD_None, NULL);
+				if (nullptr != BTObject)
+				{
+					if (nullptr == btree)
+						btree = BTObject;
+					_sight_config->SightRadius = 200000.f;
+					UE_LOG(LogTemp, Warning, TEXT("bt Boss ResVolitans succeeded!"));
 				}
 			}
 			else if (enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC)		//랩쳐 큐브 

@@ -172,7 +172,7 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 
 	
 
-	if (OBJECT_MANAGER->_enemy_missile_array.Num() < 500)				//500발까지는 그냥 생성, 501발째부터는 생성안하고 기존의 500발중 언액티브된 미사일 발사
+	if (OBJECT_MANAGER->_enemy_missile_array.Num() < 1000)				//500발까지는 그냥 생성, 1001발째부터는 생성안하고 기존의 500발중 언액티브된 미사일 발사
 	{
 		for (int i = 0; i < 30; ++i)
 		{
@@ -191,7 +191,7 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 			bullet->_target = target_in;
 			bullet->fire(socket_location);
 			
-
+			OBJECT_MANAGER->_enemy_missile_array.Add(bullet);		//이 코드 안넣어서 문제가 있나? 06.23 추가
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Now Missile Array Count : %d"), OBJECT_MANAGER->_enemy_missile_array.Num()));
 
 		}
