@@ -226,6 +226,7 @@ void ADNBullet::nikke_fire(FVector location_in)
 	_projectile_movement_component->Velocity = direction_vector * _projectile_movement_component->InitialSpeed;
 	//DrawDebugLine(GetWorld(), location_in, target_in->GetActorLocation(), FColor::Cyan, true, -1, 0, 10);
 
+	_is_active = true;
 }
 
 
