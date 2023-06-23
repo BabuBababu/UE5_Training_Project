@@ -150,7 +150,6 @@ void ADNBullet::active_bullet()
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	_projectile_movement_component->Activate();
-	_is_active = true;
 	_limit_time_start = true;
 
 	if(IsValid(_niagara_component))
