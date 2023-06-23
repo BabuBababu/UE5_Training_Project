@@ -21,6 +21,7 @@
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
+#include "UE5_Training_Project/Character/DNRaptureResVolitansCharacter.h"
 
 // Actor
 #include "UE5_Training_Project/Actor/DNBossMissile.h"
@@ -234,9 +235,23 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 
 	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)       // 인형
 	{
-		
-		
-		if (nullptr != insight_me_character)								// 캐릭터
+		if (nullptr == insight_me_character)
+		{
+			//혹시 공중보스?
+			ADNRaptureResVolitansCharacter* other_character = Cast<ADNRaptureResVolitansCharacter>(actor);
+			if (IsValid(other_character))
+			{
+				if (false == _target_array.Contains(other_character))
+				{
+					other_character->OnDeadForTarget.AddDynamic(this, &ADNAIController::remove_target_from_array_handler);
+					_target_array.Add(other_character);
+
+					return;
+				}
+			}
+				
+		}
+		else
 		{
 			if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 			{
@@ -253,10 +268,11 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 
 					}
 				}
-				
-					
+
+
 			}
 		}
+
 
 
 		// 타겟이 저장될 때 벽근처에 있는지 아니라면 벽으로 이동할 필요가 있는지 체크
@@ -269,11 +285,18 @@ void ADNAIController::OnTargetDetected(AActor* actor, FAIStimulus const Stimulus
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_HELI)
 	{
 		if (nullptr == insight_me_character)
-			return;
-
-		if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
 		{
-			get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
+			//혹시 공중보스?
+			ADNRaptureResVolitansCharacter* other_character = Cast<ADNRaptureResVolitansCharacter>(actor);
+			if (nullptr != other_character)
+				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, other_character);
+
+			return;
+		}
+		else
+		{
+			if (insight_me_character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY)
+				get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, insight_me_character);
 		}
 	}
 	else if (character->get_character_type() == E_CHARACTER_TYPE::CT_ENEMY) // 적
