@@ -48,9 +48,6 @@ public:
 
 	virtual void fire_1(ADNCommonCharacter* target_in);
 
-
-	virtual void show_smoke();
-	virtual void hide_smoke();
 	void destroy_object_handler() override;
 
 public:
@@ -60,16 +57,10 @@ public:
 	TObjectPtr<UFloatingPawnMovement> _floting_movement;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<UAudioComponent> _audio_component;
+	TObjectPtr<UAudioComponent> _audio_component;							// 실시간으로 재생되는 사운드. 계속 작동하고 있는 느낌의 사운드를 넣어도 될듯
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
 	TSubclassOf<ADNBossMissile> _fire_1_class;
-
-	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음 파티클
-	UNiagaraSystem* _danger_particle;
-
-	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음용 나이아가라 컴포넌트 공중 보스에 적용 예정
-	TObjectPtr<UNiagaraComponent> _niagara_component;
 
 public:
 	float _running_time;

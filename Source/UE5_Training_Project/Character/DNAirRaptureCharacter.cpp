@@ -38,16 +38,14 @@ ADNAirRaptureCharacter::ADNAirRaptureCharacter()
 	_floting_movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
 	_floting_movement->SetUpdatedComponent(RootComponent);
 
-
-	init_base();
 }
 
 void ADNAirRaptureCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	init_missile();																			//미사일 초기화
 
+	init_base();
 }
 
 void ADNAirRaptureCharacter::Tick(float DeltaTime)
@@ -99,11 +97,7 @@ void ADNAirRaptureCharacter::init_base()
 	_fire_1_cool_time = 10.f;	//이것도 다 데이터테이블로 옮길예정
 	_fire_1_cool_time_start = false;
 
-	if (IsValid(_danger_particle))
-	{
-		_niagara_component->SetAsset(_danger_particle);
-		_niagara_component->Deactivate();
-	}
+
 
 }
 
@@ -191,30 +185,6 @@ void ADNAirRaptureCharacter::fire_1(ADNCommonCharacter* target_in)
 	OnFire.Broadcast();
 }
 
-
-void ADNAirRaptureCharacter::show_smoke()
-{
-	if (IsValid(_danger_particle))
-	{
-		if (false == _niagara_component->IsActive())
-		{
-			_niagara_component->Activate();
-		}
-	}
-
-}
-
-void ADNAirRaptureCharacter::hide_smoke()
-{
-	if (IsValid(_danger_particle))
-	{
-		if (_niagara_component->IsActive())
-		{
-			_niagara_component->Deactivate();
-		}
-	}
-
-}
 
 
 void ADNAirRaptureCharacter::destroy_object_handler()

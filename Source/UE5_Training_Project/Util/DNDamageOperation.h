@@ -10,6 +10,8 @@
 #include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNUnEnemyCharacter.h"
 #include "UE5_Training_Project/Character/DNCommonBossCharacter.h"
+#include "UE5_Training_Project/Character/DNAirRaptureCharacter.h"
+#include "UE5_Training_Project/Character/DNRaptureResVolitansCharacter.h"
 
 // Actor
 #include "UE5_Training_Project/Actor/DNCommonShield.h"
@@ -261,8 +263,22 @@ public:
 		
 		if (left_hp_percent / 100 <= 0.3f)
 		{
-			ADNCommonBossCharacter* boss = Cast<ADNCommonBossCharacter>(damaged_character_in);
-			boss->show_smoke();
+			// 아 그냥 지상보스 공중보스로 했어야했는데 각각 스프레드 레스볼리탄으로 만들어버림
+			ADNCommonBossCharacter* spread_boss = Cast<ADNCommonBossCharacter>(damaged_character_in);
+			ADNRaptureResVolitansCharacter* resvolitans_boss = Cast<ADNRaptureResVolitansCharacter>(damaged_character_in);
+
+			if (nullptr != spread_boss)
+			{
+				spread_boss->show_smoke();
+				return;
+			}
+
+			if (nullptr != resvolitans_boss)
+			{
+				resvolitans_boss->show_smoke();
+				return;
+			}
+			
 		}
 
 	}

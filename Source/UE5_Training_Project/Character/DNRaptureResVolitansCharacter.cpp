@@ -7,6 +7,7 @@
 // Engine
 #include <NiagaraComponent.h>
 #include <Kismet/KismetMathLibrary.h>
+#include <Engine/Classes/Kismet/GameplayStatics.h>
 
 // Animation
 #include "UE5_Training_Project/Character/Animation/DNAirRaptureAnimInstance.h"
@@ -26,11 +27,23 @@
 
 ADNRaptureResVolitansCharacter::ADNRaptureResVolitansCharacter()
 {
-	_flying_niagara_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Flying NiagaraComponent"));
-	_flying_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	_parts_mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Parts Mesh"));
+	_parts_mesh->SetupAttachment(_character_skeletal_mesh);
+
+	_danger_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("danger NiagaraComponent"));
+	_danger_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
 
 	_attack_niagara_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Attack NiagaraComponent"));
 	_attack_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	_damaged_niagara_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Damaged NiagaraComponent"));
+	_damaged_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	_flying_niagara_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Flying NiagaraComponent"));
+	_flying_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	_destroyed_parts = false;
 
 }
 
@@ -38,11 +51,15 @@ void ADNRaptureResVolitansCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	init_base();
 }
 
 void ADNRaptureResVolitansCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	
+
 
 	// 미사일 쿨타임 계산
 	if (_fire_2_cool_time_start)
@@ -63,6 +80,14 @@ void ADNRaptureResVolitansCharacter::Tick(float DeltaTime)
 			_fire_3_cool_time_start = false;
 			_fire_3_current_time = 0.f;
 		}
+	}
+
+	if (false == _destroyed_parts)
+	{
+		if (_status->get_current_hp() / _status->get_max_hp() < 0.5f) // 50% 미만
+			destroy_parts();
+
+
 	}
 }
 
@@ -103,10 +128,21 @@ void ADNRaptureResVolitansCharacter::init_base()
 
 	if (IsValid(_danger_particle))
 	{
-		_niagara_component->SetAsset(_danger_particle);
-		_niagara_component->Deactivate();
+		_danger_component->SetAsset(_danger_particle);
+		_danger_component->Deactivate();
+	}
+	if (IsValid(_attack_particle))
+	{
+		_attack_niagara_component->SetAsset(_attack_particle);
+		_attack_niagara_component->Deactivate();
+	}
+	if (IsValid(_damaged_particle))
+	{
+		_damaged_niagara_component->SetAsset(_damaged_particle);
+		_damaged_niagara_component->Deactivate();
 	}
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("init base")));
 }
 
 
@@ -293,4 +329,70 @@ void ADNRaptureResVolitansCharacter::fire_3(ADNCommonCharacter* target_in)
 	}
 
 	OnFire.Broadcast();
+}
+
+
+void ADNRaptureResVolitansCharacter::play_damaged_parts()
+{
+	if (IsValid(_damaged_niagara_component))
+	{
+		if (false == _damaged_niagara_component->IsActive())
+		{
+			_damaged_niagara_component->Activate();
+		}
+	}
+}
+
+
+void ADNRaptureResVolitansCharacter::destroy_parts()
+{
+
+	if (IsValid(_parts_mesh))
+	{
+		if(IsValid(_damaged_parts_soundcue))
+			UGameplayStatics::PlaySoundAtLocation(this, _damaged_parts_soundcue, GetActorLocation());
+
+		play_damaged_parts();
+		_parts_mesh->SetVisibility(false);
+		_parts_mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		_destroyed_parts = true;
+	}
+}
+
+
+void ADNRaptureResVolitansCharacter::show_smoke()
+{
+	if (IsValid(_danger_particle) && IsValid(_danger_component))
+	{
+		if (false == _danger_component->IsActive())
+		{
+			_danger_component->Activate();
+		}
+	}
+
+}
+
+void ADNRaptureResVolitansCharacter::hide_smoke()
+{
+	if (IsValid(_danger_particle) && IsValid(_danger_component))
+	{
+		if (_danger_component->IsActive())
+		{
+			_danger_component->Deactivate();
+		}
+	}
+
+}
+
+
+void ADNRaptureResVolitansCharacter::destroy_object_handler()
+{
+	Super::destroy_object_handler();
+	hide_smoke();
+
+	_parts_mesh->SetVisibility(true);
+	_parts_mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	_destroyed_parts = false;
+
+	// 공격시,부위파괴시 파티클은 한번만 재생이므로 일단 hide,show_smoke처럼 만들진 않았음
 }
