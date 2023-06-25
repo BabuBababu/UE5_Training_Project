@@ -312,6 +312,12 @@ void ADNPlayerCharacter::order_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCha
 	}
 }
 
+void ADNPlayerCharacter::play_hit_sound()
+{
+	if(IsValid(_bullet_hit_sound_cue))
+		UGameplayStatics::PlaySoundAtLocation(this, _bullet_hit_sound_cue, GetActorLocation());
+}
+
 
 void ADNPlayerCharacter::player_arm_event(bool armed_in)
 {

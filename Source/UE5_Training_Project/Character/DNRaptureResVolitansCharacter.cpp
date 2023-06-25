@@ -44,6 +44,7 @@ ADNRaptureResVolitansCharacter::ADNRaptureResVolitansCharacter()
 	_flying_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	_destroyed_parts = false;
+	_enemy_type = E_ENEMY_TYPE::ET_BOSS_RESVOLITAN;
 
 }
 
@@ -112,7 +113,6 @@ void ADNRaptureResVolitansCharacter::remove_event()
 
 void ADNRaptureResVolitansCharacter::init_base()
 {
-	_enemy_type = E_ENEMY_TYPE::ET_BOSS_RESVOLITAN;
 
 	_fire_1_current_time = 0.f;
 	_fire_1_cool_time = 10.f;	//이것도 다 데이터테이블로 옮길예정
@@ -142,7 +142,7 @@ void ADNRaptureResVolitansCharacter::init_base()
 		_damaged_niagara_component->Deactivate();
 	}
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("init base")));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("init base")));
 }
 
 

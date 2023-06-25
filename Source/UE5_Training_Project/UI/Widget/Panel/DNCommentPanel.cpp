@@ -76,6 +76,16 @@ void UDNCommentPanel::init_data(int64 id_in, int64 comment_id_in)
 	//  부관
 	if (id_in == ISAC)
 	{
+		for (auto& data : data_array)
+		{
+			if (data->character_id == id_in)
+			{
+				_chartacter_data = data;
+			}
+
+		}
+
+
 		for (auto& data : dialog_data_array)
 		{
 			if (data->character_id == id_in)
@@ -116,7 +126,9 @@ void UDNCommentPanel::set_image_comment_isac(int64 comment_id_in)
 
 	if (IsValid(umg_face_image))
 	{
-		umg_face_image->SetOpacity(0.f);
+		UTexture2D* texture = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, *_chartacter_data->character_portrait_image_path));
+		umg_face_image->SetBrushFromTexture(texture);
+		//umg_face_image->SetOpacity(0.f);
 	}
 	if (IsValid(umg_comment_text))
 	{

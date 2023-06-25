@@ -127,6 +127,13 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 			FVector hit_location = hit_result.ImpactNormal * 20.f + hit_result.ImpactPoint;
 			auto _enemy = Cast<ADNEnemyCharacter>(hit_result.GetActor());
 
+			// 플레이어라면 히트 사운드 재생
+			ADNPlayerCharacter* player = Cast<ADNPlayerCharacter>(player_in);
+			if (nullptr != player)
+			{
+				player->play_hit_sound();
+			}
+
 				 // 런처 병과
 			if (player_in->get_status_component()->_character_mos == E_CHARACTER_MOS::CM_LC)
 			{

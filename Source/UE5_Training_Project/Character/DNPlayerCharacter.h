@@ -57,6 +57,7 @@ public:
 	void order_move(FVector destination_in, ADNUnEnemyCharacter* doll_in);
 	void order_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in);
 
+	void play_hit_sound();
 
 public:
 	FOnShotDelegate on_attack;
@@ -80,6 +81,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
 	E_CHARACTER_SPAWN_LEVEL_TYPE _spawn_level_type = E_CHARACTER_SPAWN_LEVEL_TYPE::CSLT_NONE;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//히트 사운드 (나중에 크리 히트 사운드랑 구별할 예정
+	TObjectPtr<USoundBase> _bullet_hit_sound_cue;
 
 
 public:

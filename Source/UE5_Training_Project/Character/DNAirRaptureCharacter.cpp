@@ -38,6 +38,8 @@ ADNAirRaptureCharacter::ADNAirRaptureCharacter()
 	_floting_movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
 	_floting_movement->SetUpdatedComponent(RootComponent);
 
+
+	_enemy_type = E_ENEMY_TYPE::ET_AIR_LC;
 }
 
 void ADNAirRaptureCharacter::BeginPlay()
@@ -91,7 +93,6 @@ void ADNAirRaptureCharacter::remove_event()
 
 void ADNAirRaptureCharacter::init_base()
 {
-	_enemy_type = E_ENEMY_TYPE::ET_AIR_LC;
 
 	_fire_1_current_time = 0.f;
 	_fire_1_cool_time = 10.f;	//이것도 다 데이터테이블로 옮길예정
