@@ -828,7 +828,9 @@ void ADNCommonCharacter::play_burst_skill_handler(UAnimMontage* Montage, bool bI
 	{
 		DNSkillSystem::anis_burst_skill(this);
 	}
-
+	else
+	{
+	}
 
 
 	GetMovementComponent()->SetActive(true);

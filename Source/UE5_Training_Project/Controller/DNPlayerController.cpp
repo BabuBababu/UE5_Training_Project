@@ -295,15 +295,7 @@ void ADNPlayerController::Reload(const FInputActionValue& Value)
 		return;
 
 	_owner->reload();
-	for (auto& nikke : OBJECT_MANAGER->_all_gained_doll_array)
-	{
-		if (nikke->_character_id == 2)
-		{
-			if (OBJECT_MANAGER->_player->_burst_current_gauge >= 300.f)
-				DNSkillSystem::active_skill_burst(_owner, nikke, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].montage, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].camera_path);
-		}
-			
-	}
+	
 
 	
 	
@@ -393,6 +385,10 @@ template<E_INPUT_KEY Key>
 void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 {
 	// 5번은 플레이어이므로 제외
+	if (Key == E_INPUT_KEY::IK_5)
+	{
+		return;
+	}
 
 	if (_selected_num_first == -1 )			//첫번째로 키입력
 		_selected_first = true;
@@ -501,21 +497,51 @@ void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 
 
 			OBJECT_MANAGER->_in_squad_doll_array[_selected_num_first]->order_stop_handler();		// 해당 인형 명령 취소
+
+			// 명령 취소 이후 버스트 스킬 발동
+			for (auto& nikke : OBJECT_MANAGER->_all_gained_doll_array)
+			{
+				if (nikke->_squad_index == _selected_num_first)
+				{
+					if (OBJECT_MANAGER->_player->_burst_current_gauge >= 300.f)
+						DNSkillSystem::active_skill_burst(_owner, nikke, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].montage, nikke->_status->_chartacter_data->character_status_data.skill_data_array[2].camera_path);
+				}
+
+			}
+
 			_selected_first = false;
 			_selected_num_first = -1;
 			_selected_num_second = -1;
 			OnStopAnimation.Broadcast();
+
+			return;
 		}
+		else
+			return;
 	}
 
-	OnSquadPosition.Broadcast(_selected_num_first);
-	// 니케 선택 보이스
 	auto* nikke = OBJECT_MANAGER->_in_squad_doll_array[_selected_num_first];
-	if (IsValid(nikke->_order_on_soundcue))
+	if (nullptr != nikke)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, nikke->_order_on_soundcue, nikke->GetActorLocation());
+		OnSquadPosition.Broadcast(_selected_num_first);
+		if (_selected_num_first != -1)  							// 니케 선택 보이스
+		{
+			if (IsValid(nikke->_order_on_soundcue))
+			{
+				UGameplayStatics::PlaySoundAtLocation(this, nikke->_order_on_soundcue, nikke->GetActorLocation());
+			}
+		}
 	}
-		
+	else
+	{
+		_selected_first = false;									// 처음 누른 버튼이 텅 빈 스쿼드 인덱스일 경우 취소합니다.
+		_selected_num_first = -1;
+		_selected_num_second = -1;
+	}
+	
+
+	
+	
 
 
 
