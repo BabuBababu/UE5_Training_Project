@@ -480,6 +480,12 @@ void UDNPlayerLineTrace::OnOrder(ADNCommonCharacter* player_in, ADNUnEnemyCharac
 			if (nullptr != enemy)
 				player->order_attack(enemy, doll_in);
 		}
+
+		// 명령 실행 보이스
+		if(IsValid(doll_in->_order_on_soundcue))
+			UGameplayStatics::PlaySoundAtLocation(this, doll_in->_order_on_soundcue, doll_in->GetActorLocation());
+		
+
 	}
 
 

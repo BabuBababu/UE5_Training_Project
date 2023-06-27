@@ -509,8 +509,13 @@ void ADNPlayerController::SelectCharacter(const FInputActionValue& Value)
 	}
 
 	OnSquadPosition.Broadcast(_selected_num_first);
-
-
+	// 니케 선택 보이스
+	auto* nikke = OBJECT_MANAGER->_in_squad_doll_array[_selected_num_first];
+	if (IsValid(nikke->_order_on_soundcue))
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, nikke->_order_on_soundcue, nikke->GetActorLocation());
+	}
+		
 
 
 

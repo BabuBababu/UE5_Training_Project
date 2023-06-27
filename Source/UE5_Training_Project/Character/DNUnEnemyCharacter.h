@@ -77,6 +77,13 @@ public:
 	bool	_is_ordered;
 	bool	_is_gained;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//니케 선택 보이스
+	TObjectPtr<USoundBase> _order_select_soundcue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)		//명령 실행 보이스
+	TObjectPtr<USoundBase> _order_on_soundcue;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Squad)			//전투시 스쿼드 위치 구분용
 	int64	_squad_index;
 
