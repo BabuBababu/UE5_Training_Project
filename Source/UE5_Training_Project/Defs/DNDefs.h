@@ -395,6 +395,7 @@ enum class E_ACTOR_TYPE : uint8
 	AT_VEHICLE		UMETA(DisplayName = "Vehicle"),			//탈것
 	AT_FURNITURE	UMETA(DisplayName = "Furniture"),		//가구
 	AT_NPC			UMETA(DisplayName = "NPC"),				//NPC
+	AT_TARGET		UMETA(DisplayName = "Target"),			//타겟
 
 	AT_COUNT
 };
