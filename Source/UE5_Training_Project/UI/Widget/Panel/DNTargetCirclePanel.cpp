@@ -12,8 +12,8 @@
 
 void UDNTargetCirclePanel::NativeConstruct()
 {
-	Super::NativeConstruct();
 	set_panel_type(E_UI_PANEL_TYPE::UPT_TARGET_CIRCLE);
+	Super::NativeConstruct();
 	init();
 }
 

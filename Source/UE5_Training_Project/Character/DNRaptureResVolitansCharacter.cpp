@@ -133,17 +133,17 @@ void ADNRaptureResVolitansCharacter::init_base()
 
 	_fire_1_current_time = 0.f;
 	_fire_1_cool_time = 10.f;	//이것도 다 데이터테이블로 옮길예정
-	_fire_1_cool_time_start = false;
+	_fire_1_cool_time_start = true;
 
 	_fire_2_current_time = 0.f;
 	_fire_2_cool_time = 6.f;	//이것도 다 데이터테이블로 옮길예정
-	_fire_2_cool_time_start = false;
+	_fire_2_cool_time_start = true;
 
 	_fire_3_current_time = 0.f;
 	_fire_3_cool_time = 8.f;	//이것도 다 데이터테이블로 옮길예정
-	_fire_3_cool_time_start = false;
+	_fire_3_cool_time_start = true;
 
-	_target_circle_cool_time_start = false;
+	_target_circle_cool_time_start = true;
 
 	if (IsValid(_danger_particle))
 	{

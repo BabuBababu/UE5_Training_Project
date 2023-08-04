@@ -285,6 +285,12 @@ public:
 	}
 	static void gun_damage_to_target_circle(float damage_in, ADNPatternTargetActor* target_in, ADNCommonCharacter* player_in)
 	{
+		if (false == IsValid(target_in))
+			return;
+
+		if (false == IsValid(target_in->get_owner()))
+			return;
+
 		// 타겟 서클 액터의 HP 계산
 		float after_hp = target_in->get_current_hp() - damage_in;
 		target_in->set_current_hp(after_hp);
