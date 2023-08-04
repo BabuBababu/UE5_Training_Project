@@ -19,6 +19,7 @@
 
 // Actor
 #include "UE5_Training_Project/Actor/Wall/DNCommonWall.h"
+#include "UE5_Training_Project/Actor/DNPatternTargetActor.h"
 
 // Manager
 #include "UE5_Training_Project/Manager/DNSoundManager.h"

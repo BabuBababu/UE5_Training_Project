@@ -16,6 +16,7 @@
 #include "UE5_Training_Project/AI/DNAllAIBlackBoardKeys.h"
 
 // Character
+#include "UE5_Training_Project/Character/DNCommonCharacter.h"
 #include "UE5_Training_Project/Character/DNHeliCommonCharacter.h"
 
 

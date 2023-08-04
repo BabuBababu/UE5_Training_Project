@@ -376,6 +376,11 @@ void ADNCommonCharacter::fire()
 
 }
 
+void ADNCommonCharacter::fire_missile(ADNCommonCharacter* target_in)
+{
+
+}
+
 void ADNCommonCharacter::fire_missile(FVector hit_location_in,AActor* target_in)
 {
 	if (nullptr == target_in)

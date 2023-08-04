@@ -140,11 +140,11 @@ enum class E_CHARACTER_GRADE : uint8
 };
 
 
-
 UENUM(BlueprintType)
 enum class E_ENEMY_TYPE : uint8
 {
 	ET_NONE = 0			UMETA(DisplayName = "None"),				//비어있음
+	ET_TARGET_CIRCLE    UMETA(DisplayName = "TargetCircle"),		//타겟 서클
 	ET_MELEE			UMETA(DisplayName = "Melee"),				//근접 공격 몬스터
 	ET_MELEE_SHIELD		UMETA(DisplayName = "Melee Shield"),		//근접 방패 몬스터
 	ET_RANGER_AR		UMETA(DisplayName = "Ranger AR"),			//AR 사격 몬스터
@@ -312,6 +312,7 @@ enum class E_UI_PANEL_TYPE
 	UPT_COMMENT,				//대사
 	UPT_PORTRAIT,				//초상화 컷신
 	UPT_CROSSHAIR,
+	UPT_TARGET_CIRCLE,			//타겟 서클
 	UPT_CHARACTER_SELECT		//캐릭터 선택
 };
 
@@ -395,7 +396,6 @@ enum class E_ACTOR_TYPE : uint8
 	AT_VEHICLE		UMETA(DisplayName = "Vehicle"),			//탈것
 	AT_FURNITURE	UMETA(DisplayName = "Furniture"),		//가구
 	AT_NPC			UMETA(DisplayName = "NPC"),				//NPC
-	AT_TARGET		UMETA(DisplayName = "Target"),			//타겟
 
 	AT_COUNT
 };

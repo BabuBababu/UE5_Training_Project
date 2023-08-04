@@ -75,6 +75,7 @@ public:
 	virtual void reload();
 	virtual void fire();
 	virtual void fire_missile(FVector hit_location_in, AActor* target_in);
+	virtual void fire_missile(ADNCommonCharacter* target_in);
 	virtual void stop_fire();
 	virtual void armed();
 	virtual void crouch();

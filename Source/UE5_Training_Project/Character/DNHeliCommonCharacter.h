@@ -42,7 +42,7 @@ public:
 	void init_base();
 	void init_missile();
 
-	void fire_missile(ADNCommonCharacter* target_in);
+	void fire_missile(ADNCommonCharacter* target_in) override;
 
 
 	// 미정

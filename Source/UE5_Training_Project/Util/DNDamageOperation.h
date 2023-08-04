@@ -16,6 +16,7 @@
 // Actor
 #include "UE5_Training_Project/Actor/DNCommonShield.h"
 #include "UE5_Training_Project/Actor/DNBossMissile.h"
+#include "UE5_Training_Project/Actor/DNPatternTargetActor.h"
 
 // UI
 #include "UE5_Training_Project/UI/Base/DNBasePanel.h"
@@ -282,7 +283,39 @@ public:
 		}
 
 	}
+	static void gun_damage_to_target_circle(float damage_in, ADNPatternTargetActor* target_in, ADNCommonCharacter* player_in)
+	{
+		// 타겟 서클 액터의 HP 계산
+		float after_hp = target_in->get_current_hp() - damage_in;
+		target_in->set_current_hp(after_hp);
+		SOUND_MANAGER->start_combat_sound();
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Griffin Damage to Enemy : %f"), damage_in));
 
+		// 해당 적군의 HP 계산
+		float owner_after_hp = target_in->get_owner()->get_status_component().Get()->get_current_hp() - damage_in;
+		target_in->get_owner()->get_status_component().Get()->set_current_hp(owner_after_hp);
+
+
+		// 크로스헤어 표시
+		if (player_in->get_character_type() == E_CHARACTER_TYPE::CT_PLAYER)
+		{
+			DNDamageOperation::ShowCrossHairUI(true);
+		}
+		
+		// 타겟 서클 액터 체력 0
+		if (after_hp <= 0)
+		{
+			target_in->get_owner()->play_target_circle_destroy_sound();
+			target_in->Destroy();
+		}
+
+		// 해당 적군 체력 0
+		if (owner_after_hp <= 0)
+		{
+			die_from_damage(target_in->get_owner(), player_in);
+		}
+
+	}
 
 	static void melee_damage(float damage_in, ADNCommonCharacter* damaged_character_in, ADNCommonCharacter* player_in)
 	{

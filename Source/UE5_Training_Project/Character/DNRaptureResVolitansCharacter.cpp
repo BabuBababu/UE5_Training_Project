@@ -15,6 +15,7 @@
 
 // Actor
 #include "UE5_Training_Project/Actor/DNBossMissile.h"
+#include "UE5_Training_Project/Actor/DNPatternTargetActor.h"
 
 // Component
 #include "UE5_Training_Project/Character/Component/DNEnemyLineTrace.h"
@@ -83,12 +84,28 @@ void ADNRaptureResVolitansCharacter::Tick(float DeltaTime)
 		}
 	}
 
+	if (_target_circle_cool_time_start)
+	{
+		_target_circle_current_cool_time += DeltaTime;
+		if (_target_circle_current_cool_time >= _target_circle_cool_time)
+		{
+			_target_circle_cool_time_start = false;
+			_target_circle_current_cool_time = 0.f;
+		}
+	}
+
+	// 타겟서클패턴 공격
+	if (_is_target_circle_success)
+	{
+		//target_circle_pattern_attack();
+		_is_target_circle_success = false;
+	}
+
+
 	if (false == _destroyed_parts)
 	{
 		if (_status->get_current_hp() / _status->get_max_hp() < 0.5f) // 50% 미만
 			destroy_parts();
-
-
 	}
 }
 
@@ -125,6 +142,8 @@ void ADNRaptureResVolitansCharacter::init_base()
 	_fire_3_current_time = 0.f;
 	_fire_3_cool_time = 8.f;	//이것도 다 데이터테이블로 옮길예정
 	_fire_3_cool_time_start = false;
+
+	_target_circle_cool_time_start = false;
 
 	if (IsValid(_danger_particle))
 	{
@@ -274,8 +293,6 @@ void ADNRaptureResVolitansCharacter::fire_2(ADNCommonCharacter* target_in)
 
 }
 
-
-
 void ADNRaptureResVolitansCharacter::fire_3(ADNCommonCharacter* target_in)
 {
 	if (nullptr == _fire_3_class)
@@ -331,6 +348,22 @@ void ADNRaptureResVolitansCharacter::fire_3(ADNCommonCharacter* target_in)
 	OnFire.Broadcast();
 }
 
+void ADNRaptureResVolitansCharacter::target_circle_pattern_spawn()
+{
+	// 생성 위치
+	FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("TargetCircle1"));
+
+	// 타겟서클액터 생성
+	ADNPatternTargetActor* actor = LoadObject<ADNPatternTargetActor>(nullptr, TEXT("/BP_DNPatternTargetActor.BP_DNPatternTargetActor_C"));
+	UClass* target_circle = actor->StaticClass();
+	GetWorld()->SpawnActor<AActor>(target_circle, socket_location, FRotator::ZeroRotator);
+
+}
+
+void ADNRaptureResVolitansCharacter::target_circle_pattern_attack(ADNCommonCharacter* target_in)
+{
+
+}
 
 void ADNRaptureResVolitansCharacter::play_damaged_parts()
 {

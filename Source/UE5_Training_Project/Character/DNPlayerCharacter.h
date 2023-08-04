@@ -55,8 +55,8 @@ public:
 	void remove_ui_event() override;
 
 	void order_move(FVector destination_in, ADNUnEnemyCharacter* doll_in);
-	void order_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in);
-
+	void order_attack(ADNEnemyCharacter* enemy_in, ADNUnEnemyCharacter* doll_in);			// 적 액터
+	
 	void play_hit_sound();
 
 public:
@@ -66,8 +66,8 @@ public:
 	FOnSprintDelegate on_sprint;
 
 
-	FOnOrderMoveDelegate	   OnOrderMove;
-	FOnOrderAttackDelegate	   OnOrderAttack;
+	FOnOrderMoveDelegate				OnOrderMove;
+	FOnOrderAttackDelegate				OnOrderAttack;
 
 public: 
 	bool _is_selected = false;

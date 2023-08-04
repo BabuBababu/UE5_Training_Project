@@ -38,6 +38,8 @@ public:
 	void fire_1(ADNCommonCharacter* target_in) override;  // 대형 호밍 미사일
 	virtual void fire_2(ADNCommonCharacter* target_in);	  // 도탄 미사일
 	virtual void fire_3(ADNCommonCharacter* target_in);   // 소형 연발 호밍 미사일
+	virtual void target_circle_pattern_spawn();			  
+	virtual void target_circle_pattern_attack(ADNCommonCharacter* target_in);  // 타겟 서클 패턴 공격
 
 	virtual void play_damaged_parts();
 	virtual void destroy_parts();
@@ -96,6 +98,7 @@ public:
 	float _fire_3_current_time;
 
 	bool _fire_3_cool_time_start;
+	bool _target_circle_cool_time_start;
 
 	bool _destroyed_parts;
 };

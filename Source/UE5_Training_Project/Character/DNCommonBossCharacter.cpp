@@ -15,6 +15,7 @@
 
 // Actor
 #include "UE5_Training_Project/Actor/DNBossMissile.h"
+#include "UE5_Training_Project/Actor/DNPatternTargetActor.h"
 
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
@@ -87,6 +88,23 @@ void ADNCommonBossCharacter::Tick(float DeltaTime)
 			_fire_1_current_time = 0.f;
 		}
 	}
+
+	if (_target_circle_cool_time_start)
+	{
+		_target_circle_current_cool_time += DeltaTime;
+		if (_target_circle_current_cool_time >= _target_circle_cool_time)
+		{
+			_target_circle_cool_time_start = false;
+			_target_circle_current_cool_time = 0.f;
+		}
+	}
+
+	// 타겟서클패턴 공격
+	if (_is_target_circle_success)
+	{
+		//target_circle_pattern_attack();
+		_is_target_circle_success = false;
+	}
 }
 
 void ADNCommonBossCharacter::init_base()
@@ -98,8 +116,9 @@ void ADNCommonBossCharacter::init_base()
 	_fire_1_cool_time = 12.f;
 	_fire_2_cool_time = 8.f;	//이것도 다 데이터테이블로 옮길예정, 근데 공격task에서 쿨타임으로 맞추니 우선적으로 적용됨....
 	
-	_fire_1_cool_time_start = false;
-	_fire_2_cool_time_start = false;
+	_fire_1_cool_time_start = true;
+	_fire_2_cool_time_start = true;
+	_target_circle_cool_time_start = true;
 
 	if (IsValid(_danger_particle))
 	{
@@ -228,6 +247,23 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 	}
 	
 	
+}
+
+void ADNCommonBossCharacter::target_circle_pattern_spawn()
+{
+	// 생성 위치
+	FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("TargetCircle1"));
+
+	// 타겟서클액터 생성
+	ADNPatternTargetActor * actor = LoadObject<ADNPatternTargetActor>(nullptr, TEXT("/BP_DNPatternTargetActor.BP_DNPatternTargetActor_C"));
+	GetWorld()->SpawnActor<ADNPatternTargetActor>(actor->StaticClass(), socket_location, FRotator::ZeroRotator);
+	actor->set_owner(this);
+
+}
+
+void ADNCommonBossCharacter::target_circle_pattern_attack(ADNCommonCharacter* target_in)
+{
+
 }
 
 void ADNCommonBossCharacter::melee_1(ADNCommonCharacter* target_in)

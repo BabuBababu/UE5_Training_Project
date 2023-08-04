@@ -10,6 +10,9 @@
 #include "UE5_Training_Project/Character/DNPlayerCharacter.h"
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 
+// Actor
+#include "UE5_Training_Project/Actor/DNPatternTargetActor.h"
+
 // AnimInstance
 #include "UE5_Training_Project/Character/Animation/DNCharacterAnimInstance.h"
 
@@ -271,7 +274,6 @@ void ADNUnEnemyCharacter::order_attack_handler(ADNEnemyCharacter* enemy_in, ADNU
 		
 	}
 }
-
 
 void ADNUnEnemyCharacter::order_stop_handler()
 {

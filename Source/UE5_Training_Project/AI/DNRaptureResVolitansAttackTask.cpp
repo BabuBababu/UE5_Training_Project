@@ -80,6 +80,11 @@ EBTNodeResult::Type UDNRaptureResVolitansAttackTask::ExecuteTask(UBehaviorTreeCo
 		self_actor->fire_3(target_character);			// 미사일 발사
 	}
 
+	if (self_actor->_target_circle_current_cool_time <= 1.f)
+	{
+		self_actor->target_circle_pattern_spawn();	// 타겟 서클 패턴 스폰
+	}
+
 	return EBTNodeResult::Succeeded;
 }
 

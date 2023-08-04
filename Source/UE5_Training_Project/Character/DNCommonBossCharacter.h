@@ -39,6 +39,8 @@ public:
 
 	virtual void fire_1(ADNCommonCharacter* target_in);
 	virtual void fire_2(ADNCommonCharacter* target_in);
+	virtual void target_circle_pattern_spawn();
+	virtual void target_circle_pattern_attack(ADNCommonCharacter* target_in);
 	virtual void melee_1(ADNCommonCharacter* target_in);
 	virtual void melee_2(ADNCommonCharacter* target_in);
 	virtual void show_smoke();
@@ -76,5 +78,6 @@ public:
 
 	bool _fire_1_cool_time_start;
 	bool _fire_2_cool_time_start;
+	bool _target_circle_cool_time_start;
 
 };

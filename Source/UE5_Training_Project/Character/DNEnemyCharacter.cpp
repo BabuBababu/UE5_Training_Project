@@ -5,6 +5,7 @@
 
 // Engine
 #include <Components/CapsuleComponent.h>
+#include <Engine/Classes/Kismet/GameplayStatics.h>
 
 // Controller
 #include "UE5_Training_Project/Controller/DNAIController.h"
@@ -45,4 +46,16 @@ void ADNEnemyCharacter::init_base()
 	_enemy_type = E_ENEMY_TYPE::ET_NONE;
 	_knife_weapon->SetVisibility(false);
 	_knife_collision->SetGenerateOverlapEvents(false);
+	_is_target_circle_success = false;
+	_target_circle_current_cool_time = 0.f;
+}
+
+void ADNEnemyCharacter::play_target_circle_destroy_sound()
+{
+	if (IsValid(_bomb_soundcue))
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, _bomb_soundcue, GetActorLocation());
+	}
+
+
 }

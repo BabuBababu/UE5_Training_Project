@@ -34,6 +34,8 @@ class UE5_TRAINING_PROJECT_API UDNPlayerLineTrace : public UObject
 public:
 	UDNPlayerLineTrace();
 
+private:
+	void close_target_panel();
 
 private:
 	ADNEnemyCharacter* _temp_character;

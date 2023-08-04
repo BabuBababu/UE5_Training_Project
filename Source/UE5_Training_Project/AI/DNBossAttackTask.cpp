@@ -98,12 +98,17 @@ void UDNBossAttackTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* N
 	{
 		if (self_actor->_fire_2_current_time <= 1.f)
 		{
-			self_actor->fire_2(target_character);			// 미사일 발사
+			self_actor->fire_2(target_character);						// 미사일 발사
 		}
 
 		if (self_actor->_fire_1_current_time <= 1.f)
 		{
-			self_actor->fire_1(target_character);			// 거대 미사일 발사
+			self_actor->fire_1(target_character);						// 거대 미사일 발사
+		}
+
+		if (self_actor->_target_circle_current_cool_time <= 1.f)
+		{
+			self_actor->target_circle_pattern_spawn();	// 타겟 서클 패턴 스폰
 		}
 
 		FinishLatentTask(owner_comp_in, EBTNodeResult::Succeeded);

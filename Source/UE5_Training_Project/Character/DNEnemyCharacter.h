@@ -25,16 +25,34 @@ class UE5_TRAINING_PROJECT_API ADNEnemyCharacter : public ADNCommonCharacter
 public:
 	ADNEnemyCharacter();
 
-	void BeginPlay() override;
-
-
-
 protected:
-	void init_ai();
+	void BeginPlay() override;
 	virtual void init_base();
+
+
+public:
+	void init_ai();
+	void play_target_circle_destroy_sound();
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Base)
 	E_ENEMY_TYPE _enemy_type;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TargetCircle)	//타겟 서클 쿨타임
+	float _target_circle_cool_time;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TargetCircle)
+	float _target_circle_hp;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TargetCircle)
+	float _target_circle_time;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TargetCircle)
+	float _target_circle_scale;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TargetCircle)	//타겟 서클 파괴 소리
+	TObjectPtr<USoundBase> _bomb_soundcue;
+	
+	bool _is_target_circle_success;
+	float _target_circle_current_cool_time;
 };
