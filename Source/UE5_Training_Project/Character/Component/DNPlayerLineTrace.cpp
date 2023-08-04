@@ -176,6 +176,29 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
 					}
+					else if (_enemy->_enemy_type ==  E_ENEMY_TYPE::ET_TARGET_CIRCLE)
+					{
+						ADNPatternTargetActor* _target_circle_actor = Cast<ADNPatternTargetActor>(_enemy);
+
+						if (nullptr == _target_circle_actor)
+							return;
+
+						// 대미지 적용
+						DNDamageOperation::gun_damage_to_target_circle(damage, _target_circle_actor, player_in);
+						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+						OnTargetHit.Broadcast();
+
+						//타겟서클 패널 켜주기
+						UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_TARGET_CIRCLE);
+						if (nullptr == base_panel)
+							return;
+
+						UDNTargetCirclePanel* panel = Cast<UDNTargetCirclePanel>(base_panel);
+						if (nullptr == panel)
+							return;
+
+						panel->set_widget(_target_circle_actor);
+					}
 					else
 					{
 						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//나머지 적
@@ -211,34 +234,11 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						}
 						else
 						{
-							// _missile이 nullptr이라면 타겟서클액터를 가격했는지 확인
-							auto _target_circle_actor = Cast<ADNPatternTargetActor>(hit_result.GetActor());
-							if (nullptr != _target_circle_actor)
-							{
-								// 대미지 적용
-								DNDamageOperation::gun_damage_to_target_circle(damage, _target_circle_actor, player_in);
-								UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
-								OnTargetHit.Broadcast();
+							// 어떤 액터도 아니라면
+							UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
 
-								//타겟서클 패널 켜주기
-								UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_TARGET_CIRCLE);
-								if (nullptr == base_panel)
-									return;
-
-								UDNTargetCirclePanel* panel = Cast<UDNTargetCirclePanel>(base_panel);
-								if (nullptr == panel)
-									return;
-
-								panel->set_widget(_target_circle_actor);
-
-							}
-							else
-							{		// 어떤 액터도 아니라면
-								UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
-								
-								// 타겟 서클 패널 끄기
-								close_target_panel();
-							}
+							// 타겟 서클 패널 끄기
+							close_target_panel();
 						}
 
 					}

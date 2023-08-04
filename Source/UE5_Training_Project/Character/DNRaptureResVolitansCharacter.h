@@ -15,7 +15,7 @@
  * 
  */
 
-
+class ADNPatternTargetActor;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNRaptureResVolitansCharacter : public ADNAirRaptureCharacter
@@ -84,7 +84,10 @@ public:
 	TObjectPtr<UNiagaraComponent> _damaged_niagara_component;
 
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//공중에 떠 있음 나이아가라 컴포넌트
-		TObjectPtr<UNiagaraComponent> _flying_niagara_component;
+	TObjectPtr<UNiagaraComponent> _flying_niagara_component;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TargetCircle)
+	TSubclassOf<ADNPatternTargetActor> _target_circle_class;
 
 
 public:

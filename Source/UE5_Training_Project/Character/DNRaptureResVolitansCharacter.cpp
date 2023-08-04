@@ -354,9 +354,13 @@ void ADNRaptureResVolitansCharacter::target_circle_pattern_spawn()
 	FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("TargetCircle1"));
 
 	// 타겟서클액터 생성
-	ADNPatternTargetActor* actor = LoadObject<ADNPatternTargetActor>(nullptr, TEXT("/BP_DNPatternTargetActor.BP_DNPatternTargetActor_C"));
-	UClass* target_circle = actor->StaticClass();
-	GetWorld()->SpawnActor<AActor>(target_circle, socket_location, FRotator::ZeroRotator);
+	if (IsValid(_target_circle_class))
+	{
+		ADNPatternTargetActor* target_actor = GetWorld()->SpawnActor<ADNPatternTargetActor>(_target_circle_class, socket_location, FRotator::ZeroRotator);
+		target_actor->set_owner(this);
+		target_actor->init();
+	}
+
 
 }
 

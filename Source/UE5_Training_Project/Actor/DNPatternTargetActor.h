@@ -28,11 +28,13 @@ class UE5_TRAINING_PROJECT_API ADNPatternTargetActor : public ADNEnemyCharacter
 	GENERATED_BODY()
 public:
 	ADNPatternTargetActor();
+	void init();	//한번만 호출
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
-	void init();	//한번만 호출
+	
 	void play_particle();
 	
 public:

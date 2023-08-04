@@ -247,17 +247,21 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 	}
 	
 	
-}
+} 
 
 void ADNCommonBossCharacter::target_circle_pattern_spawn()
 {
 	// 생성 위치
 	FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("TargetCircle1"));
-
+	
 	// 타겟서클액터 생성
-	ADNPatternTargetActor * actor = LoadObject<ADNPatternTargetActor>(nullptr, TEXT("/BP_DNPatternTargetActor.BP_DNPatternTargetActor_C"));
-	GetWorld()->SpawnActor<ADNPatternTargetActor>(actor->StaticClass(), socket_location, FRotator::ZeroRotator);
-	actor->set_owner(this);
+	if (IsValid(_target_circle_class))
+	{
+		ADNPatternTargetActor* target_actor = GetWorld()->SpawnActor<ADNPatternTargetActor>(_target_circle_class, socket_location, FRotator::ZeroRotator);
+		target_actor->set_owner(this);
+		target_actor->init();
+	}
+	
 
 }
 

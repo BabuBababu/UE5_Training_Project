@@ -18,6 +18,7 @@
  */
 
 class ADNBossMissile;
+class ADNPatternTargetActor;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNCommonBossCharacter : public ADNEnemyCharacter
@@ -54,7 +55,7 @@ public:
 	TObjectPtr<USkeletalMeshComponent> _character_sub_skeletal_mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
-		TSubclassOf<ADNBossMissile> _fire_1_class;
+	TSubclassOf<ADNBossMissile> _fire_1_class;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
 	TSubclassOf<ADNBossMissile> _fire_2_class;
@@ -64,6 +65,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음용 나이아가라 컴포넌트
 	TObjectPtr<UNiagaraComponent> _niagara_component;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TargetCircle)
+	TSubclassOf<ADNPatternTargetActor> _target_circle_class;
 
 public:
 	float _fire_1_cool_time;

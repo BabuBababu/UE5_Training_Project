@@ -5,6 +5,7 @@
 
 // Engine
 #include <Components/CapsuleComponent.h>
+#include <GameFramework/CharacterMovementComponent.h>
 #include <particles/ParticleSystem.h>
 #include <NiagaraComponent.h>
 
@@ -24,14 +25,14 @@ ADNPatternTargetActor::ADNPatternTargetActor()
 
 	_target_deco_particle_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
 	_target_deco_particle_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	GetCharacterMovement()->Deactivate();
 }
 
 void ADNPatternTargetActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	init();
-	play_particle();
 }
 
 void ADNPatternTargetActor::Tick(float DeltaTime)
@@ -79,6 +80,8 @@ void ADNPatternTargetActor::init()
 
 	// 작동 시작
 	_is_active = true;
+
+	play_particle();
 }
 
 void ADNPatternTargetActor::play_particle()
