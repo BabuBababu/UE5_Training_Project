@@ -117,6 +117,9 @@ void UDNEnemyStatusPanel::sync_status()
 	{
 		if (enemy == _enemy)
 		{
+			if (false == IsValid(enemy->_status))
+				return;
+
 			if (false == enemy->_status->_dead)										// 죽지 않았다면
 			{
 				_current_hp = enemy->_status->_current_hp;

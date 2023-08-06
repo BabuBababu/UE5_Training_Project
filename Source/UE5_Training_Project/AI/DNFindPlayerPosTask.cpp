@@ -60,7 +60,7 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 	auto self = Controller->GetPawn();
 
 	ADNUnEnemyCharacter* self_actor = Cast<ADNUnEnemyCharacter>(self);
-	ADNPlayerCharacter* player = dynamic_cast<ADNPlayerCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	ADNPlayerCharacter* player = Cast<ADNPlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
 
 
 	//현재 에디터에 설정된 navi mesh로 초기화
@@ -72,6 +72,8 @@ EBTNodeResult::Type UDNFindPlayerPosTask::ExecuteTask(UBehaviorTreeComponent& ow
 	}
 
 
+	if (false == IsValid(player))
+		return EBTNodeResult::Failed;
 
 	FVector player_location = player->GetActorLocation();
 	FNavLocation NextPatrol;
