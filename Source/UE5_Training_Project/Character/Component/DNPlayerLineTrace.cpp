@@ -76,6 +76,9 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 {
 	FQuat rotate = FQuat(player_in->GetControlRotation());		// 임시로 -15.f 로 카메라 각도만큼 해놧는데 확인예정
 
+	// 유저인지 확인
+	ADNPlayerCharacter* user = Cast<ADNPlayerCharacter>(player_in);
+
 	auto status = player_in->get_status_component().Get();
 
 	// 대미지량
@@ -156,6 +159,13 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(2), true, EPSCPoolMethod::None, true);			//보스
 						DNDamageOperation::gun_damage_to_gun_spider_boss(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
+
+						// 플레이어일 경우
+						if (nullptr != user)
+						{
+							// 타겟 서클 패널 끄기
+							close_target_panel();
+						}
 					}
 					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE)
 					{
@@ -163,18 +173,39 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//댕댕이
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
+
+						// 플레이어일 경우
+						if (nullptr != user)
+						{
+							// 타겟 서클 패널 끄기
+							close_target_panel();
+						}
 					}
 					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC || _enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_AR)
 					{
 						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//랩쳐AR,LC
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
+
+						// 플레이어일 경우
+						if (nullptr != user)
+						{
+							// 타겟 서클 패널 끄기
+							close_target_panel();
+						}
 					}
 					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE_SHIELD)
 					{
 						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//쉴더
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
+
+						// 플레이어일 경우
+						if (nullptr != user)
+						{
+							// 타겟 서클 패널 끄기
+							close_target_panel();
+						}
 					}
 					else if (_enemy->_enemy_type ==  E_ENEMY_TYPE::ET_TARGET_CIRCLE)
 					{
@@ -188,29 +219,47 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
 						OnTargetHit.Broadcast();
 
-						//타겟서클 패널 켜주기
-						UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_TARGET_CIRCLE);
-						if (nullptr == base_panel)
-							return;
 
-						UDNTargetCirclePanel* panel = Cast<UDNTargetCirclePanel>(base_panel);
-						if (nullptr == panel)
-							return;
+						// 플레이어일 경우
+						if (nullptr != user)
+						{
+							//타겟서클 패널 켜주기
+							UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_TARGET_CIRCLE);
+							if (nullptr == base_panel)
+								return;
 
-						panel->set_widget(_target_circle_actor);
+							UDNTargetCirclePanel* panel = Cast<UDNTargetCirclePanel>(base_panel);
+							if (nullptr == panel)
+								return;
+
+							panel->set_widget(_target_circle_actor);
+							panel->play_hit_animation();
+						}
+						
 					}
 					else
 					{
-						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), blood_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//나머지 적
+						UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);			//나머지 적
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
-					}
 
-					// 타겟 서클 패널 끄기
-					close_target_panel();
+						// 플레이어일 경우
+						if (nullptr != user)
+						{
+							// 타겟 서클 패널 끄기
+							close_target_panel();
+						}
+					}
 				}
 				else
 				{
+					// 플레이어일 경우
+					if (nullptr != user)
+					{
+						// 타겟 서클 패널 끄기
+						close_target_panel();
+					}
+
 					// _enemy가 nullptr이라면 쉴드를 가격했는지 확인
 					auto _shield = Cast<ADNCommonShield>(hit_result.GetActor());
 					if (nullptr != _shield)
@@ -236,9 +285,6 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						{
 							// 어떤 액터도 아니라면
 							UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), block_particle, hit_location, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
-
-							// 타겟 서클 패널 끄기
-							close_target_panel();
 						}
 
 					}
@@ -413,7 +459,7 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 	else
 	{
 		ADNEnemyCharacter* _enemy = Cast<ADNEnemyCharacter>(hit_result.GetActor());
-	
+
 		if (nullptr == _enemy)
 			return;
 
@@ -443,6 +489,12 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 				_temp_character = _enemy;	// 현재 적중된 캐릭터를 다시 바꿔준다.
 			}
 		}
+
+		ADNPatternTargetActor* target_circle = Cast<ADNPatternTargetActor>(_enemy);
+
+		// 만약에 타겟 서클이라면 바로 리턴합니다.
+		if (nullptr != target_circle)
+			return;
 
 		OnTargetAiming.Broadcast(_enemy);
 	}

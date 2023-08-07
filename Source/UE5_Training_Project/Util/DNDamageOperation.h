@@ -211,7 +211,7 @@ public:
 		if (nullptr == base_panel)
 			return;
 
-		UDNEnemyStatusPanel* panel = dynamic_cast<UDNEnemyStatusPanel*>(base_panel);
+		UDNEnemyStatusPanel* panel = Cast<UDNEnemyStatusPanel>(base_panel);
 		if (nullptr == panel)
 			return;
 
@@ -295,11 +295,15 @@ public:
 		float after_hp = target_in->get_current_hp() - damage_in;
 		target_in->set_current_hp(after_hp);
 		SOUND_MANAGER->start_combat_sound();
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Griffin Damage to Enemy : %f"), damage_in));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Nikke Damage to TargetCircle : %f"), damage_in));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("TargetCircle After HP : %f"), after_hp));
 
 		// 해당 적군의 HP 계산
 		float owner_after_hp = target_in->get_owner()->get_status_component().Get()->get_current_hp() - damage_in;
 		target_in->get_owner()->get_status_component().Get()->set_current_hp(owner_after_hp);
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("TargetCircle Damage to Owner : %f"), damage_in));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Owner After HP : %f"), owner_after_hp));
 
 
 		// 크로스헤어 표시

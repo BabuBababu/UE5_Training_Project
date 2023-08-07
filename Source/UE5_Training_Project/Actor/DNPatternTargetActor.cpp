@@ -23,8 +23,14 @@ ADNPatternTargetActor::ADNPatternTargetActor()
 	_max_hp = 0.f;
 	_current_hp = 0.f;
 
-	_target_deco_particle_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
+	_target_deco_particle_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("ing_niagara"));
 	_target_deco_particle_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	_target_destroy_particle_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("destroyed_niagara"));
+	_target_destroy_particle_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	_target_destroy_fail_particle_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("destroy_failed_niagara"));
+	_target_destroy_fail_particle_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	GetCharacterMovement()->Deactivate();
 }
@@ -51,9 +57,35 @@ void ADNPatternTargetActor::Tick(float DeltaTime)
 				_owner->_is_target_circle_success = true;
 			}
 
-			_target_deco_particle_component->Deactivate();
-			Destroy();
+			if(nullptr != _target_destroy_fail_particle_component)
+				_target_destroy_fail_particle_component->Activate();
+
+			if(nullptr != _target_deco_particle_component)
+				_target_deco_particle_component->Deactivate();
+
+			// 콜리전 끄기
+			SetActorEnableCollision(false);
+
+			// 실패 파티클 재생이 종료되면
+			if(false == _target_destroy_fail_particle_component->IsActive())
+				Destroy();
 		}
+	}
+}
+
+void ADNPatternTargetActor::add_event()
+{
+	if (nullptr != _target_destroy_fail_particle_component)
+	{
+		_target_destroy_fail_particle_component->OnSystemFinished.AddDynamic(this, &ADNPatternTargetActor::start_fail_niagara_handler);
+	}
+}
+
+void ADNPatternTargetActor::remove_event()
+{
+	if (nullptr != _target_destroy_fail_particle_component)
+	{
+		_target_destroy_fail_particle_component->OnSystemFinished.RemoveDynamic(this, &ADNPatternTargetActor::start_fail_niagara_handler);
 	}
 }
 
@@ -81,10 +113,13 @@ void ADNPatternTargetActor::init()
 	// 작동 시작
 	_is_active = true;
 
-	play_particle();
+	play_deco_particle();
+
+	// 이벤트 추가
+	//add_event();
 }
 
-void ADNPatternTargetActor::play_particle()
+void ADNPatternTargetActor::play_deco_particle()
 {
 	if (false == IsValid(_target_deco_particle_component))
 		return;
@@ -93,7 +128,43 @@ void ADNPatternTargetActor::play_particle()
 		return;
 
 	// 시전자 크기에 맞게 사이즈 수정
-	_target_deco_particle_component->SetRelativeScale3D(FVector(1.0 * _owner->_target_circle_scale));
+	//_target_deco_particle_component->SetRelativeScale3D(FVector(1.0 * _owner->_target_circle_scale));
+
 	// 활성화
 	_target_deco_particle_component->Activate();
+}
+
+void ADNPatternTargetActor::play_destroy_particle()
+{
+	if (false == IsValid(_target_destroy_particle_component))
+		return;
+
+	if (nullptr == _owner)
+		return;
+
+	// 시전자 크기에 맞게 사이즈 수정
+	//_target_deco_particle_component->SetRelativeScale3D(FVector(1.0 * _owner->_target_circle_scale));
+
+	// 활성화
+	_target_destroy_particle_component->Activate();
+}
+
+void ADNPatternTargetActor::play_fail_particle()
+{
+	if (false == IsValid(_target_destroy_fail_particle_component))
+		return;
+
+	if (nullptr == _owner)
+		return;
+
+	// 시전자 크기에 맞게 사이즈 수정
+	//_target_deco_particle_component->SetRelativeScale3D(FVector(1.0 * _owner->_target_circle_scale));
+
+	// 활성화
+	_target_destroy_fail_particle_component->Activate();
+}
+
+void ADNPatternTargetActor::start_fail_niagara_handler(UNiagaraComponent* FinishedComponent)
+{
+	FinishedComponent->Deactivate();
 }

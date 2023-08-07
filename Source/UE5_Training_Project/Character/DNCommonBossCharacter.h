@@ -84,4 +84,5 @@ public:
 	bool _fire_2_cool_time_start;
 	bool _target_circle_cool_time_start;
 
+
 };

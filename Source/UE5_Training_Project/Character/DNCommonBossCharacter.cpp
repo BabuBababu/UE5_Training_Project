@@ -17,6 +17,9 @@
 #include "UE5_Training_Project/Actor/DNBossMissile.h"
 #include "UE5_Training_Project/Actor/DNPatternTargetActor.h"
 
+// UI
+#include "UE5_Training_Project/UI/Widget/Panel/DNTargetCirclePanel.h"
+
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
 
@@ -30,7 +33,6 @@ ADNCommonBossCharacter::ADNCommonBossCharacter()
 
 	_niagara_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent"));
 	_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
 
 	_enemy_type = E_ENEMY_TYPE::ET_BOSS;
 }
@@ -260,6 +262,8 @@ void ADNCommonBossCharacter::target_circle_pattern_spawn()
 		ADNPatternTargetActor* target_actor = GetWorld()->SpawnActor<ADNPatternTargetActor>(_target_circle_class, socket_location, FRotator::ZeroRotator);
 		target_actor->set_owner(this);
 		target_actor->init();
+		_target_circle_cool_time_start = true;
+		
 	}
 	
 

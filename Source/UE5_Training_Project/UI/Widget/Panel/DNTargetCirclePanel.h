@@ -37,8 +37,15 @@ public:
 	void set_hp_percent(float hp_in);
 	void init();
 
+	void play_hit_animation();
+private:
+	//void sync_position();
+	//void set_viewport_size();
 
 private:
+	UPROPERTY()
+	TObjectPtr<UCanvasPanel> umg_canvas;
+	
 	UPROPERTY()
 	TObjectPtr<UOverlay> umg_main_overlay;
 	
@@ -47,11 +54,17 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UImage> umg_target_circle_icon;
+	
+	UPROPERTY(Meta = (BindWidgetAnim), Transient)
+	class UWidgetAnimation* umg_hit_animation;
+
 private:
 	float _max_time;
 	float _current_time;
 	float _current_hp;
 	float _max_hp;
+	int32 _current_width;
+	int32 _current_height;
 
 	ADNPatternTargetActor* _owner;
 };

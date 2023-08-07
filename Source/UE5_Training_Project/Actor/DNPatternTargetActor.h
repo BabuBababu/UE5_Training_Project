@@ -34,8 +34,12 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
+	void add_event();
+	void remove_event();
 	
-	void play_particle();
+	void play_deco_particle();
+	void play_destroy_particle();
+	void play_fail_particle();
 	
 public:
 	float get_max_hp() const { return _max_hp; };
@@ -50,6 +54,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//타겟 반짝임 파티클 나이아가라 컴포넌트
 	TObjectPtr<UNiagaraComponent> _target_deco_particle_component;
 
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//타겟 파괴 파티클 나이아가라 컴포넌트
+	TObjectPtr<UNiagaraComponent> _target_destroy_particle_component;
+
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//타겟 파괴 실패 파티클 나이아가라 컴포넌트
+	TObjectPtr<UNiagaraComponent> _target_destroy_fail_particle_component;
 
 private:
 	ADNEnemyCharacter* _owner;
@@ -58,4 +67,8 @@ private:
 	float _limit_current_time;
 	float _max_hp;
 	float _current_hp;
+
+public:
+	UFUNCTION()
+	void start_fail_niagara_handler(UNiagaraComponent* FinishedComponent);
 };

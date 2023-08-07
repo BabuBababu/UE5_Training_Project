@@ -137,16 +137,20 @@ EBTNodeResult::Type UDNSetTargetTask::ExecuteTask(UBehaviorTreeComponent& owner_
 		else
 		{
 
-			for (auto& target : controller->_target_array)
+			for (const auto& target : controller->_target_array)
 			{
-				AActor* actor = Cast<AActor>(target);
-				if (nullptr == actor)
-					return EBTNodeResult::Failed;
+				if (nullptr != target)
+				{
+					AActor* actor = Cast<AActor>(target);
+					if (nullptr == actor)
+						return EBTNodeResult::Failed;
 
-				controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, true);
-				controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, target);
-				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("other22222222222"));
-				return EBTNodeResult::Succeeded;
+					controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, true);
+					controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, target);
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("other22222222222"));
+					return EBTNodeResult::Succeeded;
+				}
+				
 			}
 		}
 	}
