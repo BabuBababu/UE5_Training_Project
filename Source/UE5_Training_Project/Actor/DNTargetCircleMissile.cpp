@@ -91,6 +91,7 @@ void ADNTargetCircleMissile::overlap_actor_handler(class UPrimitiveComponent* se
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ADNCommonCharacter* actor = Cast<ADNCommonCharacter>(otherActor);
+	ADNBullet* missile = Cast<ADNBullet>(otherActor);
 
 	ADNEnemyCharacter* enemy = Cast<ADNEnemyCharacter>(_owner);
 
@@ -99,21 +100,21 @@ void ADNTargetCircleMissile::overlap_actor_handler(class UPrimitiveComponent* se
 		// 나머지
 		if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
 		{
-			DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 200.f, _owner);		// fire 2
+			DNDamageOperation::radial_damage_to_all(GetWorld(), 25.f, GetActorLocation(), 0.f, _owner);		
 			destroy_object();
 		}
 	}
 	else
 	{
-		if (E_CHARACTER_TYPE::CT_ENEMY != actor->_character_type)					// 자신,아군 충돌 체크
+		if (E_CHARACTER_TYPE::CT_ENEMY != actor->_character_type && nullptr == missile)					// 니케,지휘관이면서 미사일이 아닌 경우 충돌
 		{
-			if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)				// 파티클 및 사운드
+			if (IsValid(_bomb_soundcue) && nullptr != _bomb_particle)									// 파티클 및 사운드
 			{
 				if (nullptr != enemy)
 				{
 					// 이 미사일 사용할 몬스터들은 이넘값 구분해서 나눠서 사용하기
 					if (enemy->_enemy_type == E_ENEMY_TYPE::ET_BOSS)
-						DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 1000.f, _owner);		// 보스
+						DNDamageOperation::radial_damage_to_all(GetWorld(), 100.f, GetActorLocation(), 0.f, _owner);		// 보스
 				}
 			}
 		}

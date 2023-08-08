@@ -95,7 +95,7 @@ void ADNBullet::Tick(float DeltaTime)
 
 	if (_limit_time_start)
 	{
-		// 타겟이 없다면
+		// 타겟이 없다면_niagara_component
 		if (nullptr == _target)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Anis Now Missile Homing Failed : %s"),*_target->GetName()));
