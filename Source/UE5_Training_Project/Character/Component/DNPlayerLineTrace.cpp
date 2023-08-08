@@ -552,7 +552,7 @@ void UDNPlayerLineTrace::OnOrder(ADNCommonCharacter* player_in, ADNUnEnemyCharac
 		// 타겟 서클 액터인지 체크
 		ADNPatternTargetActor* target_circle = Cast<ADNPatternTargetActor>(hit_result.GetActor());
 
-		GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Green, FString::Printf(TEXT("hit Actor name is : %s"), *hit_result.GetActor()->GetName()));
+		//GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Green, FString::Printf(TEXT("hit Actor name is : %s"), *hit_result.GetActor()->GetName()));
 
 		if (nullptr == player)
 			return;

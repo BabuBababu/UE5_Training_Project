@@ -46,10 +46,10 @@ void UDNTargetCirclePanel::NativeTick(const FGeometry& MyGeometry, float InDelta
 	//sync_position();
 
 	// 시간 동기화
-	set_time_percent(_current_time);
+	sync_time();
 
 	// HP 동기화
-	set_hp_percent(_current_hp);
+	sync_hp();
 
 	// 시간 계산
 	_current_time -= InDeltaTime;
@@ -80,30 +80,43 @@ void UDNTargetCirclePanel::set_widget(ADNPatternTargetActor* owner_in)
 
 	_owner = owner_in;
 
-	// 시간
-	_max_time = owner_in->get_limit_max_time();
-	_current_time = _owner->get_limit_current_time();
+	SetVisibility(ESlateVisibility::HitTestInvisible);
 
-	// HP
-	_max_hp = owner_in->get_max_hp();
-	_current_hp = _owner->get_current_hp();
-
-	
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Current HP : %f"), _current_hp));
 
-	if(_current_hp > 0)  // 살아 있을 경우
-		SetVisibility(ESlateVisibility::HitTestInvisible);
-	else
-	{
-		init();
-		SetVisibility(ESlateVisibility::Collapsed);
-	}
+	
 
 }
 
 void UDNTargetCirclePanel::close_widget()
 {
 	SetVisibility(ESlateVisibility::Hidden);	//틱은 정상작동 되야하므로
+}
+
+void UDNTargetCirclePanel::sync_time()
+{
+	// 시간
+	_max_time = _owner->get_limit_max_time();
+	_current_time = _owner->get_limit_current_time();
+
+	set_time_percent(_current_time);
+}
+
+void UDNTargetCirclePanel::sync_hp()
+{
+	// HP
+	_max_hp = _owner->get_max_hp();
+	_current_hp = _owner->get_current_hp();
+
+	set_hp_percent(_current_hp);
+
+	if (_current_hp > 0)  // 살아 있을 경우
+		SetVisibility(ESlateVisibility::HitTestInvisible);
+	else
+	{
+		init();
+		SetVisibility(ESlateVisibility::Collapsed);
+	}
 }
 
 void UDNTargetCirclePanel::set_time_percent(float time_in)
@@ -117,7 +130,7 @@ void UDNTargetCirclePanel::set_time_percent(float time_in)
 		material->SetScalarParameterValue("percent", percent);
 	}
 
-	
+
 }
 
 void UDNTargetCirclePanel::set_hp_percent(float hp_in)

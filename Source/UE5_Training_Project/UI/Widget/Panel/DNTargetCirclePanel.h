@@ -39,6 +39,8 @@ public:
 
 	void play_hit_animation();
 private:
+	void sync_hp();
+	void sync_time();
 	//void sync_position();
 	//void set_viewport_size();
 
