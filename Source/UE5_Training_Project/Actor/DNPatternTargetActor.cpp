@@ -49,11 +49,13 @@ void ADNPatternTargetActor::Tick(float DeltaTime)
 	{
 		_limit_current_time -= DeltaTime;
 
+		// 시간 초과
 		if (_limit_current_time <= 0)
 		{
 			_is_active = false;
 			if (IsValid(_owner))
 			{
+				// 패턴 공격 실행
 				_owner->_is_target_circle_success = true;
 			}
 
@@ -63,12 +65,38 @@ void ADNPatternTargetActor::Tick(float DeltaTime)
 			if(nullptr != _target_deco_particle_component)
 				_target_deco_particle_component->Deactivate();
 
+
 			// 콜리전 끄기
 			SetActorEnableCollision(false);
 
 			// 실패 파티클 재생이 종료되면
 			if(false == _target_destroy_fail_particle_component->IsActive())
 				Destroy();
+		}
+		else
+		{
+			// 파괴 당함
+			if (_current_hp <= 0)
+			{
+				_is_active = false;
+				if (IsValid(_owner))
+				{
+					_owner->_is_target_circle_success = false;
+				}
+
+				if (nullptr != _target_destroy_particle_component)
+					_target_destroy_particle_component->Activate();
+
+				if (nullptr != _target_deco_particle_component)
+					_target_deco_particle_component->Deactivate();
+
+				// 콜리전 끄기
+				SetActorEnableCollision(false);
+
+				// 실패 파티클 재생이 종료되면
+				if (false == _target_destroy_particle_component->IsActive())
+					Destroy();
+			}
 		}
 	}
 }
@@ -79,6 +107,10 @@ void ADNPatternTargetActor::add_event()
 	{
 		_target_destroy_fail_particle_component->OnSystemFinished.AddDynamic(this, &ADNPatternTargetActor::start_fail_niagara_handler);
 	}
+	if (nullptr != _target_destroy_particle_component)
+	{
+		_target_destroy_particle_component->OnSystemFinished.AddDynamic(this, &ADNPatternTargetActor::start_destroyed_niagara_handler);
+	}
 }
 
 void ADNPatternTargetActor::remove_event()
@@ -86,6 +118,10 @@ void ADNPatternTargetActor::remove_event()
 	if (nullptr != _target_destroy_fail_particle_component)
 	{
 		_target_destroy_fail_particle_component->OnSystemFinished.RemoveDynamic(this, &ADNPatternTargetActor::start_fail_niagara_handler);
+	}
+	if (nullptr != _target_destroy_particle_component)
+	{
+		_target_destroy_particle_component->OnSystemFinished.RemoveDynamic(this, &ADNPatternTargetActor::start_destroyed_niagara_handler);
 	}
 }
 
@@ -165,6 +201,11 @@ void ADNPatternTargetActor::play_fail_particle()
 }
 
 void ADNPatternTargetActor::start_fail_niagara_handler(UNiagaraComponent* FinishedComponent)
+{
+	FinishedComponent->Deactivate();
+}
+
+void ADNPatternTargetActor::start_destroyed_niagara_handler(UNiagaraComponent* FinishedComponent)
 {
 	FinishedComponent->Deactivate();
 }

@@ -72,7 +72,7 @@ public:
 
 
 public:
-	FOnDestroyForTargetDelegate OnDestroyMissile;
+	FOnDestroyForTargetDelegate OnDestroyMissile; // 안쓰는듯?
 
 public:
 	void overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,

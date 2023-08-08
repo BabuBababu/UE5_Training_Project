@@ -19,6 +19,7 @@
 
 class ADNBossMissile;
 class ADNPatternTargetActor;
+class ADNTargetCircleMissile;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNCommonBossCharacter : public ADNEnemyCharacter
@@ -40,7 +41,7 @@ public:
 
 	virtual void fire_1(ADNCommonCharacter* target_in);
 	virtual void fire_2(ADNCommonCharacter* target_in);
-	virtual void target_circle_pattern_spawn();
+	virtual void target_circle_pattern_spawn(ADNCommonCharacter* target_in);
 	virtual void target_circle_pattern_attack(ADNCommonCharacter* target_in);
 	virtual void melee_1(ADNCommonCharacter* target_in);
 	virtual void melee_2(ADNCommonCharacter* target_in);
@@ -59,6 +60,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
 	TSubclassOf<ADNBossMissile> _fire_2_class;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
+	TSubclassOf<ADNTargetCircleMissile> _target_circle_fire_class;
+
 
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//체력 적음 파티클
 	UNiagaraSystem*				  _danger_particle;
@@ -84,5 +89,6 @@ public:
 	bool _fire_2_cool_time_start;
 	bool _target_circle_cool_time_start;
 
-
+	TObjectPtr<ADNTargetCircleMissile> _target_circle_missile;
+	ADNCommonCharacter* _target_circle_target;			// 타겟 서클 패턴 공격의 목표 대상
 };

@@ -316,7 +316,6 @@ public:
 		if (after_hp <= 0)
 		{
 			target_in->get_owner()->play_target_circle_destroy_sound();
-			target_in->Destroy();
 		}
 
 		// 해당 적군 체력 0

@@ -71,4 +71,7 @@ private:
 public:
 	UFUNCTION()
 	void start_fail_niagara_handler(UNiagaraComponent* FinishedComponent);
+	
+	UFUNCTION()
+	void start_destroyed_niagara_handler(UNiagaraComponent* FinishedComponent);
 };

@@ -16,6 +16,7 @@
 // Actor
 #include "UE5_Training_Project/Actor/DNBossMissile.h"
 #include "UE5_Training_Project/Actor/DNPatternTargetActor.h"
+#include "UE5_Training_Project/Actor/DNTargetCircleMissile.h"
 
 // UI
 #include "UE5_Training_Project/UI/Widget/Panel/DNTargetCirclePanel.h"
@@ -35,6 +36,7 @@ ADNCommonBossCharacter::ADNCommonBossCharacter()
 	_niagara_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	_enemy_type = E_ENEMY_TYPE::ET_BOSS;
+	_target_circle_target = nullptr;
 }
 
 void ADNCommonBossCharacter::add_event()
@@ -104,7 +106,7 @@ void ADNCommonBossCharacter::Tick(float DeltaTime)
 	// 타겟서클패턴 공격
 	if (_is_target_circle_success)
 	{
-		//target_circle_pattern_attack();
+		target_circle_pattern_attack(_target_circle_target);
 		_is_target_circle_success = false;
 	}
 }
@@ -251,7 +253,7 @@ void ADNCommonBossCharacter::fire_2(ADNCommonCharacter* target_in)
 	
 } 
 
-void ADNCommonBossCharacter::target_circle_pattern_spawn()
+void ADNCommonBossCharacter::target_circle_pattern_spawn(ADNCommonCharacter* target_in)
 {
 	// 생성 위치
 	FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("TargetCircle1"));
@@ -259,19 +261,32 @@ void ADNCommonBossCharacter::target_circle_pattern_spawn()
 	// 타겟서클액터 생성
 	if (IsValid(_target_circle_class))
 	{
-		ADNPatternTargetActor* target_actor = GetWorld()->SpawnActor<ADNPatternTargetActor>(_target_circle_class, socket_location, FRotator::ZeroRotator);
-		target_actor->set_owner(this);
-		target_actor->init();
+		ADNPatternTargetActor* target_circle_actor = GetWorld()->SpawnActor<ADNPatternTargetActor>(_target_circle_class, socket_location, FRotator::ZeroRotator);
+		target_circle_actor->set_owner(this);
+		target_circle_actor->init();
 		_target_circle_cool_time_start = true;
 		
 	}
+
+	_target_circle_target = target_in;
 	
 
 }
 
 void ADNCommonBossCharacter::target_circle_pattern_attack(ADNCommonCharacter* target_in)
 {
+	if (IsValid(_target_circle_fire_class))
+	{
+		FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("TargetCircle1"));
+		ADNTargetCircleMissile* bullet = GetWorld()->SpawnActor<ADNTargetCircleMissile>(_target_circle_fire_class, socket_location, GetActorRotation()); // 미사일 생성
+		bullet->SetActorLocation(socket_location);
+		bullet->SetActorRotation(GetActorRotation());
+		bullet->_owner = this;
+		bullet->_target = target_in;
+		bullet->fire(socket_location);
 
+		_target_circle_missile = bullet;
+	}
 }
 
 void ADNCommonBossCharacter::melee_1(ADNCommonCharacter* target_in)
