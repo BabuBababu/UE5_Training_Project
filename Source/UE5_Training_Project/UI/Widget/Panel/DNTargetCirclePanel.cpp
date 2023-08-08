@@ -48,6 +48,9 @@ void UDNTargetCirclePanel::NativeTick(const FGeometry& MyGeometry, float InDelta
 	// 시간 동기화
 	set_time_percent(_current_time);
 
+	// HP 동기화
+	set_hp_percent(_current_hp);
+
 	// 시간 계산
 	_current_time -= InDeltaTime;
 	if (_current_time <= 0)
@@ -85,8 +88,7 @@ void UDNTargetCirclePanel::set_widget(ADNPatternTargetActor* owner_in)
 	_max_hp = owner_in->get_max_hp();
 	_current_hp = _owner->get_current_hp();
 
-	// HP 동기화
-	set_hp_percent(_current_hp);
+	
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Current HP : %f"), _current_hp));
 
 	if(_current_hp > 0)  // 살아 있을 경우

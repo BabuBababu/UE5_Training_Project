@@ -471,6 +471,14 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 		//DrawDebugBox(player_in->GetWorld(), hit_result.ImpactPoint, FVector(5, 5, 5), FColor::Blue, false, 2.f);
 
 
+		// 만약에 타겟 서클이라면 바로 리턴합니다.
+		ADNPatternTargetActor* target_circle = Cast<ADNPatternTargetActor>(_enemy);
+		if (nullptr != target_circle)
+			return;
+
+		//타겟 액터 패널을 끕니다.
+		close_target_panel();
+
 		if (_temp_character != _enemy)	// 적중한 캐릭터가 이전 캐릭터와 다르다면
 		{
 			if (nullptr == _temp_character)
@@ -490,11 +498,9 @@ void UDNPlayerLineTrace::OnAiming(ADNCommonCharacter* player_in)
 			}
 		}
 
-		ADNPatternTargetActor* target_circle = Cast<ADNPatternTargetActor>(_enemy);
+		
 
-		// 만약에 타겟 서클이라면 바로 리턴합니다.
-		if (nullptr != target_circle)
-			return;
+		
 
 		OnTargetAiming.Broadcast(_enemy);
 	}
@@ -540,19 +546,30 @@ void UDNPlayerLineTrace::OnOrder(ADNCommonCharacter* player_in, ADNUnEnemyCharac
 	if (hit_result.GetActor() != nullptr)
 	{
 		// 캐릭터 액터인지 체크
-		auto actor = Cast<ADNCommonCharacter>(hit_result.GetActor());
+		ADNCommonCharacter* actor = Cast<ADNCommonCharacter>(hit_result.GetActor());
 		// 플레이어 유효한지 체크
 		ADNPlayerCharacter* player = Cast<ADNPlayerCharacter>(player_in);
-		
+		// 타겟 서클 액터인지 체크
+		ADNPatternTargetActor* target_circle = Cast<ADNPatternTargetActor>(hit_result.GetActor());
+
+		GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Green, FString::Printf(TEXT("hit Actor name is : %s"), *hit_result.GetActor()->GetName()));
+
 		if (nullptr == player)
 			return;
 
-		//GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Green, FString::Printf(TEXT("hit Actor name is : %s"), *hit_result.GetActor()->GetName()));
-
-		if (nullptr == actor)			//캐릭터 액터가 아니라면 지형
+		
+		if (nullptr == actor)			//캐릭터 액터가 아니라면 타겟서클? 그것도 아니라면 지형
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), order_move_particle, hit_result.ImpactPoint, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
-			player->order_move(hit_result.ImpactPoint, doll_in);
+			if (nullptr != target_circle)
+			{
+				player->order_attack(target_circle, doll_in);
+			}
+			else
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(player_in->GetWorld(), order_move_particle, hit_result.ImpactPoint, FRotator(0.f, 0.f, 0.f), FVector(1), true, EPSCPoolMethod::None, true);
+				player->order_move(hit_result.ImpactPoint, doll_in);
+			}
+			
 		}
 		else if (actor->_character_type == E_CHARACTER_TYPE::CT_ENEMY)   // 적군
 		{
