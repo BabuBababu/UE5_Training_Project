@@ -4,6 +4,8 @@
 
 // Engine
 #include <CoreMinimal.h>
+#include <NiagaraSystem.h>
+#include <NiagaraFunctionLibrary.h>
 
 // Actor
 #include "UE5_Training_Project/Actor/DNBullet.h"
@@ -35,7 +37,9 @@ public:
 	void init() override;
 
 	virtual void destroy_object();
-
+public:
+	UPROPERTY(EditAnywhere, Category = "Particle Effects")				// 부딫혀서 터질때 보조 파티클				//직격 파티클
+	UNiagaraSystem* _bomb_2_particle;
 public:
 	void overlap_actor_handler(class UPrimitiveComponent* selfComp, class AActor* otherActor, UPrimitiveComponent* otherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;

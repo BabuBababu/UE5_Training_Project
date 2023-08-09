@@ -481,12 +481,15 @@ enum class E_FIRE_TYPE : uint8		//미사일 타입
 	FT_MAIN,			//스프레드 ,큐브 미사일 공격
 	FT_SUB,				//스프레드 서브 공격
 	FT_DISCUS,			//디스커스 미사일 공격
-	FT_RESVOLITANS1,		//레스볼리탄 미사일1 공격
-	FT_RESVOLITANS3,		//레스볼리탄 미사일3 공격
+	FT_RESVOLITANS1,	//레스볼리탄 미사일1 공격
+	FT_RESVOLITANS3,	//레스볼리탄 미사일3 공격
 	FT_NIKKE_AR,		//니케 AR 공격
 	FT_NIKKE_SR,		//니케 SR 공격
 	FT_NIKKE_SMG,		//니케 SMG 공격
 	FT_NIKKE_LC,		//니케 LC 공격
+	FT_HELI,			//헬리콥터 LC 공격
+	FT_TARGETCIRCLE,	//타겟서클 패턴 공격
+
 
 	FT_COUNT
 };

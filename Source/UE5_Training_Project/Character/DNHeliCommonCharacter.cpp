@@ -132,6 +132,7 @@ void ADNHeliCommonCharacter::fire_missile(ADNCommonCharacter* target_in)
 		bullet->_owner = this;
 		bullet->_target = target_in;
 		bullet->fire(socket_location);
+		bullet->_fire_type = E_FIRE_TYPE::FT_HELI;
 		_missile_cool_time_start = true;
 
 		_missile = bullet;

@@ -93,7 +93,7 @@ public:
 	ADNCommonCharacter*		_owner;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float					_limit_time;
+	float					_limit_time;									// 일정시간 지나면 자독 폭파용
 
 	float					_current_limit_time;
 
