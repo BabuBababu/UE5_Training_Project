@@ -256,6 +256,8 @@ void ADNUnEnemyCharacter::order_move_handler(FVector destination_in, ADNUnEnemyC
 		controller->ordered_move(destination_in, doll_in);
 		_is_ordered = true;
 		
+		
+			
 		// 여기에 캐릭터 코멘트 UI 호출
 		//WIDGET_MANAGER->
 	}

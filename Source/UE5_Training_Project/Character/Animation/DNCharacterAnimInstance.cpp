@@ -22,6 +22,7 @@
 
 
 
+#define HONGRYEON 6
 
 UDNCharacterAnimInstance::UDNCharacterAnimInstance()
 {
@@ -399,6 +400,17 @@ void UDNCharacterAnimInstance::play_reload_montage()
 
 void UDNCharacterAnimInstance::play_fire_montage()
 {
+	// 홍련때문에 이렇게 추가해야하나...
+	if (_owner->_character_id == HONGRYEON)
+	{
+		// 이동 정지 상태일 때 사격
+		if (_speed <= 0.f)
+			Montage_Play(fire_montage);
+		else
+			return;
+	}
+
+
 	Montage_Play(fire_montage);
 }
 
