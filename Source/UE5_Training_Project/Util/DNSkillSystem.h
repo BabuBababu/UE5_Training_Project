@@ -126,13 +126,32 @@ public:
 		{
 			if (current_count < max_count)
 			{
-				owner_in->fire_missile(actor->GetActorLocation(), actor);
+				owner_in->fire_burst_missile(actor->GetActorLocation(), actor, owner_in);
 				current_count += 1;
 			}
 
 			if (current_count == 20)						//최대 20발까지 발사합니다.
 				return;
 		}
+
+
+	}
+
+	static void hongryeon_burst_skill(ADNCommonCharacter* owner_in)
+	{
+		// 컨트롤러
+		auto controller = Cast<ADNAIController>(owner_in->GetController());
+
+		if (nullptr == controller)
+			return;
+
+		if (controller->_target_array.IsEmpty())
+			return;
+
+		// 타겟 배열에서 탐색해서 보스 먼저 타게팅하도록 설정할수도있다.
+		owner_in->fire_burst_missile(controller->_target_array[0]->GetActorLocation(), controller->_target_array[0],owner_in);
+		
+		
 
 
 	}

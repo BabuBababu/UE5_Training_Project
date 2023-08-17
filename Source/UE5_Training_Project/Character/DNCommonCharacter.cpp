@@ -391,36 +391,41 @@ void ADNCommonCharacter::fire_missile(FVector hit_location_in,AActor* target_in)
 
 	FVector socket_location = _weapon_armed->GetSocketLocation(FName("Muzzle"));
 
-	if (_on_burst_skill)
-	{
-		if (IsValid(_burst_missile_class))
-		{
-			ADNBullet* missile = GetWorld()->SpawnActor<ADNBullet>(_burst_missile_class, socket_location, GetActorRotation()); // 버스트 미사일 생성
-			missile->_fire_type = E_FIRE_TYPE::FT_NIKKE_LC;
-			missile->SetActorLocation(socket_location);
-			missile->SetActorRotation(GetActorRotation());
-			missile->_owner = this;
-			missile->_target = target_in;
-			missile->_hit_location = hit_location_in;
-			missile->active_bullet();
-			missile->nikke_fire(socket_location);
-		}
-	}
-	else
-	{
-			ADNBullet* missile = GetWorld()->SpawnActor<ADNBullet>(_gun_missile_class, socket_location, GetActorRotation());		// 미사일 생성
-			missile->_fire_type = E_FIRE_TYPE::FT_NIKKE_LC;
-			missile->SetActorLocation(socket_location);
-			missile->SetActorRotation(GetActorRotation());
-			missile->_owner = this;
-			missile->_target = target_in;
-			missile->_hit_location = hit_location_in;
-			missile->active_bullet();
-			missile->nikke_fire(socket_location);
-	}		
-
+	ADNBullet* missile = GetWorld()->SpawnActor<ADNBullet>(_gun_missile_class, socket_location, GetActorRotation());		// 미사일 생성
+	missile->_owner = this;
+	missile->_fire_type = E_FIRE_TYPE::FT_NIKKE_LC;
+	missile->SetActorLocation(socket_location);
+	missile->SetActorRotation(GetActorRotation());
+	missile->_target = target_in;
+	missile->_hit_location = hit_location_in;
+	missile->active_bullet();
+	missile->nikke_fire(socket_location);
 
 	
+}
+
+void ADNCommonCharacter::fire_burst_missile(FVector hit_location_in, AActor* target_in, ADNCommonCharacter* owner_in)
+{
+	if (nullptr == target_in)
+		return;
+
+	if (false == IsValid(_burst_missile_class))
+		return;
+
+	FVector socket_location = _weapon_armed->GetSocketLocation(FName("Muzzle"));
+
+	if (IsValid(_burst_missile_class))
+	{
+		ADNBullet* missile = GetWorld()->SpawnActor<ADNBullet>(_burst_missile_class, socket_location, GetActorRotation()); // 버스트 미사일 생성
+		missile->_owner = owner_in;
+		missile->_fire_type = E_FIRE_TYPE::FT_NIKKE_LC;
+		missile->SetActorLocation(socket_location);
+		missile->SetActorRotation(GetActorRotation());
+		missile->_target = target_in;
+		missile->_hit_location = hit_location_in;
+		missile->active_bullet();
+		missile->nikke_fire(socket_location);
+	}
 }
 
 void ADNCommonCharacter::stop_fire()
@@ -829,9 +834,13 @@ void ADNCommonCharacter::play_burst_skill_handler(UAnimMontage* Montage, bool bI
 	if (_character_id == 1)			// 라피
 	{
 	}
-	else if (_character_id == 2)		// 아니스
+	else if (_character_id == 2)	// 아니스
 	{
 		DNSkillSystem::anis_burst_skill(this);
+	}
+	else if (_character_id == 6)	// 홍련
+	{
+		DNSkillSystem::hongryeon_burst_skill(this);
 	}
 	else
 	{

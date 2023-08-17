@@ -57,7 +57,7 @@ EBTNodeResult::Type UDNSetTargetTask::ExecuteTask(UBehaviorTreeComponent& owner_
 		return EBTNodeResult::Failed;
 	
 	// 타겟 자체가 배열에 없다면 실패 반환
-	if (OBJECT_MANAGER->_enemy_missile_array.IsEmpty())
+	if (OBJECT_MANAGER->_enemy_missile_array.IsEmpty() && controller->_target_array.IsEmpty())
 	{
 		controller->ClearFocus(EAIFocusPriority::Gameplay);
 		self_actor->set_idle_animation();

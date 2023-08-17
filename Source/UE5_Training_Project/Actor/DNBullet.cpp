@@ -60,6 +60,8 @@ ADNBullet::ADNBullet()
 	_limit_time = 10.f;
 	_is_active = false;
 
+	SetActorEnableCollision(false);
+
 }
 
 void ADNBullet::BeginPlay()
