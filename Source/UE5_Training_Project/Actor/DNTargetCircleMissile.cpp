@@ -50,6 +50,7 @@ void ADNTargetCircleMissile::init()
 
 void ADNTargetCircleMissile::fire(FVector location_in)
 {
+	SetActorEnableCollision(true);
 
 	if (nullptr == _owner)
 		return;

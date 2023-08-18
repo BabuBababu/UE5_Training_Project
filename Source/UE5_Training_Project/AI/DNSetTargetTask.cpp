@@ -28,7 +28,10 @@
 // Manager
 #include "UE5_Training_Project/Manager/DNObjectManager.h"
 
-
+//
+// 가드는 미사일 우선 공격
+// 그 이외 포지션은 나머지 타겟을 우선 공격
+//
 
 UDNSetTargetTask::UDNSetTargetTask(FObjectInitializer const& object_initializer)
 {
@@ -71,20 +74,18 @@ EBTNodeResult::Type UDNSetTargetTask::ExecuteTask(UBehaviorTreeComponent& owner_
 	
 	if (self_actor->get_character_position() == E_CHARACTER_POSITION::CP_GUARD)		// 가드일 경우
 	{
-		for (auto& missile: OBJECT_MANAGER->_enemy_missile_array)
+		
+		if (set_first_target_missile(self_pawn,_max_distance))
 		{
-			// 활성화된 미사일이 존재한다면
-			if (missile->_is_active)
-			{
-				controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, true);
-				controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, missile);
-				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("guard0000000000000000"));
-				return EBTNodeResult::Succeeded;
-			}
-			
+			ADNBossMissile* missile = set_first_target_missile(self_pawn, _max_distance);
+
+			controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, true);
+			controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, missile);
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("guard0000000000000000"));
+			return EBTNodeResult::Succeeded;
 		}
 
-		// 활성화된 미사일이 없다면
+		// 위 조건에서 적합한 미사일이 없다면
 		if (controller->_target_array.Num() == 0)		// 저장해둔 적 타겟이 없으면
 		{
 			controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, false);
@@ -107,6 +108,7 @@ EBTNodeResult::Type UDNSetTargetTask::ExecuteTask(UBehaviorTreeComponent& owner_
 				return EBTNodeResult::Succeeded;
 			}
 		}
+		
 
 
 	}
@@ -115,17 +117,14 @@ EBTNodeResult::Type UDNSetTargetTask::ExecuteTask(UBehaviorTreeComponent& owner_
 		if (controller->_target_array.Num() == 0)		// 저장해둔 타겟이 없으면
 		{
 
-			for (auto& missile : OBJECT_MANAGER->_enemy_missile_array)
+			if (set_first_target_missile(self_pawn, _max_distance))
 			{
-				// 활성화된 미사일이 존재한다면
-				if (missile->_is_active)
-				{
-					controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, true);
-					controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, missile);
-					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("other0000000000"));
-					return EBTNodeResult::Succeeded;
-				}
+				ADNBossMissile* missile = set_first_target_missile(self_pawn, _max_distance);
 
+				controller->get_blackboard()->SetValueAsBool(all_ai_bb_keys::is_find_target, true);
+				controller->get_blackboard()->SetValueAsObject(all_ai_bb_keys::target_actor, missile);
+				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("guard0000000000000000"));
+				return EBTNodeResult::Succeeded;
 			}
 
 
@@ -171,4 +170,23 @@ void UDNSetTargetTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* No
 	Super::TickTask(owner_comp_in, NodeMemory_in, DeltaSeconds);
 
 
+}
+
+ADNBossMissile* UDNSetTargetTask::set_first_target_missile(APawn* pawn_in, float max_distance_in)
+{
+
+	for (auto& missile : OBJECT_MANAGER->_enemy_missile_array)
+	{
+		// 활성화된 미사일이 존재한다면
+		if (missile->_is_active)
+		{
+			if (max_distance_in > pawn_in->GetDistanceTo(missile))
+			{
+				return missile;
+			}
+		}
+	}
+
+	// 적합한 미사일이 없다면
+	return nullptr;		
 }

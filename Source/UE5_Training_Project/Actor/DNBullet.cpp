@@ -185,6 +185,7 @@ void ADNBullet::non_active_bullet()
 
 void ADNBullet::fire(FVector location_in)
 {
+	SetActorEnableCollision(true);
 
 	if (nullptr == _owner)
 		return;

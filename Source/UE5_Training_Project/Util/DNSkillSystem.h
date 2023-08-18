@@ -7,6 +7,7 @@
 #include <CameraAnimationSequence.h>
 #include <CameraAnimationCameraModifier.h>
 #include <GameFramework/CharacterMovementComponent.h>
+#include <BehaviorTree/BlackboardComponent.h>
 
 // Data
 #include "UE5_Training_Project/Data/DNCharacterSkillData.h"
@@ -145,11 +146,15 @@ public:
 		if (nullptr == controller)
 			return;
 
-		if (controller->_target_array.IsEmpty())
-			return;
-
 		// 타겟 배열에서 탐색해서 보스 먼저 타게팅하도록 설정할수도있다.
-		owner_in->fire_burst_missile(controller->_target_array[0]->GetActorLocation(), controller->_target_array[0],owner_in);
+		// 위의 기능을 아직 추가는 안함
+		UObject* ob = controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor);
+		AActor* actor = Cast<AActor>(ob);
+
+		if(nullptr != actor)
+			owner_in->fire_burst_missile(controller->_target_array[0]->GetActorLocation(), actor,owner_in);								// 당장 공격하던 대상이 있다면
+		else
+			owner_in->fire_burst_missile(controller->_target_array[0]->GetActorLocation(), controller->_target_array[0], owner_in);		// 없다면
 		
 		
 
