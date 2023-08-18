@@ -121,7 +121,17 @@ void ADNHongryeonBurstMissile::overlap_actor_handler(class UPrimitiveComponent* 
 						UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), _bomb_particle, GetActorLocation());
 
 						DNDamageOperation::radial_damage_to_all(GetWorld(), 1200.f, GetActorLocation(), 800.f, _owner);
+
+						ADNPatternTargetActor* target_circle_actor = Cast<ADNPatternTargetActor>(otherActor);
+
+						// 타겟 서클 액터일 경우 
+						if (nullptr != target_circle_actor)
+						{
+							DNDamageOperation::gun_damage_to_target_circle(1200.f, target_circle_actor, _owner);
+						}
+
 						destroy_object();
+
 						GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT(" Missile Bomb target")));
 
 					}
