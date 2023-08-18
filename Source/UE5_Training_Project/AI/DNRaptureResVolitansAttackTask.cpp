@@ -80,9 +80,9 @@ EBTNodeResult::Type UDNRaptureResVolitansAttackTask::ExecuteTask(UBehaviorTreeCo
 		self_actor->fire_3(target_character);			// 미사일 발사
 	}
 
-	if (self_actor->_target_circle_current_cool_time <= 1.f)
+	if (false == self_actor->_target_circle_cool_time_start) // 보스어택테스크와는 다름. 비헤이비어트리에서 공격방식이 달라서 그런듯
 	{
-		self_actor->target_circle_pattern_spawn();	// 타겟 서클 패턴 스폰
+		self_actor->target_circle_pattern_spawn(target_character);	// 타겟 서클 패턴 스폰
 	}
 
 	return EBTNodeResult::Succeeded;

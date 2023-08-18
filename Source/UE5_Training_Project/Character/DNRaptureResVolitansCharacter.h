@@ -16,6 +16,8 @@
  */
 
 class ADNPatternTargetActor;
+class ADNTargetCircleMissile;
+
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNRaptureResVolitansCharacter : public ADNAirRaptureCharacter
@@ -38,7 +40,7 @@ public:
 	void fire_1(ADNCommonCharacter* target_in) override;  // 대형 호밍 미사일
 	virtual void fire_2(ADNCommonCharacter* target_in);	  // 도탄 미사일
 	virtual void fire_3(ADNCommonCharacter* target_in);   // 소형 연발 호밍 미사일
-	virtual void target_circle_pattern_spawn();			  
+	virtual void target_circle_pattern_spawn(ADNCommonCharacter* target_in);
 	virtual void target_circle_pattern_attack(ADNCommonCharacter* target_in);  // 타겟 서클 패턴 공격
 
 	virtual void play_damaged_parts();
@@ -57,6 +59,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
 	TSubclassOf<ADNBossMissile> _fire_3_class;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = bullet)
+	TSubclassOf<ADNTargetCircleMissile> _target_circle_fire_class;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)								//부위 파괴 사운드
 	TObjectPtr<USoundBase> _damaged_parts_soundcue;
@@ -104,4 +109,7 @@ public:
 	bool _target_circle_cool_time_start;
 
 	bool _destroyed_parts;
+
+	TObjectPtr<ADNTargetCircleMissile> _target_circle_missile;
+	ADNCommonCharacter* _target_circle_target;			// 타겟 서클 패턴 공격의 목표 대상
 };
