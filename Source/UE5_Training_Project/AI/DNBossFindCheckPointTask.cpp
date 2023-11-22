@@ -79,6 +79,11 @@ EBTNodeResult::Type UDNBossFindCheckPointTask::ExecuteTask(UBehaviorTreeComponen
 		}
 	}
 
+	if (nullptr == _now_point)
+	{
+		return EBTNodeResult::Failed;
+	}
+
 	if (_now_point->_is_destroyed)
 	{
 		if (false == OBJECT_MANAGER->_target_location_actor_array.IsEmpty())

@@ -149,6 +149,9 @@ void ADNBullet::init()
 
 void ADNBullet::active_bullet()
 {
+	// 틱 활성화
+	PrimaryActorTick.SetTickFunctionEnable(true);
+
 	_actor_static_mesh->SetRelativeLocation(GetActorLocation());
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
@@ -167,6 +170,7 @@ void ADNBullet::non_active_bullet()
 	if (nullptr != _owner)
 		SetActorLocation(_owner->GetActorLocation());
 
+	
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
 	_projectile_movement_component->Deactivate();
@@ -177,6 +181,10 @@ void ADNBullet::non_active_bullet()
 
 	if (IsValid(_niagara_component))
 		_niagara_component->Deactivate();
+
+	// 틱 일시정지
+	PrimaryActorTick.SetTickFunctionEnable(false);
+
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Is Active? : %s"), _is_active ? TEXT("true") : TEXT("false")));
 	
 

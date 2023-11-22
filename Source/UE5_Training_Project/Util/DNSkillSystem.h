@@ -151,6 +151,9 @@ public:
 		UObject* ob = controller->get_blackboard()->GetValueAsObject(all_ai_bb_keys::target_actor);
 		AActor* actor = Cast<AActor>(ob);
 
+		if (controller->_target_array.Num() <= 0)
+			return;
+
 		if(nullptr != actor)
 			owner_in->fire_burst_missile(controller->_target_array[0]->GetActorLocation(), actor,owner_in);								// 당장 공격하던 대상이 있다면
 		else

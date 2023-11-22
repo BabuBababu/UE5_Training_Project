@@ -174,11 +174,13 @@ void UDNSetTargetTask::TickTask(UBehaviorTreeComponent& owner_comp_in, uint8* No
 
 ADNBossMissile* UDNSetTargetTask::set_first_target_missile(APawn* pawn_in, float max_distance_in)
 {
+	if (nullptr == pawn_in)
+		return nullptr;
 
 	for (auto& missile : OBJECT_MANAGER->_enemy_missile_array)
 	{
 		// 활성화된 미사일이 존재한다면
-		if (missile->_is_active)
+		if (missile->_is_active && nullptr != missile)
 		{
 			if (max_distance_in > pawn_in->GetDistanceTo(missile))
 			{

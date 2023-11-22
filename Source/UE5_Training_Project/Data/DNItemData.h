@@ -12,7 +12,7 @@
 #include "DNItemData.generated.h"
 
 
-
+#define NONE -1
 
 
 USTRUCT(Atomic, BlueprintType)
@@ -23,7 +23,7 @@ struct FDNItemData : public FTableRowBase
 public:
 	// UID
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	int64							id;
+	int64							id = NONE;
 
 	// 이름
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
@@ -43,23 +43,23 @@ public:
 
 	// 추가 HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	float							add_hp;
+	float							add_hp = NONE;
 
 	// 추가 스테미너
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	float							add_sp;
+	float							add_sp = NONE;
 
 	// 추가 대미지
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	float							add_damage;
+	float							add_damage = NONE;
 
 	// 추가 방어력
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	float							add_armor;
+	float							add_armor = NONE;
 
 	// 아이템 개수
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Data")
-	int64							count;
+	int64							count = NONE;
 
 	FDNItemData& operator=(const FDNItemData& data)
 	{

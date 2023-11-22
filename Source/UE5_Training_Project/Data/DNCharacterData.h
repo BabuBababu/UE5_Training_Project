@@ -15,6 +15,7 @@
 #include "DNCharacterData.generated.h"
 
 
+#define NON_VECTOR FVector(0.f,0.f,0.f)
 
 
 
@@ -323,28 +324,28 @@ struct FDNCharacterPositionData : public FTableRowBase
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Position Data")
-		FVector						rush_7;
+		FVector						rush_7  = NON_VECTOR;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Position Data")
-		FVector						rush_8;
+		FVector						rush_8 = NON_VECTOR;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Position Data")
-		FVector						rush_9;
+		FVector						rush_9 = NON_VECTOR;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Position Data")
-		FVector						guard_4;
+		FVector						guard_4 = NON_VECTOR;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Position Data")
-		FVector						guard_6;
+		FVector						guard_6 = NON_VECTOR;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Position Data")
-		FVector						support_1;
+		FVector						support_1 = NON_VECTOR;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Position Data")
-		FVector						support_2;
+		FVector						support_2 = NON_VECTOR;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Position Data")
-		FVector						support_3;
+		FVector						support_3 = NON_VECTOR;
 };
 
 

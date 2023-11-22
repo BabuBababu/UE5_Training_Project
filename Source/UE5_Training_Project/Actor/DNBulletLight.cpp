@@ -65,9 +65,10 @@ void ADNBulletLight::active_bullet()
 void ADNBulletLight::non_active_bullet()
 {
 
-	SetActorHiddenInGame(true);
-	SetActorEnableCollision(false);
-	_projectile_movement_component->Deactivate();
-	_is_active = false;
+	//SetActorHiddenInGame(true);
+	//SetActorEnableCollision(false);
+	//_projectile_movement_component->Deactivate();
+	//_is_active = false;
+	Destroy();
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Is Active? : %s"), _is_active ? TEXT("true") : TEXT("false")));
 }

@@ -138,7 +138,7 @@ void ADNAirRaptureCharacter::fire_1(ADNCommonCharacter* target_in)
 
 	FVector socket_location = _character_skeletal_mesh->GetSocketLocation(FName("FirePoint"));
 
-	if (OBJECT_MANAGER->_enemy_missile_array.Num() < 1000)				//1000발까지는 그냥 생성, 1001발째부터는 생성안하고 기존의 500발중 언액티브된 미사일 발사
+	if (OBJECT_MANAGER->_enemy_missile_array.Num() < 150)				//1000발까지는 그냥 생성, 1001발째부터는 생성안하고 기존의 500발중 언액티브된 미사일 발사
 	{
 
 		ADNBossMissile* bullet = GetWorld()->SpawnActor<ADNBossMissile>(_fire_1_class, socket_location, GetActorRotation()); // 미사일 생성
