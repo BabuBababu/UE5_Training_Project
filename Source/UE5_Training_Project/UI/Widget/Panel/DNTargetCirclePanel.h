@@ -69,4 +69,6 @@ private:
 	int32 _current_height;
 
 	ADNPatternTargetActor* _owner;
+
+	bool _is_set = false;
 };

@@ -5,12 +5,15 @@
 
 // Engine
 #include <Components/CapsuleComponent.h>
+#include <Components/WidgetComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 #include <particles/ParticleSystem.h>
 #include <NiagaraComponent.h>
 
 // Character
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
+// UI
+#include "UE5_Training_Project/UI/Widget/Panel/DNTargetCirclePanel.h"
 
 ADNPatternTargetActor::ADNPatternTargetActor()
 {
@@ -31,6 +34,12 @@ ADNPatternTargetActor::ADNPatternTargetActor()
 
 	_target_destroy_fail_particle_component = CreateDefaultSubobject<UNiagaraComponent>(TEXT("destroy_failed_niagara"));
 	_target_destroy_fail_particle_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	_target_ui_component = CreateDefaultSubobject<UWidgetComponent>(TEXT("target_ui"));
+	_target_ui_component->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	
+
+
 
 	GetCharacterMovement()->Deactivate();
 }
@@ -130,6 +139,17 @@ void ADNPatternTargetActor::init()
 	if (nullptr == _owner)
 		return;
 
+	// 타겟 서클 주인 설정
+	UUserWidget* widget = _target_ui_component->GetWidget();
+
+	if (nullptr == widget)
+		return;
+
+	UDNTargetCirclePanel* panel = Cast<UDNTargetCirclePanel>(widget);
+	if (nullptr == panel)
+		return;
+
+ 	panel->set_widget(this);
 
 	// 시간
 	_limit_max_time = _owner->_target_circle_time;

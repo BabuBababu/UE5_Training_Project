@@ -21,6 +21,7 @@
  */
 
 class ADNEnemyCharacter;
+class UWidgetComponent;
 
 UCLASS()
 class UE5_TRAINING_PROJECT_API ADNPatternTargetActor : public ADNEnemyCharacter
@@ -59,6 +60,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Particle Effects")					//타겟 파괴 실패 파티클 나이아가라 컴포넌트
 	TObjectPtr<UNiagaraComponent> _target_destroy_fail_particle_component;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TObjectPtr<UWidgetComponent> _target_ui_component;
 
 private:
 	ADNEnemyCharacter* _owner;

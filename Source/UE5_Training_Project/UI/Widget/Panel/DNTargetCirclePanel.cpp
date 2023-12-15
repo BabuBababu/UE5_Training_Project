@@ -17,7 +17,6 @@ void UDNTargetCirclePanel::NativeConstruct()
 {
 	set_panel_type(E_UI_PANEL_TYPE::UPT_TARGET_CIRCLE);
 	Super::NativeConstruct();
-	init();
 }
 
 void UDNTargetCirclePanel::NativeDestruct()
@@ -42,6 +41,9 @@ void UDNTargetCirclePanel::NativeTick(const FGeometry& MyGeometry, float InDelta
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
+	if (false == _is_set)
+		return;
+
 	// 위치 동기화
 	//sync_position();
 
@@ -55,13 +57,15 @@ void UDNTargetCirclePanel::NativeTick(const FGeometry& MyGeometry, float InDelta
 	_current_time -= InDeltaTime;
 	if (_current_time <= 0)
 	{
-		init();
+		//init();
 		SetVisibility(ESlateVisibility::Collapsed);	//시간이 다 되었으니 틱은 더이상 작동되면 안되므로
+
 	}
 }
 
 void UDNTargetCirclePanel::set_widget(ADNPatternTargetActor* owner_in)
 {
+
 	if (false == IsValid(owner_in))
 	{
 		init();
@@ -77,10 +81,12 @@ void UDNTargetCirclePanel::set_widget(ADNPatternTargetActor* owner_in)
 	if (false == IsValid(umg_target_circle_icon))
 		return;
 
-
 	_owner = owner_in;
 
 	SetVisibility(ESlateVisibility::HitTestInvisible);
+
+
+	_is_set = true;
 
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Current HP : %f"), _current_hp));
 
@@ -153,7 +159,6 @@ void UDNTargetCirclePanel::init()
 	_current_hp = 0.f;
 	_max_hp = 0.f;
 	_owner = nullptr;
-	close_widget();
 }
 
 void UDNTargetCirclePanel::play_hit_animation()

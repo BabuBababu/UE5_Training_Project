@@ -5,7 +5,6 @@
 
 
 // Engine
-
 #include <Engine/Engine.h>
 #include <particles/ParticleSystem.h>
 #include <DrawDebugHelpers.h>
@@ -13,6 +12,7 @@
 #include <Engine/Classes/Kismet/GameplayStatics.h>
 #include <Engine/Classes/Kismet/KismetMathLibrary.h>
 #include <BehaviorTree/BlackboardComponent.h>
+#include <Components/WidgetComponent.h>
 
 // Component
 #include "UE5_Training_Project/Component/DNStatusComponent.h"
@@ -160,12 +160,7 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						DNDamageOperation::gun_damage_to_gun_spider_boss(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
 
-						// 플레이어일 경우
-						if (nullptr != user)
-						{
-							// 타겟 서클 패널 끄기
-							close_target_panel();
-						}
+
 					}
 					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE)
 					{
@@ -174,12 +169,7 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
 
-						// 플레이어일 경우
-						if (nullptr != user)
-						{
-							// 타겟 서클 패널 끄기
-							close_target_panel();
-						}
+
 					}
 					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_LC || _enemy->_enemy_type == E_ENEMY_TYPE::ET_RANGER_AR)
 					{
@@ -187,12 +177,6 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
 
-						// 플레이어일 경우
-						if (nullptr != user)
-						{
-							// 타겟 서클 패널 끄기
-							close_target_panel();
-						}
 					}
 					else if (_enemy->_enemy_type == E_ENEMY_TYPE::ET_MELEE_SHIELD)
 					{
@@ -200,12 +184,6 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
 
-						// 플레이어일 경우
-						if (nullptr != user)
-						{
-							// 타겟 서클 패널 끄기
-							close_target_panel();
-						}
 					}
 					else if (_enemy->_enemy_type ==  E_ENEMY_TYPE::ET_TARGET_CIRCLE)
 					{
@@ -223,16 +201,15 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						// 플레이어일 경우
 						if (nullptr != user)
 						{
-							//타겟서클 패널 켜주기
-							UDNBasePanel* base_panel = WIDGET_MANAGER->get_panel(E_UI_PANEL_TYPE::UPT_TARGET_CIRCLE);
-							if (nullptr == base_panel)
+							UUserWidget* widget = _target_circle_actor->_target_ui_component->GetWidget();
+
+							if (nullptr == widget)
 								return;
 
-							UDNTargetCirclePanel* panel = Cast<UDNTargetCirclePanel>(base_panel);
+							UDNTargetCirclePanel* panel = Cast<UDNTargetCirclePanel>(widget);
 							if (nullptr == panel)
 								return;
 
-							panel->set_widget(_target_circle_actor);
 							panel->play_hit_animation();
 						}
 						
@@ -243,22 +220,11 @@ void UDNPlayerLineTrace::OnFire(ADNCommonCharacter* player_in)
 						DNDamageOperation::gun_damage(damage, hit_result.BoneName, _enemy, player_in);
 						OnTargetHit.Broadcast();
 
-						// 플레이어일 경우
-						if (nullptr != user)
-						{
-							// 타겟 서클 패널 끄기
-							close_target_panel();
-						}
+
 					}
 				}
 				else
 				{
-					// 플레이어일 경우
-					if (nullptr != user)
-					{
-						// 타겟 서클 패널 끄기
-						close_target_panel();
-					}
 
 					// _enemy가 nullptr이라면 쉴드를 가격했는지 확인
 					auto _shield = Cast<ADNCommonShield>(hit_result.GetActor());
