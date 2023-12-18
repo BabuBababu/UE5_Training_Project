@@ -62,7 +62,7 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 {
 	Super::OnPossess(pawn_in);
 
-	ADNCommonCharacter* character = dynamic_cast<ADNCommonCharacter*>(pawn_in);
+	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(pawn_in);
 
 	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)
 	{
@@ -183,10 +183,11 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 	}
 
 
-	RunBehaviorTree(btree);			//beginplay되면서 폰에 빙의될때 실행
+	//RunBehaviorTree(btree);			//beginplay되면서 폰에 빙의될때 실행
 	behavior_tree_component->StartTree(*btree);
 
-	add_event(character);
+	if(nullptr != character)
+		add_event(character);
 
 	get_blackboard()->SetValueAsObject(all_ai_bb_keys::self_actor, pawn_in);
 	

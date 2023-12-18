@@ -14,7 +14,7 @@
 #include "UE5_Training_Project/Character/DNEnemyCharacter.h"
 #include "UE5_Training_Project/Character/DNShieldEnemyCharacter.h"
 
-
+#pragma optimize( "", off )
 
 void ADNCommonDefenceLevel::BeginPlay()
 {
@@ -30,24 +30,22 @@ void ADNCommonDefenceLevel::BeginPlay()
 	TArray<AActor*> target_point_array;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), target_point_array);
 
-
-	for (auto& point : target_point_array)
+	if (target_point_array.Num() != 0)
 	{
-		if (point->GetActorLabel() == "TargetPoint")
+		for (int32 index = 0; index < target_point_array.Num(); ++index)
 		{
-			target_point_1_location = point->GetActorLocation();
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("TargetPoint1 Vector :%s"), *point->GetActorLocation().ToString()));
-
+			if (index == 0){target_point_1_location = target_point_array[index]->GetActorLocation();}
+			else if (index == 1){target_point_2_location = target_point_array[index]->GetActorLocation();}
+			else if (index == 2) { target_point_3_location = target_point_array[index]->GetActorLocation(); }
+			else if (index == 3) { target_point_4_location = target_point_array[index]->GetActorLocation(); }
+			else if (index == 4) { target_point_5_location = target_point_array[index]->GetActorLocation(); }
 		}
-		else if (point->GetActorLabel() == "TargetPoint2")
-			target_point_2_location = point->GetActorLocation();
-		else if (point->GetActorLabel() == "TargetPoint3")
-			target_point_3_location = point->GetActorLocation();
-		else if (point->GetActorLabel() == "TargetPoint4")
-			target_point_4_location = point->GetActorLocation();
-		else if (point->GetActorLabel() == "TargetPoint5")
-			target_point_5_location = point->GetActorLocation();
+		
 	}
+
+
+
+	
 
 
 	for (int count = 0; count < _target_1_count; ++count)
@@ -81,6 +79,8 @@ void ADNCommonDefenceLevel::BeginPlay()
 		ADNEnemyCharacter* target5 = GetWorld()->SpawnActor<ADNEnemyCharacter>(target_5_enemy, target_point_5_location + temp_location, FRotator::ZeroRotator);
 	}
 }
+
+#pragma optimize( "", on )
 
 void ADNCommonDefenceLevel::Tick(float DeltaTime)
 {
