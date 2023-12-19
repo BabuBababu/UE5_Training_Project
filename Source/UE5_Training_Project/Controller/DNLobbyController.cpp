@@ -166,7 +166,7 @@ void ADNLobbyController::change_controller_character_handler()
     _lobby_character->_lobby_finished = true;
     
     // 애니메이션 동작이 끝났다면 레벨을 바꿔줍니다.
-    UGameplayStatics::OpenLevel(this, "L_PlayerBase");
+    UGameplayStatics::OpenLevel(this, "L_Stage_Defence_PlayerBase");
 
 
 
