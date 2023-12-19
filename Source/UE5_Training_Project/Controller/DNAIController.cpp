@@ -64,6 +64,9 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 
 	ADNCommonCharacter* character = Cast<ADNCommonCharacter>(pawn_in);
 
+	if (false == IsValid(character))
+		return;
+
 	if (character->get_character_type() == E_CHARACTER_TYPE::CT_GRIFFIN)
 	{
 		UBehaviorTree* BTObject = LoadObject<UBehaviorTree>(NULL, TEXT("/Game/Blueprint/AI/BT_Combat_UnEnemy.BT_Combat_UnEnemy"), NULL, LOAD_None, NULL);
@@ -182,9 +185,10 @@ void ADNAIController::OnPossess(APawn* pawn_in)
 			_blackboard->InitializeBlackboard(*btree->BlackboardAsset);
 	}
 
+	// behavior_tree_component->StartTree(*btree);를 넣으면 터짐
 
-	//RunBehaviorTree(btree);			//beginplay되면서 폰에 빙의될때 실행
-	behavior_tree_component->StartTree(*btree);
+	RunBehaviorTree(btree);			//beginplay되면서 폰에 빙의될때 실행
+	//behavior_tree_component->StartTree(*btree);
 
 	if(nullptr != character)
 		add_event(character);
