@@ -14,6 +14,10 @@
 /**
  * 
  */
+
+class UDNLobbyPanel;
+class UDNSelectSquadPanel;
+
 UCLASS()
 class UE5_TRAINING_PROJECT_API UDNLobbyLayer : public UDNBaseLayer
 {
@@ -22,4 +26,12 @@ class UE5_TRAINING_PROJECT_API UDNLobbyLayer : public UDNBaseLayer
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+
+private:
+	UPROPERTY()
+	TObjectPtr<UDNLobbyPanel> umg_lobby_panel;
+	UPROPERTY()
+	TObjectPtr<UDNSelectSquadPanel> umg_make_squad_panel;
+
+	
 };

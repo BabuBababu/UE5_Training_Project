@@ -313,7 +313,8 @@ enum class E_UI_PANEL_TYPE
 	UPT_PORTRAIT,				//초상화 컷신
 	UPT_CROSSHAIR,
 	UPT_TARGET_CIRCLE,			//타겟 서클
-	UPT_CHARACTER_SELECT		//캐릭터 선택
+	UPT_CHARACTER_SELECT,		//캐릭터 선택
+	UPT_MAKE_SQUAD				//스쿼드 편성
 };
 
 
